@@ -20,12 +20,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'q4ao$(g7-(mwxbg%eal45#rn%bx%n0rsbnt*v9ch#lsb^$w^(*'
+SECRET_KEY = os.environ['TMDB_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
+    DEBUG = True
 
-ALLOWED_HOSTS = ['django-env.eba-gnvwpdfn.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['themovieroom.co.uk','www.themovieroom.co.uk']
 
 
 # Application definition
@@ -121,6 +123,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/var/www/static/',
 ]
 STATIC_ROOT = os.path.join(os.environ["HOME"], "public_html/static/")
+
+#only want this on server
+if 'DJANGO_DEBUG' not in os.environ:
+    SESSION_COOKIE_DOMAIN = 'themovieroom.co.uk'
+    SESSION_ENGINE='django.contrib.sessions.backends.db'
+
+#to ensure we can see the uploaded files
+FILE_UPLOAD_PERMISSIONS = 0644
