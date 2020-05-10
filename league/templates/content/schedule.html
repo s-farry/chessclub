@@ -1,0 +1,28 @@
+{% load i18n %}
+{% load league_tags %}
+
+{% if schedule %}
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="text-center">{% trans "Week" %}</th>
+            <th class="text-center">{% trans "Date" %}</th>
+            <th class="text-center">{% trans "White" %}</th>
+            <th class="text-center">{% trans "Result" %}</th>
+            <th class="text-center">{% trans "Black" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+{% for match in schedule %}
+        <tr>
+                <td class ="text-center"><a href="{% url 'game' match.id %}">{{match.week}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.date}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.result}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>
+        </tr>
+{% endfor %}
+
+               </tbody>
+        </table>
+{% endif %}
