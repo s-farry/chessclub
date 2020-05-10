@@ -33,8 +33,8 @@
         {% endblock %}
     </head>
     <body class="sb-nav-fixed">
-        <nav clas="logo" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="{% url 'index' %}">Wallasey Chess Club</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-black">
+            <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar-->
 
             <ul class="navbar-nav ml-auto ml-md-0 mr-0">
@@ -52,12 +52,16 @@
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
 
-            <img src="{% static 'img/wallaseychessclub.png' %}" id = "logo">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
+                        <img src="{% static 'img/wallaseychessclub.png' %}" class='ml-auto mr-auto' id = "logo">
                           <div class="sb-sidenav-menu-heading">Core</div>
                             <a class="nav-link" href="{% url 'index' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i></div>Home</a>
-                            <a class="nav-link" href="{% url 'league_index' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i></div>Leagues</a>
+                            <a class="nav-link" href="{% url 'news' %}"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i></div>News</a>
+                            <a class="nav-link" href="{% url 'details' %}"><div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>Club Details</a>
+
+                            <div class="sb-sidenav-menu-heading">Members</div>
+                            <a class="nav-link" href="{% url 'league_index' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i></div>Internal League</a>
                             <!--<a class="nav-link collapsed" href="{% url 'league_index' %}" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i></div>Leagues</a>-->
                         </div>

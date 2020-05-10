@@ -40,7 +40,7 @@
   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --top-height:50px;
-  --sidebar-width:150px;
+  --sidebar-width:180px;
 }
 
 *,
@@ -6140,6 +6140,10 @@ button.bg-light:focus {
 .bg-dark {
   background-color: #343a40 !important;
 }
+.bg-black {
+  background-color: black !important;
+}
+
 
 a.bg-dark:hover, a.bg-dark:focus,
 button.bg-dark:hover,
@@ -10003,7 +10007,8 @@ body {
   flex-shrink: 0;
   transition: transform 0.15s ease-in-out;
   z-index: 1038;
-  transform: translateX(calc(-var(--sidebar-width)));
+  /*transform: translateX(calc(-var(--sidebar-width)));*/
+  transform: translateX(calc(-185px));
 }
 #layoutSidenav #layoutSidenav_content {
   position: relative;
@@ -10012,8 +10017,9 @@ body {
   justify-content: space-between;
   min-width: 0;
   flex-grow: 1;
-  min-height: calc(100vh - 56px);
-  margin-left: calc(-var(--sidebar-width));
+  min-height: calc(100vh - var(--top-height));
+  /*margin-left: calc(-var(--sidebar-width));*/
+  margin-left:-185px;
 }
 
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
@@ -10044,9 +10050,12 @@ body {
 
   .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
     transform: translateX(calc(-var(--sidebar-width)));
+    transform: translateX(-185px);
+
   }
   .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
     margin-left:calc(-var(--sidebar-width));
+    margin-left:-185px;
   }
   .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
     display: none;
@@ -10061,14 +10070,14 @@ body {
   z-index: 1038;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
-  padding-top: 56px;
+  padding-top: var(--top-height);
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
   overflow-y: auto;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
   padding-left: var(--sidebar-width);
-  top: 56px;
+  top: var(--top-height);
 }
 
 #layoutError {
@@ -10095,7 +10104,7 @@ body {
 
 .sb-topnav {
   padding-left: 0;
-  height: 56px;
+  height: var(--top-height);
   z-index: 1039;
 }
 .sb-topnav .navbar-brand {
@@ -10224,3 +10233,5 @@ td a {
   border: 1px solid black;
   padding: 16px; 
 }
+
+.br-red{border: 1px solid red;}

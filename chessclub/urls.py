@@ -22,6 +22,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
+    url(r'^news$', views.news, name='news'),
+    url(r'^details$', views.details, name='details'),
     #path('league/', league.urls),
     url(r'^league/', include('league.urls')),
     url(r'^chaining/', include('smart_selects.urls')),

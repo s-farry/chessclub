@@ -7,3 +7,7 @@ from django.shortcuts import get_object_or_404, render
 
 def index(request):
     return render(request, 'index.html',{'seasons': Season.objects.all()})
+def news(request):
+    return render(request, 'news.html')
+def details(request):
+    return render(request, 'details.html')
