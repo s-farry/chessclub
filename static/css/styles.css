@@ -4057,10 +4057,12 @@ input[type=button].btn-block {
   }
 }
 @media (min-width: 576px) {
+  
   .navbar-expand-sm {
     flex-flow: row nowrap;
     justify-content: flex-start;
   }
+  
   .navbar-expand-sm .navbar-nav {
     flex-direction: row;
   }
@@ -4098,7 +4100,9 @@ input[type=button].btn-block {
     padding-left: 0;
   }
 }
+/*
 @media (min-width: 768px) {
+  
   .navbar-expand-md {
     flex-flow: row nowrap;
     justify-content: flex-start;
@@ -4128,6 +4132,7 @@ input[type=button].btn-block {
   .navbar-expand-md .navbar-toggler {
     display: none;
   }
+  
 }
 @media (max-width: 991.98px) {
   .navbar-expand-lg > .container,
@@ -4213,6 +4218,7 @@ input[type=button].btn-block {
     display: none;
   }
 }
+*/
 .navbar-expand {
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -5099,6 +5105,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   }
 }
 @media (min-width: 768px) {
+  /*
   .list-group-horizontal-md {
     flex-direction: row;
   }
@@ -5120,7 +5127,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   .list-group-horizontal-md .list-group-item + .list-group-item.active {
     margin-left: -1px;
     border-left-width: 1px;
-  }
+  }*/
 }
 @media (min-width: 992px) {
   .list-group-horizontal-lg {
@@ -6837,6 +6844,7 @@ button.bg-dark:focus {
   }
 }
 @media (min-width: 768px) {
+  /*
   .flex-md-row {
     flex-direction: row !important;
   }
@@ -6971,7 +6979,7 @@ button.bg-dark:focus {
 
   .align-self-md-stretch {
     align-self: stretch !important;
-  }
+  }*/
 }
 @media (min-width: 992px) {
   .flex-lg-row {
@@ -10076,7 +10084,8 @@ body {
   overflow-y: auto;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
-  padding-left: var(--sidebar-width);
+  padding-left:calc(var(--sidebar-width));
+  padding-right:0;
   top: var(--top-height);
 }
 
@@ -10224,14 +10233,18 @@ body {
   background-color: #e9ecef;
 }
 
-div #board{width:100%; border: 1px solid red;}
+div #board{width:100%;}
+
+div .puzzle{width:calc(400px)}
+
 
 #logo{width:100px;}
 
+#banner{width:100%;max-width:600px;}
+
 td a { 
   display: block; 
-  border: 1px solid black;
-  padding: 16px; 
 }
 
 .br-red{border: 1px solid red;}
+

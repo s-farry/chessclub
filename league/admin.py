@@ -43,10 +43,10 @@ def standings_update(instance):
             for match in player_schedule:
                 matches += 1
                 if match.white == player:
-                    if match.result == 2 :
+                    if match.result == 1 :
                         wins += 1
                         points += instance.win_points
-                    elif match.result == 1 :
+                    elif match.result == 2 :
                         lost += 1
                         points += instance.lost_points
                     else:
@@ -54,10 +54,10 @@ def standings_update(instance):
                         points += instance.draw_points
 
                 if match.black == player:
-                    if match.result == 1 :
+                    if match.result == 2 :
                         wins += 1
                         points += instance.win_points
-                    elif match.result == 2 :
+                    elif match.result == 1 :
                         lost += 1
                         points += instance.lost_points
                     else:
@@ -94,10 +94,15 @@ class StandingsInline(admin.TabularInline):
 class SeasonAdmin(admin.ModelAdmin):
     inlines = [
         StandingsInline, 
-        ScheduleInline,
+        #ScheduleInline,
     ]
     prepopulated_fields = {'slug': ('name', 'league',), }
-
+    actions=['update_standings']
+    def update_standings(self,request,queryset):
+        for obj in queryset:
+            standings_save(obj)
+            standings_update(obj)
+            self.message_user(request, "Season standings updated")
 
     def save_model(self, request, obj, form, change):
         obj.save()

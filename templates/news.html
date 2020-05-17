@@ -8,6 +8,12 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<h1>News</h1>
+<h1 class="mt-4">News</h1>
+<hr>
+{% for n in news %}
+<h2>{{n.title}}</h2><br>
+{{n.text}}<br>
+<i>Published on {{n.published_date}}</i>
+{% endfor %}
 {% endblock %}
 }

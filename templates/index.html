@@ -2,12 +2,56 @@
 {% load static %}
 {% block title %}{{ game }}{% endblock %}
 {% block header %} 
+<script src="{% static 'js/pgnvjs.js' %}" type="text/javascript"></script>
 <!-- CSS used -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/pgnvjs.css' %}">ß
 {% endblock %}
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<img src = "{% static 'img/banner-chess.jpg' %}">
+<div class = "row d-flex">
+<div class = "col">
+<div class="banner" class="w-100">
+<img src = "{% static 'img/banner-chess.jpg' %}" id="banner" class="ml-auto mr-auto">
+</div>
+<h1>Introduction</h1>
+Wallasey Chess Club meets in etc...
+
+<h1>Latest News</h1>
+
+{% for n in news %}
+<h2>{{n.title}}</h2><br>
+{{n.text}}<br>
+<i>Published on {{n.published_date}}</i>
+{% endfor %}
+
+</div>
+
+<div class="puzzle">
+   <div id="board" class='merida zeit'></div>
+<script>
+    var pgn = `[Event "Rom"]
+[Site "?"]
+[Date "1987.??.??"]
+[Round "?"]
+[White "A. Lotti"]
+[Black "F. Lotti"]
+[Result "0-1"]
+[Annotator "T1R"]
+[SetUp "1"]
+[FEN "2r5/pp2p1k1/3pp1P1/q7/4P3/2r5/PPPQ4/1K5R b - - 0 1"]
+[PlyCount "5"]
+[EventDate "1987.??.??"]
+[EventType "game"]
+
+1... Rh3 2. Qd1 Qd2 3. Rf1 Qxd1+ 0-1`;
+    var cfg = {pgn: pgn, position: 'start', showCoords: false, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
+    var board = pgnView('board', cfg);
+
+    </script> 
+</div>
+<!--
+<img src = "{% static 'img/banner-chess.jpg' %}" class="w-75">
+-->
 {% endblock %}
-}

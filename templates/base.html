@@ -25,7 +25,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="{% static 'json/manifest.json' %}">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
@@ -34,10 +34,20 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-black">
+            <!--
+            <i class="fas fa-chess-king"></i><i class="fas fa-chess-queen"></i><i class="fas fa-chess-rook"></i><i class="fas fa-chess-rook"></i>
+            <i class="fas fa-chess-bishop"></i><i class="fas fa-chess-bishop"></i><i class="fas fa-chess-knight"></i><i class="fas fa-chess-knight"></i><i class="fas fa-chess-pawn"></i>
+            -->
+            <a class = "navbar-brand">
+                <!--
+                <i class="fas fa-chess-king"></i><i class="fas fa-chess-queen"></i><i class="fas fa-chess-rook"></i><i class="fas fa-chess-rook"></i>
+                <i class="fas fa-chess-bishop"></i><i class="fas fa-chess-bishop"></i><i class="fas fa-chess-knight"></i><i class="fas fa-chess-knight"></i><i class="fas fa-chess-pawn"></i>
+                -->
+            </a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar-->
 
-            <ul class="navbar-nav ml-auto ml-md-0 mr-0">
+            <ul class="navbar-nav ml-auto mr-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
@@ -55,13 +65,13 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                         <img src="{% static 'img/wallaseychessclub.png' %}" class='ml-auto mr-auto' id = "logo">
-                          <div class="sb-sidenav-menu-heading">Core</div>
+                          <div class="sb-sidenav-menu-heading">Public</div>
                             <a class="nav-link" href="{% url 'index' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i></div>Home</a>
                             <a class="nav-link" href="{% url 'news' %}"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i></div>News</a>
                             <a class="nav-link" href="{% url 'details' %}"><div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>Club Details</a>
 
                             <div class="sb-sidenav-menu-heading">Members</div>
-                            <a class="nav-link" href="{% url 'league_index' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i></div>Internal League</a>
+                            <a class="nav-link" href="{% url 'league_index' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i></div>Internal Leagues</a>
                             <!--<a class="nav-link collapsed" href="{% url 'league_index' %}" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i></div>Leagues</a>-->
                         </div>
@@ -70,8 +80,10 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
+                    <div class="container-fluid">
                     {% block content %}
                     {% endblock %}
+                    </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">

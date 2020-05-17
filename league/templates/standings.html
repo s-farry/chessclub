@@ -6,8 +6,10 @@
 <article id="league-{{ slug }}" class="news">
     <h1>{% trans "Standings" %}{{ table_name }}</h1>
     <hr />
+    <div class = "col-md-8 ml-auto mr-auto">
     {% if standings %}
         {% include 'content/full_table.html' with standings=standings %}
     {% endif %} 
+</div>
 </article>
 {% endblock %}

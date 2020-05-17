@@ -7,12 +7,13 @@
 <article id="league-{{ slug }}-schedule" class="news">
     <h1>{% if page_name %}{{ page_name }}{% else %} {% trans "Schedule" %} {% endif %} {% if team %} {{team.short_name}} {% endif %} {% if season %} <small class="pull-right">{{season.name}}</small> {% endif %}</h1>
     <hr />
+    <div class = "col-md-8 ml-auto mr-auto">
         {% if schedule %}
             {% include 'content/schedule.html' with schedule=schedule %}
         {% else %}
             <p>Brak danych</p>
         {% endif %}
-
+</div>
 </article>
 <hr />
 {% endblock %}

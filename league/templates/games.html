@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_name }}{% endblock %}
+
+{% load i18n %}
+{% load league_tags %}
+{% block content %}
+<article id="league-{{ slug }}-player" class="news">
+    <h1>{% if page_name %}{{ page_name }}{% else %} {{player}} {% endif %}</h1>
+    <hr />
+    <div class = "col-md-7 ml-auto mr-auto">
+        {% if games|length > 0 %}
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center">{% trans "Competition" %}</th>
+                <th class="text-center">{% trans "Date" %}</th>
+                <th class="text-center">{% trans "White" %}</th>
+                <th class="text-center">{% trans "Result" %}</th>
+                <th class="text-center">{% trans "Black" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+    {% for match in games %}
+            <tr>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.season}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.date}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}1/2-1/2 {% elif match.result == 1 %} 1-0 {% else %} 0-1 {% endif %}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>
+            </tr>
+    {% endfor %}
+    
+                   </tbody>
+            </table>
+    {% endif %}
+</div>
+</article>
+<hr />
+{% endblock %}

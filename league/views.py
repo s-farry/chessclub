@@ -17,7 +17,7 @@ class StandingsFull(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
             season_pk = season.pk
-            season_name = ": {} {}".format(season.league, season.name)
+            season_name = ": {} {}".format(season.name, season.league)
         
         context['table_name'] = season_name
         context['slug'] = self.kwargs.get('season')
@@ -97,12 +97,18 @@ class PlayerSchedule(ListView):
             season_pk = season.pk
             season_name = season.name
             player_pk = Team.objects.get(slug=self.kwargs.get('player')).pk
-            qs = self.model.objects.filter(Q(home_team=player_pk) | Q(black=player_pk), season = season_pk ).order_by('date')
+            qs = self.model.objects.filter(Q(home_team=player_pk) | Q(black=player_pk), season = season_pk ).order_by('-date')
         return qs
 
 
 
 # Create your views here.
+
+def player(request, player_id):
+    query = request.GET.get('search')
+    player = get_object_or_404(Player, id=player_id)
+    games  = Schedule.objects.filter(Q(white=player_id) | Q(black=player_id)).order_by('-date')
+    return render(request, 'games.html', {'player': player, 'games': games})
 
 def game(request, game_id):
     f = get_object_or_404(Schedule, id=game_id)

@@ -19,8 +19,9 @@ RESULTS = (
 class Player(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('First name'))
     surename = models.CharField(max_length=200, null=True, verbose_name=_('Last name'))
-    birth_date = models.DateField(null=True, verbose_name=_('Date of birth'))
+    birth_date = models.DateField(null=True, blank=True, verbose_name=_('Date of birth'))
     image = models.ImageField(upload_to='uploads/teams/%Y/%m/%d/players/', null=True, blank=True, verbose_name=_('Player photo'))
+    lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'))
 
     class Meta:
         verbose_name = _('Player')
@@ -56,21 +57,22 @@ class Season(models.Model):
         verbose_name_plural = _('Seasons')
 
     def __str__(self):
-        return "{0} {1}".format(self.league, self.name)        
+        return "{0} {1}".format(self.name, self.league)        
         
 
 
 class Schedule(models.Model):
     season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_('Season'))
-    week = models.IntegerField(null=False, blank=False, default=1, verbose_name=_('Week'))
+    week = models.IntegerField(null=True, blank=True, default=1, verbose_name=_('Week'))
     date = models.DateTimeField(default=now, verbose_name=_('Date'))
-    pgn  = models.TextField(null = True)
+    pgn  = models.TextField(null = True, blank=True)
     white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'))
     black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'))
     result = models.IntegerField(verbose_name=_('result'),
         choices=(RESULTS),
         default=0
     )
+    lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'))
 
     class Meta:
         verbose_name = _('Game')
@@ -82,7 +84,7 @@ class Schedule(models.Model):
     
 
     def __str__(self):
-        return "{}: {} v {}".format(self.week, self.white, self.black) 
+        return "{}: {} v {}".format(self.season, self.white, self.black) 
 
 
 

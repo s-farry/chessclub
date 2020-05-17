@@ -8,14 +8,14 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
+<h1 class = "mt-4">Online Leagues</h1>
+<hr>
+Details are below of the ongoing internal leagues for Wallasey club members. Click through to see the standings and replay the games.
+<br>
+<ul>
 {% for season in seasons %}
-<div class = "card">
-<div class = "card-header">{{season}}</div>
-<div class = "card-body"></div>
-<a href = "{% url 'standings_full' season.slug %}">Standings</a><br>
-<a href = "{% url 'schedule_full' season.slug %}">Schedule</a><br>
-</div>
-</div>
+<li> {{season}} | <a href = "{% url 'standings_full' season.slug %}">Standings</a> | <a href = "{% url 'schedule_full' season.slug %}">Schedule</a> </li>
 {% endfor %}
+</ul>
 {% endblock %}
 }
