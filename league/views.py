@@ -48,9 +48,9 @@ class ScheduleFull(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
             season_pk = season.pk
-            season_name = ": {} {}".format(season.league, season.name)
+            season_name = ": {} {}".format(season.name, season.league)
             context['page_name'] = _('Schedule')
-            context['season'] = season
+            context['season'] = season_name
             context['slug'] = self.kwargs.get('season')
         
         return context
@@ -62,7 +62,7 @@ class ScheduleFull(ListView):
             season = Season.objects.get(slug=self.kwargs['season'])
             season_pk = season.pk
             season_name = season.name
-            qs = self.model.objects.filter(season=season_pk).order_by('date')
+            qs = self.model.objects.filter(season=season_pk).order_by('-date')
         return qs
 
 

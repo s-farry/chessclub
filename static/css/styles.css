@@ -41,6 +41,7 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --top-height:50px;
   --sidebar-width:180px;
+  --main-font-family:"Raleway", sans-serif;
 }
 
 *,
@@ -63,6 +64,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:var(--main-font-family);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -10240,7 +10242,7 @@ div .puzzle{width:calc(400px)}
 
 #logo{width:100px;}
 
-#banner{width:100%;max-width:600px;}
+#banner{width:100%;max-width:700px;}
 
 td a { 
   display: block; 
@@ -10248,3 +10250,12 @@ td a {
 
 .br-red{border: 1px solid red;}
 
+.news-item{
+  background-color:rgba(255,255,0,0.1);
+  /*border: 1px solid rgba(0, 0, 0, 0.125);*/
+  border-radius: 0.25rem;
+  padding:1rem;
+}
+
+h1{text-transform:uppercase;font-size:2.0rem;}
+h2{text-transform:uppercase;font-size:1.5rem;}

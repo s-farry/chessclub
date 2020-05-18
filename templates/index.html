@@ -10,25 +10,18 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<div class = "row d-flex">
+<div class = "row">
 <div class = "col">
-<div class="banner" class="w-100">
-<img src = "{% static 'img/banner-chess.jpg' %}" id="banner" class="ml-auto mr-auto">
-</div>
-<h1>Introduction</h1>
+<h1>Wallasey Chess Club</h1>
+    <hr>
+<div class="text-center"><img src = "{% static 'img/banner-chess.jpg' %}" id="banner"></div>
 Wallasey Chess Club meets in etc...
-
-<h1>Latest News</h1>
-
-{% for n in news %}
-<h2>{{n.title}}</h2><br>
-{{n.text}}<br>
-<i>Published on {{n.published_date}}</i>
-{% endfor %}
 
 </div>
 
 <div class="puzzle">
+    <h1>Puzzle</h1>
+    <hr>
    <div id="board" class='merida zeit'></div>
 <script>
     var pgn = `[Event "Rom"]
@@ -50,6 +43,21 @@ Wallasey Chess Club meets in etc...
     var board = pgnView('board', cfg);
 
     </script> 
+</div>
+<div class = "row">
+    <div class = "col">
+    <h1>Latest News</h1>
+    <hr>
+    {% for n in news %}
+    <div class = "news-item">
+    <h2>{{n.title}}</h2>
+    <hr>
+    {{n.text}}
+    <hr>
+    <small><i>Published on {{n.published_date}}</i></small>
+    </div>
+    {% endfor %}
+    </div>
 </div>
 <!--
 <img src = "{% static 'img/banner-chess.jpg' %}" class="w-75">

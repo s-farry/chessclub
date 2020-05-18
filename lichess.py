@@ -67,22 +67,26 @@ if __name__ == "__main__":
             print('added')
     
     tournaments = get_tournaments('sfarry')
+    '''
+    tournaments = ['rGAbOgAn']
     games = {}
     for t in tournaments:
         games.update(get_games(t))
 
-    season = Season.objects.filter(league='lichess')[0]
+    season = Season.objects.filter(name="Lichess Online").filter(league="Blitz 2020")[0]
     for g,v in games.items():
         white = Player.objects.filter(lichess=v['white'])
         black = Player.objects.filter(lichess=v['black'])
         schedule = Schedule(season=season,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
+        schedule.pgn = get_pgn(g)
         schedule.save()
-    '''
+'''
     games = Schedule.objects.all()
     for g in games:
         if g.lichess:
             g.pgn=get_pgn(g.lichess)
             g.save()
+    '''
 
 
     
