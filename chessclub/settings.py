@@ -27,7 +27,7 @@ DEBUG = False
 if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
     DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','themovieroom.co.uk','www.themovieroom.co.uk']
+ALLOWED_HOSTS = ['127.0.0.1', 'wallaseychessclub.uk','www.wallaseychessclub.uk']
 
 
 # Application definition

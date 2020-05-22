@@ -12,10 +12,11 @@
 {% block content %}
 <div class = "row">
 <div class = "col">
-<h1>Wallasey Chess Club</h1>
+<div class = "text-center"><img src="{% static 'img/wcc_logo.png' %}"></div>
     <hr>
 <div class="text-center"><img src = "{% static 'img/banner-chess.jpg' %}" id="banner"></div>
-Wallasey Chess Club meets in etc...
+Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and we have teams playing against other Clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone!
+New members are always welcome so please get in touch or just come down to the club one evening. Members are graded by the ECF every six months depending how they perform against other graded players. This gives some incentive in trying to improve one’s play as well as giving Team Captains the knowledge for managing their teams against the opposition.
 
 </div>
 
@@ -38,9 +39,9 @@ Wallasey Chess Club meets in etc...
 [EventDate "1987.??.??"]
 [EventType "game"]
 
-1... Rh3 2. Qd1 Qd2 3. Rf1 Qxd1+ 0-1`;
+1. Rh3 2. Qd1 Qd2 3. Rf1 Qxd1+ 0-1`;
     var cfg = {pgn: pgn, position: 'start', showCoords: false, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
-    var board = pgnView('board', cfg);
+    var board = pgnTactic('board', cfg);
 
     </script> 
 </div>

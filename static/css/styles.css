@@ -10257,5 +10257,9 @@ td a {
   padding:1rem;
 }
 
+.navbar-logo{
+  height:calc(var(--top-height)-0.5rem);
+}
+
 h1{text-transform:uppercase;font-size:2.0rem;}
 h2{text-transform:uppercase;font-size:1.5rem;}

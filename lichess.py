@@ -2,6 +2,9 @@
 import berserk
 client = berserk.Client()
 
+import chess.pgn
+import datetime
+
 import django, os
 os.environ["DJANGO_SETTINGS_MODULE"] = "chessclub.settings"
 django.setup()
@@ -26,6 +29,24 @@ def get_games(tournament):
             if g['winner'] == 'white' : result = 1
             if g['winner'] == 'black' : result = 2
         toReturn[g['id']] = { 'white' : g['players']['white']['user']['id'], 'black' : g['players']['black']['user']['id'], 'result' : result, 'date' : g['createdAt']}
+    return toReturn
+
+def get_games_from_pgn(pgn):
+    f = open(pgn)
+    game = chess.pgn.read_game(f)
+    toReturn = {}
+    while (game):
+        heads = game.headers
+        id = heads['Site'].replace('https://lichess.org/','')
+        result = 0
+        time = heads['UTCTime']
+        date = heads['Date']
+        format = '%Y.%m.%d %H:%M:%S'
+        print(heads['Result'])
+        if heads['Result'] == '1-0' : result = 1
+        if heads['Result'] == '0-1' : result = 2
+        toReturn[id] = {'white': heads['White'].lower(), 'black' : heads['Black'].lower(), 'result' : result, 'date' : datetime.datetime.strptime(date + ' ' + time,format), 'pgn' : game}
+        game = chess.pgn.read_game(f)
     return toReturn
 
 known_players = {
@@ -68,17 +89,23 @@ if __name__ == "__main__":
     
     tournaments = get_tournaments('sfarry')
     '''
-    tournaments = ['rGAbOgAn']
+    tournaments = ['5QTqdT2E']
     games = {}
-    for t in tournaments:
-        games.update(get_games(t))
+    #for t in tournaments:
+    #    games.update(get_games(t))
 
-    season = Season.objects.filter(name="Lichess Online").filter(league="Blitz 2020")[0]
+    swiss = '/Users/sfarry/Downloads/lichess_swiss_2020.05.21_5QTqdT2E_wallasey-swiss.pgn'
+
+    games.update(get_games_from_pgn(swiss))
+
+    season = Season.objects.filter(name="Lichess Online").filter(league="Rapid 2020")[0]
     for g,v in games.items():
         white = Player.objects.filter(lichess=v['white'])
         black = Player.objects.filter(lichess=v['black'])
         schedule = Schedule(season=season,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
-        schedule.pgn = get_pgn(g)
+        #schedule.pgn = get_pgn(g)
+        schedule.pgn = v['pgn']
+        print(schedule.white,schedule.black,"result:",schedule.result)
         schedule.save()
 '''
     games = Schedule.objects.all()

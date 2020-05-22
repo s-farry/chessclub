@@ -10322,6 +10322,55 @@ var pgnBase = function (boardId, configuration) {
         }
         toggleColorMarker();
     };
+    var onSnapEndTactic = async function (from, to, meta) {
+        //console.log("Move from: " + from + " To: " + to + " Meta: " + JSON.stringify(meta, null, 2));
+        //board.set({fen: game.fen()});
+        var cur = that.currentMove;
+        let primMove = {from: from, to: to};
+        if ((that.mypgn.game.get(from).type == 'p') && ((to.substring(1, 2) == '8') || (to.substring(1, 2) == '1'))) {
+            let sel = await swal("Select the promotion figure", {
+                buttons: {
+                    queen: {text: "Queen", value: 'q'},
+                    rook: {text: "Rook", value: 'r'},
+                    bishop: {text: "Bishop", value: 'b'},
+                    knight: {text: 'Knight', value: 'n'}
+                }
+            });
+            primMove.promotion = sel;
+            //primMove.promotion = 'q'    // Here a real selection should stand!!
+        }
+        that.currentMove = that.mypgn.addMove(primMove, cur);
+        var move = that.mypgn.getMove(that.currentMove);
+        if (primMove.promotion) {
+            let pieces = {};
+            pieces[to] = null;
+            board.setPieces(pieces);
+            pieces[to] = {color: (move.turn == 'w' ? 'white' : 'black'), role: that.promMappings[primMove.promotion]};
+            board.setPieces(pieces);
+        }
+        if (move.notation.ep) {
+            let ep_field = to[0] + from[1];
+            let pieces = {};
+            pieces[ep_field] = null;
+            board.setPieces(pieces);
+        }
+        if (moveSpan(that.currentMove) === null) {
+            generateMove(that.currentMove, null, move, move.prev, document.getElementById(movesId), []);
+        }
+        unmarkMark(that.currentMove);
+        updateUI(that.currentMove);
+        let col = move.turn == 'w' ? 'black' : 'white';
+        board.set({
+            movable: Object.assign({}, board.state.movable, {color: col, dests: possibleMoves(game)}),
+            check: game.in_check()
+        });
+        //makeMove(null, that.currentMove, move.fen);
+        let fenView = document.getElementById(fenId);
+        if (fenView) {
+            fenView.value = move.fen;
+        }
+        toggleColorMarker();
+    };
 
     // Utility function for generating general HTML elements with id, class (with theme)
     function createEle(kind, id, clazz, my_theme, father) {
@@ -10483,11 +10532,11 @@ var pgnBase = function (boardId, configuration) {
             if (that.configuration.colorMarker && (!hasMode('print'))) {
                 createEle("div", colorMarkerId, 'colorMarker' + " " + that.configuration.colorMarker, theme, boardAndDiv);
             }
-            if (hasMode('view') || hasMode('edit')) {
+            if (hasMode('view') || hasMode('tactic') || hasMode('edit')) {
                 var buttonsBoardDiv = createEle("div", buttonsId, "buttons", theme, outerInnerBoardDiv);
                 generateViewButtons(buttonsBoardDiv);
             }
-            if ((hasMode('edit') || hasMode('view')) && (that.configuration.showFen)) {
+            if ((hasMode('edit') || hasMode('tactic') || hasMode('view')) && (that.configuration.showFen)) {
                 var fenDiv = createEle("textarea", fenId, "fen", theme, outerInnerBoardDiv);
                 addEventListener(fenId, 'mousedown', function (e) {
                     e = e || window.event;
@@ -10502,13 +10551,23 @@ var pgnBase = function (boardId, configuration) {
                         that.configuration.pgn = '';
                         pgnEdit(boardId, that.configuration);
                     };
-                } else {
+                } else if (hasMode('tactic')){
+
+                  document.getElementById(fenId).onpaste = function (e) {
+                    var pastedData = e.originalEvent.clipboardData.getData('text');
+                    // console.log(pastedData);
+                    that.configuration.position = pastedData;
+                    that.configuration.pgn = '';
+                    pgnEdit(boardId, that.configuration);
+                };
+                }
+                else {
                     document.getElementById(fenId).readonly = true;
                 }
                 let fenSize = that.configuration.width ? that.configuration.width : that.configuration.boardSize;
                 document.getElementById(fenId).style.width = fenSize;
             }
-            if (hasMode('print') || hasMode('view') || hasMode('edit')) {
+            if (hasMode('print') || hasMode('view') || hasMode('edit') || hasMode('tactic')) {
                 // Ensure that moves are scrollable (by styling CSS) when necessary
                 // To be scrollable, the height of the element has to be set
                 // TODO: Find a way to set the height, if all other parameters denote that it had to be set:
@@ -10526,6 +10585,28 @@ var pgnBase = function (boardId, configuration) {
                 }
             }
             if (hasMode('edit')) {
+                var editButtonsBoardDiv = createEle("div", "edit" + buttonsId, "edit", theme, divBoard);
+                generateEditButtons(editButtonsBoardDiv);
+//                var outerPgnDiv = createEle("div", "outerpgn" + buttonsId, "outerpgn", theme, outerInnerBoardDiv);
+//                var pgnHideButton  = addButton(["hidePGN", "fa-times"], outerPgnDiv);
+                let nagMenu = createEle('div', 'nagMenu' + buttonsId, 'nagMenu', theme, divBoard);
+                generateNagMenu(nagMenu);
+                var pgnDiv = createEle("textarea", "pgn" + buttonsId, "pgn", theme, divBoard);
+                var commentBoardDiv = createEle("div", "comment" + buttonsId, "comment", theme, divBoard);
+                generateCommentDiv(commentBoardDiv);
+                // Bind the paste key ...
+                addEventListener("pgn" + buttonsId, 'mousedown', function (e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    e.target.select();
+                });
+                document.getElementById("pgn" + buttonsId).onpaste = function (e) {
+                    var pastedData = e.originalEvent.clipboardData.getData('text');
+                    that.configuration.pgn = pastedData;
+                    pgnEdit(boardId, that.configuration);
+                };
+            }
+            if (hasMode('tactic')) {
                 var editButtonsBoardDiv = createEle("div", "edit" + buttonsId, "edit", theme, divBoard);
                 generateEditButtons(editButtonsBoardDiv);
 //                var outerPgnDiv = createEle("div", "outerpgn" + buttonsId, "outerpgn", theme, outerInnerBoardDiv);
@@ -10617,6 +10698,15 @@ var pgnBase = function (boardId, configuration) {
                 turnColor: toMove, check: game.in_check()
             });
         }
+        if (hasMode('tactic')) {
+          game.load(boardConfiguration.position);
+          let toMove = (game.turn() == 'w') ? 'white' : 'black';
+          board.set({
+              movable: Object.assign({}, board.state.movable, {color: toMove, dests: possibleMoves(game)}),
+              turnColor: toMove, check: game.in_check()
+          });
+      }
+
         if (that.configuration.colorMarker) {
             if ( (that.configuration.position != 'start') &&
                 (that.configuration.position.split(' ')[1] == 'b') ) {
@@ -11237,7 +11327,8 @@ var pgnBase = function (boardId, configuration) {
         generateHTML: generateHTML,
         generateBoard: generateBoard,
         generateMoves: generateMoves,
-        onSnapEnd: onSnapEnd
+        onSnapEnd: onSnapEnd,
+        onSnapEndTactic: onSnapEndTactic
     };
     window.pgnTestRegistry[boardId] = ret;
     return ret;
@@ -11311,6 +11402,27 @@ var pgnEdit = function (boardId, configuration) {
                     events: {
                         after: function (orig, dest, meta) {
                             base.onSnapEnd(orig, dest, meta);
+                        }
+                    }
+                },
+                viewOnly: false
+            },
+            configuration));
+        base.generateHTML();
+        let board = base.generateBoard();
+        base.generateMoves(board);
+    });
+};
+var pgnTactic = function (boardId, configuration) {
+    GLOB_SCHED.schedule(configuration.locale, () => {
+        let base = pgnBase(boardId, Object.assign(
+            {
+                showFen: true, mode: 'tactic',
+                movable: {
+                    free: false,
+                    events: {
+                        after: function (orig, dest, meta) {
+                            base.onSnapEndTactic(orig, dest, meta);
                         }
                     }
                 },
