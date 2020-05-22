@@ -125,7 +125,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(os.environ["HOME"], "public_html/static/")
+STATIC_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/static/")
 
 #only want this on server
 #if 'DJANGO_DEBUG' not in os.environ:
