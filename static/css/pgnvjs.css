@@ -3117,3 +3117,18 @@ div.comment > textarea.comment {
 .cm-small {
     width: 10px; height: 10px;
 }
+
+.tactic-success{
+  background-color:green;
+  z-index: 10000;
+}
+
+.boardNotification{
+  -webkit-transition: opacity 0.2s;
+  -moz-transition: opacity 0.2s;     
+  transition: opacity 0.2s; 
+}
+
+.visible {
+  opacity:1;
+}

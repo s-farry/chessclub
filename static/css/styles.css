@@ -10235,12 +10235,19 @@ body {
   background-color: #e9ecef;
 }
 
-div #board{width:100%;}
 
-div .puzzle{width:calc(400px)}
+div .puzzle{
+  width:100%;
+}
+
+@media (min-width: 992px) {
+div .puzzle{width:calc(400px);}
+}
 
 
 #logo{width:100px;}
+
+#wcc_logo{background-color:black;padding:0.5rem;}
 
 #banner{width:100%;max-width:700px;}
 
@@ -10250,11 +10257,22 @@ td a {
 
 .br-red{border: 1px solid red;}
 
-.news-item{
-  background-color:rgba(255,255,0,0.1);
+.news-item, .news-header, .news-footer, .news-body{
+  /*background-color:rgba(255,255,0,0.1);*/
   /*border: 1px solid rgba(0, 0, 0, 0.125);*/
   border-radius: 0.25rem;
-  padding:1rem;
+  padding:0.5rem;
+}
+.news-header{
+  font-size:1.2em;
+  background: linear-gradient(90deg, black 2rem, rgb(240,240,240) 0%);
+  color:black;
+  padding-left:2.5rem;
+}
+
+.news-footer{
+  font-size:0.8em;
+  text-transform:italic;
 }
 
 .navbar-logo{

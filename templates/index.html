@@ -12,7 +12,7 @@
 {% block content %}
 <div class = "row">
 <div class = "col">
-<div class = "text-center"><img src="{% static 'img/wcc_logo.png' %}"></div>
+<div class = "text-center" id = "wcc_logo"><img src="{% static 'img/wcc_logo.png' %}"></div>
     <hr>
 <div class="text-center"><img src = "{% static 'img/banner-chess.jpg' %}" id="banner"></div>
 Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and we have teams playing against other Clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone!
@@ -23,24 +23,25 @@ New members are always welcome so please get in touch or just come down to the c
 <div class="puzzle">
     <h1>Puzzle</h1>
     <hr>
+    <div class = "d-flex justify-content-center">
    <div id="board" class='merida zeit'></div>
+   </div>
 <script>
-    var pgn = `[Event "Rom"]
+    var pgn = `[Event "?"]
 [Site "?"]
-[Date "1987.??.??"]
+[Date "????.??.??"]
 [Round "?"]
-[White "A. Lotti"]
-[Black "F. Lotti"]
-[Result "0-1"]
+[White "N.N."]
+[Black "N.N."]
+[Result "1-0"]
 [Annotator "T1R"]
 [SetUp "1"]
-[FEN "2r5/pp2p1k1/3pp1P1/q7/4P3/2r5/PPPQ4/1K5R b - - 0 1"]
+[FEN "2r2rk1/pp1bqpp1/2nppn1p/2p3N1/1bP5/1PN3P1/PBQPPPBP/3R1RK1 w - - 0 1"]
 [PlyCount "5"]
-[EventDate "1987.??.??"]
-[EventType "game"]
+[EventType "swiss"]
 
-1. Rh3 2. Qd1 Qd2 3. Rf1 Qxd1+ 0-1`;
-    var cfg = {pgn: pgn, position: 'start', showCoords: false, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
+1. Nd5 exd5 (1... hxg5 2. Nxe7+ Nxe7) 2. Bxf6 hxg5 3. Bxe7 1-0`;
+    var cfg = {pgn: pgn, position: "2r2rk1/pp1bqpp1/2nppn1p/2p3N1/1bP5/1PN3P1/PBQPPPBP/3R1RK1 w - - 0 1", showCoords: false, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
     var board = pgnTactic('board', cfg);
 
     </script> 
@@ -51,11 +52,15 @@ New members are always welcome so please get in touch or just come down to the c
     <hr>
     {% for n in news %}
     <div class = "news-item">
-    <h2>{{n.title}}</h2>
-    <hr>
+    <div class = "news-header">
+    {{n.title}}
+    </div>
+    <div class = "news-body">
     {{n.text}}
-    <hr>
-    <small><i>Published on {{n.published_date}}</i></small>
+    </div>
+    <div class = "news-footer">
+    Published on {{n.published_date}}
+    </div>
     </div>
     {% endfor %}
     </div>

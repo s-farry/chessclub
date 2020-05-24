@@ -10122,6 +10122,7 @@ var pgnBase = function (boardId, configuration) {
     that.configuration = Object.assign(Object.assign(defaults, PgnBaseDefaults), configuration);
     let game = new Chess();
     that.mypgn = pgnReader(that.configuration, game); // Use the same instance from chess.js
+    that.solved = false; // for tactics
     let theme = that.configuration.theme || 'default';
     that.configuration.markup = (typeof boardId) == "object";
     let hasMarkup = function () {
@@ -10241,6 +10242,7 @@ var pgnBase = function (boardId, configuration) {
      * @param element the element to show by scrolling
      */
     function scrollToView(element) {
+      if(element){
         function scrollParentToChild(parent, child) {
             let parentRect = parent.getBoundingClientRect();
             // What can you see?
@@ -10262,8 +10264,9 @@ var pgnBase = function (boardId, configuration) {
         }
 
         var node = element;
-        var movesNode = node.offsetParent;
+        var movesNode = node ? node.offsetParent : null;
         scrollParentToChild(movesNode, node);
+      }
     }
 
     /**
@@ -10323,53 +10326,94 @@ var pgnBase = function (boardId, configuration) {
         toggleColorMarker();
     };
     var onSnapEndTactic = async function (from, to, meta) {
-        //console.log("Move from: " + from + " To: " + to + " Meta: " + JSON.stringify(meta, null, 2));
-        //board.set({fen: game.fen()});
-        var cur = that.currentMove;
-        let primMove = {from: from, to: to};
-        if ((that.mypgn.game.get(from).type == 'p') && ((to.substring(1, 2) == '8') || (to.substring(1, 2) == '1'))) {
-            let sel = await swal("Select the promotion figure", {
-                buttons: {
-                    queen: {text: "Queen", value: 'q'},
-                    rook: {text: "Rook", value: 'r'},
-                    bishop: {text: "Bishop", value: 'b'},
-                    knight: {text: 'Knight', value: 'n'}
-                }
-            });
-            primMove.promotion = sel;
-            //primMove.promotion = 'q'    // Here a real selection should stand!!
-        }
-        that.currentMove = that.mypgn.addMove(primMove, cur);
-        var move = that.mypgn.getMove(that.currentMove);
-        if (primMove.promotion) {
-            let pieces = {};
-            pieces[to] = null;
-            board.setPieces(pieces);
-            pieces[to] = {color: (move.turn == 'w' ? 'white' : 'black'), role: that.promMappings[primMove.promotion]};
-            board.setPieces(pieces);
-        }
-        if (move.notation.ep) {
-            let ep_field = to[0] + from[1];
-            let pieces = {};
-            pieces[ep_field] = null;
-            board.setPieces(pieces);
-        }
-        if (moveSpan(that.currentMove) === null) {
-            generateMove(that.currentMove, null, move, move.prev, document.getElementById(movesId), []);
-        }
-        unmarkMark(that.currentMove);
-        updateUI(that.currentMove);
-        let col = move.turn == 'w' ? 'black' : 'white';
-        board.set({
-            movable: Object.assign({}, board.state.movable, {color: col, dests: possibleMoves(game)}),
-            check: game.in_check()
-        });
-        //makeMove(null, that.currentMove, move.fen);
-        let fenView = document.getElementById(fenId);
-        if (fenView) {
-            fenView.value = move.fen;
-        }
-        toggleColorMarker();
+      function popInOut(element, colour) {
+        element.style.backgroundColor = colour;
+        element.style.zIndex = "10000";
+        var duration = 0.02;
+        var interval = 1;//ms
+        var op = 0.0;
+        var timer = setInterval(function () {
+            if (op >= 1) {
+                op = 1;
+                clearInterval(timer);
+                setTimeout(function(){
+                var timer2 = setInterval(function(){
+                  if (op < 0){
+                    op = 0;
+                    element.style.backgroundColor = "";
+                    element.style.zIndex = "";
+                    clearInterval(timer2)
+                  }
+                  //element.style.opacity = op;
+                  if (op < 0.4 ) element.style.opacity = 0;
+
+                  op -= 1.0/((1000/interval)*duration);
+
+                },interval);},1000);
+            }
+            //element.style.opacity = op;
+            if (op > 0.4 ) element.style.opacity = 1;
+
+            op += 1.0/((1000/interval)*duration);
+        }, interval);
+      }
+      var cur = that.currentMove;
+      var position = that.position;
+      let primMove = {from: from, to: to};
+      var correctMove;
+      var next;
+
+      if (cur == undefined) next = 0;
+      else next = that.mypgn.getMove(cur).next;
+
+      var correctMove = that.mypgn.getMove(next);
+
+      onSnapEnd(from,to,meta);
+
+      if (!that.solved) {
+
+        var tacticResult = setTimeout( function() {
+          //details on where we are now
+          var new_cur = that.currentMove;
+          var move = that.mypgn.getMove(new_cur);
+          var nextnext = move.next;
+          // if we've made the correct move go one forward and mark solved
+          if (correctMove && correctMove.from == primMove.from && correctMove.to == primMove.to){
+            // okay we've made the correct move, let's see if there's another one
+            if (nextnext) { 
+              // move forward to that
+              makeMove(new_cur, nextnext, null);
+              }
+            else {
+              // solved!
+              that.solved = true;
+              // let's not edit it any more
+              board.set({
+                //movable: Object.assign({}, board.state.movable, {free: false })
+                //movable : { free : false}
+                viewOnly : true
+              });
+
+
+              board.set({movable: {'free' : false }})
+              // flash a success to the user
+              var boards = document.getElementsByClassName("boardNotification");
+              for ( let i = 0 ; i < boards.length; i++){
+                boards.innerHTML = '<i class="fas fa-check-circle"></i>';
+                popInOut(boards[i], "");
+              }
+            }
+          }
+          else{
+            //let's go back if we were wrong
+            //var boards = document.getElementsByClassName("boardNotification");
+            //for ( let i = 0 ; i < boards.length; i++){
+            //  popInOut(boards[i], "red");
+            //}
+            if (cur == undefined) makeMove( new_cur, null, null);
+            else makeMove(new_cur,cur,null);
+          }}, 200);
+      }
     };
 
     // Utility function for generating general HTML elements with id, class (with theme)
@@ -10520,6 +10564,12 @@ var pgnBase = function (boardId, configuration) {
             createEle("div", headersId, "headers", theme, divBoard);
             var outerInnerBoardDiv = createEle("div", null, "outerBoard", null, divBoard);
             let boardAndDiv = createEle('div', null, 'boardAnd', theme, outerInnerBoardDiv);
+            let successDiv = createEle('div', null, 'boardNotification', theme, boardAndDiv);
+            successDiv.innerHTML = '<i class="fas fa-check-circle"></i>';
+            successDiv.style.fontSize = "100px";
+            successDiv.style.textAlign = "center";
+            successDiv.style.opacity = "0";
+            successDiv.style.color="green";
             if (that.configuration.boardSize) {
                 outerInnerBoardDiv.style.width = that.configuration.boardSize;
             }
@@ -10527,16 +10577,21 @@ var pgnBase = function (boardId, configuration) {
                 let size = that.configuration.width ? that.configuration.width : that.configuration.boardSize;
                 boardAndDiv.style.display = 'grid';
                 boardAndDiv.style.gridTemplateColumns = size + ' 40px';
+                successDiv.style.position = 'absolute'
+                successDiv.style.width = size;
+                successDiv.style.height = size;
+                successDiv.style.lineHeight = size;
+                successDiv.style['backgroundcolor'] = 'green';
             }
             var innerBoardDiv = createEle("div", innerBoardId, "board", theme, boardAndDiv);
             if (that.configuration.colorMarker && (!hasMode('print'))) {
                 createEle("div", colorMarkerId, 'colorMarker' + " " + that.configuration.colorMarker, theme, boardAndDiv);
             }
-            if (hasMode('view') || hasMode('tactic') || hasMode('edit')) {
+            if (hasMode('view') || hasMode('edit')) {
                 var buttonsBoardDiv = createEle("div", buttonsId, "buttons", theme, outerInnerBoardDiv);
                 generateViewButtons(buttonsBoardDiv);
             }
-            if ((hasMode('edit') || hasMode('tactic') || hasMode('view')) && (that.configuration.showFen)) {
+            if ((hasMode('edit') || hasMode('view')) && (that.configuration.showFen)) {
                 var fenDiv = createEle("textarea", fenId, "fen", theme, outerInnerBoardDiv);
                 addEventListener(fenId, 'mousedown', function (e) {
                     e = e || window.event;
@@ -10567,7 +10622,7 @@ var pgnBase = function (boardId, configuration) {
                 let fenSize = that.configuration.width ? that.configuration.width : that.configuration.boardSize;
                 document.getElementById(fenId).style.width = fenSize;
             }
-            if (hasMode('print') || hasMode('view') || hasMode('edit') || hasMode('tactic')) {
+            if (hasMode('print') || hasMode('view') || hasMode('edit')) {
                 // Ensure that moves are scrollable (by styling CSS) when necessary
                 // To be scrollable, the height of the element has to be set
                 // TODO: Find a way to set the height, if all other parameters denote that it had to be set:
@@ -10585,28 +10640,6 @@ var pgnBase = function (boardId, configuration) {
                 }
             }
             if (hasMode('edit')) {
-                var editButtonsBoardDiv = createEle("div", "edit" + buttonsId, "edit", theme, divBoard);
-                generateEditButtons(editButtonsBoardDiv);
-//                var outerPgnDiv = createEle("div", "outerpgn" + buttonsId, "outerpgn", theme, outerInnerBoardDiv);
-//                var pgnHideButton  = addButton(["hidePGN", "fa-times"], outerPgnDiv);
-                let nagMenu = createEle('div', 'nagMenu' + buttonsId, 'nagMenu', theme, divBoard);
-                generateNagMenu(nagMenu);
-                var pgnDiv = createEle("textarea", "pgn" + buttonsId, "pgn", theme, divBoard);
-                var commentBoardDiv = createEle("div", "comment" + buttonsId, "comment", theme, divBoard);
-                generateCommentDiv(commentBoardDiv);
-                // Bind the paste key ...
-                addEventListener("pgn" + buttonsId, 'mousedown', function (e) {
-                    e = e || window.event;
-                    e.preventDefault();
-                    e.target.select();
-                });
-                document.getElementById("pgn" + buttonsId).onpaste = function (e) {
-                    var pastedData = e.originalEvent.clipboardData.getData('text');
-                    that.configuration.pgn = pastedData;
-                    pgnEdit(boardId, that.configuration);
-                };
-            }
-            if (hasMode('tactic')) {
                 var editButtonsBoardDiv = createEle("div", "edit" + buttonsId, "edit", theme, divBoard);
                 generateEditButtons(editButtonsBoardDiv);
 //                var outerPgnDiv = createEle("div", "outerpgn" + buttonsId, "outerpgn", theme, outerInnerBoardDiv);
@@ -10690,7 +10723,7 @@ var pgnBase = function (boardId, configuration) {
         if (boardConfiguration.coordsInner) {
             el.classList.add('coords-inner');
         }
-        if (hasMode('edit')) {
+        if (hasMode('edit') || hasMode('tactic')) {
             game.load(boardConfiguration.position);
             let toMove = (game.turn() == 'w') ? 'white' : 'black';
             board.set({
@@ -10698,14 +10731,6 @@ var pgnBase = function (boardId, configuration) {
                 turnColor: toMove, check: game.in_check()
             });
         }
-        if (hasMode('tactic')) {
-          game.load(boardConfiguration.position);
-          let toMove = (game.turn() == 'w') ? 'white' : 'black';
-          board.set({
-              movable: Object.assign({}, board.state.movable, {color: toMove, dests: possibleMoves(game)}),
-              turnColor: toMove, check: game.in_check()
-          });
-      }
 
         if (that.configuration.colorMarker) {
             if ( (that.configuration.position != 'start') &&
@@ -10755,7 +10780,7 @@ var pgnBase = function (boardId, configuration) {
                 if (typeof index == "number") {
                     insertAfter(span, moveSpan(index));
                 } else {
-                    movesDiv.appendChild(span);
+                    if (movesDiv!= null) movesDiv.appendChild(span);
                 }
             } else {
                 varStack[varStack.length - 1].appendChild(span);
@@ -10783,7 +10808,7 @@ var pgnBase = function (boardId, configuration) {
                 } else {
                     varHead = 0;
                 }
-                moveSpan(varHead).appendChild(varDiv);
+                if (moveSpan(varHead) != null) moveSpan(varHead).appendChild(varDiv);
                 // movesDiv.appendChild(varDiv);
             } else {
                 varStack[varStack.length - 1].appendChild(varDiv);
@@ -10804,7 +10829,7 @@ var pgnBase = function (boardId, configuration) {
         link.appendChild(text);
         span.appendChild(document.createTextNode(" "));
         span.appendChild(generateCommentSpan(move.commentAfter, "afterComment"));
-        append_to_current_div(move.prev, span, movesDiv, varStack);
+        if (movesDiv != null) append_to_current_div(move.prev, span, movesDiv, varStack);
         //movesDiv.appendChild(span);
         if (that.mypgn.endVariation(move)) {
             //span.appendChild(document.createTextNode(" ) "));
@@ -10889,6 +10914,7 @@ var pgnBase = function (boardId, configuration) {
         function fillComment(moveNumber) {
             let myMove = that.mypgn.getMove(moveNumber);
             if (!~myMove) return;
+            if (document.querySelector('#' + boardId + "textarea.comment") == null) return;
             if (myMove.commentAfter) {
                 document.querySelector('#' + boardId + " input.afterComment").checked = true;
                 document.querySelector('#' + boardId + " textarea.comment").value = myMove.commentAfter;
@@ -10967,7 +10993,7 @@ var pgnBase = function (boardId, configuration) {
         if (next) {
             scrollToView(moveSpan(next));
         }
-        if (hasMode('edit')) {
+        if (hasMode('edit') || hasMode('tactic')) {
             let col = game.turn() == 'w' ? 'white' : 'black';
             board.set({
                 movable: Object.assign({}, board.state.movable, {color: col, dests: possibleMoves(game)}),
@@ -11079,9 +11105,17 @@ var pgnBase = function (boardId, configuration) {
                     to_call();
                     evt.stopPropagation();
                 });
+                //add scrolling to form itself
+                var form2 = document.querySelector("outerBoard");
+                Mousetrap(form2).bind(key, function (evt) {
+                    to_call();
+                    evt.stopPropagation();
+                });
             };
             var nextMove = function () {
                 var fen = null;
+                // if we're in tactic, only allow to scroll if we've solved 
+                if (hasMode('tactic') && (!that.solved)) return;
                 if ((typeof that.currentMove == 'undefined') || (that.currentMove === null)) {
                     fen = that.mypgn.getMove(0).fen;
                     makeMove(null, 0, fen);
@@ -11093,6 +11127,8 @@ var pgnBase = function (boardId, configuration) {
             };
             var prevMove = function () {
                 var fen = null;
+                // if we're in tactic, only allow to scroll if we've solved 
+                if (hasMode('tactic') && (!that.solved)) return;
                 if ((typeof that.currentMove == 'undefined') || (that.currentMove == null)) {
                     /*fen = that.mypgn.getMove(0).fen;
                      makeMove(null, 0, fen);*/
