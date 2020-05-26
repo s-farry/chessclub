@@ -10565,11 +10565,15 @@ var pgnBase = function (boardId, configuration) {
             var outerInnerBoardDiv = createEle("div", null, "outerBoard", null, divBoard);
             let boardAndDiv = createEle('div', null, 'boardAnd', theme, outerInnerBoardDiv);
             let successDiv = createEle('div', null, 'boardNotification', theme, boardAndDiv);
-            successDiv.innerHTML = '<i class="fas fa-check-circle"></i>';
+            successDiv.innerHTML = `
+            <span class = "fa-stack">
+            <i class="fas fa-circle fa-inverse fa-stack-1x" style="color:white"></i>
+            <i class="fas fa-check-circle fa-stack-1x fa-inverse" style="color:green"></i>
+            </span>
+            `
             successDiv.style.fontSize = "100px";
             successDiv.style.textAlign = "center";
             successDiv.style.opacity = "0";
-            successDiv.style.color="green";
             if (that.configuration.boardSize) {
                 outerInnerBoardDiv.style.width = that.configuration.boardSize;
             }

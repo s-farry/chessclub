@@ -20,3 +20,14 @@ class news(models.Model):
         return "%s" % (self.title)
     def __str__(self):              # __unicode__ on Python 2
         return "%s" % (self.title)
+
+class event(models.Model):
+    title = models.CharField(max_length = 200, default = "Event")
+    date = models.DateTimeField()
+    link = models.CharField(max_length=200, blank = True, null = True)
+    location = models.CharField(max_length=200, blank = True, null = True)
+
+    def name(self):              # __unicode__ on Python 2
+        return "%s" % (self.title)
+    def __str__(self):              # __unicode__ on Python 2
+        return "%s" % (self.title)

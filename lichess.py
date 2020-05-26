@@ -61,7 +61,8 @@ known_players = {
     'colinhugheswirral' : ['Colin', 'Hughes'],
     'ColRees' : ['Colin', 'Rees'],
     'C7essMaster' : ['Robert', 'Steele'],
-    'Marty240' : ['Trevor', 'Amos']
+    'Marty240' : ['Trevor', 'Amos'],
+    'hagbard1969' : ['Martin', 'Cockerill']
 }
 
 # add all lower case as api returns just lower case
@@ -71,7 +72,7 @@ for k in keys:
 
 if __name__ == "__main__":
     #let's get all our players and add them to the database
-    '''
+    
     players = get_players('wallasey-chess-club')
     for p in players:
         if len(Player.objects.filter(lichess=p)) > 0:
@@ -87,24 +88,32 @@ if __name__ == "__main__":
                 newplayer.save()
             print('added')
     
-    tournaments = get_tournaments('sfarry')
-    '''
-    tournaments = ['5QTqdT2E']
+    #tournaments = get_tournaments('sfarry')
+    
+    tournaments = ['m3lF5mBR']
     games = {}
-    #for t in tournaments:
-    #    games.update(get_games(t))
+    for t in tournaments:
+        games.update(get_games(t))
 
-    swiss = '/Users/sfarry/Downloads/lichess_swiss_2020.05.21_5QTqdT2E_wallasey-swiss.pgn'
+    #swiss = '/Users/sfarry/Downloads/lichess_swiss_2020.05.21_5QTqdT2E_wallasey-swiss.pgn'
 
-    games.update(get_games_from_pgn(swiss))
+    #games.update(get_games_from_pgn(swiss))
 
-    season = Season.objects.filter(name="Lichess Online").filter(league="Rapid 2020")[0]
+    season = Season.objects.filter(name="Lichess Online").filter(league="Blitz 2020")[0]
     for g,v in games.items():
+        if len(Schedule.objects.filter(lichess=g)) > 0:
+            schedule = Schedule.objects.filter(lichess=g)[0]
+            schedule.season = season
+            schedule.save()
+            print('game already in database')
+            continue
         white = Player.objects.filter(lichess=v['white'])
         black = Player.objects.filter(lichess=v['black'])
         schedule = Schedule(season=season,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
-        #schedule.pgn = get_pgn(g)
-        schedule.pgn = v['pgn']
+        if 'pgn' in v.keys():
+            schedule.pgn = v['pgn']
+        else:
+            schedule.pgn = get_pgn(g)
         print(schedule.white,schedule.black,"result:",schedule.result)
         schedule.save()
 '''
