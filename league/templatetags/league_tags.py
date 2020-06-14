@@ -1,6 +1,6 @@
 from django import template
 from datetime import date, timedelta
-from league.models import Schedule, Season, Standings
+from league.models import Schedule, League, Standings
 import datetime
 from django.db.models import Q
 
@@ -28,15 +28,15 @@ def player_age(birth_date):
 
 
 @register.inclusion_tag('content/matches_widget.html')
-def matches_widget(player, season = None, past_num=5, future_num=1):
+def matches_widget(player, league = None, past_num=5, future_num=1):
     now = datetime.datetime.now()
     player_pk = Player.objects.get(slug=team).pk
     past = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), date__lt=now).order_by('date')
     future = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), date__gte=now).order_by('date')      
-    if player and season:
-        season_pk = Season.objects.get(slug=season).pk
-        past = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), season=season_pk, date__lt=now).order_by('date')
-        future = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), season=season_pk, date__gte=now).order_by('date')
+    if player and league:
+        league_pk = league.objects.get(slug=league).pk
+        past = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), league=league_pk, date__lt=now).order_by('date')
+        future = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), league=league_pk, date__gte=now).order_by('date')
     
     if future.count() < future_num:
         past_num += abs(future.count() - future_num)
@@ -49,11 +49,11 @@ def matches_widget(player, season = None, past_num=5, future_num=1):
     }
 
 @register.inclusion_tag('content/standings_widget.html')
-def standings_widget(season):
-    season_pk = Season.objects.get(slug=season).pk
-    standings = Standings.objects.filter(season=season_pk).order_by('position')
+def standings_widget(league):
+    league_pk = League.objects.get(slug=league).pk
+    standings = Standings.objects.filter(league=league_pk).order_by('position')
 
     return {
         'standings': standings,
-        'season': season,
+        'league': league,
     }

@@ -37,7 +37,11 @@
                     {{n.title}}
                 </div>
                 <div class = "news-body">
-                    {{n.text}}
+                    {% if n.image %}
+                    <img src="{{ n.image.url }}">
+                    {% endif %}
+                    
+                    {{n.text|safe}}
                 </div>
                 <div class = "news-footer">
                     Published on {{n.published_date}}

@@ -13,7 +13,7 @@
 <article id="league-{{ slug }}-{{team.slug}}" class="news">
     <h1>{{ game }}</h1>
     <hr />
-    {{game.season}}: {{game.date}} {{ game.white }} {{ game.print_result }} {{ game.black }}
+    {{game.league}}: {{game.date}} {{ game.white }} {{ game.print_result }} {{ game.black }}
 </article>
 {% if game.pgn %}
 <div id="board" class='merida zeit'></div>

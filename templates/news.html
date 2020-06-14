@@ -12,7 +12,7 @@
 <hr>
 {% for n in news %}
 <h2>{{n.title}}</h2><br>
-{{n.text}}<br>
+{{n.text|safe}}<br>
 <i>Published on {{n.published_date}}</i>
 {% endfor %}
 {% endblock %}

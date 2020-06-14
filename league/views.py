@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from league.models import Schedule, Standings, Season, Player, STANDINGS_ORDER
+from league.models import Schedule, Standings, League, Player, Season, STANDINGS_ORDER
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -13,26 +13,30 @@ class StandingsFull(ListView):
     def get_context_data(self, **kwargs):
         context = super(StandingsFull, self).get_context_data(**kwargs)
         
-        season_name = ''
-        if self.kwargs.get('season'):
-            season = Season.objects.get(slug=self.kwargs['season'])
-            season_pk = season.pk
-            season_name = ": {} {}".format(season.name, season.league)
+        league_name = ''
+        last_updated = 'test'
+        print(self.kwargs)
+        if self.kwargs.get('league'):
+            league = League.objects.get(slug=self.kwargs['league'])
+            league_pk = league.pk
+            league_name = ": {} {}".format(league.season.name, league.name)
+            last_updated = league.updated_date
         
-        context['table_name'] = season_name
-        context['slug'] = self.kwargs.get('season')
+        context['last_updated'] = last_updated
+        context['table_name'] = league_name
+        context['slug'] = self.kwargs.get('league')
         
         return context
 
 
     def get_queryset(self, *args, **kwargs):
         qs = self.model.objects.all()
-        if self.kwargs.get('season'):
-            season = Season.objects.get(slug=self.kwargs['season'])
-            season_pk = season.pk
-            season_name = season.name
-            order = STANDINGS_ORDER[season.standings_order][1]
-            qs = self.model.objects.filter(season=season_pk).order_by(*order)
+        if self.kwargs.get('league'):
+            league = League.objects.get(slug=self.kwargs['league'])
+            league_pk = league.pk
+            league_name = league.name
+            order = STANDINGS_ORDER[league.standings_order][1]
+            qs = self.model.objects.filter(league=league_pk).order_by(*order)
         return qs
 
 
@@ -44,25 +48,25 @@ class ScheduleFull(ListView):
     def get_context_data(self, **kwargs):
         context = super(ScheduleFull, self).get_context_data(**kwargs)
         
-        season_name = ''
-        if self.kwargs.get('season'):
-            season = Season.objects.get(slug=self.kwargs['season'])
-            season_pk = season.pk
-            season_name = ": {} {}".format(season.name, season.league)
+        league_name = ''
+        if self.kwargs.get('league'):
+            league = League.objects.get(slug=self.kwargs['league'])
+            league_pk = league.pk
+            league_name = ": {} {}".format(league.season, league.name)
             context['page_name'] = _('Schedule')
-            context['season'] = season_name
-            context['slug'] = self.kwargs.get('season')
+            context['league'] = league_name
+            context['slug'] = self.kwargs.get('league')
         
         return context
 
 
     def get_queryset(self, *args, **kwargs):
         qs = self.model.objects.all()
-        if self.kwargs.get('season'):
-            season = Season.objects.get(slug=self.kwargs['season'])
-            season_pk = season.pk
-            season_name = season.name
-            qs = self.model.objects.filter(season=season_pk).order_by('-date')
+        if self.kwargs.get('league'):
+            league = League.objects.get(slug=self.kwargs['league'])
+            league_pk = league.pk
+            league_name = league.name
+            qs = self.model.objects.filter(league=league_pk).order_by('-date')
         return qs
 
 
@@ -79,9 +83,9 @@ class PlayerSchedule(ListView):
             player = Player.objects.get(slug=self.kwargs['player'])
             context['player'] = player
         
-        if self.kwargs.get('season'):
-            season = Season.objects.get(slug=self.kwargs['season'])
-            context['season'] = season
+        if self.kwargs.get('league'):
+            league = League.objects.get(slug=self.kwargs['league'])
+            context['league'] = league
             context['page_name'] = _('Schedule')      
         
         return context
@@ -92,12 +96,12 @@ class PlayerSchedule(ListView):
         if self.kwargs.get('player'):
             player_pk = Player.objects.get(slug=self.kwargs.get('player')).pk
             qs = self.model.objects.filter(Q(white=player_pk) | Q(black=player_pk)).order_by('date')
-        if self.kwargs.get('season') and self.kwargs.get('player'):
-            season = Season.objects.get(slug=self.kwargs['season'])
-            season_pk = season.pk
-            season_name = season.name
-            player_pk = Team.objects.get(slug=self.kwargs.get('player')).pk
-            qs = self.model.objects.filter(Q(home_team=player_pk) | Q(black=player_pk), season = season_pk ).order_by('-date')
+        if self.kwargs.get('league') and self.kwargs.get('player'):
+            league = League.objects.get(slug=self.kwargs['league'])
+            league_pk = league.pk
+            league_name = league.name
+            player_pk = Player.objects.get(slug=self.kwargs.get('player')).pk
+            qs = self.model.objects.filter(Q(home_team=player_pk) | Q(black=player_pk), league = league_pk ).order_by('-date')
         return qs
 
 
@@ -107,7 +111,12 @@ class PlayerSchedule(ListView):
 def player(request, player_id):
     query = request.GET.get('search')
     player = get_object_or_404(Player, id=player_id)
-    games  = Schedule.objects.filter(Q(white=player_id) | Q(black=player_id)).order_by('-date')
+    games = {}
+    for season in Season.objects.all():
+        games[season] = {}
+        for league in season.league_set.all():
+            league_pk = league.pk
+            games[season][league]  = Schedule.objects.filter(Q(white=player_id) | Q(black=player_id), league = league_pk).order_by('-date')
     return render(request, 'games.html', {'player': player, 'games': games})
 
 def game(request, game_id):
@@ -115,4 +124,4 @@ def game(request, game_id):
     return render(request, 'game.html', {'game': f})
 
 def index(request):
-    return render(request, 'league.html',{'seasons': Season.objects.all()})
+    return render(request, 'league.html',{'leagues': League.objects.all()})

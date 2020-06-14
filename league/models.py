@@ -40,10 +40,18 @@ class PlayerCustomFields(models.Model):
         return "{}".format(self.name)
 
 class Season(models.Model):
+    name    = models.CharField(max_length=200, null=False, verbose_name=_('Name'))
+    players = models.ManyToManyField(Player, blank=True, related_name='seasons', verbose_name=_('Seasons'))
+
+    def __str__(self):
+        return "{} Season".format(self.name) 
+
+class League(models.Model):
     name = models.CharField(max_length=200, null=False, verbose_name=_('Name'))
-    league = models.CharField(max_length=200, null=True, verbose_name=_('League'))
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
     players = models.ManyToManyField(Player, blank=True, related_name='players', verbose_name=_('Players'))
+    updated_date = models.DateTimeField(auto_now=True)
     standings_order = models.IntegerField(verbose_name=_('Standings order'),
         choices=(STANDINGS_ORDER_HUMAN),
         default=0
@@ -53,16 +61,16 @@ class Season(models.Model):
     draw_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for draw'))
 
     class Meta:
-        verbose_name = _('Season')
-        verbose_name_plural = _('Seasons')
+        verbose_name = _('League')
+        verbose_name_plural = _('Leagues')
 
     def __str__(self):
-        return "{0} {1}".format(self.name, self.league)        
+        return "{0} {1}".format(self.name, self.season)        
         
 
 
 class Schedule(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_('Season'))
+    league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
     week = models.IntegerField(null=True, blank=True, default=1, verbose_name=_('Week'))
     date = models.DateTimeField(default=now, verbose_name=_('Date'))
     pgn  = models.TextField(null = True, blank=True)
@@ -84,12 +92,12 @@ class Schedule(models.Model):
     
 
     def __str__(self):
-        return "{}: {} v {}".format(self.season, self.white, self.black) 
+        return "{}: {} v {}".format(self.league, self.white, self.black) 
 
 
 
 class Standings(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_('Season'))
+    league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
     player = ChainedForeignKey(Player, chained_field='season', chained_model_field='teams', related_name='team', verbose_name=_('Team'))
     position = models.IntegerField(null=True, blank=True, default=1, verbose_name=_('Position'))
     matches = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches'))
@@ -99,13 +107,14 @@ class Standings(models.Model):
     points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points'))
 
     def __str__(self):
-        return "{0} {1}".format(self.season, self.player)
+        return "{0} {1}".format(self.league, self.player)
 
     class Meta:
         ordering = STANDINGS_ORDER[0][1]
-        unique_together = ('season', 'player')
+        unique_together = ('league', 'player')
         verbose_name = _('Table')
         verbose_name_plural = _('Tables')
+
 
 
 # Create your models here.

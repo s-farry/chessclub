@@ -10313,3 +10313,9 @@ h2{text-transform:uppercase;font-size:1.5rem;}
 .event-link:hover, .event-link:focus {
   text-decoration: none;
 }
+.table a{
+  text-decoration:none;
+  color:inherit;
+}
+.table a:hover{
+}

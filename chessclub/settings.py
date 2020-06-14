@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -126,8 +127,30 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 STATIC_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/static/")
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/media/")
 
 #only want this on server
 #if 'DJANGO_DEBUG' not in os.environ:
 #    SESSION_COOKIE_DOMAIN = 'themovieroom.co.uk'
 #    SESSION_ENGINE='django.contrib.sessions.backends.db'
+TINYMCE_SPELLCHECKER = True
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': 800,
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'selector': 'textarea',
+    'contextmenu': 'formats | link image',
+    'menubar': True,
+    'statusbar': True,
+    'content_css' : '/static/styles/layout.css',
+    'body_class' : 'tinymce',
+    'body_id' : 'tinymce',
+    'content_style' : "div {margin: 10px; border: 5px solid red; padding: 3px}",
+    'style_formats': '{title: "test, selector: "div", classes: "review"}',
+    'plugins' : 'wordcount,spellchecker,link',
+    #'theme_advanced_buttons2': "spellchecker",
+    'browser_spellcheck' : True,
+    'gecko_spellcheck'   : True,
+    }

@@ -13,8 +13,8 @@
 Details are below of the ongoing internal leagues for Wallasey club members. Click through to see the standings and replay the games.
 <br>
 <ul>
-{% for season in seasons %}
-<li> {{season}} | <a href = "{% url 'standings_full' season.slug %}">Standings</a> | <a href = "{% url 'schedule_full' season.slug %}">Games</a> </li>
+{% for league in leagues %}
+<li> {{league}} | <a href = "{% url 'standings_full' league.slug %}">Standings</a> | <a href = "{% url 'schedule_full' league.slug %}">Games</a> </li>
 {% endfor %}
 </ul>
 {% endblock %}

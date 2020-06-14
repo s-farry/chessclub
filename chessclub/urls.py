@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^league/', include('league.urls')),
     url(r'^content/', include('content.urls')),
     url(r'^chaining/', include('smart_selects.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
 ]
