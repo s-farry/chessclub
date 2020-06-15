@@ -5,14 +5,15 @@ from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField
 from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER
 from django.utils import timezone
+from datetime import datetime
 
 
 
 
 def standings_save(instance):
-        
         league = League.objects.get(pk=instance.pk)
-
+        league.updated_date = datetime.now()
+        league.save()
         for player in league.players.all():
             obj, created = Standings.objects.get_or_create(league = league, player = player)
         

@@ -51,7 +51,7 @@ class League(models.Model):
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
     players = models.ManyToManyField(Player, blank=True, related_name='players', verbose_name=_('Players'))
-    updated_date = models.DateTimeField(auto_now=True)
+    updated_date = models.DateTimeField()
     standings_order = models.IntegerField(verbose_name=_('Standings order'),
         choices=(STANDINGS_ORDER_HUMAN),
         default=0
