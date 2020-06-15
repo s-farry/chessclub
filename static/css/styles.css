@@ -10277,6 +10277,8 @@ td a {
 }
 .news-header{
   font-size:1.1em;
+  text-decoration:underline;
+  text-transform:uppercase;
   color:black;
 }
 
@@ -10284,6 +10286,7 @@ td a {
   font-size:0.8em;
   text-transform:italic;
 }
+
 
 .navbar-logo{
   height:calc(var(--top-height)-0.5rem);
@@ -10317,5 +10320,15 @@ h2{text-transform:uppercase;font-size:1.5rem;}
   text-decoration:none;
   color:inherit;
 }
+.news-item img{
+  float:left;
+  margin:0.5rem;
+}
+
 .table a:hover{
+  text-decoration:none;
+}
+
+.bg-gold {
+  background-color: #f9bb49 !important;
 }

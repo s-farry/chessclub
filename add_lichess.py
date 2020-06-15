@@ -105,8 +105,8 @@ if __name__ == "__main__":
     parser.add_argument('--swiss', dest='swiss', type=str, default = [], nargs='+',
                         help='Swiss tournaments results to add')
     parser.add_argument('--arena', dest='arenas', default = [], nargs = '+', type=str, help='Arena tournament results to add')
-    parser.add_argument('--tournament', dest='tournament', type=str, default='Lichess Online')
-    parser.add_argument('--league', dest='league', type=str, default='Blitz 2020')
+    parser.add_argument('--league', dest='league', type=str, default='Lichess Blitz')
+    parser.add_argument('--season', dest='season', type=str, default='2019/2020')
     parser.add_argument('--arena_events', nargs = '+', dest='arena_events', type=str, help = 'Upcoming Arena Events to Add', default = [])
     parser.add_argument('--swiss_events', nargs = '+', dest='swiss_events', type=str, help = 'Upcoming Swiss Events to Add', default = [])
     parser.add_argument('--create_arena_dates', nargs='+', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), dest='arena_dates', help='Dates to Create Arena Event, e.g. 2020-03-20', default =[])
@@ -145,7 +145,8 @@ if __name__ == "__main__":
         wrapper = io.TextIOWrapper(pgn_bytes, encoding='utf-8')
         games.update(get_games_from_pgn(wrapper))
 
-    league = League.objects.filter(season_pk="2019/2020").filter(name=args.league)[0]
+    season = Season.objects.filter(name=args.season)[0]
+    league = League.objects.filter(season=season).filter(name=args.league)[0]
     for g,v in games.items():
         if len(Schedule.objects.filter(lichess=g)) > 0:
             schedule = Schedule.objects.filter(lichess=g)[0]
@@ -155,7 +156,7 @@ if __name__ == "__main__":
             continue
         white = Player.objects.filter(lichess=v['white'])
         black = Player.objects.filter(lichess=v['black'])
-        schedule = Schedule(season=season,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
+        schedule = Schedule(league=league,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
         if 'pgn' in v.keys():
             schedule.pgn = v['pgn']
         else:
@@ -163,8 +164,8 @@ if __name__ == "__main__":
         print(schedule.white,schedule.black,"result:",schedule.result)
         schedule.save()
     if len(games.items()) > 0 :
-        standings_save(season)
-        standings_update(season)
+        standings_save(league)
+        standings_update(league)
 
     for e in args.arena_events:
         add_arena_event(e)

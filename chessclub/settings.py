@@ -130,6 +130,9 @@ STATIC_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/static/")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/media/")
 
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 #only want this on server
 #if 'DJANGO_DEBUG' not in os.environ:
 #    SESSION_COOKIE_DOMAIN = 'themovieroom.co.uk'
