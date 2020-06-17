@@ -115,7 +115,7 @@ class LeagueAdmin(admin.ModelAdmin):
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
     list_filter = ('name',)
-        
+
 
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)

@@ -41,7 +41,7 @@
                     <img src="{{ n.image.url }}">
                     {% endif %}
                     
-                    {{n.text|safe}}
+      {{ n.text|safe|truncatewords:"150" }}<a href="{% url 'news' %}">read more</a>
                 </div>
                 <div class = "news-footer">
                     Published on {{n.published_date}}

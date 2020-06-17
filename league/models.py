@@ -22,6 +22,8 @@ class Player(models.Model):
     birth_date = models.DateField(null=True, blank=True, verbose_name=_('Date of birth'))
     image = models.ImageField(upload_to='uploads/teams/%Y/%m/%d/players/', null=True, blank=True, verbose_name=_('Player photo'))
     lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'))
+    ecf = models.CharField(max_length=7, null = True, verbose_name=_('ECF Grading Ref'))
+    grade = models.IntegerField(default = 0, null = True, verbose_name=_('ECF Grade'))
 
     class Meta:
         verbose_name = _('Player')
@@ -42,6 +44,7 @@ class PlayerCustomFields(models.Model):
 class Season(models.Model):
     name    = models.CharField(max_length=200, null=False, verbose_name=_('Name'))
     players = models.ManyToManyField(Player, blank=True, related_name='seasons', verbose_name=_('Seasons'))
+    slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
 
     def __str__(self):
         return "{} Season".format(self.name) 

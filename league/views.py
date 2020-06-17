@@ -5,6 +5,42 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
 
+class TeamRoster(ListView):
+    template_name = 'roster.html'
+    model = Player
+    context_object_name = 'roster'
+
+    def get_context_data(self, **kwargs):
+        context = super(TeamRoster, self).get_context_data(**kwargs)
+        
+        season_name = ''
+        print(self.kwargs)
+        if self.kwargs.get('season'):
+            season = Season.objects.get(slug=self.kwargs['season'])
+        else:
+            season = Season.objects.all()[0]
+        season_pk = season.pk
+        season_name = ": {} {}".format(season.name, season.name)
+
+
+        context['table_name'] = season_name
+        context['slug'] = self.kwargs.get('season')
+        
+        return context
+
+
+    def get_queryset(self, *args, **kwargs):
+        qs = self.model.objects.all()
+        if self.kwargs.get('season'):
+            season = Season.objects.get(slug=self.kwargs['season'])
+        else:
+            season = Season.objects.all()[0]
+        season_pk = season.pk
+        season_name = season.name
+        qs = self.model.objects.filter(seasons=season_pk).order_by('-grade')
+
+        return qs
+
 class StandingsFull(ListView):
     template_name = 'standings.html'
     model = Standings
@@ -38,7 +74,6 @@ class StandingsFull(ListView):
             order = STANDINGS_ORDER[league.standings_order][1]
             qs = self.model.objects.filter(league=league_pk).order_by(*order)
         return qs
-
 
 class ScheduleFull(ListView):
     template_name = 'schedule.html'
