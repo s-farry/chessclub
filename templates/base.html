@@ -87,6 +87,7 @@
                     <div class = "container-fluid text-center">
                         This website is under construction <i class="fas fa-tools"></i>
                     </div>
+                    <div class = "close"><small><i class="fas fa-times-circle"></i></small></div>
                 </header>
                 <main>
                     <div class="container-fluid">
@@ -113,5 +114,10 @@
         <script src="{% static 'js/scripts.js' %}"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script>
+            $('.close').click( function(){
+                $(this).parent().addClass('d-none');
+            });
+        </script>
     </body>
 </html>

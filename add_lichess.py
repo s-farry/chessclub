@@ -150,9 +150,11 @@ if __name__ == "__main__":
     for g,v in games.items():
         if len(Schedule.objects.filter(lichess=g)) > 0:
             schedule = Schedule.objects.filter(lichess=g)[0]
-            schedule.league = league
-            schedule.save()
             print('game already in database')
+            if schedule.league != league:
+                print('updating league')
+                schedule.league = league
+                schedule.save()
             continue
         white = Player.objects.filter(lichess=v['white'])
         black = Player.objects.filter(lichess=v['black'])

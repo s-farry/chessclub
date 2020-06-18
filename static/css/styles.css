@@ -10332,3 +10332,18 @@ h2{text-transform:uppercase;font-size:1.5rem;}
 .bg-gold {
   background-color: #f9bb49 !important;
 }
+.max-width-chess{
+  max-width:calc(100%-400px);
+}
+.min-width-chess{
+  min-width:400px;
+}
+.close{
+  opacity:0.0;
+  position:absolute;
+  top:0.2rem;
+  right:0.2rem;
+}
+header:hover .close{
+  opacity:1.0;
+}
