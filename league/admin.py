@@ -39,30 +39,43 @@ def standings_update(instance):
             lost = 0
             draws = 0
             matches = 0
+            form = ''
             player = standing.player
-            player_schedule = Schedule.objects.filter(Q(white=player) | Q(black=player), league = instance.pk, date__lte=now )
-            for match in player_schedule:
+            player_schedule = Schedule.objects.filter(Q(white=player) | Q(black=player), league = instance.pk, date__lte=now).order_by('-date')
+            for i,match in enumerate(player_schedule):
                 matches += 1
                 if match.white == player:
                     if match.result == 1 :
+                        if i < 5:
+                            form = 'W' + form
                         wins += 1
                         points += instance.win_points
                     elif match.result == 2 :
                         lost += 1
+                        if i < 5:
+                            form = 'L' + form
                         points += instance.lost_points
                     else:
                         draws += 1
+                        if i < 5:
+                            form = 'D' + form
                         points += instance.draw_points
 
                 if match.black == player:
                     if match.result == 2 :
+                        if i < 5:
+                            form = 'W' + form
                         wins += 1
                         points += instance.win_points
                     elif match.result == 1 :
+                        if i < 5:
+                            form = 'L' + form
                         lost += 1
                         points += instance.lost_points
                     else:
                         draws += 1
+                        if i < 5:
+                            form = 'D' + form
                         points += instance.draw_points
 
                 standing.points = points
@@ -70,6 +83,7 @@ def standings_update(instance):
                 standing.lost = lost
                 standing.draws = draws
                 standing.matches = matches
+                standing.form = form
                 standing.save()
         standings_position_update(instance)
 

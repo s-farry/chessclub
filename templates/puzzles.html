@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ game }}{% endblock %}
+{% block header %} 
+<script src="{% static 'js/pgnvjs.js' %}" type="text/javascript"></script>
+<!-- CSS used -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/pgnvjs.css' %}">
+{% endblock %}
+{% load i18n %}
+{% load league_tags %}
+{% block content %}
+<h1 class="mt-4">Daily Puzzles</h1>
+<hr>
+{% for puzzle in puzzles %}
+<h1>{{puzzle.date}}</h1>
+<hr>
+            <div class = "d-flex justify-content-center">
+               <div id="board{{forloop.counter}}" class='merida zeit'></div>
+            </div>
+            <script>
+                var pgn = `{{puzzle.pgn|safe}}`;
+            var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
+            var board = pgnTactic('board{{forloop.counter}}', cfg)
+            </script> 
+{% endfor %}
+
+{% endblock %}
+}

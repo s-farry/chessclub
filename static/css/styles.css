@@ -10336,7 +10336,7 @@ h2{text-transform:uppercase;font-size:1.5rem;}
   max-width:calc(100%-400px);
 }
 .min-width-chess{
-  min-width:400px;
+  min-width:300px;
 }
 .close{
   opacity:0.0;
@@ -10346,4 +10346,28 @@ h2{text-transform:uppercase;font-size:1.5rem;}
 }
 header:hover .close{
   opacity:1.0;
+}
+.table {
+  font-size:0.8rem;
+}
+.form-won, .form-draw, .form-lost{
+  width:1.3em;
+  display: inline-block;
+  border: 0.05em solid rgba(0,0,0,0.1);
+  border-radius:0.15em;
+}
+.form-won{
+  /*display: inline-block;*/
+  background-color:green;
+  color:white;
+}
+.form-draw{
+  /*display: inline-block;*/
+  background-color:rgb(70,70,70);
+  color:white;
+}
+.form-lost{
+  /*display: inline-block;*/
+  background-color:red;
+  color:white;
 }

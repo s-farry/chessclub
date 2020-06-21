@@ -16,14 +16,15 @@ RESULTS = (
     (0, '1/2-1/2',), (1,'1-0'), (2,'0-1')
 )
 
+
 class Player(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('First name'))
     surename = models.CharField(max_length=200, null=True, verbose_name=_('Last name'))
     birth_date = models.DateField(null=True, blank=True, verbose_name=_('Date of birth'))
     image = models.ImageField(upload_to='uploads/teams/%Y/%m/%d/players/', null=True, blank=True, verbose_name=_('Player photo'))
-    lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'))
-    ecf = models.CharField(max_length=7, null = True, verbose_name=_('ECF Grading Ref'))
-    grade = models.IntegerField(default = 0, null = True, verbose_name=_('ECF Grade'))
+    lichess = models.CharField(max_length=200, null = True, blank=True, verbose_name=_('Lichess ID'))
+    ecf = models.CharField(max_length=7, null = True, blank=True, verbose_name=_('ECF Grading Ref'))
+    grade = models.IntegerField(default = 0, null = True, blank=True, verbose_name=_('ECF Grade'))
 
     class Meta:
         verbose_name = _('Player')
@@ -108,6 +109,7 @@ class Standings(models.Model):
     lost = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Lost'))
     draws = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Draw'))
     points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points'))
+    form = models.CharField(max_length=5,null=True)
 
     def __str__(self):
         return "{0} {1}".format(self.league, self.player)

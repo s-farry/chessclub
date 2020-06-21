@@ -6,6 +6,11 @@ STATUS_CHOICES = (
     ('w', 'Withdrawn'),
 )
 
+class Puzzle(models.Model):
+    pgn  = models.TextField(null = True, blank=True)
+    date = models.DateField(null = True, blank = True)
+    fen = models.CharField(max_length=50, null = True, blank = True)
+    
 # Create your models here.
 class news(models.Model):
     title = models.CharField(max_length = 200, default = "Feature")

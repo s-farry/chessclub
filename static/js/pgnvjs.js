@@ -6832,9 +6832,9 @@ var pgnReader = function (configuration, chess) {
                 if (next === 0) return; // First move
                 getMove(0).variations.push(move);
                 move.variationLevel = 1;
-                if (move.turn == 'b') {
-                    move.moveNumber = prevMove.moveNumber;
-                }
+                //if (move.turn == 'b') {
+                //    move.moveNumber = prevMove.moveNumber;
+                //}
                 return;
             }
             if (prevMove.next) {    // has a next move set, so should be a variation
@@ -7018,7 +7018,6 @@ var pgnReader = function (configuration, chess) {
             }
         })
     }
-
     // This defines the public API of the pgn function.
     return {
         configuration: configuration,
@@ -10158,7 +10157,6 @@ var pgnBase = function (boardId, configuration) {
         i18next.loadLanguages(that.configuration.locale, (err, t) => {
         });
     }
-
     if (that.configuration.position) { // Allow early correction
         if (that.configuration.position !== 'start') {
             let tokens = that.configuration.position.split(/\s+/);
@@ -10166,6 +10164,10 @@ var pgnBase = function (boardId, configuration) {
                 that.configuration.position += ' 1 1';
             }
         }
+    }
+    if (hasMode('tactic') ){
+      if (game.turn() == 'w') that.configuration.position='white';
+      else that.configuration.orientation='black';
     }
 
     /**
@@ -10397,11 +10399,8 @@ var pgnBase = function (boardId, configuration) {
 
               board.set({movable: {'free' : false }})
               // flash a success to the user
-              var boards = document.getElementsByClassName("boardNotification");
-              for ( let i = 0 ; i < boards.length; i++){
-                boards.innerHTML = '<i class="fas fa-check-circle"></i>';
-                popInOut(boards[i], "");
-              }
+              var boardNotification = document.getElementById(boardId+"Notification");
+              if (boardNotification)  popInOut(boardNotification, "");
             }
           }
           else{
@@ -10564,7 +10563,7 @@ var pgnBase = function (boardId, configuration) {
             createEle("div", headersId, "headers", theme, divBoard);
             var outerInnerBoardDiv = createEle("div", null, "outerBoard", null, divBoard);
             let boardAndDiv = createEle('div', null, 'boardAnd', theme, outerInnerBoardDiv);
-            let successDiv = createEle('div', null, 'boardNotification', theme, boardAndDiv);
+            let successDiv = createEle('div', boardId+"Notification", 'boardNotification', theme, boardAndDiv);
             successDiv.innerHTML = `
             <span class = "fa-stack">
             <i class="fas fa-circle fa-inverse fa-stack-1x" style="color:white"></i>
@@ -10692,7 +10691,6 @@ var pgnBase = function (boardId, configuration) {
                     that.mypgn.setShapes(move, shapes);
                 }
             }};
-
         copyBoardConfiguration(that.configuration, boardConfiguration,
             ['position', 'orientation', 'showNotation', 'pieceTheme', 'draggable',
                 'coordsInner', 'coordsFactor', 'width', 'movable', 'viewOnly', 'highlight', 'boardSize',
@@ -10728,7 +10726,7 @@ var pgnBase = function (boardId, configuration) {
             el.classList.add('coords-inner');
         }
         if (hasMode('edit') || hasMode('tactic')) {
-            game.load(boardConfiguration.position);
+            game.load(boardConfiguration.fen);
             let toMove = (game.turn() == 'w') ? 'white' : 'black';
             board.set({
                 movable: Object.assign({}, board.state.movable, {color: toMove, dests: possibleMoves(game)}),
@@ -11049,6 +11047,9 @@ var pgnBase = function (boardId, configuration) {
         }
         if (board !== null) {
             board.set({fen: game.fen()});
+            board.set({
+                movable: Object.assign({}, board.state.movable, {dests: possibleMoves(game)}),
+            });
         }
         let fenField = document.getElementById(fenId);
         if (utils.pvIsElement(fenField)) {
