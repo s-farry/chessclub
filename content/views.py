@@ -12,5 +12,5 @@ def latest(request):
 def details(request):
     return render(request, 'details.html')
 def puzzles(request):
-    puzzles = Puzzle.objects.filter(date__lte=datetime.now().date() )
+    puzzles = Puzzle.objects.filter(date__lte=datetime.now().date() ).order_by("-date")[:7]
     return render(request, 'puzzles.html', {'puzzles' : puzzles })

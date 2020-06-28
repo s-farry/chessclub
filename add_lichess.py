@@ -158,6 +158,7 @@ if __name__ == "__main__":
             continue
         white = Player.objects.filter(lichess=v['white'])
         black = Player.objects.filter(lichess=v['black'])
+        print(v)
         schedule = Schedule(league=league,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
         if 'pgn' in v.keys():
             schedule.pgn = v['pgn']

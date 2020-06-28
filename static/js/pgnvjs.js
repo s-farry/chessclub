@@ -11046,10 +11046,22 @@ var pgnBase = function (boardId, configuration) {
             game.load(that.configuration.position);
         }
         if (board !== null) {
-            board.set({fen: game.fen()});
-            board.set({
-                movable: Object.assign({}, board.state.movable, {dests: possibleMoves(game)}),
-            });
+          console.log("Setting up board 2");
+          console.log(possibleMoves(game));
+          console.log(game.turn());
+          console.log(board.state.movable);
+          let col = game.turn() == 'w' ? 'white' : 'black';
+          board.set({
+              fen: game.fen(),
+              movable: Object.assign({}, board.state.movable, {color: col, dests: possibleMoves(game)}),
+              turnColor: col, check: game.in_check()
+          });
+          if (hasMode('tactic') ){
+            if (game.turn() == 'w') {
+              board.set({'orientation':'white'});
+          }
+            else board.set({'orientation':'black'});
+          }
         }
         let fenField = document.getElementById(fenId);
         if (utils.pvIsElement(fenField)) {
