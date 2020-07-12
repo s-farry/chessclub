@@ -11046,10 +11046,6 @@ var pgnBase = function (boardId, configuration) {
             game.load(that.configuration.position);
         }
         if (board !== null) {
-          console.log("Setting up board 2");
-          console.log(possibleMoves(game));
-          console.log(game.turn());
-          console.log(board.state.movable);
           let col = game.turn() == 'w' ? 'white' : 'black';
           board.set({
               fen: game.fen(),

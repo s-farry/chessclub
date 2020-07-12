@@ -65,6 +65,7 @@ def get_games_from_pgn(pgn):
 def add_arena_event(e):
     tournament    = lichess.api.tournament(e)
     event_date    = dateutil.parser.parse(tournament['startsAt'])
+    print(event_date.replace(tzinfo=timezone('Europe/London')))
     lichess_event = event(title=tournament['fullName'],date=event_date.replace(tzinfo=timezone('Europe/London')),link='https://lichess.org/tournament/'+e, location='Lichess Online')
     lichess_event.save()
 
@@ -110,6 +111,7 @@ if __name__ == "__main__":
     parser.add_argument('--arena_events', nargs = '+', dest='arena_events', type=str, help = 'Upcoming Arena Events to Add', default = [])
     parser.add_argument('--swiss_events', nargs = '+', dest='swiss_events', type=str, help = 'Upcoming Swiss Events to Add', default = [])
     parser.add_argument('--create_arena_dates', nargs='+', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), dest='arena_dates', help='Dates to Create Arena Event, e.g. 2020-03-20', default =[])
+    parser.add_argument('--create_bullet_dates', nargs='+', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), dest='bullet_dates', help='Dates to Create Bullet Event, e.g. 2020-03-20', default =[])
 
     args = parser.parse_args()
     print(args)
@@ -179,11 +181,27 @@ if __name__ == "__main__":
 
     for d in args.arena_dates:
         epoch = datetime.datetime(1970, 1, 1, tzinfo = timezone('UTC'))
-        date = d.replace(hour=18,minute=30, second=22, tzinfo=timezone('UTC'))
+        date = d.replace(tzinfo = timezone('Europe/London'))
+        date = date.replace(hour=18,minute=30, second=0)
         timestamp = int((date -epoch).total_seconds())*1000
 
-        test = client.tournaments.create(5, 3, 90, name='Wallasey Monday',
+        tournament = client.tournaments.create(5, 3, 90, name='Wallasey Monday',
                berserkable=True, rated=True, start_date=timestamp, conditions={ 'teamMember' : {'teamId' : 'wallasey-chess-club'}})
+        lichess_event = event(title=tournament['fullName'],date=date,link='https://lichess.org/tournament/'+tournament['id'], location='Lichess Online')
+        lichess_event.save()
+
+
+    for d in args.bullet_dates:
+        epoch = datetime.datetime(1970, 1, 1, 0,0,0,tzinfo = timezone('UTC'))
+        date = d.replace(tzinfo=timezone('Europe/London'))
+        date = date.replace(hour=19,minute=30, second=0
+        timestamp = int((date -epoch).total_seconds())*1000
+
+        tournament = client.tournaments.create(2, 1, 60, name='Wallasey Bullet',
+               berserkable=True, rated=True, start_date=timestamp, conditions={ 'teamMember' : {'teamId' : 'wallasey-chess-club'}})
+        lichess_event = event(title=tournament['fullName'],date=date,link='https://lichess.org/tournament/'+tournament['id'], location='Lichess Online')
+        lichess_event.save()
+
 
 '''
     games = Schedule.objects.all()
