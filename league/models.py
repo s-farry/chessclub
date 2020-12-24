@@ -13,7 +13,7 @@ STANDINGS_ORDER = (
     (1, ('-points',)), 
 )
 RESULTS = (
-    (0, '1/2-1/2',), (1,'1-0'), (2,'0-1')
+    (0, '1/2-1/2',), (1,'1-0'), (2,'0-1'), (3,'-')
 )
 
 
@@ -75,14 +75,14 @@ class League(models.Model):
 
 class Schedule(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
-    week = models.IntegerField(null=True, blank=True, default=1, verbose_name=_('Week'))
+    round = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Round'))
     date = models.DateTimeField(default=now, verbose_name=_('Date'))
     pgn  = models.TextField(null = True, blank=True)
     white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'))
     black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'))
     result = models.IntegerField(verbose_name=_('result'),
         choices=(RESULTS),
-        default=0
+        default=3
     )
     lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'))
 

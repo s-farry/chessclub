@@ -34,6 +34,17 @@ def get_tournaments(user):
 def get_pgn(game):
     return client.games.export(game, as_pgn=True)
 
+def get_game(game):
+    toReturn = {}
+    g = client.games.export(game)
+    pgn = client.games.export(game, as_pgn = True)
+    result = 0
+    if 'winner' in g.keys():
+        if g['winner'] == 'white' : result = 1
+        if g['winner'] == 'black' : result = 2
+    toReturn[g['id']] = { 'white' : g['players']['white']['user']['id'], 'black' : g['players']['black']['user']['id'], 'result' : result, 'date' : g['createdAt'], 'pgn' : pgn}
+    return toReturn
+
 def get_games(tournament):
     games = client.tournaments.export_games(tournament)
     toReturn = {}
@@ -93,7 +104,10 @@ known_players = {
     'ColRees' : ['Colin', 'Rees'],
     'C7essMaster' : ['Robert', 'Steele'],
     'Marty240' : ['Trevor', 'Amos'],
-    'hagbard1969' : ['Martin', 'Cockerill']
+    'hagbard1969' : ['Martin', 'Cockerill'],
+    'ronchampion' : ['Ron', 'Champion'],
+    'Hashisheen': ['Dave','Barnes'],
+    'KnightTimeDC' : ['Dave', 'Clarke']
 }
 
 # add all lower case as api returns just lower case
@@ -107,11 +121,12 @@ if __name__ == "__main__":
                         help='Swiss tournaments results to add')
     parser.add_argument('--arena', dest='arenas', default = [], nargs = '+', type=str, help='Arena tournament results to add')
     parser.add_argument('--league', dest='league', type=str, default='Lichess Blitz')
-    parser.add_argument('--season', dest='season', type=str, default='2019/2020')
+    parser.add_argument('--season', dest='season', type=str, default='2020/2021')
+    parser.add_argument('--games', dest='games', type=str, nargs='+', help = "Lichess games to add", default = [])
     parser.add_argument('--arena_events', nargs = '+', dest='arena_events', type=str, help = 'Upcoming Arena Events to Add', default = [])
     parser.add_argument('--swiss_events', nargs = '+', dest='swiss_events', type=str, help = 'Upcoming Swiss Events to Add', default = [])
-    parser.add_argument('--create_arena_dates', nargs='+', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), dest='arena_dates', help='Dates to Create Arena Event, e.g. 2020-03-20', default =[])
-    parser.add_argument('--create_bullet_dates', nargs='+', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), dest='bullet_dates', help='Dates to Create Bullet Event, e.g. 2020-03-20', default =[])
+    parser.add_argument('--create-arena-dates', nargs='+', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), dest='arena_dates', help='Dates to Create Arena Event, e.g. 2020-03-20', default =[])
+    parser.add_argument('--create-bullet-dates', nargs='+', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), dest='bullet_dates', help='Dates to Create Bullet Event, e.g. 2020-03-20', default =[])
 
     args = parser.parse_args()
     print(args)
@@ -132,16 +147,19 @@ if __name__ == "__main__":
                 newplayer = Player(name=p,lichess=p)
                 newplayer.save()
             print('added')
-    
-    #tournaments = get_tournaments('sfarry')
     '''
+    #tournaments = get_tournaments('sfarry')
+    
     tournaments = []
     games = {}
+
+    for g in args.games:
+        games.update(get_game(g))
+
     for t in args.arenas:
         games.update(get_games(t))
 
     for t in args.swiss:
-        print(t)
         pgn = requests.get('https://lichess.org/api/swiss/'+t+'/games',allow_redirects=True)
         pgn_bytes = io.BytesIO(pgn.content)
         wrapper = io.TextIOWrapper(pgn_bytes, encoding='utf-8')
@@ -160,7 +178,14 @@ if __name__ == "__main__":
             continue
         white = Player.objects.filter(lichess=v['white'])
         black = Player.objects.filter(lichess=v['black'])
-        print(v)
+        if len(white) == 0:
+            raise Exception(v['white'],'is not in the database')
+        if len(black) == 0:
+            raise Exception(v['black'],'is not in the database')
+        if white[0] not in league.players.all():
+            raise Warning(v['white'], 'is in the database but not the league')
+        if black[0] not in league.players.all():
+            raise Warning(v['black'], 'is in the database but not the league')
         schedule = Schedule(league=league,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
         if 'pgn' in v.keys():
             schedule.pgn = v['pgn']
@@ -180,10 +205,11 @@ if __name__ == "__main__":
 
 
     for d in args.arena_dates:
-        epoch = datetime.datetime(1970, 1, 1, tzinfo = timezone('UTC'))
+        epoch = datetime.datetime(1970, 1, 1, 0, 0, 0, tzinfo = timezone('UTC'))
         date = d.replace(tzinfo = timezone('Europe/London'))
-        date = date.replace(hour=18,minute=30, second=0)
+        date = date.replace(hour=19,minute=30, second=0)
         timestamp = int((date -epoch).total_seconds())*1000
+        #timestamp = date.timestamp() * 1000.0
 
         tournament = client.tournaments.create(5, 3, 90, name='Wallasey Monday',
                berserkable=True, rated=True, start_date=timestamp, conditions={ 'teamMember' : {'teamId' : 'wallasey-chess-club'}})
@@ -194,7 +220,7 @@ if __name__ == "__main__":
     for d in args.bullet_dates:
         epoch = datetime.datetime(1970, 1, 1, 0,0,0,tzinfo = timezone('UTC'))
         date = d.replace(tzinfo=timezone('Europe/London'))
-        date = date.replace(hour=19,minute=30, second=0
+        date = date.replace(hour=19,minute=30, second=0)
         timestamp = int((date -epoch).total_seconds())*1000
 
         tournament = client.tournaments.create(2, 1, 60, name='Wallasey Bullet',

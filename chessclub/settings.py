@@ -159,3 +159,5 @@ TINYMCE_DEFAULT_CONFIG = {
     'browser_spellcheck' : True,
     'gecko_spellcheck'   : True,
     }
+
+APPEND_SLASH = True

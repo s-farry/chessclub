@@ -2,26 +2,26 @@
 {% load league_tags %}
 {% load user_agents %}
 
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-striped table-hover league-table">
            <thead>
             <tr>
                {% if request|is_mobile %}
-               <th class="num">{% trans "#" %}</th>
+               <th class="num text-center">{% trans "" %}</th>
                <th>{% trans "Player" %}</th>
-               <th class="num">{% trans "P" %}</th>
-               <th class="num">{% trans "W" %}</th>
-               <th class="num">{% trans "D" %}</th>
-               <th class="num">{% trans "L" %}</th>
-               <th class="num">{% trans "Pts" %}</th>
+               <th class="num text-center">{% trans "P" %}</th>
+               <th class="num text-center">{% trans "W" %}</th>
+               <th class="num text-center">{% trans "D" %}</th>
+               <th class="num text-center">{% trans "L" %}</th>
+               <th class="num text-center">{% trans "Pts" %}</th>
                {% else %}
-               <th class="num">{% trans "#" %}</th>
+               <th class="num text-center"></th>
                <th>{% trans "Player" %}</th>
-               <th class="num">{% trans "Played" %}</th>
-               <th class="num">{% trans "Won" %}</th>
-               <th class="num">{% trans "Drew" %}</th>
-               <th class="num">{% trans "Lost" %}</th>
-               <th class="num">{% trans "Points" %}</th>
-               <th class="num">{% trans "Form" %}</th>
+               <th class="num text-center">{% trans "Played" %}</th>
+               <th class="num text-center">{% trans "Won" %}</th>
+               <th class="num text-center">{% trans "Drew" %}</th>
+               <th class="num text-center">{% trans "Lost" %}</th>
+               <th class="num text-center">{% trans "Points" %}</th>
+               <th class="num text-center">{% trans "Form" %}</th>
                {% endif %}
             </tr>
            </thead>

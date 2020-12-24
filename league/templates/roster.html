@@ -8,7 +8,9 @@
     <hr />
         {% if roster_image != Null %} <img src="{{roster_image.url}}" class="img-responsive" /> {% endif %}
         {% if roster %}
+        <div class='col-md-8 ml-auto mr-auto'>
             {% include 'content/team_roster.html' with roster=roster %}
+        </div>
         {% else %}
             <p>Brak danych</p>
         {% endif %}

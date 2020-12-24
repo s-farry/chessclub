@@ -17,18 +17,25 @@
 
               <tr>
                 <th class="text-center">{% trans "Date" %}</th>
-                <th class="text-center">{% trans "White" %}</th>
+                <th class="text-center">{% trans "Opponent" %}</th>
+                <th class="text-center">{% trans "Colour" %}</th>
                 <th class="text-center">{% trans "Result" %}</th>
-                <th class="text-center">{% trans "Black" %}</th>
               </tr>
             </thead>
             <tbody>
             {% for match in games %}
             <tr>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.date}}</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}1/2-1/2 {% elif match.result == 1 %} 1-0 {% else %} 0-1 {% endif %}</a></td>
+                {% if match.white == player %}
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">W</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}1/2-1/2 {% elif match.result == 1 %} 1-0 {% else %} 0-1 {% endif %}</a></td>
+                {% else %}
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">B</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}
+                  1/2-1/2 {% elif match.result == 1 %} 0-1 {% else %} 1-0 {% endif %}</a></td>
+                  {% endif %}
             </tr>
     {% endfor %}
     

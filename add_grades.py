@@ -33,7 +33,6 @@ known_players = {
     'Marty240' : ['Trevor', 'Amos'],
     'hagbard1969' : ['Martin', 'Cockerill']
 }
-
 def get_players(f):
     players = requests.get('http://www.ecfgrading.org.uk/files/'+f,allow_redirects=True)
     wallasey_players = []
@@ -60,7 +59,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print(args)
     #let's get all our players and add them to the database
-    
+    '''
     wallasey_players = get_players(args.gradingfile)
     for p in wallasey_players:
         print(p['firstname'],p['name'],p['ecf'],p['grade'])
@@ -75,7 +74,8 @@ if __name__ == "__main__":
             #matches[0].grade = p['grade']
             #matches[0].save()
             #print(matches[0],"saved")
-            
+
+    ''' 
     '''
     for p in players:
         if len(Player.objects.filter(lichess=p)) > 0:
@@ -91,4 +91,14 @@ if __name__ == "__main__":
                 newplayer.save()
             print('added')
     '''
-    
+    players = Player.objects.all()
+    for p in players:
+        if p.ecf == None: continue
+        url = 'https://www.ecfrating.org.uk/v2/new/api.php?v2/ratings/Standard/'+str(p.ecf)+'/2020-12-22'
+        print(url)
+        grade = requests.get(url)
+        if grade:
+            grade = grade.json()
+            print(grade['revised_rating'])
+            p.grade = grade['revised_rating']
+            p.save()

@@ -4,12 +4,12 @@ from league.models import Schedule, Standings, League, Player, Season, STANDINGS
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
+import datetime
 
 class TeamRoster(ListView):
     template_name = 'roster.html'
     model = Player
     context_object_name = 'roster'
-
     def get_context_data(self, **kwargs):
         context = super(TeamRoster, self).get_context_data(**kwargs)
         
@@ -18,7 +18,8 @@ class TeamRoster(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
         else:
-            season = Season.objects.all()[0]
+            print('getting last season')
+            season = Season.objects.all().last()
         season_pk = season.pk
         season_name = ": {} {}".format(season.name, season.name)
 
@@ -106,48 +107,91 @@ class ScheduleFull(ListView):
 
 
 class PlayerSchedule(ListView):
-    template_name = 'schedule.html'
+    template_name = 'games.html'
     model = Schedule
     context_object_name = 'schedule'
-     
-
+    
     def get_context_data(self, **kwargs):
         context = super(PlayerSchedule, self).get_context_data(**kwargs)
-        context['page_name'] = _('Archiwum')    
         if self.kwargs.get('player'):
-            player = Player.objects.get(slug=self.kwargs['player'])
+            player = Player.objects.get(id=self.kwargs['player'])
             context['player'] = player
         
         if self.kwargs.get('league'):
             league = League.objects.get(slug=self.kwargs['league'])
             context['league'] = league
-            context['page_name'] = _('Schedule')      
+        context['page_name'] = _('Schedule')      
         
         return context
 
 
     def get_queryset(self, *args, **kwargs):
-        qs = self.model.objects.all().order_by('date')
-        if self.kwargs.get('player'):
-            player_pk = Player.objects.get(slug=self.kwargs.get('player')).pk
-            qs = self.model.objects.filter(Q(white=player_pk) | Q(black=player_pk)).order_by('date')
-        if self.kwargs.get('league') and self.kwargs.get('player'):
-            league = League.objects.get(slug=self.kwargs['league'])
+        if self.kwargs.get('player') and not self.kwargs.get('league'):
+            player_pk = Player.objects.get(id=self.kwargs.get('player')).pk
+            #qs = self.model.objects.filter(Q(white=player_pk) | Q(black=player_pk)).order_by('date')
+            toReturn = {}
+            games = {}
+            season = Season.objects.last()
+            games[season] = {}
             league_pk = league.pk
             league_name = league.name
-            player_pk = Player.objects.get(slug=self.kwargs.get('player')).pk
-            qs = self.model.objects.filter(Q(home_team=player_pk) | Q(black=player_pk), league = league_pk ).order_by('-date')
-        return qs
+            player = Player.objects.get(id=self.kwargs.get('player'))
+            for league in season.leagues:
+                games[season][league] = self.model.objects.filter(Q(white=player) | Q(black=player), league = league ).order_by('-date')
+            toReturn['player'] = player
+            toReturn['games'] = games
+        return toReturn
 
 
 
 # Create your views here.
 
-def player(request, player_id):
-    query = request.GET.get('search')
+def fixtures(request, league, **kwargs):
+    l = get_object_or_404(League, slug=league)
+    games = Schedule.objects.filter(league=l)
+    #let's decide how to break this down, if we have rounds, do that
+    #else we group by date
+    rounds = set([ g.round for g in games if g.round > 0])
+    dates = sorted(set([ g.date.date() for g in games ]))
+    print(dates)
+    games_display = {}
+    if len(rounds) > 1 :
+        rounds = True
+        for r in rounds:
+            games_round = games.filter(round=r).order_by('date')
+            games_display[r] = games_round
+            #now find which round to show, the last complete one
+            ncomplete = 0
+            for g in games_round:
+                if g.result != 3: ncomplete += 1
+            if float(ncomplete)/len(games_round) > 0.9:
+                latest = r
+    else:
+        # no rounds, let's organise by date instead
+        #games_display['rounds'] = False
+        for d in dates:
+            games_date = games.filter(date__date = d).order_by('date')
+            games_display[d] = games_date
+        today = datetime.datetime.today().date()
+        latest = max([d for f in dates if d < today])
+
+    #let's get the standings now
+    order = STANDINGS_ORDER[l.standings_order][1]
+    standing = Standings.objects.filter(league=l).order_by(*order)
+
+    return render(request, 'fixtures.html', {'games': games_display, 'rounds' : rounds, 'latest' : latest, 'standings' : standing, 'league' : l })
+
+
+def player(request, player_id, **kwargs):
+    #query = request.GET.get('search')
     player = get_object_or_404(Player, id=player_id)
     games = {}
-    for season in Season.objects.all():
+    if 'league' in kwargs:
+        league = get_object_or_404(League, slug=kwargs['league'])
+        games[league.season] = {}
+        games[league.season][league] = Schedule.objects.filter((Q(white=player_id) | Q(black=player_id)) & Q(league = league)).order_by('-date')
+    else:
+        season = Season.objects.last()
         games[season] = {}
         for league in season.league_set.all():
             league_pk = league.pk
@@ -158,5 +202,10 @@ def game(request, game_id):
     f = get_object_or_404(Schedule, id=game_id)
     return render(request, 'game.html', {'game': f})
 
+def season_summary(request, season_slug):
+    f = get_object_or_404(Season, slug = season_slug)
+    return render(request, 'league.html', {'season' : f, 'leagues' : League.objects.filter(season=f)})
+
 def index(request):
-    return render(request, 'league.html',{'leagues': League.objects.all()})
+    season_slug = Season.objects.all().last().slug
+    return season_summary(request, season_slug)
