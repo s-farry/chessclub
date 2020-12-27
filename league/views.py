@@ -132,12 +132,15 @@ class PlayerSchedule(ListView):
             toReturn = {}
             games = {}
             season = Season.objects.last()
-            games[season] = {}
             league_pk = league.pk
             league_name = league.name
             player = Player.objects.get(id=self.kwargs.get('player'))
             for league in season.leagues:
-                games[season][league] = self.model.objects.filter(Q(white=player) | Q(black=player), league = league ).order_by('-date')
+                season_league_games = self.model.objects.filter(Q(white=player) | Q(black=player), league = league ).order_by('-date')
+                if len(season_league_games) > 0:
+                    print(len(season_league_games))
+                    if season not in games.keys(): games[season] = {}
+                    games[season][league] = season_league_games
             toReturn['player'] = player
             toReturn['games'] = games
         return toReturn
@@ -151,12 +154,12 @@ def fixtures(request, league, **kwargs):
     games = Schedule.objects.filter(league=l)
     #let's decide how to break this down, if we have rounds, do that
     #else we group by date
-    rounds = set([ g.round for g in games if g.round > 0])
-    dates = sorted(set([ g.date.date() for g in games ]))
-    print(dates)
+    rounds = set([ g.round for g in games if g.round != None])
+    dates = sorted(set([ g.date.date() for g in games if g.date != None]))
     games_display = {}
-    if len(rounds) > 1 :
-        rounds = True
+    useRounds = (len(rounds) > 1)
+    if useRounds:
+        latest = list(rounds)[0]
         for r in rounds:
             games_round = games.filter(round=r).order_by('date')
             games_display[r] = games_round
@@ -164,7 +167,7 @@ def fixtures(request, league, **kwargs):
             ncomplete = 0
             for g in games_round:
                 if g.result != 3: ncomplete += 1
-            if float(ncomplete)/len(games_round) > 0.9:
+            if float(ncomplete)/len(games_round) > 0.5:
                 latest = r
     else:
         # no rounds, let's organise by date instead
@@ -179,7 +182,7 @@ def fixtures(request, league, **kwargs):
     order = STANDINGS_ORDER[l.standings_order][1]
     standing = Standings.objects.filter(league=l).order_by(*order)
 
-    return render(request, 'fixtures.html', {'games': games_display, 'rounds' : rounds, 'latest' : latest, 'standings' : standing, 'league' : l })
+    return render(request, 'fixtures.html', {'games': games_display, 'useRounds' : useRounds, 'latest' : latest, 'standings' : standing, 'league' : l })
 
 
 def player(request, player_id, **kwargs):
@@ -189,13 +192,16 @@ def player(request, player_id, **kwargs):
     if 'league' in kwargs:
         league = get_object_or_404(League, slug=kwargs['league'])
         games[league.season] = {}
-        games[league.season][league] = Schedule.objects.filter((Q(white=player_id) | Q(black=player_id)) & Q(league = league)).order_by('-date')
+        games[league.season][league] = Schedule.objects.filter((Q(white=player_id) | Q(black=player_id)) & Q(league = league)).order_by('date')
     else:
         season = Season.objects.last()
-        games[season] = {}
+        if player in season.players.all(): games[season] = {}
         for league in season.league_set.all():
             league_pk = league.pk
-            games[season][league]  = Schedule.objects.filter(Q(white=player_id) | Q(black=player_id), league = league_pk).order_by('-date')
+            season_league_games  = Schedule.objects.filter(Q(white=player_id) | Q(black=player_id), league = league_pk).order_by('date')
+            if len(season_league_games) > 0:
+                if season not in games.keys(): games[season] = {}
+                games[season][league]  = season_league_games
     return render(request, 'games.html', {'player': player, 'games': games})
 
 def game(request, game_id):

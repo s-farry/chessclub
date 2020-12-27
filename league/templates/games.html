@@ -5,16 +5,20 @@
 {% load league_tags %}
 {% block content %}
 {% for season,leagues in games.items %}
-<article id="league-{{ slug }}-player" class="news">
-    <h1>{% if page_name %}{{ page_name }}{% else %} {{player}} {% endif %}</h1>
-    <hr />
-    <h1>{{season}}</h1>
-    <div class = "col-md-7 ml-auto mr-auto">
-    {% for league,games in leagues.items %}
-        <table class="table table-striped table-bordered table-hover">
-          <thead>
-            <tr><td colspan="4" class="text-center"><h2>{{league.name}}</h2></td></tr>
 
+<h1>{% if page_name %}{{ page_name }}{% else %} {{player}} {% endif %}</h1>
+<hr />
+<h2> Profile </h2>
+<hr />
+
+<h2> Games </h2>
+<article id="league-{{ slug }}-player" class="news">
+    <div class = "col-md-7 ml-auto mr-auto text-center">
+      <h2>{{season}}</h2>
+      {% for league,games in leagues.items %}
+        <table class="table table-striped table-hover league-table">
+          <thead>
+            <tr><td colspan="4" class="text-center bg-white text-dark"><h2>{{league.name}}</h2></td></tr>
               <tr>
                 <th class="text-center">{% trans "Date" %}</th>
                 <th class="text-center">{% trans "Opponent" %}</th>
@@ -25,16 +29,16 @@
             <tbody>
             {% for match in games %}
             <tr>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.date}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.date %}{{match.date.date}}{% endif %}</a></td>
                 {% if match.white == player %}
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">W</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}1/2-1/2 {% elif match.result == 1 %} 1-0 {% else %} 0-1 {% endif %}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}&#189;-&#189; {% elif match.result == 1 %} 1-0 {% elif match.result == 2 %} 0-1 {% else %} - {% endif %}</a></td>
                 {% else %}
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">B</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}
-                  1/2-1/2 {% elif match.result == 1 %} 0-1 {% else %} 1-0 {% endif %}</a></td>
+                  &#189;-&#189; {% elif match.result == 1 %} 0-1 {% elif match.result == 2 %} 1-0 {% else %} - {% endif %}</a></td>
                   {% endif %}
             </tr>
     {% endfor %}

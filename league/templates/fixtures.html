@@ -10,28 +10,47 @@
 <div class='text-center m-3'><a class="page-link" href="#" onclick="openTable(event)"><i class="fas fa-table"></i> Table</a> | <a class="page-link" href="#" onclick="openFixtures(event)"><i class="fas fa-list"></i> Fixtures</a>|<a class="page-link" href="{% url 'league_index' %}"><i class="fas fa-chess-board"></i> All Leagues</a></div>
 
 
-<div class = "col-md-7 ml-auto mr-auto d-none" id="league_fixtures">
+<div class = "col-md-8 ml-auto mr-auto d-none" id="league_fixtures">
 <div class="tab d-flex justify-content-center">
+  {% if useRounds == False %}
   <button class="tablinks" id="tablink-previous" onclick="previous(event,'date-{{latest|date}}')" > < </button>
   <button id = 'round-current'>{{latest}}</button>
   <button class="tablinks" id = "tablink-next" onclick="next(event,'date-{{latest|date}}')"> > </button>
+  {% else %}
+  <button class="tablinks" id="tablink-previous" onclick="previous(event,'round-{{latest}}')" > < </button>
+  <button id = 'round-current'>Round {{latest}}</button>
+  <button class="tablinks" id = "tablink-next" onclick="next(event,'round-{{latest}}')"> > </button>
+  {% endif %}
 </div>
 {% for date,fixtures in games.items %}
-      <div class = "tabcontent" id = "date-{{date|date}}">
+{% if useRounds == True %}
+<div class = "tabcontent" id = "round-{{date}}">
+{% else %}
+<div class = "tabcontent" id = "date-{{date|date}}">
+{% endif %}
+
+
         <table class="table table-striped table-bordered table-hover">
           <thead>
               <tr>
-                <th class="text-center"><i class="fas fa-chess"></i></th>
-                <th class="text-center">{% trans "Result" %}</th>
-                <th class="text-center"><i class="fas fa-chess"></i></th>
+                {% if useRounds == True %}
+                <th class="text-center w-20"></th>
+                {% endif %}
+                <th class="text-center w-35"><i class="fas fa-chess"></i></th>
+                <th class="text-center w-10">{% trans "Result" %}</th>
+                <th class="text-center w-35"><i class="fas fa-chess"></i></th>
               </tr>
             </thead>
             <tbody>
             {% for match in fixtures %}
-            <tr>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}&#189;-&#189; {% elif match.result == 1 %} 1-0 {% else %} 0-1 {% endif %}</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>
+            <tr>                
+              {% if useRounds == True %}
+              <td class="text-center">{{match.date.date}}</td>
+              {% endif %}
+
+                <td class="text-center"><a href="{% url 'player' match.white.id %}">{{match.white}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}&#189;-&#189; {% elif match.result == 1 %} 1-0 {% elif match.result == 0 %} 0-1 {% else %} v {% endif %}</a></td>
+                <td class="text-center"><a href="{% url 'player' match.black.id %}">{{match.black}}</a></td>
             </tr>
             {% endfor %}
     
@@ -55,11 +74,19 @@ Last updated on {{ league.updated_date }}
 <script>
 var roundLinks = [];
 var roundTexts  = [];
+{% if useRounds == True %}
+{% for round,fixtures in games.items %}
+roundLinks.push( 'round-{{round}}' );
+roundTexts.push( 'Round {{round}}' );
+{% endfor %}
+var currentRound = 'round-{{latest}}';
+{% else %}
 {% for date,fixtures in games.items %}
 roundLinks.push( 'date-{{date|date}}' );
 roundTexts.push( '{{date}}' );
 {% endfor %}
 var currentRound = 'date-{{latest|date}}';
+{% endif %}
 function openRound(e, round, roundText) {
   // Declare all variables
   var i, tabcontent, tablinks;
@@ -113,11 +140,11 @@ window.onload = function(e){
     openTable(e);
   }
   if (showRound && showRoundText && showLeague == "{{league}}"){
-    openRound(e, showRound, showRoundText)
+    openRound(e, showRound, showRoundText);
   }
   else{
-  {% if rounds == True %}
-    openRound(e, 'round-{{latest|date}}', '{{latest}}');
+  {% if useRounds == True %}
+    openRound(e, 'round-{{latest}}', 'Round {{latest}}');
   {% else %} 
     openRound(e, 'date-{{latest|date}}', '{{latest}}')
   {% endif %}

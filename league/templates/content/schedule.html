@@ -14,7 +14,7 @@
         <tbody>
 {% for match in schedule %}
         <tr>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.date}}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.date %} {{match.date}}{% endif %}</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}1/2-1/2 {% elif match.result == 1 %} 1-0 {% else %} 0-1 {% endif %}</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>

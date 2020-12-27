@@ -5,10 +5,23 @@ from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField
 from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER
 from django.utils import timezone
+from django.urls import resolve
+
 from datetime import datetime
 
 
 
+def get_parent_object_from_request(self, request):
+    """
+    Returns the parent object from the request or None.
+
+    Note that this only works for Inlines, because the `parent_model`
+    is not available in the regular admin.ModelAdmin as an attribute.
+    """
+    resolved = resolve(request.path_info)
+    if resolved.args:
+        return self.parent_model.objects.get(id=resolved.kwargs['object_id'])
+    return None
 
 def standings_save(instance):
         league = League.objects.get(pk=instance.pk)
@@ -41,7 +54,7 @@ def standings_update(instance):
             matches = 0
             form = ''
             player = standing.player
-            player_schedule = Schedule.objects.filter(Q(white=player) | Q(black=player), league = instance.pk, date__lte=now).order_by('-date')
+            player_schedule = Schedule.objects.filter(~Q(result=3) & (Q(white=player) | Q(black=player)), league = instance.pk, date__lte=now).order_by('-date')
             for i,match in enumerate(player_schedule):
                 matches += 1
                 if match.white == player:
@@ -90,12 +103,36 @@ def standings_update(instance):
 
 class ScheduleInline(admin.TabularInline):
     model = Schedule
+    fields = ('round','date','white','black','result')
+    max_num=100
     formfield_overrides = {
         models.IntegerField: {'widget': TextInput(attrs={'style':'width: 20px;'})},
     }
 
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        print(db_field)
+        #print(request.__obj__)
+        league = League.objects.get(id=resolve(request.path_info).kwargs['object_id'])
+        if league is not None:
+            #kwargs["queryset"] = Player.objects.filter(surename="Farry")
+            kwargs["queryset"] = league.players
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 class StandingsInline(admin.TabularInline):
     model = Standings
+
+    def get_parent_object_from_request(self, request):
+        """
+        Returns the parent object from the request or None.
+
+        Note that this only works for Inlines, because the `parent_model`
+        is not available in the regular admin.ModelAdmin as an attribute.
+        """
+        resolved = resolve(request.path_info)
+        if resolved.args:
+            return self.parent_model.objects.get(pk=resolved.args[0])
+        return None
     ordering = ('position', '-points')
     exclude = ('matches', 'win', 'lost', 'draws', 'score', 'score_lost')
     max_num=0
@@ -108,8 +145,8 @@ class StandingsInline(admin.TabularInline):
 
 class LeagueAdmin(admin.ModelAdmin):
     inlines = [
-        StandingsInline, 
-        #ScheduleInline,
+        #StandingsInline, 
+        ScheduleInline,
     ]
     prepopulated_fields = {'slug': ('name', 'season',), }
     actions=['update_standings']
@@ -131,9 +168,12 @@ class PlayerAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 
+class ScheduleAdmin(admin.ModelAdmin):
+    list_filter = ('league',)
+
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)
-admin.site.register(Schedule)
+admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Season)
     
 # Register your models here.

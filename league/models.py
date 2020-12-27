@@ -19,7 +19,7 @@ RESULTS = (
 
 class Player(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('First name'))
-    surename = models.CharField(max_length=200, null=True, verbose_name=_('Last name'))
+    surename = models.CharField(max_length=200, null=True, blank=True, verbose_name=_('Last name'))
     birth_date = models.DateField(null=True, blank=True, verbose_name=_('Date of birth'))
     image = models.ImageField(upload_to='uploads/teams/%Y/%m/%d/players/', null=True, blank=True, verbose_name=_('Player photo'))
     lichess = models.CharField(max_length=200, null = True, blank=True, verbose_name=_('Lichess ID'))
@@ -31,7 +31,8 @@ class Player(models.Model):
         verbose_name_plural = _('Players')
 
     def __str__(self):
-        return "{} {}".format(self.name, self.surename)
+        if self.surename: return "{} {}".format(self.name, self.surename)
+        else: return self.name
     
     
 class PlayerCustomFields(models.Model):
@@ -75,8 +76,8 @@ class League(models.Model):
 
 class Schedule(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
-    round = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Round'))
-    date = models.DateTimeField(default=now, verbose_name=_('Date'))
+    round = models.IntegerField(null=True, blank=True, verbose_name=_('Round'))
+    date = models.DateTimeField(verbose_name=_('Date'), blank=True, null=True)
     pgn  = models.TextField(null = True, blank=True)
     white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'))
     black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'))
@@ -84,7 +85,7 @@ class Schedule(models.Model):
         choices=(RESULTS),
         default=3
     )
-    lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'))
+    lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'), blank=True)
 
     class Meta:
         verbose_name = _('Game')
