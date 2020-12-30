@@ -3,9 +3,12 @@ import lichess.api
 import fidetournament.tournament
 import os
 
-lichess_token = os.environ['LICHESS_TOKEN']#'2LearXaxmENFzfVv'
-session = berserk.TokenSession(lichess_token)
-client = berserk.Client(session = session)
+if 'LICHESS_TOKEN' in os.environ:
+    lichess_token = os.environ['LICHESS_TOKEN']
+    session = berserk.TokenSession(lichess_token)
+    client = berserk.Client(session = session)
+else:
+    client = berserk.Client()
 
 import chess.pgn
 import datetime
