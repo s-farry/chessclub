@@ -4,11 +4,12 @@ from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField
 from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER
+from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm
 from django.utils import timezone
 from django.urls import resolve
 
 from datetime import datetime
-
+from .utils import get_arena_games, get_swiss_games, get_game
 
 
 def get_parent_object_from_request(self, request):
@@ -142,8 +143,16 @@ class StandingsInline(admin.TabularInline):
 
 
 
+from functools import update_wrapper
+from django.contrib import admin
+from django.contrib.admin import ModelAdmin
+from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
 
-class LeagueAdmin(admin.ModelAdmin):
+class LeagueAdmin(ModelAdmin):
+    change_form_template = 'change_form.html'
+    manage_view_template = 'manage_form.html'
     inlines = [
         #StandingsInline, 
         ScheduleInline,
@@ -162,6 +171,115 @@ class LeagueAdmin(admin.ModelAdmin):
         standings_save(obj)
         standings_update(obj)
 
+    
+    def get_urls(self):
+        from django.conf.urls import url
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, **kwargs)
+            return update_wrapper(wrapper, view)
+
+        info = self.model._meta.app_label, self.model._meta.model_name
+
+        urls = [url(r'^(.+)/manage/$', wrap(self.manage_view),name='%s_%s_manage' % info)]
+        super_urls = super(LeagueAdmin, self).get_urls()
+
+        return urls + super_urls
+    
+    def manage_view(self, request, id ):
+        opts = League._meta
+        arena_form = LichessArenaForm()
+        swiss_form = LichessSwissForm()
+        game_form = LichessGameForm()
+        obj = League.objects.get(pk=id)
+        ngames = 0
+        if request.POST:
+            games = {}
+            if request.POST.get('lichess_arena_id') is not None:
+                games.update(get_arena_games(request.POST.get('lichess_arena_id')))
+            if request.POST.get('lichess_swiss_id') is not None:
+                games.update(get_swiss_games(request.POST.get('lichess_swiss_id')))
+            if request.POST.get('lichess_game_id') is not None:
+                games.update(get_game(request.POST.get('lichess_game_id')))
+            for g,v in games.items():
+                if len(Schedule.objects.filter(lichess=g)) > 0:
+                    schedule = Schedule.objects.filter(lichess=g)[0]
+                    if schedule.league != obj:
+                        self.message_user(request,'Game between %s and %s is in %s, changing to %s'%(v['white'],v['black'],schedule.league,obj))
+                        schedule.league = obj
+                        schedule.save()
+                    else :
+                        self.message_user(request,'Game between %s and %s is already in the database'%(v['white'],v['black']))
+                    continue
+                white = Player.objects.filter(lichess=v['white'])
+                black = Player.objects.filter(lichess=v['black'])
+                if len(white) == 0:
+                    self.message_user(request,'Player %s is not in the database, skipping game' %(v['white']))
+                    continue
+                if len(black) == 0:
+                    self.message_user(request,'Player %s is not in the database, skipping game' %(v['black']))
+                    continue
+                if white[0] not in obj.players.all():
+                    self.message_user(request, 'Warning: Player %s is in the database but not the league' %(v['white']))
+                if black[0] not in obj.players.all():
+                    self.message_user(request, 'Warning: Player %s is in the database but not the league' %(v['black']))
+                schedule = Schedule(league=obj,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
+                if 'pgn' in v.keys():
+                    schedule.pgn = v['pgn']
+                schedule.save()
+                ngames+=1
+            if ngames + nchanges > 0 :
+                standings_save(obj)
+                standings_update(obj)
+
+            self.message_user(request, 'added %i games to %s'%(ngames + changes,obj))
+
+        if not self.has_change_permission(request, obj):
+            raise PermissionDenied
+
+        # do cool management stuff here
+
+        preserved_filters = self.get_preserved_filters(request)
+        form_url = request.build_absolute_uri()
+        form_url = request.META.get('PATH_INFO', None)
+
+        form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+        context = {
+            'title': 'Manage %s' % obj,
+            'has_change_permission': self.has_change_permission(request, obj),
+            'opts': opts,
+            #'errors': form.errors,
+            'app_label': opts.app_label,
+            'original': obj,
+            'form_url' : form_url,
+            'arena_form' : arena_form,
+            'swiss_form' : swiss_form,
+            'game_form' : game_form
+        }
+
+        return render(request, self.manage_view_template, context)
+
+'''
+class LeagueAdmin(admin.ModelAdmin):
+    inlines = [
+        #StandingsInline, 
+        ScheduleInline,
+    ]
+    prepopulated_fields = {'slug': ('name', 'season',), }
+    actions=['update_standings']
+    def update_standings(self,request,queryset):
+        for obj in queryset:
+            standings_save(obj)
+            standings_update(obj)
+            self.message_user(request, "league standings updated")
+
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        form.save_m2m()
+        standings_save(obj)
+        standings_update(obj)
+'''
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
