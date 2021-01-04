@@ -35,7 +35,7 @@ def get_tournaments(user):
 def get_pgn(game):
     client = get_client()
     return client.games.export(game, as_pgn=True)
-    del(client)ß
+    del(client)
 
 def game2dict(g, pgn=''):
     toReturn = {}
