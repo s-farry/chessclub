@@ -3,12 +3,6 @@ import lichess.api
 import fidetournament.tournament
 import os
 
-if 'LICHESS_TOKEN' in os.environ:
-    lichess_token = os.environ['LICHESS_TOKEN']
-    session = berserk.TokenSession(lichess_token)
-    client = berserk.Client(session = session)
-else:
-    client = berserk.Client()
 
 import chess.pgn
 import datetime
@@ -19,14 +13,29 @@ import requests
 import io
 import dateutil.parser
 
+def get_client():
+    if 'LICHESS_TOKEN' in os.environ:
+        lichess_token = os.environ['LICHESS_TOKEN']
+        session = berserk.TokenSession(lichess_token)
+        client = berserk.Client(session = session)
+    else:
+        client = berserk.Client()
+    return client
+
 def get_players(club):
+    client = get_client()
     return [ m['id'] for m in client.teams.get_members(club) ]
+    del(client)
 
 def get_tournaments(user):
+    client = get_client()
     return [ t['id'] for t in client.tournaments.stream_by_creator(user) if 'wallasey' in t['fullName'].lower() ]
+    del(client)
 
 def get_pgn(game):
+    client = get_client()
     return client.games.export(game, as_pgn=True)
+    del(client)ß
 
 def game2dict(g, pgn=''):
     toReturn = {}
