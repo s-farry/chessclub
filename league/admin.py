@@ -193,6 +193,7 @@ class LeagueAdmin(ModelAdmin):
         game_form = LichessGameForm()
         obj = League.objects.get(pk=id)
         ngames = 0
+        nchanges = 0
         if request.POST:
             games = {}
             if request.POST.get('lichess_arena_id') is not None:
@@ -208,6 +209,7 @@ class LeagueAdmin(ModelAdmin):
                         self.message_user(request,'Game between %s and %s is in %s, changing to %s'%(v['white'],v['black'],schedule.league,obj))
                         schedule.league = obj
                         schedule.save()
+                        nchanges += 1
                     else :
                         self.message_user(request,'Game between %s and %s is already in the database'%(v['white'],v['black']))
                     continue
@@ -232,7 +234,7 @@ class LeagueAdmin(ModelAdmin):
                 standings_save(obj)
                 standings_update(obj)
 
-            self.message_user(request, 'added %i games to %s'%(ngames + changes,obj))
+            self.message_user(request, 'added %i games to %s'%(ngames + nchanges,obj))
 
         if not self.has_change_permission(request, obj):
             raise PermissionDenied

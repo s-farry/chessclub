@@ -59,6 +59,7 @@ def get_game(game_id):
     return game2dict(g, pgn=pgn)
 
 def get_arena_games(tournament_id):
+    client = get_client()
     games = client.tournaments.export_games(tournament_id)
     toReturn = {}
     for g in games:
