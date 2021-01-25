@@ -34,6 +34,6 @@ class event(models.Model):
     location = models.CharField(max_length=200, blank = True, null = True)
 
     def name(self):              # __unicode__ on Python 2
-        return "%s" % (self.title)
+        return "%s - %s" % (self.title)
     def __str__(self):              # __unicode__ on Python 2
-        return "%s" % (self.title)
+        return "%s - %s, %s" % (self.title,self.date.date(), self.date.time())

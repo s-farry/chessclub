@@ -90,3 +90,15 @@ def get_swiss_games(t):
     wrapper = io.TextIOWrapper(pgn_bytes, encoding='utf-8')
     games.update(get_games_from_pgn(wrapper))
     return games
+
+def create_arena_event(name, d, time=5, increment=3, duration=90):
+    client = get_client()
+    epoch = datetime.datetime(1970, 1, 1, 0, 0, 0, tzinfo = timezone('UTC'))
+    date = d.replace(tzinfo = timezone('Europe/London'))
+    date = date.replace(hour=19,minute=30, second=0)
+    timestamp = int((date -epoch).total_seconds())*1000
+
+    tournament = client.tournaments.create(time, increment, duration, name=name,
+            berserkable=True, rated=True, start_date=timestamp, conditions={ 'teamMember' : {'teamId' : 'wallasey-chess-club'}})
+    del(client)
+    return tournament
