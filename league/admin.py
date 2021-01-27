@@ -112,21 +112,22 @@ class ScheduleInline(admin.TabularInline):
 
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        league = League.objects.get(id=resolve(request.path_info).kwargs['object_id'])
-        if league is not None:
-            # for ease of adding in the django admin, make it so that only
-            # the players in the league are visible
-            players = [p.pk for p in league.players.all()]
-            # but... need this in case someone is not in the league but has
-            # already played, maybe they should be added to the league automatically
+        if 'object_id' in kwargs:
+            league = League.objects.get(id=resolve(request.path_info).kwargs['object_id'])
+            if league is not None:
+                # for ease of adding in the django admin, make it so that only
+                # the players in the league are visible
+                players = [p.pk for p in league.players.all()]
+                # but... need this in case someone is not in the league but has
+                # already played, maybe they should be added to the league automatically
             
-            games = Schedule.objects.filter(league = league.pk)
-            for g in games:
-                if g.white.pk not in players:
-                    players += [ g.white.pk ]
-                if g.black not in players:
-                    players += [ g.black.pk]
-            kwargs["queryset"] = Player.objects.filter(pk__in = players)
+                games = Schedule.objects.filter(league = league.pk)
+                for g in games:
+                    if g.white.pk not in players:
+                        players += [ g.white.pk ]
+                    if g.black not in players:
+                        players += [ g.black.pk]
+                kwargs["queryset"] = Player.objects.filter(pk__in = players)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class StandingsInline(admin.TabularInline):
