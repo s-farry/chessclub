@@ -116,17 +116,17 @@ class ScheduleInline(admin.TabularInline):
         if league is not None:
             # for ease of adding in the django admin, make it so that only
             # the players in the league are visible
-            players = league.players.all()
+            players = [p.pk for p in league.players.all()]
             # but... need this in case someone is not in the league but has
             # already played, maybe they should be added to the league automatically
+            
             games = Schedule.objects.filter(league = league.pk)
             for g in games:
-                if g.white not in players:
-                    # must be an easier way of adding to query!
-                    players |= Player.objects.filter(pk = g.white.pk)
+                if g.white.pk not in players:
+                    players += [ g.white.pk ]
                 if g.black not in players:
-                    players |= Player.objects.filter(pk = g.black.pk)
-            kwargs["queryset"] = players
+                    players += [ g.black.pk]
+            kwargs["queryset"] = Player.objects.filter(pk__in = players)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class StandingsInline(admin.TabularInline):
