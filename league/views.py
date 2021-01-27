@@ -172,11 +172,15 @@ def fixtures(request, league, **kwargs):
     else:
         # no rounds, let's organise by date instead
         #games_display['rounds'] = False
-        for d in dates:
-            games_date = games.filter(date__date = d).order_by('date')
-            games_display[d] = games_date
-        today = datetime.datetime.today().date()
-        latest = max([d for f in dates if d < today])
+        if len(dates) > 0:
+            for d in dates:
+                games_date = games.filter(date__date = d).order_by('date')
+                games_display[d] = games_date
+            today = datetime.datetime.today().date()
+            latest = max([d for f in dates if d < today])
+        else:
+            games_display[0] = games
+            latest = 0
 
     #let's get the standings now
     order = STANDINGS_ORDER[l.standings_order][1]
