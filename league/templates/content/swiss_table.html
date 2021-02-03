@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load league_tags %}
+{% load user_agents %}
+
+        <table class="table table-striped table-hover league-table">
+           <thead>
+            <tr>
+               {% if request|is_mobile %}
+               <th class="num text-center">{% trans "" %}</th>
+               <th>{% trans "Player" %}</th>
+               <th class="num text-center">{% trans "Score" %}</th>
+               {% else %}
+               <th class="num text-center"></th>
+               <th>{% trans "Player" %}</th>
+               <th class="num text-center">{% trans "Rating" %}</th>
+                {% for r in rounds %}
+                <th class="num text-center">{{r}}</th>
+                {% endfor %}
+                {% endif %}
+                <th class="num text-center">{% trans "Score" %}</th>
+            </tr>
+           </thead>
+           <tbody>
+    {% for player in standings %}
+        <tr>
+            <td>{{player.position}}</td>
+            <td><a href="{% url 'player' player.player.id %}">{{player.player}}</a></td>
+            {% if not request|is_mobile %}
+            <td class="text-center">{% if player.rating and player.rating > 0 %}{{player.rating}} {% else %} - {% endif %}</td>
+            {% for r in player.form %}
+            <td class="text-center">
+            {% if r == 'W' %}
+            1
+            {% elif r == 'D' %}
+            0,5
+            {% elif r == 'L' %}
+            0
+            {% endif %}
+            {% endfor %}
+            </td>
+            {% endif %}
+            <td class="text-center">{{player.points}}</td>
+            </td>
+        </tr>
+    {% endfor %}
+
+               </tbody>
+        </table>

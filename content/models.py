@@ -13,6 +13,9 @@ class Puzzle(models.Model):
     
 # Create your models here.
 class news(models.Model):
+    class Meta:
+        verbose_name_plural = "News"
+
     title = models.CharField(max_length = 200, default = "Feature")
     text = models.CharField(max_length = 10000)
     synopsis = models.CharField(max_length = 1000, default = '', null=True, blank=True)

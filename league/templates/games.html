@@ -33,12 +33,12 @@
                 {% if match.white == player %}
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">W</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}&#189;-&#189; {% elif match.result == 1 %} 1-0 {% elif match.result == 2 %} 0-1 {% else %} - {% endif %}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}D {% elif match.result == 1 %} W {% elif match.result == 2 %} L {% else %} - {% endif %}</a></td>
                 {% else %}
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">B</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}
-                  &#189;-&#189; {% elif match.result == 1 %} 0-1 {% elif match.result == 2 %} 1-0 {% else %} - {% endif %}</a></td>
+                  D {% elif match.result == 1 %} L {% elif match.result == 2 %} W {% else %} - {% endif %}</a></td>
                   {% endif %}
             </tr>
     {% endfor %}

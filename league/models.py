@@ -3,18 +3,32 @@ from django.utils.translation import ugettext_lazy as _
 from smart_selects.db_fields import ChainedManyToManyField, ChainedForeignKey, GroupedForeignKey
 from django.utils.timezone import now
 
+from django.db.models import Q
 
 STANDINGS_ORDER_HUMAN = (
     (0, _('Points, Wins, Lost')), 
     (1, _('Points, Score')), 
 )
 STANDINGS_ORDER = (
-    (0, ('-points', '-win', 'lost')), 
+    (0, ('-points', '-win', 'lost','-rating','player__surename')), 
     (1, ('-points',)), 
 )
 RESULTS = (
     (0, '1/2-1/2',), (1,'1-0'), (2,'0-1'), (3,'-')
 )
+TOURNAMENT_FORMATS = (
+    (0, 'League',), (1,'Swiss'), (2,'Round Robin'),
+)
+POINTS = (
+    (0, 0), (1,0.5), (2,1), (3, 2), (4,3),
+)
+
+from tinymce.widgets import TinyMCE
+
+class MyMCEField(models.CharField):
+    def __init__(self, *args, **kwargs):
+        super(models.CharField, self).__init__(*args, **kwargs)
+        self.widget = TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00"})
 
 
 class Player(models.Model):
@@ -24,7 +38,7 @@ class Player(models.Model):
     image = models.ImageField(upload_to='uploads/teams/%Y/%m/%d/players/', null=True, blank=True, verbose_name=_('Player photo'))
     lichess = models.CharField(max_length=200, null = True, blank=True, verbose_name=_('Lichess ID'))
     ecf = models.CharField(max_length=7, null = True, blank=True, verbose_name=_('ECF Grading Ref'))
-    grade = models.IntegerField(default = 0, null = True, blank=True, verbose_name=_('ECF Grade'))
+    rating = models.IntegerField(default = 0, null = True, blank=True, verbose_name=_('Rating'))
 
     class Meta:
         verbose_name = _('Player')
@@ -54,6 +68,7 @@ class Season(models.Model):
 class League(models.Model):
     name = models.CharField(max_length=200, null=False, verbose_name=_('Name'))
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    description = models.CharField(max_length = 10000, blank = True, null = True)
     slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
     players = models.ManyToManyField(Player, blank=True, related_name='players', verbose_name=_('Players'))
     updated_date = models.DateTimeField()
@@ -61,10 +76,19 @@ class League(models.Model):
         choices=(STANDINGS_ORDER_HUMAN),
         default=0
     )
-    win_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for win'))
-    lost_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for loss'))
-    draw_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for draw'))
+    win_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for win'), choices = (POINTS))
+    lost_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for loss'), choices = (POINTS))
+    draw_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for draw'), choices = (POINTS))
+    format = models.IntegerField(default = 0, choices=(TOURNAMENT_FORMATS))
 
+    '''
+    def formfield(self, **kwargs):
+        # This is a fairly standard way to set up some defaults
+        # while letting the caller override them.
+        defaults = {'description': MyMCEField}
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+    '''
     class Meta:
         verbose_name = _('League')
         verbose_name_plural = _('Leagues')
@@ -72,15 +96,20 @@ class League(models.Model):
     def __str__(self):
         return "{0} {1}".format(self.name, self.season)        
         
-
+    def get_rounds(self):
+        games = Schedule.objects.filter(league=self)
+        return list(set(g.round for g in games))
+    def get_completed_rounds(self):
+        games = Schedule.objects.filter((~Q(result=3)) & Q(league = self))
+        return list(set(g.round for g in games))
 
 class Schedule(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
     round = models.IntegerField(null=True, blank=True, verbose_name=_('Round'))
-    date = models.DateTimeField(verbose_name=_('Date'), blank=True, null=True)
+    date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
     pgn  = models.TextField(null = True, blank=True)
-    white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'))
-    black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'))
+    white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'), null = True, blank = True)
+    black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'), null = True, blank = True)
     result = models.IntegerField(verbose_name=_('result'),
         choices=(RESULTS),
         default=3
@@ -110,7 +139,8 @@ class Standings(models.Model):
     lost = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Lost'))
     draws = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Draw'))
     points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points'))
-    form = models.CharField(max_length=5,null=True)
+    form = models.CharField(max_length=50,null=True)
+    rating = models.IntegerField(null = True, blank = True, verbose_name=('Rating'))
 
     def __str__(self):
         return "{0} {1}".format(self.league, self.player)

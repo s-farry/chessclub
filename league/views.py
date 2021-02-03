@@ -38,7 +38,7 @@ class TeamRoster(ListView):
             season = Season.objects.all()[0]
         season_pk = season.pk
         season_name = season.name
-        qs = self.model.objects.filter(seasons=season_pk).order_by('-grade')
+        qs = self.model.objects.filter(seasons=season_pk).order_by('-rating')
 
         return qs
 
@@ -56,11 +56,14 @@ class StandingsFull(ListView):
         if self.kwargs.get('league'):
             league = League.objects.get(slug=self.kwargs['league'])
             league_pk = league.pk
+            league_format = league.format
             league_name = ": {} {}".format(league.season.name, league.name)
             last_updated = league.updated_date
         
+
         context['last_updated'] = last_updated
         context['table_name'] = league_name
+        context['league_format'] = league_format
         context['slug'] = self.kwargs.get('league')
         
         return context
@@ -157,7 +160,7 @@ def fixtures(request, league, **kwargs):
     rounds = set([ g.round for g in games if g.round != None])
     dates = sorted(set([ g.date.date() for g in games if g.date != None]))
     games_display = {}
-    useRounds = (len(rounds) > 1)
+    useRounds = (len(rounds) > 0)
     if useRounds:
         latest = list(rounds)[0]
         for r in rounds:
@@ -177,7 +180,8 @@ def fixtures(request, league, **kwargs):
                 games_date = games.filter(date__date = d).order_by('date')
                 games_display[d] = games_date
             today = datetime.datetime.today().date()
-            latest = max([d for f in dates if d < today])
+            prev_dates = [d for d in dates if d < today]
+            latest = max(prev_dates) if len(prev_dates) > 0 else dates[0]
         else:
             games_display[0] = games
             latest = 0
@@ -185,7 +189,6 @@ def fixtures(request, league, **kwargs):
     #let's get the standings now
     order = STANDINGS_ORDER[l.standings_order][1]
     standing = Standings.objects.filter(league=l).order_by(*order)
-
     return render(request, 'fixtures.html', {'games': games_display, 'useRounds' : useRounds, 'latest' : latest, 'standings' : standing, 'league' : l })
 
 

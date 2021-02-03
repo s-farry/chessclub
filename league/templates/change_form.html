@@ -4,7 +4,11 @@
 {% block object-tools-items %}
 <li>
     {% url opts|admin_urlname:'manage' original.pk|admin_urlquote as manage_url %}
+    {% url opts|admin_urlname:'create_round' original.pk|admin_urlquote as create_round_url %}
+
     <a href="{% add_preserved_filters manage_url %}" class="historylink">{% trans "Manage" %}</a>
+    <a href="{% add_preserved_filters create_round_url %}" class="historylink">{% trans "Create Round" %}</a>
+
 </li>
 {{ block.super }}
 {% endblock %}

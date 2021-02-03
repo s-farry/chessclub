@@ -100,5 +100,5 @@ if __name__ == "__main__":
         if grade:
             grade = grade.json()
             print(grade['revised_rating'])
-            p.grade = grade['revised_rating']
+            p.rating = grade['revised_rating']
             p.save()

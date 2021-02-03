@@ -7,7 +7,8 @@
 <div class="text-center">
 <h1>{{league.name}}</h1> <h2>{{league.season.name}}</h2>
 </div>
-<div class='text-center m-3'><a class="page-link" href="#" onclick="openTable(event)"><i class="fas fa-table"></i> Table</a> | <a class="page-link" href="#" onclick="openFixtures(event)"><i class="fas fa-list"></i> Fixtures</a>|<a class="page-link" href="{% url 'league_index' %}"><i class="fas fa-chess-board"></i> All Leagues</a></div>
+<div class='text-center m-3'><a class="page-link" href="#" onclick="openTable(event)"><i class="fas fa-table"></i> Table</a> | <a class="page-link" href="#" onclick="openFixtures(event)"><i class="fas fa-list"></i> Fixtures</a><!-- <a class="page-link" href="{% url 'league_index' %}"><i class="fas fa-chess-board"></i> All Leagues</a>-->
+  {% if league.description %}|<a class="page-link" href="#" onclick="openDetails(event)"><i class="fas fa-info-circle"></i> Details</a> {% endif %}</div>
 
 
 <div class = "col-md-8 ml-auto mr-auto d-none" id="league_fixtures">
@@ -62,9 +63,20 @@
 
 <div class = "col-md-8 ml-auto mr-auto d-none" id = "league_table">
   {% if standings %}
-      {% include 'content/full_table.html' with standings=standings %}
+      {% if league.format == 1 %}
+        {% include 'content/swiss_table.html' with standings=standings rounds=league.get_completed_rounds league=league %}
+      {% else %}
+        {% include 'content/full_table.html' with standings=standings %}
+      {% endif %}
   {% endif %} 
 </div>
+
+<div class = "col-md-8 ml-auto mr-auto d-none" id = "league_details">
+  {% if league.description %}
+  {{league.description|safe}}
+  {% endif %} 
+</div>
+
 
 
 Last updated on {{ league.updated_date }}
@@ -95,6 +107,10 @@ function openRound(e, round, roundText) {
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
+  // there needs to be a check in here to make sure
+  // the round exists, otherwise there's some 
+  // odd behaviour very occasionally later in the same session
+  // if a round has been deleted
   document.getElementById(round).style.display = "block";
   currentRound = round;
   document.getElementById('round-current').innerText=roundText;
@@ -116,27 +132,58 @@ function next(e){
 function openTable(e){
   var fixtures = document.getElementById("league_fixtures");
   var table = document.getElementById("league_table");
+  var details = document.getElementById("league_details");
+
   if (table.classList.contains("d-none")) table.classList.remove("d-none");
   if (!fixtures.classList.contains("d-none")) fixtures.classList.add("d-none");
+  if (!details.classList.contains("d-none")) details.classList.add("d-none");
+
   sessionStorage.setItem('showFixtures',false);
+  sessionStorage.setItem('showTable',true);
+  sessionStorage.setItem('showDetails',false);
 }
+function openDetails(e){
+  var fixtures = document.getElementById("league_fixtures");
+  var table = document.getElementById("league_table");
+  var details = document.getElementById("league_details");
+
+  if (details.classList.contains("d-none")) details.classList.remove("d-none");
+  if (!fixtures.classList.contains("d-none")) fixtures.classList.add("d-none");
+  if (!table.classList.contains("d-none")) table.classList.add("d-none");
+  sessionStorage.setItem('showFixtures',false);
+  sessionStorage.setItem('showTable',false);
+  sessionStorage.setItem('showDetails',true);
+
+}
+
 function openFixtures(e){
   var fixtures = document.getElementById("league_fixtures");
   var table = document.getElementById("league_table");
+  var details = document.getElementById("league_details");
+
   if (!table.classList.contains("d-none")) table.classList.add("d-none");
   if (fixtures.classList.contains("d-none")) fixtures.classList.remove("d-none");
+  if (!details.classList.contains("d-none")) details.classList.add("d-none");
+
   sessionStorage.setItem('showFixtures',true);
+  sessionStorage.setItem('showTable',false);
+  sessionStorage.setItem('showDetails',false);
 }
 
 window.onload = function(e){
   var showFixtures = window.sessionStorage.getItem('showFixtures');
   var showRound = window.sessionStorage.getItem('showRound');
+  var showDetails = window.sessionStorage.getItem('showDetails');
+
   var showRoundText = window.sessionStorage.getItem('showRoundText');
   var showLeague = window.sessionStorage.getItem('showLeague');
   if (showFixtures == "true" && showLeague == "{{league}}"){
     openFixtures(e);
   }
-  else{
+  else if (showDetails == "true"){
+    openDetails(e);
+  }
+  else {
     openTable(e);
   }
   if (showRound && showRoundText && showLeague == "{{league}}"){

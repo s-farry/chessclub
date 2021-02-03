@@ -1,39 +1,48 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_urls admin_modify %}
-<!--
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ app_label|capfirst|escape }}</a>
-&rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
-&rsaquo; {% trans 'Manage' %} {{ original|truncatewords:"18" }}
+  {{block.super}}
 </div>
 {% endblock %}
--->
-{% block extrastyle %}
 
+{% block extrastyle %}
 <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css"/>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/global.css"/>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/widgets.css"/>
 {% endblock %}
 {% block extrahead %}
-
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="/static/admin/js/core.js"></script>
 <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="/static/admin/js/core.js"></script>
-{{ event_form.media }}
+{{ form.media }}
 {% endblock %}
 {% block content %}
-
 <div>
+
+  {% url 'admin:league_league_change' original.pk|admin_urlquote as league_url %}
+  {% if pairs|length > 0 %}
   <form action="{{ form_url }}" method="post">
     {% csrf_token %}
-    {{ event_form.as_p }}
-    <input type="submit" value="Create">
+    {% for p in pairs %}
+    {{round}} {{p.0}} v {{p.1}} <br>
+    {% endfor %}  
+    <input type="hidden" value="{{date}}" name="date">
+    <input type="hidden" value="{{time}}" name="time">
+    <input type="hidden" value="{{round}}" name="round">
+    <input type="submit" value="Create Games" name="create_swiss_games">
   </form>
-
+  {% else %}
+  <form action="{{ form_url }}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Create New Round" name = "create_swiss_round">
+  </form>
+  {% endif %}
+  <p>Go back to <a href="{{league_url}}">{{original}}</a></p>
 </div>
+
 {% endblock %}

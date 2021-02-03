@@ -4,11 +4,15 @@
 {% block title %}{% trans "Standings" %}{{ table_name }}{% endblock %}
 {% block content %}
 <article id="league-{{ slug }}" class="news">
-    <h1>{% trans "Standings" %}{{ table_name }}</h1>
+    <h1>{% trans "Standings" %}{{ table_name }} </h1>
     <hr />
     <div class = "col-md-8 ml-auto mr-auto">
     {% if standings %}
+        {% if league_format == 1 %}
+        {% include 'content/swiss_table.html' with standings=standings,rounds=rounds %}
+        {% else %}
         {% include 'content/full_table.html' with standings=standings %}
+        {% endif %}
     {% endif %} 
 </div>
 Last updated on {{ last_updated }}

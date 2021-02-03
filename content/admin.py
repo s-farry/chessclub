@@ -40,7 +40,6 @@ class EventAdmin(admin.ModelAdmin):
         if request.POST:
             date = request.POST.get('datetime_0')
             time = request.POST.get('datetime_1')
-            print(date,time)
             tournament_datetime = datetime.datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
             tournament = create_arena_event(request.POST.get('name'), tournament_datetime, time = request.POST.get('time'), increment = request.POST.get('increment'),
             duration = request.POST.get('duration'))
