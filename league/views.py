@@ -161,6 +161,7 @@ def fixtures(request, league, **kwargs):
     dates = sorted(set([ g.date.date() for g in games if g.date != None]))
     games_display = {}
     useRounds = (len(rounds) > 0)
+    latest = None
     if useRounds:
         latest = list(rounds)[0]
         for r in rounds:
@@ -182,9 +183,6 @@ def fixtures(request, league, **kwargs):
             today = datetime.datetime.today().date()
             prev_dates = [d for d in dates if d < today]
             latest = max(prev_dates) if len(prev_dates) > 0 else dates[0]
-        else:
-            games_display[0] = games
-            latest = 0
 
     #let's get the standings now
     order = STANDINGS_ORDER[l.standings_order][1]
