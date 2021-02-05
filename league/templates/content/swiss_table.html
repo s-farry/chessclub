@@ -5,14 +5,10 @@
         <table class="table table-striped table-hover league-table">
            <thead>
             <tr>
-               {% if request|is_mobile %}
                <th class="num text-center">{% trans "" %}</th>
                <th>{% trans "Player" %}</th>
-               <th class="num text-center">{% trans "Score" %}</th>
-               {% else %}
-               <th class="num text-center"></th>
-               <th>{% trans "Player" %}</th>
                <th class="num text-center">{% trans "Rating" %}</th>
+                {% if not request|is_mobile %}
                 {% for r in rounds %}
                 <th class="num text-center">{{r}}</th>
                 {% endfor %}
@@ -25,8 +21,8 @@
         <tr>
             <td>{{player.position}}</td>
             <td><a href="{% url 'player' player.player.id %}">{{player.player}}</a></td>
-            {% if not request|is_mobile %}
             <td class="text-center">{% if player.rating and player.rating > 0 %}{{player.rating}} {% else %} - {% endif %}</td>
+            {% if not request|is_mobile %}
             {% for r in player.form %}
             <td class="text-center">
             {% if r == 'W' %}

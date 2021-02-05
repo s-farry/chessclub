@@ -11,16 +11,16 @@
 <h1 class = "mt-4">Internal Leagues</h1>
 <hr>
 <br>
-<div class='col-md-7 ml-auto mr-auto card bg-black rounded-top px-0'>
-    <div class='card-header bg-gold'><h1>{{season.name}}</h1></div>
-<div class='card-body text-white'>
+<div class='col-md-7 ml-auto mr-auto card rounded-top px-0'>
+    <div class='card-header'><h1>{{season.name}}</h1></div>
+<div class='card-body'>
     <ul>
 {% for league in leagues %}
 <li class='my-2'> <a class="page-link" href = "{% url 'league' league.slug %}">{{league.name}}</a> </li>
 {% endfor %}
 </ul>
 </div>
-<div class="card-footer bg-gold"></div>
+<div class="card-footer"></div>
 </div>
 {% endblock %}
 }

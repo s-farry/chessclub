@@ -1,16 +1,29 @@
 {% extends 'base.html' %}
 {% block title %}{{ page_name }}{% endblock %}
+{% load static %}
 
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-{% for season,leagues in games.items %}
 
 <h1>{% if page_name %}{{ page_name }}{% else %} {{player}} {% endif %}</h1>
+{% if player.image %}
+<img src = "{player.image}">
+{% else %}
+<img src = "{% static 'img/blank-profile-picture-973460_1280.png' %}" width="10%">
+{% endif %}
+{% if player.rating %}
+<p>ECF Rating: {{player.rating}}</p>
+{% endif %}
+{% if player.ecf %}
+<p><img src = "{% static 'img/ecf.jpeg' %}" width="40px"> <a href = "https://www.ecfrating.org.uk/v2/new/list_games_player.php?player_no={{player.ecf}}">{{player.ecf}}</a></p>
+{% endif %}
+{% if player.lichess %}
+<p><img src = "{% static 'img/lichess.png' %}" width="40px"> <a href = "https://lichess.org/@/{{player.lichess}}">{{player.lichess}}</a></p>
+{% endif %}
+<!--
 <hr />
-<h2> Profile </h2>
-<hr />
-
+{% for season,leagues in games.items %}
 <h2> Games </h2>
 <article id="league-{{ slug }}-player" class="news">
     <div class = "col-md-7 ml-auto mr-auto text-center">
@@ -49,6 +62,8 @@
             {% endfor %}
 
           </div>
+        
 </article>
 <hr />
+-->
 {% endblock %}

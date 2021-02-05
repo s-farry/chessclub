@@ -18,7 +18,6 @@ class TeamRoster(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
         else:
-            print('getting last season')
             season = Season.objects.all().last()
         season_pk = season.pk
         season_name = ": {} {}".format(season.name, season.name)
