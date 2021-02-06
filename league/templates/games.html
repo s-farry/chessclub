@@ -45,11 +45,11 @@
                 <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.date %}{{match.date.date}}{% endif %}</a></td>
                 {% if match.white == player %}
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.black}}</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">W</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">&#9812;</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}D {% elif match.result == 1 %} W {% elif match.result == 2 %} L {% else %} - {% endif %}</a></td>
                 {% else %}
                 <td class="text-center"><a href="{% url 'game' match.id %}">{{match.white}}</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">B</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">&#9818;</a></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}
                   D {% elif match.result == 1 %} L {% elif match.result == 2 %} W {% else %} - {% endif %}</a></td>
                   {% endif %}

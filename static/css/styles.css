@@ -39,7 +39,7 @@
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --top-height:50px;
+  --top-height:100px;
   --sidebar-width:180px;
   --main-font-family:"Raleway", sans-serif;
 }
@@ -3907,6 +3907,15 @@ input[type=button].btn-block {
   }
 }
 
+a {
+  color:inherit;
+  text-decoration: underline;
+}
+a:hover, a:focus {
+  text-decoration: none;
+  font-weight:bold;
+}
+
 .nav {
   display: flex;
   flex-wrap: wrap;
@@ -3918,6 +3927,7 @@ input[type=button].btn-block {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
+  text-decoration:none;
 }
 .nav-link:hover, .nav-link:focus {
   text-decoration: none;
@@ -4033,7 +4043,13 @@ input[type=button].btn-block {
   position: static;
   float: none;
 }
-
+.navbar li{
+  padding-left:0.5rem;
+  padding-right:0.5rem;
+}
+.navbar li:hover{
+  background-color:rgba(255,255,255,0.1);
+}
 .navbar-text {
   display: inline-block;
   padding-top: 0.5rem;
@@ -5580,8 +5596,7 @@ a.close.disabled {
   }
 }
 @media (min-width: 992px) {
-  .modal-lg,
-.modal-xl {
+  .modal-lg,.modal-xl {
     max-width: 800px;
   }
 }
@@ -7377,7 +7392,7 @@ button.bg-dark:focus {
   position: sticky !important;
 }
 
-.fixed-top, .sb-nav-fixed #layoutSidenav #layoutSidenav_nav, .sb-nav-fixed .sb-topnav {
+.fixed-top, .sb-nav-fixed #layoutSidenav #layoutSidenav_nav, .sb-nav-fixed #layoutTopnav #layoutTopnav_nav, .sb-nav-fixed .sb-topnav {
   position: fixed;
   top: 0;
   right: 0;
@@ -10050,7 +10065,7 @@ body {
   min-width: 0;
 }
 
-#layoutSidenav {
+#layoutSidenav #layoutTopnav {
   display: flex;
 }
 #layoutSidenav #layoutSidenav_nav {
@@ -10071,6 +10086,21 @@ body {
   min-height: calc(100vh - var(--top-height));
   /*margin-left: calc(-var(--sidebar-width));*/
   margin-left:-185px;
+}
+
+
+#layoutTopnav #layoutTopnav_content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  flex-grow: 1;
+  width:80%;
+  min-width:900px;
+  min-height: calc(100vh - var(--top-height));
+  margin-left:auto;
+  margin-right:auto;
 }
 
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
@@ -10132,6 +10162,13 @@ body {
   top: var(--top-height);
 }
 
+.sb-nav-fixed #layoutTopnav #layoutTopnav_content {
+  padding-left:0;
+  padding-right:0;
+  top: var(--top-height);
+}
+
+
 #layoutError {
   display: flex;
   flex-direction: column;
@@ -10158,6 +10195,11 @@ body {
   padding-left: 0;
   height: var(--top-height);
   z-index: 1039;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  flex-direction:column;
+  flex-wrap:none;
 }
 .sb-topnav .navbar-brand {
   width: var(--sidebar-width);
@@ -10283,8 +10325,13 @@ div .puzzle{
 
 @media (min-width: 992px) {
 div .puzzle{width:calc(400px);}
+.sb-topnav{flex-direction:row;}
+.navbar-logo{height:calc(var(--top-height) - 2.0em);}
+.sb-topnav {height:calc(var(--top-height) - 2.0em);}
+.sb-nav-fixed #layoutTopnav #layoutTopnav_content {
+  top:calc(var(--top-height) - 2.0em);
 }
-
+}
 
 #logo{width:100px;}
 
@@ -10330,7 +10377,7 @@ td a {
 
 
 .navbar-logo{
-  height:calc(var(--top-height)-0.5rem);
+  height:calc(var(--top-height) - 4.0em);
 }
 
 h1{text-transform:uppercase;font-size:2.0rem;}
@@ -10364,6 +10411,7 @@ h2{text-transform:uppercase;font-size:1.5rem;}
 .news-item img{
   float:left;
   margin:0.5rem;
+  width:80px;
 }
 
 .table a:hover{
