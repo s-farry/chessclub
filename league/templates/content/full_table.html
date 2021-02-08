@@ -34,7 +34,7 @@
             <td class="text-center">{{player.win}}</td>
             <td class="text-center">{{player.draws}}</td>            
             <td class="text-center">{{player.lost}}</td>
-            <td class="text-center">{{player.points}}</td>
+            <td class="text-center">{{ player.points|floatformat:0 }}</td>
             {% if not request|is_mobile %}
             <td class="text-center form">
                 {% for r in player.form %}
