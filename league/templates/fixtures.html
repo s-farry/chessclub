@@ -64,7 +64,7 @@
 <div class = "col-md-8 ml-auto mr-auto d-none" id = "league_table">
   {% if standings %}
       {% if league.format == 1 %}
-        {% include 'content/swiss_table.html' with standings=standings rounds=league.get_completed_rounds league=league %}
+        {% include 'content/swiss_table.html' with standings=standings rounds=league.get_rounds league=league %}
       {% else %}
         {% include 'content/full_table.html' with standings=standings %}
       {% endif %}
