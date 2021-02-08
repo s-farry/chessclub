@@ -164,7 +164,7 @@ def fixtures(request, league, **kwargs):
     if useRounds:
         latest = list(rounds)[0]
         for r in rounds:
-            games_round = games.filter(round=r).order_by('date')
+            games_round = games.filter(Q(round=r) & ~Q(black=None) & ~Q(white=None)).order_by('date')
             games_display[r] = games_round
             #now find which round to show, the last complete one
             ncomplete = 0

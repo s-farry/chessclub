@@ -25,15 +25,17 @@
             {% if not request|is_mobile %}
             {% for r in player.form %}
             <td class="text-center">
-            {% if r == 'W' %}
-            1
-            {% elif r == 'D' %}
-            0,5
-            {% elif r == 'L' %}
-            0
-            {% endif %}
-            {% endfor %}
+                {% if r == 'W' %}
+                1
+                {% elif r == 'D' %}
+                0,5
+                {% elif r == 'L' %}
+                0
+                {% elif r == 'P' %}
+                -
+                {% endif %}
             </td>
+            {% endfor %}
             {% endif %}
             <td class="text-center">{{player.points}}</td>
             </td>

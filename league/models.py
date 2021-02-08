@@ -138,7 +138,7 @@ class Standings(models.Model):
     win = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won'))
     lost = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Lost'))
     draws = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Draw'))
-    points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points'))
+    points = models.FloatField(null=True, blank=False, default=0, verbose_name=_('Points'))
     form = models.CharField(max_length=50,null=True)
     rating = models.IntegerField(null = True, blank = True, verbose_name=('Rating'))
 

@@ -17,7 +17,7 @@ from tinymce.widgets import TinyMCE
 from swissdutch.dutch import DutchPairingEngine
 from swissdutch.constants import FideTitle, Colour, FloatStatus
 from swissdutch.player import Player as PairingPlayer
-import random, operator
+import random, operator, copy
 
 def get_last_round(league):
     '''
@@ -44,62 +44,103 @@ def get_last_round(league):
             round_games = games.filter(round=r)
             for game in round_games:
                 if game.result == 3: continue
-                white = paired_players[game.white]
-                black = paired_players[game.black]
+                if game.black == None:
+                    #white has received a bye
+                    white = paired_players[game.white]
+                    white._colour_hist += (Colour.none,)
+                    white._opponents += (0,)
+                    if game.result == 0:
+                        white._score += league.draw_points
+                    elif game.result == 1:
+                        white._score += league.win_points
+                    elif game.result == 2:
+                        white._score += league.lost_points
 
-                white._colour_hist += (Colour.white,)
-                black._colour_hist += (Colour.black,)
-                white._opponents += (black.pairing_no,)
-                black._opponents += (white.pairing_no,)
+                elif game.white == None:
+                    #black has received a bye
+                    black = paired_players[game.black]
+                    black._colour_hist += (Colour.none,)
+                    black._opponents += (0,)
+                    if game.result == 0:
+                        black._score += league.draw_points
+                    elif game.result == 1:
+                        black._score += league.lost_points
+                    elif game.result == 2:
+                        black._score += league.win_points
 
-                # reset all prevs to none
-                if white._float_status == FloatStatus.downPrev:
-                    white._float_status = FloatStatus.none
-                if white._float_status == FloatStatus.upPrev:
-                    white._float_status = FloatStatus.none
-                if black._float_status == FloatStatus.downPrev:
-                    black._float_status = FloatStatus.none
-                if black._float_status == FloatStatus.upPrev:
-                    black._float_status = FloatStatus.none
+                else:
+                    white = paired_players[game.white]
+                    black = paired_players[game.black]
+
+                    white._colour_hist += (Colour.white,)
+                    black._colour_hist += (Colour.black,)
+                    white._opponents += (black.pairing_no,)
+                    black._opponents += (white.pairing_no,)
+
+                    # reset all prevs to none
+                    if white._float_status == FloatStatus.downPrev:
+                        white._float_status = FloatStatus.none
+                    if white._float_status == FloatStatus.upPrev:
+                        white._float_status = FloatStatus.none
+                    if black._float_status == FloatStatus.downPrev:
+                        black._float_status = FloatStatus.none
+                    if black._float_status == FloatStatus.upPrev:
+                        black._float_status = FloatStatus.none
 
 
-                # set all up or downs to prevup and prevdown
-                if white._float_status == FloatStatus.down:
-                    white._float_status = FloatStatus.downPrev
-                if white._float_status == FloatStatus.up:
-                    white._float_status = FloatStatus.upPrev
-                if black._float_status == FloatStatus.down:
-                    black._float_status = FloatStatus.downPrev
-                if black._float_status == FloatStatus.up:
-                    black._float_status = FloatStatus.upPrev
+                    # set all up or downs to prevup and prevdown
+                    if white._float_status == FloatStatus.down:
+                        white._float_status = FloatStatus.downPrev
+                    if white._float_status == FloatStatus.up:
+                        white._float_status = FloatStatus.upPrev
+                    if black._float_status == FloatStatus.down:
+                        black._float_status = FloatStatus.downPrev
+                    if black._float_status == FloatStatus.up:
+                        black._float_status = FloatStatus.upPrev
                 
 
-                # based on current scores before round, so do before
-                # modifying scores
-                if white.score > black.score:
-                    white._float_status=FloatStatus.down
-                    black._float_status=FloatStatus.up
-                elif white.score < black.score:
-                    white._float_status=FloatStatus.up
-                    black._float_status=FloatStatus.down
+                    # based on current scores before round, so do before
+                    # modifying scores
+                    if white.score > black.score:
+                        white._float_status=FloatStatus.down
+                        black._float_status=FloatStatus.up
+                    elif white.score < black.score:
+                        white._float_status=FloatStatus.up
+                        black._float_status=FloatStatus.down
 
-                if game.result == 0:
-                    white._score += league.draw_points
-                    black._score += league.draw_points
-                elif game.result == 1:
-                    white._score += league.win_points
-                    black._score += league.lost_points
-                elif game.result == 2:
-                    white._score += league.lost_points
-                    black._score += league.win_points
+                    if game.result == 0:
+                        white._score += league.draw_points
+                        black._score += league.draw_points
+                    elif game.result == 1:
+                        white._score += league.win_points
+                        black._score += league.lost_points
+                    elif game.result == 2:
+                        white._score += league.lost_points
+                        black._score += league.win_points
                   
     return paired_players
 
 
-def get_next_round(round_no, engine, last_round):
-    paired_players = engine.pair_round(round_no, tuple(last_round.values()))
-    ivd = {v.pairing_no: k for k, v in last_round.items()}
-    next_round = { ivd[pp.pairing_no].pk : pp for pp in paired_players }
+def get_next_round(round_no, engine, last_round = False, byes = None):
+    bye_players = []
+    to_pair = copy.copy(last_round)
+    if byes:
+        for b in byes:
+            bye_players += [ [b,to_pair.pop(b)] ]
+
+    # use name as the inverse dictionary key to avoid possibility of pairing numer
+    # being changed, e.g. first round
+    ivd = {v.name: k for k, v in last_round.items()}
+
+    paired_players = engine.pair_round(round_no, tuple(to_pair.values()), last_round = last_round)
+    
+    next_round = { ivd[pp.name].pk : pp for pp in paired_players }
+    for b in bye_players:
+        b[1]._colour_hist += (Colour.none,)
+        b[1]._opponents   += (0,)
+        # to avoid any issue with non unique pairing numbers
+        b[1].pairing_no = -1 * b[1].pairing_no
+        next_round[b[0].pk] = b[1]
     return next_round
 
 def get_pairs(paired_players):
@@ -112,14 +153,22 @@ def get_pairs(paired_players):
             opponent = Player.objects.get(pk = ivd[pp.opponents[-1]])
             pairs += ((player,opponent),)
             id_pairs += ((p, ivd[pp.opponents[-1]]),)
+        elif pp.opponents[-1] == 0:
+            player = Player.objects.get(pk = p)
+            pairs += ((player,None),)
+            id_pairs += ((p,0),)
     return pairs, id_pairs
 
 def create_games_from_id_pairs(league, round_no, pairs, date):
     games = []
     for p in pairs:
         player = Player.objects.get(pk = p[0])
-        opponent = Player.objects.get(pk = p[1])
-        games += [ Schedule(league=league,round = round_no,white=player,black=opponent, date = date) ]
+        opponent = None
+        if p[1] != 0:
+            opponent = Player.objects.get(pk = p[1])
+        g = Schedule(league=league,round = round_no,white=player,black=opponent, date = date)
+        if opponent == None : g.result = 0
+        games += [ g ]
     return games
 
 def create_games_from_pairs(league, round_no, pairs, date):
@@ -255,49 +304,53 @@ def standings_update(instance):
             form = ''
             player = standing.player
             player_schedule = Schedule.objects.filter(~Q(result=3) & (Q(white=player) | Q(black=player)), league = instance.pk).order_by('-date')
-
+            nrounds = len(instance.get_rounds())
             for i,match in enumerate(player_schedule):
                 matches += 1
                 if match.white == player:
                     if match.result == 1 :
-                        if (instance.get_type_display() == "Swiss" and i < 20) or i < 5:
+                        if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'W' + form
                         wins += 1
                         points += instance.get_win_points_display()
                     elif match.result == 2 :
                         lost += 1
-                        if (instance.get_type_display() == "Swiss" and i < 20) or i < 5:
+                        if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'L' + form
                         points += instance.get_lost_points_display()
                     else:
                         draws += 1
-                        if (instance.get_type_display() == "Swiss" and i < 20) or i < 5:
+                        if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'D' + form
                         points += instance.get_draw_points_display()
 
                 if match.black == player:
                     if match.result == 2 :
-                        if (instance.get_type_display() == "Swiss" and i < 20) or i < 5:
+                        if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'W' + form
                         wins += 1
                         points += instance.get_win_points_display()
                     elif match.result == 1 :
-                        if (instance.get_type_display() == "Swiss" and i < 20) or i < 5:
+                        if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'L' + form
                         lost += 1
                         points += instance.get_lost_points_display()
-                    else:
+                    elif match.result == 0:
                         draws += 1
-                        if (instance.get_type_display() == "Swiss" and i < 20) or i < 5:
+                        if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'D' + form
                         points += instance.get_draw_points_display()
 
+            standing.form = form
+            # if we're in a Swiss, paired rounds should also be added as P
+            if instance.get_format_display() == "Swiss":
+                while len(standing.form) < nrounds:
+                    standing.form = standing.form+'P'
             standing.points = points
             standing.win = wins
             standing.lost = lost
             standing.draws = draws
             standing.matches = matches
-            standing.form = form
             standing.save()
         standings_position_update(instance)
 
@@ -492,7 +545,7 @@ class LeagueAdmin(ModelAdmin):
         opts = League._meta
         obj = League.objects.get(pk=id)
         form = RoundForm()
-
+        form.fields['byes'].queryset = obj.players
         preserved_filters = self.get_preserved_filters(request)
         form_url = request.build_absolute_uri()
         form_url = request.META.get('PATH_INFO', None)
@@ -516,11 +569,12 @@ class LeagueAdmin(ModelAdmin):
             date = request.POST.get('date')
             time = request.POST.get('time')
             round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
-            print('round_date',round_date)
             roundno = request.POST.get('round')
             games = create_games_from_id_pairs(obj, roundno, id_pairs, round_date)
             for g in games:
-                self.message_user(request, '%s will play %s'%(g.white, g.black))
+                if g.white == None: self.message_user(request, '%s will get a bye'%(g.black))
+                if g.black == None: self.message_user(request, '%s will get a bye'%(g.white))
+                else: self.message_user(request, '%s will play %s'%(g.white, g.black))
                 g.save()
 
 
@@ -542,7 +596,12 @@ class LeagueAdmin(ModelAdmin):
                 if len(rounds) > 0 : next_round_no = rounds[-1] + 1
                 engine  = DutchPairingEngine()
                 last_round = get_last_round(obj)
-                next_round = get_next_round(next_round_no, engine, last_round)
+                byes = []
+                if request.POST.get('byes'):
+                    for p in request.POST.get('byes'):
+                        player = Player.objects.get( id = p)
+                        byes += [ player ]
+                next_round = get_next_round(next_round_no, engine, last_round, byes = byes )
                 pairs, id_pairs = get_pairs(next_round)
                 context['pairs'] = pairs
                 context['round'] = next_round_no
