@@ -5,7 +5,7 @@ from .models import Player
 class RoundForm(forms.Form):
     datetime = forms.DateTimeField(label='Date for Next Round', widget = widgets.AdminSplitDateTime, )
     last_round = forms.BooleanField(label='Last Round', initial = False, required = False)
-    byes    = forms.ModelMultipleChoiceField( label = 'Byes', queryset = Player.objects.all() )
+    byes    = forms.ModelMultipleChoiceField( required = False, label = 'Byes', queryset = Player.objects.all() )
 
 class LichessArenaForm(forms.Form):
     lichess_arena_id = forms.CharField(label='Lichess Arena ID', max_length=100)

@@ -38,24 +38,25 @@ def get_pgn(game):
     del(client)
 
 def game2dict(g, pgn=''):
-    toReturn = {}
     if 'pgn' == '' and pgn in g.keys():
         pgn = g['pgn']
     result = 0
     if 'winner' in g.keys():
         if g['winner'] == 'white' : result = 1
         if g['winner'] == 'black' : result = 2
-    toReturn[g['id']] = { 'white' : g['players']['white']['user']['id'], 'black' : g['players']['black']['user']['id'], 'result' : result, 'date' : g['createdAt'], 'pgn' : pgn}
+    toReturn = { 'white' : g['players']['white']['user']['id'], 'black' : g['players']['black']['user']['id'], 'result' : result, 'date' : g['createdAt'], 'pgn' : pgn}
     return toReturn
 
 
 def get_game(game_id):
+    client = get_client()
     g = client.games.export(game_id)
     pgn=''
     if 'pgn' in g.keys():
         pgn = g['pgn']
     else: 
         pgn = get_pgn(game_id)
+    del(client)
     return game2dict(g, pgn=pgn)
 
 def get_arena_games(tournament_id):
@@ -63,7 +64,7 @@ def get_arena_games(tournament_id):
     games = client.tournaments.export_games(tournament_id)
     toReturn = {}
     for g in games:
-        toReturn.update(game2dict(g))
+        toReturn.update({g['id'] : game2dict(g)})
     return toReturn
 
 def get_games_from_pgn(pgn):

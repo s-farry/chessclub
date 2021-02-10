@@ -10579,7 +10579,8 @@ var pgnBase = function (boardId, configuration) {
             if (that.configuration.width || that.configuration.boardSize) {
                 let size = that.configuration.width ? that.configuration.width : that.configuration.boardSize;
                 boardAndDiv.style.display = 'grid';
-                boardAndDiv.style.gridTemplateColumns = size + ' 40px';
+                boardAndDiv.style.gridTemplateColumns = size + ' 10px';
+                divBoard.style.paddingLeft = '5px';
                 successDiv.style.position = 'absolute'
                 successDiv.style.width = size;
                 successDiv.style.height = size;

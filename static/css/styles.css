@@ -10,6 +10,13 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+html {
+  font-family: sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -39,7 +46,7 @@
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --top-height:100px;
+  --top-height:7rem;
   --sidebar-width:180px;
   --main-font-family:"Raleway", sans-serif;
 }
@@ -51,12 +58,20 @@
 }
 
 html {
-  font-family: sans-serif;
-  line-height: 1.15;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-size: 12px;
 }
 
+@media (min-width: 900px) {
+  html{
+    font-size: 14px;
+  }
+}
+    
+ @media (min-width: 1200px) {
+   html{
+    font-size: 16px;
+  }
+}
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
@@ -10096,13 +10111,15 @@ body {
   justify-content: space-between;
   min-width: 0;
   flex-grow: 1;
+  min-height: calc(100vh - var(--top-height));
+}
+
+#layoutTopnav #layoutTopnav_content main{
   width:80%;
   min-width:900px;
-  min-height: calc(100vh - var(--top-height));
   margin-left:auto;
   margin-right:auto;
 }
-
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
   transform: translateX(0);
 }
@@ -10335,9 +10352,7 @@ div .puzzle{width:calc(400px);}
 
 #logo{width:100px;}
 
-.wcc_logo, #wcc_logo{background-color:black;padding:0.5rem;width:100%;max-width:700px;}
-
-#banner{width:100%;max-width:700px;}
+#wcc_logo{width:80%;}
 
 td a { 
   display: block; 
@@ -10425,7 +10440,7 @@ h2{text-transform:uppercase;font-size:1.5rem;}
   max-width:calc(100%-400px);
 }
 .min-width-chess{
-  min-width:300px;
+  min-width:400px;
 }
 .close{
   opacity:0.0;

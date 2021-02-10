@@ -145,6 +145,9 @@ class Standings(models.Model):
     def __str__(self):
         return "{0} {1}".format(self.league, self.player)
 
+    def swiss_points(self):
+        return ("%.1f"%(self.points)).replace('.',',')
+
     class Meta:
         ordering = STANDINGS_ORDER[0][1]
         unique_together = ('league', 'player')

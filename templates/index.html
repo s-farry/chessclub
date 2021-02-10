@@ -10,14 +10,14 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<div class = "row py-1">
-<div class = "col mr-4">
+<div class = "row">
+<div class = "col mr-3">
     <div class = "row">
-        <!--<div class = "text-center" id = "wcc_logo"><img class="wcc_logo" src="{% static 'img/wcc_logo.png' %}"></div>-->
-        <div class="text-center pb-2 w-100 py-1 position-relative">
-            <img src = "{% static 'img/chess-2.jpg' %}" id="banner">
+        <!--
+        <div>
+            <img src = "{% static 'img/chess-2.jpg' %}">
         </div>
-
+    -->
         <div class = "header"><i class="fas fa-chess-knight"></i> About Us</div>
         <div class = "news-body">
         Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and we have teams playing against other clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone! New members are always welcome so please get in touch or just come down to the club one evening.
@@ -29,15 +29,12 @@
         </div>
         {% for n in news %}
             <div class = "news-item">
-                <div class = "news-header">
-                    {{n.title}}
-                </div>
+                <div class = "news-header">{{n.title}}</div>
                 <div class = "news-body">
                     {% if n.image %}
                     <img src="{{ n.image.url }}">
                     {% endif %}
-                    
-      {{ n.text|safe|truncatewords:"150" }}<a href="{% url 'news' %}">read more</a>
+                    {{ n.text|safe|truncatewords:"150" }}<a href="{% url 'news' %}">read more</a>
                 </div>
                 <div class = "news-footer">
                     Published on {{n.published_date}}
@@ -46,23 +43,24 @@
         {% endfor %}
     </div>
 </div>
+
 <div class = "col-md-4 min-width-chess">
     <div class = "row">
-            <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>
-
+        <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>
             {% for puzzle in puzzles %}
-            <div class = "d-flex justify-content-center news-body">
-               <div id="board" class='merida zeit'></div>
-            </div>
+                <div class = "d-flex justify-content-center news-body">
+                    <div id="board" class='merida zeit'></div>
+                </div>
                 <a class="page-link" href = "{% url 'puzzles' %}">More Puzzles >></a>
-            <script>
-                var pgn = `{{puzzle.pgn|safe}}`;
-            var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
-            var board = pgnTactic('board', cfg);
-
-            </script> 
+                
+                <script>
+                    var pgn = `{{puzzle.pgn|safe}}`;
+                    var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
+                    var board = pgnTactic('board', cfg);
+                </script> 
+            
             {% endfor %}
-        </div>
+    </div>
     <div class = "row">
         <div class = "header"><i class="fas fa-calendar-alt"></i> Club Calendar</div>
             <div class = "calendar">
@@ -80,7 +78,4 @@
             </div>
 </div>
 </div>
-<!--
-<img src = "{% static 'img/banner-chess.jpg' %}" class="w-75">
--->
 {% endblock %}

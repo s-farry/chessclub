@@ -6,8 +6,9 @@ from django.forms import TextInput, Textarea, IntegerField, CharField
 from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER, POINTS
 from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm
 from django.utils import timezone
-from django.urls import resolve
+from django.urls import resolve, reverse
 from django import forms
+from django.utils.safestring import mark_safe
 
 from datetime import datetime
 from .utils import get_arena_games, get_swiss_games, get_game
@@ -18,6 +19,15 @@ from swissdutch.dutch import DutchPairingEngine
 from swissdutch.constants import FideTitle, Colour, FloatStatus
 from swissdutch.player import Player as PairingPlayer
 import random, operator, copy
+from django.forms import BaseInlineFormSet
+
+class LimitModelFormset(BaseInlineFormSet):
+    """ Base Inline formset to limit inline Model query results. """
+    def __init__(self, *args, **kwargs):
+        super(LimitModelFormset, self).__init__(*args, **kwargs)
+        _kwargs = {self.fk.name: kwargs['instance']}
+        self.queryset = kwargs['queryset'].filter(**_kwargs).order_by('-id')[:20]
+
 
 def get_last_round(league):
     '''
@@ -358,12 +368,22 @@ def standings_update(instance):
 class ScheduleInline(admin.TabularInline):
     model = Schedule
     fields = ('round','date','white','black','result')
-    max_num=100
     formfield_overrides = {
         models.IntegerField: {'widget': TextInput(attrs={'style':'width: 20px;'})},
     }
+    formset = LimitModelFormset
+    max_num = 25
+    extra = 5
 
+    def get_extra (self, request, obj=None, **kwargs):
+        """Dynamically sets the number of extra forms. 0 if the related object
+        already exists or the extra configuration otherwise."""
+        if obj:
+            # Don't add any extra forms if the related object already exists.
+            return 0
+        return self.extra
 
+    
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if 'object_id' in kwargs:
             league = League.objects.get(id=resolve(request.path_info).kwargs['object_id'])
@@ -381,7 +401,7 @@ class ScheduleInline(admin.TabularInline):
                         players += [ g.black.pk]
                 kwargs["queryset"] = Player.objects.filter(pk__in = players)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
+    
 class StandingsInline(admin.TabularInline):
     model = Standings
 
@@ -398,7 +418,7 @@ class StandingsInline(admin.TabularInline):
         return None
     ordering = ('position', '-points')
     exclude = ('matches', 'win', 'lost', 'draws', 'score', 'score_lost')
-    max_num=0
+    max_num=3
     actions = []
     readonly_fields = ('player',)
     fields = ('points', 'position')
@@ -424,6 +444,7 @@ class LeagueAdminForm(forms.ModelForm):
             'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',})
         }
 
+
 class LeagueAdmin(ModelAdmin):
     change_form_template = 'change_form.html'
     manage_view_template = 'manage_form.html'
@@ -434,8 +455,13 @@ class LeagueAdmin(ModelAdmin):
         ScheduleInline,
     ]
 
+    def link(self, obj):
+        url = reverse('league',args = {obj.slug})
+        return mark_safe("<a href='%s'>Go</a>" % url)
+
     prepopulated_fields = {'slug': ('name', 'season',), }
     actions=['update_standings']
+    list_display = ('name','link')
     def update_standings(self,request,queryset):
         for obj in queryset:
             standings_save(obj)
@@ -615,34 +641,80 @@ class LeagueAdmin(ModelAdmin):
         return render(request, self.create_round_template, context)
 
 
-'''
-class LeagueAdmin(admin.ModelAdmin):
-    inlines = [
-        #StandingsInline, 
-        ScheduleInline,
-    ]
-    prepopulated_fields = {'slug': ('name', 'season',), }
-    actions=['update_standings']
-    def update_standings(self,request,queryset):
-        for obj in queryset:
-            standings_save(obj)
-            standings_update(obj)
-            self.message_user(request, "league standings updated")
-
-    def save_model(self, request, obj, form, change):
-        obj.save()
-        form.save_m2m()
-        standings_save(obj)
-        standings_update(obj)
-'''
-
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
     list_filter = ('name',)
 
 
 class ScheduleAdmin(admin.ModelAdmin):
+    change_form_template = 'change_form.html'
+    manage_view_template = 'manage_game_form.html'
+
     list_filter = ('league',)
+
+    def get_urls(self):
+        from django.conf.urls import url
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, **kwargs)
+            return update_wrapper(wrapper, view)
+
+        info = self.model._meta.app_label, self.model._meta.model_name
+        urls = [url(r'^(.+)/manage/$', wrap(self.manage_view),name='%s_%s_manage' % info)]
+        super_urls = super(ScheduleAdmin, self).get_urls()
+        return urls + super_urls
+
+
+    def manage_view(self, request, id ):
+        opts = Schedule._meta
+        game_form = LichessGameForm()
+        obj = Schedule.objects.get(pk=id)
+        if request.POST:
+            if request.POST.get('lichess_game_id') is not None:
+                game_id = request.POST.get('lichess_game_id')
+                game = get_game(game_id)
+                print(game)
+                white = obj.white
+                black = obj.black
+                if game['white'] != obj.white.lichess:
+                    self.message_user(request,'Note that lichess id %s does not correspond to current player %s' %(game['white'],obj.white))
+                if game['black'] != obj.black.lichess:
+                    self.message_user(request,'Note that lichess id %s does not correspond to current player %s' %(game['black'],obj.black))
+                obj.lichess = game_id
+                obj.date = game['date']
+                obj.result = game['result']
+                if 'pgn' in game.keys():
+                    obj.pgn = game['pgn']
+                obj.save()
+                standings_save(obj.league)
+                standings_update(obj.league)
+
+            self.message_user(request, 'added lichess details to %s'%(obj))
+
+        if not self.has_change_permission(request, obj):
+            raise PermissionDenied
+
+        # do cool management stuff here
+
+        preserved_filters = self.get_preserved_filters(request)
+        form_url = request.build_absolute_uri()
+        form_url = request.META.get('PATH_INFO', None)
+
+        form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+        context = {
+            'title': 'Manage %s' % obj,
+            'has_change_permission': self.has_change_permission(request, obj),
+            'opts': opts,
+            #'errors': form.errors,
+            'app_label': opts.app_label,
+            'original': obj,
+            'form_url' : form_url,
+            'game_form' : game_form
+        }
+
+        return render(request, self.manage_view_template, context)
+    
 
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)
