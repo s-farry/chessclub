@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_modify %}
+{% block content %}
+{% url 'admin:league_schedule_change' original.pk|admin_urlquote as schedule_url %}
+<div>
+  <form action="{{ form_url }}" method="post">
+    {% csrf_token %}
+    {{ game_form }}
+    <input type="submit" value="Add">
+  </form>
+
+  <p>Go back to <a href="{{schedule_url}}">{{original}}</a></p>
+</div>
+{% endblock %}
