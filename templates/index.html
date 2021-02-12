@@ -11,71 +11,78 @@
 {% load league_tags %}
 {% block content %}
 <div class = "row">
-<div class = "col mr-3">
-    <div class = "row">
-        <!--
-        <div>
-            <img src = "{% static 'img/chess-2.jpg' %}">
-        </div>
-    -->
-        <div class = "header"><i class="fas fa-chess-knight"></i> About Us</div>
-        <div class = "news-body">
-        Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and we have teams playing against other clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone! New members are always welcome so please get in touch or just come down to the club one evening.
-        </div>
-    </div>
-    <div class = "row">
-        <div class = "header">
-            <i class="fas fa-rss"></i> Latest News
-        </div>
-        {% for n in news %}
-            <div class = "news-item">
-                <div class = "news-header">{{n.title}}</div>
-                <div class = "news-body">
-                    {% if n.image %}
-                    <img src="{{ n.image.url }}">
-                    {% endif %}
-                    {{ n.text|safe|truncatewords:"150" }}<a href="{% url 'news' %}">read more</a>
-                </div>
-                <div class = "news-footer">
-                    Published on {{n.published_date}}
-                </div>
+    <div class = "col mr-3">
+        <div class = "row">
+            <!--
+            <div>
+                <img src = "{% static 'img/chess-2.jpg' %}">
             </div>
-        {% endfor %}
+            -->
+        <div class = "header"><i class="fas fa-chess-knight"></i> About Us</div>
+            <div class = "news-body">
+                Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and we have teams playing against other clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone! New members are always welcome so please get in touch or just come down to the club one evening.
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "header">
+                <i class="fas fa-rss"></i> Latest News
+            </div>
+            {% for n in news %}
+                <div class = "news-item">
+                    <div class = "news-header">{{n.title}}</div>
+                    <div class = "news-body">
+                        {% if n.image %}
+                        <img src="{{ n.image.url }}">
+                        {% endif %}
+                        {{ n.text|safe|truncatewords:"150" }}<a href="{% url 'news' %}">read more</a>
+                    </div>
+                    <div class = "news-footer">
+                        Published on {{n.published_date}}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
 
-<div class = "col-md-4 min-width-chess">
-    <div class = "row">
-        <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>
-            {% for puzzle in puzzles %}
+    <div class = "col-md-4">
+        <div class = "row">
+            <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>
                 <div class = "d-flex justify-content-center news-body">
                     <div id="board" class='merida zeit'></div>
                 </div>
                 <a class="page-link" href = "{% url 'puzzles' %}">More Puzzles >></a>
-                
-                <script>
-                    var pgn = `{{puzzle.pgn|safe}}`;
-                    var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', };
-                    var board = pgnTactic('board', cfg);
-                </script> 
+        </div>
+        <div class = "row">
+            <div class = "header"><i class="fas fa-calendar-alt"></i> Club Calendar</div>
             
-            {% endfor %}
-    </div>
-    <div class = "row">
-        <div class = "header"><i class="fas fa-calendar-alt"></i> Club Calendar</div>
             <div class = "calendar">
                 {% if events|length == 0 %}
                 No events scheduled at the moment. Check back later!
                 {% endif %}
-        {% for event in events %}
-        <div class = "calendar-event">
-            <table class = "calendar-event mr-2">
-            <tr><td class = "calendar-day"> {{event.date|date:'D'}} </td><td class="px-2"> <a class="event-link" {% if event.link %} href = "{{event.link}}" {% endif %}>{{event.title}}</a> </td></tr>
-            <tr><td class = "calendar-month"> {{event.date|date:'d-M'}} </td><td class = "px-2"> {% if event.location %} {{event.location}}, {% endif %}{{event.date|date:'H:i'}}</td></tr>
-            </table>
-        </div>
-        {% endfor %}
+                {% for event in events %}
+                <div class = "calendar-event">
+                    <table class = "calendar-event mr-2">
+                        <tr><td class = "calendar-day"> {{event.date|date:'D'}} </td><td class="px-2"> <a class="event-link" {% if event.link %} href = "{{event.link}}" {% endif %}>{{event.title}}</a> </td></tr>
+                        <tr><td class = "calendar-month"> {{event.date|date:'d-M'}} </td><td class = "px-2"> {% if event.location %} {{event.location}}, {% endif %}{{event.date|date:'H:i'}}</td></tr>
+                    </table>
+                </div>
+                {% endfor %}
             </div>
+        
+        </div>
+    </div>
 </div>
-</div>
+<script>
+    {% for puzzle in puzzles %}
+    window.addEventListener("load", function() {
+    var board = document.getElementById('board');
+    var width = board.parentNode.parentElement.offsetWidth;
+    console.log('width is',width);
+    var pgn = `{{puzzle.pgn|safe}}`;
+    var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', 'width' : toString(width)+'px' };
+    var board = pgnTactic('board', cfg);
+    {% endfor %}
+}
+    )
+</script> 
 {% endblock %}

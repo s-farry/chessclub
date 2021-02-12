@@ -38,7 +38,7 @@ def get_pgn(game):
     del(client)
 
 def game2dict(g, pgn=''):
-    if 'pgn' == '' and pgn in g.keys():
+    if pgn == '' and pgn in g.keys():
         pgn = g['pgn']
     result = 0
     if 'winner' in g.keys():
