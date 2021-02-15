@@ -10166,7 +10166,7 @@ var pgnBase = function (boardId, configuration) {
         }
     }
     if (hasMode('tactic') ){
-      if (game.turn() == 'w') that.configuration.position='white';
+      if (game.turn() == 'w') that.configuration.orientation='white';
       else that.configuration.orientation='black';
     }
 
@@ -10578,9 +10578,15 @@ var pgnBase = function (boardId, configuration) {
             }
             if (that.configuration.width || that.configuration.boardSize) {
                 let size = that.configuration.width ? that.configuration.width : that.configuration.boardSize;
+                // S.F. let's leave 10px either side to help centre it
+                let padding = "10px";
+                let new_size = parseInt(size) - 2*parseInt(padding);
+                // and update the size minus the padding for when the Chessground board size is set
+                that.configuration.width = new_size.toString() + "px";
+                that.configuration.height = new_size.toString() + "px";
                 boardAndDiv.style.display = 'grid';
-                boardAndDiv.style.gridTemplateColumns = size + ' 10px';
-                divBoard.style.paddingLeft = '5px';
+                boardAndDiv.style.gridTemplateColumns = new_size.toString() + 'px ' + padding;
+                divBoard.style.paddingLeft = padding;
                 successDiv.style.position = 'absolute'
                 successDiv.style.width = size;
                 successDiv.style.height = size;

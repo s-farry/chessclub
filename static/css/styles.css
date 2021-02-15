@@ -1960,6 +1960,7 @@ pre code {
   background-color: rgba(255, 255, 255, 0.075);
 }
 
+
 .league-table thead{
   background-color: rgba(0,0,0,1.0);
   color: white;
@@ -10126,6 +10127,7 @@ body {
 #layoutTopnav #layoutTopnav_content main{
   margin-left:auto;
   margin-right:auto;
+  width:100%;
 }
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
   transform: translateX(0);
