@@ -76,10 +76,10 @@ class EventAdmin(admin.ModelAdmin):
 class NewsAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
     text = forms.CharField(max_length= 10000, widget = TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}), label='News')
-    synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '10', 'cols' : '90'}))
+    #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ('title', 'synopsis', 'text', 'image')
+        fields = ('title', 'text', 'image')
         model = news
 
 class NewsAdmin(admin.ModelAdmin):

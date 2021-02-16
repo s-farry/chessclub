@@ -34,11 +34,12 @@
                         {% if n.image %}
                         <img src="{{ n.image.url }}">
                         {% endif %}
-                        {{ n.text|safe|truncatewords:"150" }}<a href="{% url 'news' %}">read more</a>
+                        {{ n.text|safe|truncatewords:"150" }}{%if n.text|wordcount > 120 %}<a href="{% url 'news' %}">read more</a>{% endif %}
                     </div>
                     <div class = "news-footer">
                         Published on {{n.published_date}}
                     </div>
+                    <hr>
                 </div>
             {% endfor %}
         </div>

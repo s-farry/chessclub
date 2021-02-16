@@ -2742,6 +2742,8 @@ div.buttons > i.button, div.edit > i.button {
     border-radius: 4px;
 }
 
+div.buttons{font-size:3em;}
+
 div.buttons > i.button.selected, div.edit > i.button.selected, .nagMenu.selected {
     color: #fff;
     background-color: #71a0df;

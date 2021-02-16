@@ -18,10 +18,12 @@
     <hr />
 </article>
 {% if game.pgn %}
+<div class = "ml-auto mr-auto">
 <div id="board" class='merida zeit'></div>
+</div>
 <script>
-    var pgn = `{{ game.noclk_pgn|safe }}`;
-    var cfg = { pgn : pgn, locale : 'en', position: 'start', showCoords: true, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', timerTime: '', width: '400px', layout: 'top', movesWidth: '400px', movesHeight: '400px', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', startPlay: '', hideMovesBefore: false, notation: 'short', };
+    var pgn = `{{ game.clean_pgn|safe }}`;
+    var cfg = { pgn : pgn, locale : 'en', position: 'start', showCoords: true, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', timerTime: '', width: '400px', layout: 'top', movesWidth: '400px', movesHeight: '200px', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', startPlay: '', hideMovesBefore: false, notation: 'short', };
     var board = pgnEdit('board', cfg);
     </script>
 {% endif %}

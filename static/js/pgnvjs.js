@@ -10370,7 +10370,7 @@ var pgnBase = function (boardId, configuration) {
 
       var correctMove = that.mypgn.getMove(next);
 
-      onSnapEnd(from,to,meta);
+      await onSnapEnd(from,to,meta);
 
       if (!that.solved) {
 
@@ -10380,7 +10380,7 @@ var pgnBase = function (boardId, configuration) {
           var move = that.mypgn.getMove(new_cur);
           var nextnext = move.next;
           // if we've made the correct move go one forward and mark solved
-          if (correctMove && correctMove.from == primMove.from && correctMove.to == primMove.to){
+          if (correctMove && correctMove.from == move.from && correctMove.to == move.to && correctMove.notation.promotion == move.notation.promotion ){
             // okay we've made the correct move, let's see if there's another one
             if (nextnext) { 
               // move forward to that
@@ -10392,12 +10392,9 @@ var pgnBase = function (boardId, configuration) {
               // let's not edit it any more
               board.set({
                 //movable: Object.assign({}, board.state.movable, {free: false })
-                //movable : { free : false}
+                movable : { 'free' : false},
                 viewOnly : true
               });
-
-
-              board.set({movable: {'free' : false }})
               // flash a success to the user
               var boardNotification = document.getElementById(boardId+"Notification");
               if (boardNotification)  popInOut(boardNotification, "");
@@ -10440,9 +10437,10 @@ var pgnBase = function (boardId, configuration) {
      */
     var generateHTML = function () {
         // Utility function for generating buttons divs
-        function addButton(pair, buttonDiv) {
+        function addButton(pair, buttonsDiv) {
             var l_theme = (['green', 'blue'].indexOf(theme) >= 0) ? theme : 'default';
-            var button = createEle("i", buttonsId + pair[0], "button fa " + pair[1], l_theme, buttonDiv);
+            var buttonDiv = createEle("i", buttonsId + pair[0], "", l_theme, buttonsDiv);
+            var button = createEle("i", buttonsId + pair[0]+'-icon', "button fa " + pair[1], l_theme, buttonDiv);
             var title = i18next.t("buttons:" + pair[0], {lng: that.configuration.locale});
             document.getElementById(buttonsId + pair[0]).setAttribute("title", title);
             return button;
@@ -10476,7 +10474,7 @@ var pgnBase = function (boardId, configuration) {
                         let i = that.mypgn.NAGS[icon] || '';
                         ele.setAttribute("data-symbol", i);
                         ele.setAttribute("data-value", icon);
-                        ele.textContent = i18next.t('nag:$' + icon + "_menu", {lng: that.configuration.locale});
+                        ele.textContent = i18next.t('nag:$' + icon + "_menu", {lng: that.configuration.locale})
                     };
                     let myLink = createEle('a', null, null, theme, myDiv);
                     generateIcon(link, myLink);
@@ -10485,7 +10483,7 @@ var pgnBase = function (boardId, configuration) {
                             let move = that.mypgn.getMove(moveIndex);
                             document.querySelector("#" + movesId + moveIndex + " > a").textContent = that.mypgn.sanWithNags(move);
                         }
-
+                        console.log("checked");
                         this.classList.toggle("active");
                         let iNode = this.firstChild;
                         that.mypgn.changeNag('$' + iNode.getAttribute('data-value'), that.currentMove, this.classList.contains('active'));
@@ -10600,6 +10598,8 @@ var pgnBase = function (boardId, configuration) {
             if (hasMode('view') || hasMode('edit')) {
                 var buttonsBoardDiv = createEle("div", buttonsId, "buttons", theme, outerInnerBoardDiv);
                 generateViewButtons(buttonsBoardDiv);
+                buttonsBoardDiv.style.zIndex = 1;
+
             }
             if ((hasMode('edit') || hasMode('view')) && (that.configuration.showFen)) {
                 var fenDiv = createEle("textarea", fenId, "fen", theme, outerInnerBoardDiv);
@@ -11141,8 +11141,10 @@ var pgnBase = function (boardId, configuration) {
                     makeMove(null, 0, fen);
                 } else {
                     var next = that.mypgn.getMove(that.currentMove).next;
-                    fen = that.mypgn.getMove(next).fen;
-                    makeMove(that.currentMove, next, fen);
+                    if (that.mypgn.getMove(next)){
+                      fen = that.mypgn.getMove(next).fen;
+                      makeMove(that.currentMove, next, fen);
+                    }
                 }
             };
             var prevMove = function () {
@@ -11170,6 +11172,7 @@ var pgnBase = function (boardId, configuration) {
             timer.bind(that.configuration.timerTime, function () {
                 nextMove();
             });
+            console.log(buttonsId);
             addEventListener(buttonsId + 'flipper', 'click', function () {
                 board.toggleOrientation();
             });
@@ -11278,7 +11281,7 @@ var pgnBase = function (boardId, configuration) {
 
             function togglePlay() {
                 timer.running() ? timer.stop() : timer.start();
-                var playButton = document.getElementById(buttonsId + 'play');
+                var playButton = document.getElementById(buttonsId + 'play-icon');
                 var clString = playButton.getAttribute('class');
                 if (clString.indexOf('play') < 0) { // has the stop button
                     clString = clString.replace('stop', 'play');
@@ -11292,6 +11295,7 @@ var pgnBase = function (boardId, configuration) {
             bind_key("right", nextMove);
             //bind_key("space", togglePlay);
             addEventListener(buttonsId + 'play', 'click', function () {
+              console.log("toggling play");
                 togglePlay();
             });
 

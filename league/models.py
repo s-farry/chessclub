@@ -125,8 +125,9 @@ class Schedule(models.Model):
         for a,b in RESULTS:
             if self.result == a: return b
 
-    def noclk_pgn(self):
-        pgn = re.sub(r"(\[%clk [0-9]:[0-9][0-9]:[0-9][0-9]\])", '', self.pgn)
+    def clean_pgn(self):
+        pgn = re.sub(r"(\[%clk [0-9]:[0-9]+:[0-9]+\])", '', self.pgn)
+        pgn = re.sub(r"(\[%eval -?[0-9].[0-9]+\])", '', pgn)
         return pgn
 
     def __str__(self):
