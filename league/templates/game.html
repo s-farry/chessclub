@@ -11,15 +11,16 @@
 {% load league_tags %}
 {% block content %}
 <article id="league-{{ slug }}-{{team.slug}}" class="news">
-    <h1>{{ game }}</h1>
+    <h1>{{ game.white }} {{game.print_result}} {{ game.black }}</h1>
+    <h2>{{game.league}}</h2>
+    <h2>{{game.date.date}}</h2>
     <hr />
-    {{game.league}}: {{game.date}} {{ game.white }} {{ game.print_result }} {{ game.black }}
 </article>
 {% if game.pgn %}
 <div id="board" class='merida zeit'></div>
 <script>
-    var pgn = `{{ game.pgn|safe }}`;
-    var cfg = { pgn : pgn, locale : 'en', position: 'start', showCoords: true, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', timerTime: '', boardSize: '400px', layout: 'left', movesWidth: '400px', movesHeight: '400px', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', startPlay: '', hideMovesBefore: false, notation: 'short', };
+    var pgn = `{{ game.noclk_pgn|safe }}`;
+    var cfg = { pgn : pgn, locale : 'en', position: 'start', showCoords: true, orientation: 'white', theme: 'default', pieceStyle: 'wikipedia', timerTime: '', width: '400px', layout: 'top', movesWidth: '400px', movesHeight: '400px', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', startPlay: '', hideMovesBefore: false, notation: 'short', };
     var board = pgnEdit('board', cfg);
     </script>
 {% endif %}

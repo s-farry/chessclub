@@ -4,6 +4,7 @@ from smart_selects.db_fields import ChainedManyToManyField, ChainedForeignKey, G
 from django.utils.timezone import now
 
 from django.db.models import Q
+import re
 
 STANDINGS_ORDER_HUMAN = (
     (0, _('Points, Wins, Lost')), 
@@ -123,7 +124,10 @@ class Schedule(models.Model):
     def print_result(self):
         for a,b in RESULTS:
             if self.result == a: return b
-    
+
+    def noclk_pgn(self):
+        pgn = re.sub(r"(\[%clk [0-9]:[0-9][0-9]:[0-9][0-9]\])", '', self.pgn)
+        return pgn
 
     def __str__(self):
         return "{}: {} v {}".format(self.league, self.white, self.black) 
