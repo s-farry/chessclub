@@ -14,6 +14,7 @@
     <h1>{{ game.white }} {{game.print_result}} {{ game.black }}</h1>
     <h2>{{game.league}}</h2>
     <h2>{{game.date.date}}</h2>
+    {%if game.lichess %}<a href = "https://lichess.org/{{game.lichess}}">lichess.org/{{game.lichess}}</a>{% endif %}
     <hr />
 </article>
 {% if game.pgn %}
