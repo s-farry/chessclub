@@ -10351,6 +10351,9 @@ body {
 div .puzzle{
   width:100%;
 }
+div .game-board{
+  max-width:400px;
+}
 
 @media (min-width: 992px) {
 div .puzzle{width:calc(400px);}

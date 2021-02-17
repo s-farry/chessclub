@@ -123,7 +123,13 @@ class Schedule(models.Model):
 
     def print_result(self):
         for a,b in RESULTS:
-            if self.result == a: return b
+            if self.result == a:
+                if b == "1/2-1/2":
+                    return r"&#189;-&#189;"
+                elif b == "-":
+                    return "v"
+                else:
+                    return b
 
     def clean_pgn(self):
         pgn = re.sub(r"(\[%clk [0-9]:[0-9]+:[0-9]+\])", '', self.pgn)

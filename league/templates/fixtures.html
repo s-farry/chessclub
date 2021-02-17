@@ -50,7 +50,7 @@
               {% endif %}
 
                 <td class="text-center"><a href="{% url 'player' match.white.id %}">{{match.white}}</a></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}&#189;-&#189; {% elif match.result == 1 %} 1-0 {% elif match.result == 2 %} 0-1 {% else %} v {% endif %}</a></td>
+                <td class="text-center"><a href="{% url 'game' match.id %}">{{match.print_result|safe}}</a></td>
                 <td class="text-center"><a href="{% url 'player' match.black.id %}">{{match.black}}</a></td>
             </tr>
             {% endfor %}
