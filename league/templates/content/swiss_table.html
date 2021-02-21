@@ -10,10 +10,10 @@
                <th class="num text-center">{% trans "Rating" %}</th>
                 {% if not request|is_mobile %}
                 {% for r in rounds %}
-                <th class="num text-center">{{r}}</th>
+                <th class="num text-center">Rd {{r}}</th>
                 {% endfor %}
                 {% endif %}
-                <th class="num text-center">{% trans "Score" %}</th>
+                <th class="num text-center">{% trans "Total" %}</th>
             </tr>
            </thead>
            <tbody>

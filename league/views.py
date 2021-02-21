@@ -161,16 +161,21 @@ def fixtures(request, league, **kwargs):
     games_display = {}
     useRounds = (len(rounds) > 0)
     latest = None
-    if useRounds:
+    if len(rounds) > 0:
         latest = list(rounds)[0]
+        pccurrcomplete = 0 
+        pcprevcomplete = 0
         for r in rounds:
-            games_round = games.filter(Q(round=r) & ~Q(black=None) & ~Q(white=None)).order_by('date')
+            #games_round = games.filter(Q(round=r) & ~Q(black=None) & ~Q(white=None)).order_by('date')
+            games_round = games.filter(round=r).order_by('date')
             games_display[r] = games_round
             #now find which round to show, the last complete one
+            pcprevcomplete = pccurrcomplete
             ncomplete = 0
             for g in games_round:
                 if g.result != 3: ncomplete += 1
-            if float(ncomplete)/len(games_round) > 0.5:
+            pccurrcomplete = float(ncomplete) / len(games_round)
+            if pcprevcomplete == 1.0 or pccurrcomplete > 0:
                 latest = r
     else:
         # no rounds, let's organise by date instead

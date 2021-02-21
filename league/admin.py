@@ -603,6 +603,7 @@ class LeagueAdmin(ModelAdmin):
                 if g.black == None: self.message_user(request, '%s will get a bye'%(g.white))
                 else: self.message_user(request, '%s will play %s'%(g.white, g.black))
                 g.save()
+            standings_position_update(obj)
 
 
         elif request.POST and request.POST.get('create_swiss_round') is not None:

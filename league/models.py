@@ -133,7 +133,7 @@ class Schedule(models.Model):
 
     def clean_pgn(self):
         pgn = re.sub(r"(\[%clk [0-9]:[0-9]+:[0-9]+\])", '', self.pgn)
-        pgn = re.sub(r"(\[%eval -?[0-9].[0-9]+\])", '', pgn)
+        pgn = re.sub(r"(\[%eval [a-zA-Z0-9_\#.-]*\])", '', pgn)
         return pgn
 
     def __str__(self):
