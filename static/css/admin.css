@@ -1,0 +1,64 @@
+
+/* LINKS */
+
+a:link, a:visited {
+    color: #333333;
+    text-decoration: none;
+}
+
+a:focus, a:hover {
+    color: #036;
+}
+
+a:focus {
+    text-decoration: underline;
+}
+
+
+a.section:link, a.section:visited {
+    color: white;
+    text-decoration: none;
+}
+
+a.section:focus, a.section:hover {
+    text-decoration: underline;
+}
+
+/* MODULES */
+
+.module h2, .module caption, .inline-group h2 {
+    margin: 0;
+    padding: 8px;
+    font-weight: 400;
+    font-size: 13px;
+    text-align: left;
+    background: black;
+    color:white;
+}
+
+
+
+/* HEADER */
+
+#header {
+    width: auto;
+    height: 45px;
+    padding: 10px 40px;
+    background:black;
+    line-height: 40px;
+    color: white;
+    overflow: hidden;
+}
+
+#header a:link, #header a:visited {
+    color:white;
+}
+
+#header a:focus , #header a:hover {
+    text-decoration: underline;
+}
+
+
+div.breadcrumbs {
+    background: black;
+}

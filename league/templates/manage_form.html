@@ -29,6 +29,12 @@
     {{ game_form }}
     <input type="submit" value="Add">
   </form>
+  <form action="{{ form_url }}" method="post">
+    {% csrf_token %}
+    {{ round_form }}
+    <input type="submit" value="Print">
+  </form>
+
 
   <p>Go back to <a href="{{league_url}}">{{original}}</a></p>
 </div>

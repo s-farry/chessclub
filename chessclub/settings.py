@@ -35,7 +35,8 @@ ALLOWED_HOSTS = ['127.0.0.1', 'wallaseychessclub.uk','www.wallaseychessclub.uk']
 INSTALLED_APPS = [
 	'league.apps.leagueConfig',
 	'content.apps.ContentConfig',
-    'django.contrib.admin',
+    #'django.contrib.admin',
+    'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

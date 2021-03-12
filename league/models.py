@@ -8,11 +8,13 @@ import re
 
 STANDINGS_ORDER_HUMAN = (
     (0, _('Points, Wins, Lost')), 
-    (1, _('Points, Score')), 
+    (1, _('Points, Tiebreak, Wins, Lost, Rating')), 
+    (2, _('Points, Score')), 
 )
 STANDINGS_ORDER = (
     (0, ('-points', '-win', 'lost','-rating','player__surename')), 
-    (1, ('-points',)), 
+    (1, ('-points', '-nbs', '-win', 'lost','-rating', 'player__surename')), 
+    (2, ('-points',)), 
 )
 RESULTS = (
     (0, '1/2-1/2',), (1,'1-0'), (2,'0-1'), (3,'-')
@@ -137,7 +139,13 @@ class Schedule(models.Model):
         return pgn
 
     def __str__(self):
-        return "{}: {} v {}".format(self.league, self.white, self.black) 
+        if self.white and self.black:
+            return "{}: {} v {}".format(self.league, self.white, self.black) 
+        elif self.white:
+            return "{}: {} (bye)".format(self.league, self.white) 
+        else:
+            return "{}: {} (bye)".format(self.league, self.black) 
+
 
 
 
@@ -152,12 +160,16 @@ class Standings(models.Model):
     points = models.FloatField(null=True, blank=False, default=0, verbose_name=_('Points'))
     form = models.CharField(max_length=50,null=True)
     rating = models.IntegerField(null = True, blank = True, verbose_name=('Rating'))
+    nbs    = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Neustadtl Sonneborn-Berger Score'))
 
     def __str__(self):
         return "{0} {1}".format(self.league, self.player)
 
     def swiss_points(self):
         return ("%.1f"%(self.points)).replace('.',',')
+    def swiss_nbs(self):
+        return ("%.2f"%(self.nbs)).replace('.',',')
+
 
     class Meta:
         ordering = STANDINGS_ORDER[0][1]

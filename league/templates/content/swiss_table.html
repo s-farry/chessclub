@@ -14,6 +14,8 @@
                 {% endfor %}
                 {% endif %}
                 <th class="num text-center">{% trans "Total" %}</th>
+                <th class="num text-center">{% trans "Tie-break" %}</th>
+
             </tr>
            </thead>
            <tbody>
@@ -38,7 +40,9 @@
             {% endfor %}
             {% endif %}
             <td class="text-center">{{player.swiss_points}}</td>
-            </td>
+            <td class="text-center">{{player.swiss_nbs}}</td>
+
+        </td>
         </tr>
     {% endfor %}
 

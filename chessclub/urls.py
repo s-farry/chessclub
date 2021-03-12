@@ -22,9 +22,11 @@ from django.conf.urls.static import static
 
 import league.urls
 from . import views
-
+from .admin import *
+admin.site = admin_site
+admin.autodiscover()
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     url(r'^$', views.index, name='index'),
     #path('league/', league.urls),
     url(r'^league/', include('league.urls')),
@@ -32,6 +34,11 @@ urlpatterns = [
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
 ]
+
+handler404 = 'chessclub.views.page_not_found'
+handler500 = 'chessclub.views.page_not_found'
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+

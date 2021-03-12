@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}{{ game }}{% endblock %}
 {% block header %} 
-<script src="{% static 'js/pgnvjs.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/pgnv.js' %}" type="text/javascript"></script>
 <!-- CSS used -->
 <link rel="stylesheet" href="{% static 'css/pgnvjs.css' %}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -29,8 +29,8 @@
     var board = document.getElementById('board');
     var width = board.parentElement.offsetWidth;
     var pgn = `{{ game.clean_pgn|safe}}`;
-    var cfg = {pgn: pgn, showCoords: true, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: false, notation: 'short', 'width' : width.toString()+'px', orientation: 'white' };
-    var board = pgnEdit('board', cfg);
+    var cfg = {pgn: pgn};
+    PGNV.pgnEdit('board', cfg);
 }
     )
 </script> 

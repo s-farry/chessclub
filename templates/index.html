@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}{{ game }}{% endblock %}
 {% block header %} 
-<script src="{% static 'js/pgnvjs.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/pgnv.js' %}" type="text/javascript"></script>
 <!-- CSS used -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{% static 'css/pgnvjs.css' %}">
@@ -80,7 +80,7 @@
     var width = board.parentNode.parentElement.offsetWidth;
     var pgn = `{{puzzle.pgn|safe}}`;
     var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', 'width' : width.toString()+'px' };
-    var board = pgnTactic('board', cfg);
+    PGNV.pgnTactic('board', cfg);
     {% endfor %}
 }
     )

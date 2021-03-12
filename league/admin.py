@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
 from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER, POINTS
-from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm
+from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm
 from django.utils import timezone
 from django.urls import resolve, reverse
 from django import forms
@@ -306,6 +306,11 @@ def standings_position_update(league):
 def standings_update(instance):
         standings = Standings.objects.filter(league = instance.pk)
         now = timezone.now()
+        # to calculate NBS score
+        player_wins = {}
+        player_draws = {}
+        player_points = {}
+
         for standing in standings:
             points = 0
             wins = 0
@@ -314,6 +319,8 @@ def standings_update(instance):
             matches = 0
             form = ''
             player = standing.player
+            wins_against    = []
+            draws_against  = []
             player_schedule = Schedule.objects.filter(~Q(result=3) & (Q(white=player) | Q(black=player)), league = instance.pk).order_by('-date')
             nrounds = len(instance.get_rounds())
             for i,match in enumerate(player_schedule):
@@ -324,6 +331,7 @@ def standings_update(instance):
                             form = 'W' + form
                         wins += 1
                         points += instance.get_win_points_display()
+                        wins_against += [ match.black ]
                     elif match.result == 2 :
                         lost += 1
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
@@ -334,6 +342,7 @@ def standings_update(instance):
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'D' + form
                         points += instance.get_draw_points_display()
+                        draws_against += [ match.black ]
 
                 if match.black == player:
                     if match.result == 2 :
@@ -341,6 +350,7 @@ def standings_update(instance):
                             form = 'W' + form
                         wins += 1
                         points += instance.get_win_points_display()
+                        wins_against += [ match.white ]
                     elif match.result == 1 :
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'L' + form
@@ -351,6 +361,7 @@ def standings_update(instance):
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'D' + form
                         points += instance.get_draw_points_display()
+                        draws_against += [ match.white ]
 
             standing.form = form
             # if we're in a Swiss, paired rounds should also be added as P
@@ -362,7 +373,22 @@ def standings_update(instance):
             standing.lost = lost
             standing.draws = draws
             standing.matches = matches
+            # save these to calculate the NBS tie break score
+            player_points[player] = points
+            player_draws[player] = draws_against
+            player_wins[player] = wins_against
+
+        for standing in standings:
+            nbs = 0
+            for p in player_draws[standing.player]:
+                if p in player_points.keys():
+                    nbs += 0.5 * player_points[p]
+            for p in player_wins[standing.player]:
+                if p in player_points.keys():
+                    nbs += 1.0 * player_points[p]
+            standing.nbs = nbs
             standing.save()
+
         standings_position_update(instance)
 
 
@@ -492,11 +518,15 @@ class LeagueAdmin(ModelAdmin):
         return urls + super_urls
     
     def manage_view(self, request, id ):
-        opts = League._meta
+        opts       = League._meta
         arena_form = LichessArenaForm()
         swiss_form = LichessSwissForm()
-        game_form = LichessGameForm()
+        game_form  = LichessGameForm()
+        round_form = PrintRoundForm()
         obj = League.objects.get(pk=id)
+        rounds = obj.get_rounds()
+        round_form.fields['round_no'].choices=tuple((i,i) for i in rounds)
+
         ngames = 0
         nchanges = 0
         if request.POST:
@@ -507,6 +537,16 @@ class LeagueAdmin(ModelAdmin):
                 games.update(get_swiss_games(request.POST.get('lichess_swiss_id')))
             if request.POST.get('lichess_game_id') is not None:
                 games.update(get_game(request.POST.get('lichess_game_id')))
+            if request.POST.get('round_no') is not None:
+                message = ''
+                for g in Schedule.objects.filter(league=obj,round=request.POST.get('round_no')):
+                    if g.white and g.black:
+                        if g.get_result_display() =='-':
+                            message += '%s ( %s ) v %s ( % s ) <br/>'%(g.white, g.white.lichess, g.black, g.black.lichess)
+                        else:
+                            message += '%s %s %s <br/>'%(g.white, g.get_result_display(), g.black)
+
+                self.message_user(request,mark_safe(message))
             for g,v in games.items():
                 if len(Schedule.objects.filter(lichess=g)) > 0:
                     schedule = Schedule.objects.filter(lichess=g)[0]
@@ -562,6 +602,7 @@ class LeagueAdmin(ModelAdmin):
             'form_url' : form_url,
             'arena_form' : arena_form,
             'swiss_form' : swiss_form,
+            'round_form' : round_form,
             'game_form' : game_form
         }
 
@@ -649,7 +690,7 @@ class PlayerAdmin(admin.ModelAdmin):
 
 
 class ScheduleAdmin(admin.ModelAdmin):
-    change_form_template = 'change_form.html'
+    change_form_template = 'change_game_form.html'
     manage_view_template = 'manage_game_form.html'
 
     list_filter = ('league',)
