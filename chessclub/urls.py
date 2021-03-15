@@ -18,6 +18,7 @@ from django.urls import path
 from django.conf.urls import url,include
 from django.conf import settings
 from django.conf.urls.static import static
+import os
 
 
 import league.urls
@@ -33,9 +34,13 @@ urlpatterns = [
     url(r'^content/', include('content.urls')),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^404/$', views.page_not_found)
 
 ]
+if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
+    urlpatterns += [
+        url(r'^404/$', views.page_not_found)
+    ]
+
 
 handler404 = 'chessclub.views.page_not_found'
 handler500 = 'chessclub.views.page_not_found'
