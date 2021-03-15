@@ -2,6 +2,14 @@
 {% load static %}
 
 
-{% block body %}
-404 - error not found
+{% block content %}
+<div class = "row">
+    <div class = "col w-100 text-align-center">
+        <h1> 404 Error: Sorry, that page couldn't be found!</h1>
+    <div class = "d-flex justify-content-center">
+    <img src="{% static 'img/chess-comic.jpg' %}" style="width:30%"}>
+    </div>
+
+</div>
+</div>
 {% endblock %}

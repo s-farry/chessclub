@@ -207,9 +207,7 @@ def test_swiss(league, nrounds):
     first_db_pairings = {}
     games_to_delete = []
     engine  = DutchPairingEngine(top_seed_colour_selection_fn = top_seed_colour_selection)
-    #engine2 = DutchPairingEngine(top_seed_colour_selection_fn = top_seed_colour_selection)
     for i in range(nrounds):
-        #print('-----------')
         last_round = get_last_round(league)
         if i == 0 :
             persistent_pairings = tuple([t for t in last_round.values()])
@@ -255,18 +253,24 @@ def test_swiss(league, nrounds):
             result = random.choice([0,1,2])
             g.result = result
             g.save()
+            print(g)
             # the persistent pairing has not changed form initial pairing numbers
-            white_pairing_no = first_db_pairings[g.white]
-            black_pairing_no = first_db_pairings[g.black]
+            white_pairing_no = first_db_pairings[g.white] if g.white else 0
+            black_pairing_no = first_db_pairings[g.black] if g.black else 0
             for pp in persistent_pairings:
-                if pp.pairing_no == white_pairing_no:
+                if white_pairing_no != 0 and pp.pairing_no == white_pairing_no:
                     if result == 0 : pp._score += 1
                     elif result == 1 : pp._score += 2
-                if pp.pairing_no == black_pairing_no:
+                if black_pairing_no != 0 and pp.pairing_no == black_pairing_no:
                     if result == 0 : pp._score += 1
                     elif result == 2 : pp._score += 2
-    for g in games_to_delete:
-        g.delete()
+        standings_save(league)
+        standings_update(league)
+
+    #for g in games_to_delete:
+    #    g.delete()
+    #standings_save(obj)
+    #standings_update(obj)
 
 
 
@@ -306,21 +310,26 @@ def standings_position_update(league):
 def standings_update(instance):
         standings = Standings.objects.filter(league = instance.pk)
         now = timezone.now()
-        # to calculate NBS score
-        player_wins = {}
-        player_draws = {}
+        # to calculate NBS and Buchholz score
+        player_wins   = {}
+        player_losses = {}
+        player_draws  = {}
         player_points = {}
+        player_ratings = {}
 
         for standing in standings:
             points = 0
             wins = 0
+            winswblack = 0
             lost = 0
             draws = 0
             matches = 0
+            matcheswblack = 0
             form = ''
             player = standing.player
-            wins_against    = []
+            wins_against   = []
             draws_against  = []
+            lost_against   = []
             player_schedule = Schedule.objects.filter(~Q(result=3) & (Q(white=player) | Q(black=player)), league = instance.pk).order_by('-date')
             nrounds = len(instance.get_rounds())
             for i,match in enumerate(player_schedule):
@@ -337,6 +346,7 @@ def standings_update(instance):
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'L' + form
                         points += instance.get_lost_points_display()
+                        lost_against += [ match.black ]
                     else:
                         draws += 1
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
@@ -345,10 +355,12 @@ def standings_update(instance):
                         draws_against += [ match.black ]
 
                 if match.black == player:
+                    matcheswblack += 1
                     if match.result == 2 :
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                             form = 'W' + form
                         wins += 1
+                        winswblack += 1
                         points += instance.get_win_points_display()
                         wins_against += [ match.white ]
                     elif match.result == 1 :
@@ -356,6 +368,7 @@ def standings_update(instance):
                             form = 'L' + form
                         lost += 1
                         points += instance.get_lost_points_display()
+                        lost_against += [ match.white ]
                     elif match.result == 0:
                         draws += 1
                         if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
@@ -370,22 +383,42 @@ def standings_update(instance):
                     standing.form = standing.form+'P'
             standing.points = points
             standing.win = wins
+            standing.win1 = winswblack
             standing.lost = lost
             standing.draws = draws
             standing.matches = matches
+            standing.matches1 = matcheswblack
+
             # save these to calculate the NBS tie break score
             player_points[player] = points
+            player_ratings[player] = standing.rating if standing.rating else 0
             player_draws[player] = draws_against
+            player_losses[player] = lost_against
             player_wins[player] = wins_against
 
         for standing in standings:
             nbs = 0
+            opponent_scores = []
+            opponent_ratings = []
             for p in player_draws[standing.player]:
                 if p in player_points.keys():
                     nbs += 0.5 * player_points[p]
+                    opponent_scores += [ player_points[p]]
+                    opponent_ratings += [ player_ratings[p]]
             for p in player_wins[standing.player]:
                 if p in player_points.keys():
                     nbs += 1.0 * player_points[p]
+                    opponent_scores += [ player_points[p]]
+                    opponent_ratings += [ player_ratings[p]]
+
+            for p in player_losses[standing.player]:
+                if p in player_points.keys():
+                    opponent_scores += [ player_points[p]]
+                    opponent_ratings += [ player_ratings[p]]
+
+            standings.buchholz = sum(opponent_scores)
+            standings.buchholzcut1 = standings.buchholz - min(opponent_scores)
+            standings.opprating = (sum(opponent_ratings) - min(opponent_ratings)) / max(1, len(opponent_ratings) - 1)
             standing.nbs = nbs
             standing.save()
 
@@ -398,6 +431,7 @@ class ScheduleInline(admin.TabularInline):
     formfield_overrides = {
         models.IntegerField: {'widget': TextInput(attrs={'style':'width: 20px;'})},
     }
+    show_change_link = True
     formset = LimitModelFormset
     max_num = 25
     extra = 5
@@ -630,10 +664,11 @@ class LeagueAdmin(ModelAdmin):
                 'original': obj,
                 'form_url' : form_url,
         }
-        #test_swiss(obj,5)
+        #test_swiss(obj,6)
         if request.POST and request.POST.get('create_swiss_games'):
             # rond has been paired and confirmed, make the games
             id_pairs = request.session.get('pairs')
+            request.session['pairs'] = ()
             date = request.POST.get('date')
             time = request.POST.get('time')
             round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')

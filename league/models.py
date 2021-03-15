@@ -10,11 +10,13 @@ STANDINGS_ORDER_HUMAN = (
     (0, _('Points, Wins, Lost')), 
     (1, _('Points, Tiebreak, Wins, Lost, Rating')), 
     (2, _('Points, Score')), 
+    (3, _('FIDE Swiss Tiebreak System'))
 )
 STANDINGS_ORDER = (
     (0, ('-points', '-win', 'lost','-rating','player__surename')), 
     (1, ('-points', '-nbs', '-win', 'lost','-rating', 'player__surename')), 
     (2, ('-points',)), 
+    (3, ('-points', '-buchholzcut1', '-buchholz', '-oprating', '-win', '-win1', '-matchblack','-nbs','-rating','player__surename'))
 )
 RESULTS = (
     (0, '1/2-1/2',), (1,'1-0'), (2,'0-1'), (3,'-')
@@ -161,6 +163,12 @@ class Standings(models.Model):
     form = models.CharField(max_length=50,null=True)
     rating = models.IntegerField(null = True, blank = True, verbose_name=('Rating'))
     nbs    = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Neustadtl Sonneborn-Berger Score'))
+    buchholzcut1  = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Buchholz Cut 1 Score'))
+    buchholz      = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Buchholz Score'))
+    opprating = models.FloatField(null = True, blank = True, verbose_name=('Average Rating of Opponent less 1'))
+    win1 = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won With Black'))
+    matches1 = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches With Black'))
+
 
     def __str__(self):
         return "{0} {1}".format(self.league, self.player)

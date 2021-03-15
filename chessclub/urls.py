@@ -33,6 +33,8 @@ urlpatterns = [
     url(r'^content/', include('content.urls')),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^404/$', views.page_not_found)
+
 ]
 
 handler404 = 'chessclub.views.page_not_found'
