@@ -38,12 +38,14 @@ urlpatterns = [
 ]
 if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
     urlpatterns += [
-        url(r'^404/$', views.page_not_found)
+        url(r'^404/$', views.page_not_found),
+        url(r'^500/$', views.server_error)
+
     ]
 
 
 handler404 = 'chessclub.views.page_not_found'
-handler500 = 'chessclub.views.page_not_found'
+handler500 = 'chessclub.views.server_error'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

@@ -16,3 +16,5 @@ def index(request):
 
 def page_not_found(request, *args, **kwargs):
     return render(request, '404.html', *args, **kwargs)
+def server_error(request, *args, **kwargs):
+    return render(request, '500.html', *args, **kwargs)

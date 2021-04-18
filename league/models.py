@@ -68,7 +68,7 @@ class Season(models.Model):
     slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
 
     def __str__(self):
-        return "{} Season".format(self.name) 
+        return "{}".format(self.name) 
 
 class League(models.Model):
     name = models.CharField(max_length=200, null=False, verbose_name=_('Name'))
@@ -103,7 +103,7 @@ class League(models.Model):
         
     def get_rounds(self):
         games = Schedule.objects.filter(league=self)
-        return list(set(g.round for g in games))
+        return list(set(g.round for g in games if g.round is not None))
     def get_completed_rounds(self):
         games = Schedule.objects.filter((~Q(result=3)) & Q(league = self))
         return list(set(g.round for g in games))
@@ -136,8 +136,10 @@ class Schedule(models.Model):
                     return b
 
     def clean_pgn(self):
-        pgn = re.sub(r"(\[%clk [0-9]:[0-9]+:[0-9]+\])", '', self.pgn)
-        pgn = re.sub(r"(\[%eval [a-zA-Z0-9_\#.-]*\])", '', pgn)
+        pgn = self.pgn
+        if pgn:
+            pgn = re.sub(r"(\[%clk [0-9]:[0-9]+:[0-9]+\])", '', self.pgn)
+            pgn = re.sub(r"(\[%eval [a-zA-Z0-9_\#.-]*\])", '', pgn)
         return pgn
 
     def __str__(self):

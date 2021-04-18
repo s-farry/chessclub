@@ -133,16 +133,21 @@ class PlayerSchedule(ListView):
             #qs = self.model.objects.filter(Q(white=player_pk) | Q(black=player_pk)).order_by('date')
             toReturn = {}
             games = {}
-            season = Season.objects.last()
             league_pk = league.pk
             league_name = league.name
             player = Player.objects.get(id=self.kwargs.get('player'))
-            for league in season.leagues:
+            if not self.kwargs.get('league'):
+                season = Season.objects.last()
+                for league in season.leagues:
+                    season_league_games = self.model.objects.filter(Q(white=player) | Q(black=player), league = league ).order_by('-date')
+                    if len(season_league_games) > 0:
+                        if season not in games.keys(): games[season] = {}
+                        games[season][league] = season_league_games
+            else:
+                league = League.objects.get(id = self.kwargs.get('league'))
+                season = league.season
                 season_league_games = self.model.objects.filter(Q(white=player) | Q(black=player), league = league ).order_by('-date')
-                if len(season_league_games) > 0:
-                    print(len(season_league_games))
-                    if season not in games.keys(): games[season] = {}
-                    games[season][league] = season_league_games
+                games[season][league] = season_league_games
             toReturn['player'] = player
             toReturn['games'] = games
         return toReturn
