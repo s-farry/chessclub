@@ -107,7 +107,7 @@ class ScheduleFull(ListView):
             qs = self.model.objects.filter(league=league_pk).order_by('-date')
         return qs
 
-
+'''
 class PlayerSchedule(ListView):
     template_name = 'games.html'
     model = Schedule
@@ -136,6 +136,7 @@ class PlayerSchedule(ListView):
             league_pk = league.pk
             league_name = league.name
             player = Player.objects.get(id=self.kwargs.get('player'))
+            
             if not self.kwargs.get('league'):
                 season = Season.objects.last()
                 for league in season.leagues:
@@ -152,7 +153,7 @@ class PlayerSchedule(ListView):
             toReturn['games'] = games
         return toReturn
 
-
+'''
 
 # Create your views here.
 
@@ -200,7 +201,6 @@ def fixtures(request, league, **kwargs):
 
 
 def player(request, player_id, **kwargs):
-    #query = request.GET.get('search')
     player = get_object_or_404(Player, id=player_id)
     games = {}
     if 'league' in kwargs:
@@ -209,6 +209,7 @@ def player(request, player_id, **kwargs):
         games[league.season][league] = Schedule.objects.filter((Q(white=player_id) | Q(black=player_id)) & Q(league = league)).order_by('date')
     else:
         season = Season.objects.last()
+        '''
         if player in season.players.all(): games[season] = {}
         for league in season.league_set.all():
             league_pk = league.pk
@@ -216,6 +217,7 @@ def player(request, player_id, **kwargs):
             if len(season_league_games) > 0:
                 if season not in games.keys(): games[season] = {}
                 games[season][league]  = season_league_games
+        '''
     return render(request, 'games.html', {'player': player, 'games': games})
 
 def game(request, game_id):

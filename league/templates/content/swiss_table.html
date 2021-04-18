@@ -22,7 +22,7 @@
     {% for player in standings %}
         <tr>
             <td>{{player.position}}</td>
-            <td><a href="{% url 'player' player.player.id %}">{{player.player}}</a></td>
+            <td><a href="{% url 'player' player.player.id league.slug %}">{{player.player}}</a></td>
             <td class="text-center">{% if player.rating and player.rating > 0 %}{{player.rating}} {% else %} - {% endif %}</td>
             {% if not request|is_mobile %}
             {% for r in player.form %}

@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import StandingsFull, ScheduleFull, TeamRoster, game, index, player, PlayerSchedule, fixtures, season_summary
+from .views import StandingsFull, ScheduleFull, TeamRoster, game, index, player, fixtures, season_summary
 
 urlpatterns = [
     url(r'^$', index, name='league_index'),

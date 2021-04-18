@@ -29,7 +29,7 @@
     {% for player in standings %}
         <tr>
             <td>{{player.position}}</td>
-            <td><a href="{% url 'player' player.player.id %}">{{player.player}}</a></td>
+            <td><a href="{% url 'player' player.player.id league.slug %}">{{player.player}}</a></td>
             <td class="text-center">{{player.matches}}</td>
             <td class="text-center">{{player.win}}</td>
             <td class="text-center">{{player.draws}}</td>            
