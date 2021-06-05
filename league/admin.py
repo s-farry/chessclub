@@ -272,6 +272,43 @@ def test_swiss(league, nrounds):
     #standings_save(obj)
     #standings_update(obj)
 
+def create_balanced_round_robin(players):
+    """ Create a schedule for the players in the list and return it"""
+    s = []
+    if len(players) % 2 == 1: players = players + [None]
+    # manipulate map (array of indexes for list) instead of list itself
+    # this takes advantage of even/odd indexes to determine home vs. away
+    n = len(players)
+    map = list(range(n))
+    mid = n // 2
+    for i in range(n-1):
+        l1 = map[:mid]
+        l2 = map[mid:]
+        l2.reverse()
+        round = []
+        for j in range(mid):
+            t1 = players[l1[j]]
+            t2 = players[l2[j]]
+            if j == 0 and i % 2 == 1:
+                # flip the first match only, every other round
+                # (this is because the first match always involves the last player in the list)
+                round.append((t2, t1))
+            else:
+                round.append((t1, t2))
+        s.append(round)
+        # rotate list by n/2, leaving last element at the end
+        map = map[mid:-1] + map[:mid] + map[-1:]
+    return s
+
+def create_round_robin_games(league,rounds,dates):
+    if len(dates) == 1:
+        dates = [dates[0]] * len(rounds)
+    for date,(round_no,pairs) in enumerate(zip(dates,rounds)):
+        create_games_from_pairs(league, round_no, pairs, date)
+
+def create_round_robin(league, dates):
+    rounds = create_balanced_round_robin(league.players)
+    create_round_robin_games(league,rounds,dates)
 
 
 def get_parent_object_from_request(self, request):
