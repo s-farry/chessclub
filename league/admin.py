@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
 from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER, POINTS
-from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm
+from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm, RoundRobinForm
 from django.utils import timezone
 from django.urls import resolve, reverse
 from django import forms
@@ -286,6 +286,7 @@ def create_balanced_round_robin(players):
         l2 = map[mid:]
         l2.reverse()
         round = []
+        revround = []
         for j in range(mid):
             t1 = players[l1[j]]
             t2 = players[l2[j]]
@@ -293,21 +294,25 @@ def create_balanced_round_robin(players):
                 # flip the first match only, every other round
                 # (this is because the first match always involves the last player in the list)
                 round.append((t2, t1))
+                revround.append((t1,t2))
             else:
                 round.append((t1, t2))
+                revround.append((t2,t1))
         s.append(round)
+        s.append(revround)
         # rotate list by n/2, leaving last element at the end
         map = map[mid:-1] + map[:mid] + map[-1:]
     return s
 
 def create_round_robin_games(league,rounds,dates):
-    if len(dates) == 1:
+    if isinstance(dates,datetime) or len(dates) == 1:
         dates = [dates[0]] * len(rounds)
-    for date,(round_no,pairs) in enumerate(zip(dates,rounds)):
-        create_games_from_pairs(league, round_no, pairs, date)
+    for round_no,(date,pairs) in enumerate(zip(dates,rounds)):
+        games = create_games_from_pairs(league, round_no+1, pairs, date)
+        for g in games: g.save()
 
 def create_round_robin(league, dates):
-    rounds = create_balanced_round_robin(league.players)
+    rounds = create_balanced_round_robin(list(league.players.all()))
     create_round_robin_games(league,rounds,dates)
 
 
@@ -551,6 +556,8 @@ class LeagueAdmin(ModelAdmin):
     change_form_template = 'change_form.html'
     manage_view_template = 'manage_form.html'
     create_round_template = 'create_round.html'
+    create_round_robin_template = 'create_round_robin.html'
+
     form = LeagueAdminForm
     inlines = [
         #StandingsInline, 
@@ -587,7 +594,10 @@ class LeagueAdmin(ModelAdmin):
         info = self.model._meta.app_label, self.model._meta.model_name
 
         urls = [url(r'^(.+)/manage/$', wrap(self.manage_view),name='%s_%s_manage' % info)]
-        urls += [url(r'^(.+)/create_round/$', wrap(self.create_round_view),name='%s_%s_create_round' % info)]
+        urls += [url(r'^(.+)/create_round/$', wrap(self.create_round_view),
+        name='%s_%s_create_round' % info)]
+        urls += [url(r'^(.+)/create_round_robin/$', wrap(self.create_round_robin_view),
+        name='%s_%s_create_round_robin' % info)]
 
         super_urls = super(LeagueAdmin, self).get_urls()
         return urls + super_urls
@@ -683,6 +693,55 @@ class LeagueAdmin(ModelAdmin):
 
         return render(request, self.manage_view_template, context)
 
+    def create_round_robin_view(self, request, id ):
+        opts = League._meta
+        obj = League.objects.get(pk=id)
+        form = RoundRobinForm()
+        preserved_filters = self.get_preserved_filters(request)
+        form_url = request.build_absolute_uri()
+        form_url = request.META.get('PATH_INFO', None)
+
+        form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+        context = {
+                'title': 'Create Round Robin for %s' % obj,
+                'has_change_permission': self.has_change_permission(request, obj),
+                'opts': opts,
+                'form' : form,
+                #'errors': form.errors,
+                'app_label': opts.app_label,
+                'original': obj,
+                'form_url' : form_url,
+        }
+        '''
+        if request.POST and request.POST.get('create_round_robin'):
+            # rond has been paired and confirmed, make the games
+            games = create_round_robin(obj, round_date)
+            for g in games:
+                if g.white == None: self.message_user(request, '%s will get a bye'%(g.black))
+                if g.black == None: self.message_user(request, '%s will get a bye'%(g.white))
+                else: self.message_user(request, '%s will play %s'%(g.white, g.black))
+                g.save()
+            standings_position_update(obj)
+        '''
+        if request.POST and request.POST.get('create_round_robin') is not None:
+            # create it and send it back for confirmation
+            self.message_user(request, 'Created Round Robin Games')
+            date = request.POST.get('datetime_0')
+            time = request.POST.get('datetime_1')
+            round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+            games = create_round_robin(obj, [ round_date ])
+
+            #context['pairs'] = pairs
+            #context['round'] = next_round_no
+            #context['date'] = date
+            #context['time'] = time
+            #request.session['pairs'] = id_pairs
+
+        if not self.has_change_permission(request, obj):
+            raise PermissionDenied
+
+        return render(request, self.create_round_robin_template, context)
 
     def create_round_view(self, request, id ):
         opts = League._meta
