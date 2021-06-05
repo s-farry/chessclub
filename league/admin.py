@@ -415,10 +415,14 @@ def standings_update(instance):
                 if p in player_points.keys():
                     opponent_scores += [ player_points[p]]
                     opponent_ratings += [ player_ratings[p]]
-
-            standings.buchholz = sum(opponent_scores)
-            standings.buchholzcut1 = standings.buchholz - min(opponent_scores)
-            standings.opprating = (sum(opponent_ratings) - min(opponent_ratings)) / max(1, len(opponent_ratings) - 1)
+            if len (opponent_scores) > 0:
+                standings.buchholz = sum(opponent_scores)
+                standings.buchholzcut1 = standings.buchholz - min(opponent_scores)
+                standings.opprating = (sum(opponent_ratings) - min(opponent_ratings)) / max(1, len(opponent_ratings) - 1)
+            else:
+                standings.buchholz = 0
+                standings.buchholzcut1 = 0
+                standings.opprating = 0
             standing.nbs = nbs
             standing.save()
 
