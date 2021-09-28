@@ -135,6 +135,7 @@ MEDIA_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/media/")
 
 if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    #STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 #only want this on server
 #if 'DJANGO_DEBUG' not in os.environ:

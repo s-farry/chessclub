@@ -9,7 +9,9 @@ from django.utils import timezone
 from django.urls import resolve, reverse
 from django import forms
 from django.utils.safestring import mark_safe
-
+from django.http import HttpResponse
+from django.templatetags.static import static
+from django.conf import settings
 from datetime import datetime
 from .utils import get_arena_games, get_swiss_games, get_game
 
@@ -19,7 +21,14 @@ from swissdutch.dutch import DutchPairingEngine
 from swissdutch.constants import FideTitle, Colour, FloatStatus
 from swissdutch.player import Player as PairingPlayer
 import random, operator, copy
+from io import BytesIO
+from itertools import cycle
 from django.forms import BaseInlineFormSet
+import matplotlib
+import matplotlib.image as image
+import os
+from matplotlib import pyplot as plt
+matplotlib.use("pdf") ## Include this line to make PDF output
 
 class LimitModelFormset(BaseInlineFormSet):
     """ Base Inline formset to limit inline Model query results. """
@@ -598,10 +607,51 @@ class LeagueAdmin(ModelAdmin):
         name='%s_%s_create_round' % info)]
         urls += [url(r'^(.+)/create_round_robin/$', wrap(self.create_round_robin_view),
         name='%s_%s_create_round_robin' % info)]
+        urls += [url(r'^(.+)/download_pdf/$', wrap(self.download_pdf),
+        name='%s_%s_download_pdf' % info)]
 
         super_urls = super(LeagueAdmin, self).get_urls()
         return urls + super_urls
     
+    def download_pdf(self, request, id):
+        obj = League.objects.get(pk=id)
+        response = HttpResponse(content_type='application/pdf')
+        filename = '%s_%s'%(obj,obj.updated_date.date())
+        response['Content-Disposition'] = 'attachement; filename={0}.pdf'.format(filename)
+        buffer = BytesIO()
+        fig, (ax1, ax2) = plt.subplots(figsize=(8.27, 11.69), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
+        #ax = plt.axes()
+        ax1.set_axis_off()
+        ax2.set_axis_off()
+        standings = Standings.objects.filter(league = obj)
+        #ax.plot()
+        ax2.text(0.5, 1.02, obj, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
+        table = ax2.table(
+            cellText = [ [s.player, s.matches, s.win, s.draws, s.lost, s.points ] for s in standings],
+            colLabels = ['Name', 'P', 'W', 'D', 'L', 'Pts'],
+            colWidths = [0.4, 0.12, 0.12, 0.12, 0.12, 0.12],
+            cellLoc ='center',  
+            cellColours = [ [c for i in range(6)] for j,c in zip(range(len(standings)),cycle([(1,1,1,1.0), (0,0,0,0.1)])) ],
+            loc ='upper left',
+            rowLabels = [ s.position for s in standings ],
+        )
+        table.auto_set_font_size(False)
+        table.set_fontsize(14)
+        table_props = table.properties()
+        for i,c in table_props['celld'].items():
+            c.set_height(0.03)
+
+
+        ax2.text(0.5, 0.1, "Last updated on %s"%(obj.updated_date.date()), horizontalalignment='center', verticalalignment='center')
+
+        im = image.imread(settings.BASE_DIR + static('img/wcc_logo.png'))
+        ax1.imshow(im)
+        fig.savefig(buffer, format='pdf')
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
     def manage_view(self, request, id ):
         opts       = League._meta
         arena_form = LichessArenaForm()
@@ -764,7 +814,6 @@ class LeagueAdmin(ModelAdmin):
                 'original': obj,
                 'form_url' : form_url,
         }
-        #test_swiss(obj,6)
         if request.POST and request.POST.get('create_swiss_games'):
             # rond has been paired and confirmed, make the games
             id_pairs = request.session.get('pairs')

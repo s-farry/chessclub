@@ -13,7 +13,7 @@ STANDINGS_ORDER_HUMAN = (
     (3, _('FIDE Swiss Tiebreak System'))
 )
 STANDINGS_ORDER = (
-    (0, ('-points', '-win', 'lost','-rating','player__surename')), 
+    (0, ('-points', '-win', '-matches', 'lost','-rating', 'player__surename')), 
     (1, ('-points', '-nbs', '-win', 'lost','-rating', 'player__surename')), 
     (2, ('-points',)), 
     (3, ('-points', '-buchholzcut1', '-buchholz', '-oprating', '-win', '-win1', '-matchblack','-nbs','-rating','player__surename'))
