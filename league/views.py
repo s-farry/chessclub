@@ -231,3 +231,324 @@ def season_summary(request, season_slug):
 def index(request):
     season_slug = Season.objects.all().last().slug
     return season_summary(request, season_slug)
+
+
+
+# these views are used in the admin
+
+
+from io import BytesIO
+from itertools import cycle
+
+
+import matplotlib
+import matplotlib.image as image
+import os
+from matplotlib import pyplot as plt
+matplotlib.use("pdf") ## Include this line to make PDF output
+
+from django.http import HttpResponse
+from django.templatetags.static import static
+from django.conf import settings
+from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
+from django.utils.safestring import mark_safe
+
+from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm, RoundRobinForm
+
+import utils
+
+from swissdutch.dutch import DutchPairingEngine
+#from .utils import get_arena_games, get_swiss_games, get_game
+
+
+def download_league_pdf(self, request, id):
+    obj = League.objects.get(pk=id)
+    response = HttpResponse(content_type='application/pdf')
+    filename = '%s_%s'%(obj,obj.updated_date.date())
+    response['Content-Disposition'] = 'attachement; filename={0}.pdf'.format(filename)
+    buffer = BytesIO()
+    fig, (ax1, ax2) = plt.subplots(figsize=(8.27, 11.69), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
+    ax1.set_axis_off()
+    ax2.set_axis_off()
+    standings = Standings.objects.filter(league = obj)
+    ax2.text(0.5, 1.02, obj, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
+    table = ax2.table(
+        cellText = [ [s.player, s.matches, s.win, s.draws, s.lost, s.points ] for s in standings],
+        colLabels = ['Name', 'P', 'W', 'D', 'L', 'Pts'],
+        colWidths = [0.4, 0.12, 0.12, 0.12, 0.12, 0.12],
+        cellLoc ='center',  
+        cellColours = [ [c for i in range(6)] for j,c in zip(range(len(standings)),cycle([(1,1,1,1.0), (0,0,0,0.1)])) ],
+        loc ='upper left',
+        rowLabels = [ s.position for s in standings ],
+    )
+    table.auto_set_font_size(False)
+    table.set_fontsize(14)
+    table_props = table.properties()
+    for i,c in table_props['celld'].items():
+        c.set_height(0.03)
+
+
+    ax2.text(0.5, 0.1, "Last updated on %s"%(obj.updated_date.date()), horizontalalignment='center', verticalalignment='center')
+
+    im = image.imread(settings.BASE_DIR + static('img/wcc_logo.png'))
+    ax1.imshow(im)
+    fig.savefig(buffer, format='pdf')
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+def manage_league_view(request, id, admin_site ):
+    opts       = League._meta
+    arena_form = LichessArenaForm()
+    swiss_form = LichessSwissForm()
+    game_form  = LichessGameForm()
+    round_form = PrintRoundForm()
+    obj = League.objects.get(pk=id)
+    rounds = obj.get_rounds()
+    round_form.fields['round_no'].choices=tuple((i,i) for i in rounds)
+
+    ngames = 0
+    nchanges = 0
+    if request.POST:
+        games = {}
+        if request.POST.get('lichess_arena_id') is not None:
+            games.update(utils.get_arena_games(request.POST.get('lichess_arena_id')))
+        if request.POST.get('lichess_swiss_id') is not None:
+            games.update(utils.get_swiss_games(request.POST.get('lichess_swiss_id')))
+        if request.POST.get('lichess_game_id') is not None:
+            games.update(utils.get_game(request.POST.get('lichess_game_id')))
+        if request.POST.get('round_no') is not None:
+            message = ''
+            for g in Schedule.objects.filter(league=obj,round=request.POST.get('round_no')):
+                if g.white and g.black:
+                    if g.get_result_display() =='-':
+                        message += '%s ( %s ) v %s ( % s ) <br/>'%(g.white, g.white.lichess, g.black, g.black.lichess)
+                    else:
+                        message += '%s %s %s <br/>'%(g.white, g.get_result_display(), g.black)
+
+            admin_site.message_user(request,mark_safe(message))
+        for g,v in games.items():
+            if len(Schedule.objects.filter(lichess=g)) > 0:
+                schedule = Schedule.objects.filter(lichess=g)[0]
+                if schedule.league != obj:
+                    admin_site.message_user(request,'Game between %s and %s is in %s, changing to %s'%(v['white'],v['black'],schedule.league,obj))
+                    schedule.league = obj
+                    schedule.save()
+                    nchanges += 1
+                else :
+                    admin_site.message_user(request,'Game between %s and %s is already in the database'%(v['white'],v['black']))
+                continue
+            white = Player.objects.filter(lichess=v['white'])
+            black = Player.objects.filter(lichess=v['black'])
+            if len(white) == 0:
+                admin_site.message_user(request,'Player %s is not in the database, skipping game' %(v['white']))
+                continue
+            if len(black) == 0:
+                admin_site.message_user(request,'Player %s is not in the database, skipping game' %(v['black']))
+                continue
+            if white[0] not in obj.players.all():
+                admin_site.message_user(request, 'Warning: Player %s is in the database but not the league' %(v['white']))
+            if black[0] not in obj.players.all():
+                admin_site.message_user(request, 'Warning: Player %s is in the database but not the league' %(v['black']))
+            schedule = Schedule(league=obj,lichess=g,white=white[0],black=black[0],date=v['date'],result=v['result'])
+            if 'pgn' in v.keys():
+                schedule.pgn = v['pgn']
+            schedule.save()
+            ngames+=1
+        if ngames + nchanges > 0 :
+            utils.standings_save(obj)
+            utils.standings_update(obj)
+
+        admin_site.message_user(request, 'added %i games to %s'%(ngames + nchanges,obj))
+
+    if not admin_site.has_change_permission(request, obj):
+        raise PermissionDenied
+
+    # do cool management stuff here
+
+    preserved_filters = admin_site.get_preserved_filters(request)
+    form_url = request.build_absolute_uri()
+    form_url = request.META.get('PATH_INFO', None)
+
+    form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+    context = {
+        'title': 'Manage %s' % obj,
+        'has_change_permission': admin_site.has_change_permission(request, obj),
+        'opts': opts,
+        #'errors': form.errors,
+        'app_label': opts.app_label,
+        'original': obj,
+        'form_url' : form_url,
+        'arena_form' : arena_form,
+        'swiss_form' : swiss_form,
+        'round_form' : round_form,
+        'game_form' : game_form
+    }
+
+    return render(request, admin_site.manage_view_template, context)
+
+def create_round_robin_view(request, id, admin_site ):
+    opts = League._meta
+    obj = League.objects.get(pk=id)
+    form = RoundRobinForm()
+    preserved_filters = admin_site.get_preserved_filters(request)
+    form_url = request.build_absolute_uri()
+    form_url = request.META.get('PATH_INFO', None)
+
+    form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+    context = {
+            'title': 'Create Round Robin for %s' % obj,
+            'has_change_permission': admin_site.has_change_permission(request, obj),
+            'opts': opts,
+            'form' : form,
+            #'errors': form.errors,
+            'app_label': opts.app_label,
+            'original': obj,
+            'form_url' : form_url,
+    }
+    if request.POST and request.POST.get('create_round_robin') is not None:
+        # create it and send it back for confirmation
+        admin_site.message_user(request, 'Created Round Robin Games')
+        date = request.POST.get('datetime_0')
+        time = request.POST.get('datetime_1')
+        round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+        games = utils.create_round_robin(obj, [ round_date ])
+
+        #context['pairs'] = pairs
+        #context['round'] = next_round_no
+        #context['date'] = date
+        #context['time'] = time
+        #request.session['pairs'] = id_pairs
+
+    if not admin_site.has_change_permission(request, obj):
+        raise PermissionDenied
+
+    return render(request, admin_site.create_round_robin_template, context)
+
+def create_round_view(request, id, admin_site ):
+    opts = League._meta
+    obj = League.objects.get(pk=id)
+    form = RoundForm()
+    form.fields['byes'].queryset = obj.players
+    preserved_filters = admin_site.get_preserved_filters(request)
+    form_url = request.build_absolute_uri()
+    form_url = request.META.get('PATH_INFO', None)
+
+    form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+    context = {
+            'title': 'Create Round for %s' % obj,
+            'has_change_permission': admin_site.has_change_permission(request, obj),
+            'opts': opts,
+            'form' : form,
+            #'errors': form.errors,
+            'app_label': opts.app_label,
+            'original': obj,
+            'form_url' : form_url,
+    }
+    if request.POST and request.POST.get('create_swiss_games'):
+        # rond has been paired and confirmed, make the games
+        id_pairs = request.session.get('pairs')
+        request.session['pairs'] = ()
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+        roundno = request.POST.get('round')
+        games = utils.create_games_from_id_pairs(obj, roundno, id_pairs, round_date)
+        for g in games:
+            if g.white == None: admin_site.message_user(request, '%s will get a bye'%(g.black))
+            if g.black == None: admin_site.message_user(request, '%s will get a bye'%(g.white))
+            else: admin_site.message_user(request, '%s will play %s'%(g.white, g.black))
+            g.save()
+        utils.standings_position_update(obj)
+
+
+    elif request.POST and request.POST.get('create_swiss_round') is not None:
+        # here we've been asked to create a round
+
+        # check if it's legal (more checks should be added)
+        unfinished_games = Schedule.objects.filter(league=obj,result=3)
+        if len(unfinished_games) > 0 :
+            admin_site.message_user(request, "There are %i unfinished games, can't create new round!"%(len(unfinished_games)))
+        else:
+            # create it and send it back for confirmation
+            date = request.POST.get('datetime_0')
+            time = request.POST.get('datetime_1')
+            round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+            rounds = obj.get_rounds()
+            standings = Standings.objects.filter(league = obj)
+            next_round_no = 1
+            if len(rounds) > 0 : next_round_no = rounds[-1] + 1
+            engine  = DutchPairingEngine()
+            last_round = utils.get_last_round(obj)
+            byes = []
+            if request.POST.get('byes'):
+                for p in request.POST.get('byes'):
+                    player = Player.objects.get( id = p)
+                    byes += [ player ]
+            next_round = utils.get_next_round(next_round_no, engine, last_round, byes = byes )
+            pairs, id_pairs = utils.get_pairs(next_round)
+            context['pairs'] = pairs
+            context['round'] = next_round_no
+            context['date'] = date
+            context['time'] = time
+            request.session['pairs'] = id_pairs
+
+    if not admin_site.has_change_permission(request, obj):
+        raise PermissionDenied
+
+    return render(request, admin_site.create_round_template, context)
+
+
+def manage_schedule_view(request, id, admin_site ):
+    opts = Schedule._meta
+    game_form = LichessGameForm()
+    obj = Schedule.objects.get(pk=id)
+    if request.POST:
+        if request.POST.get('lichess_game_id') is not None:
+            game_id = request.POST.get('lichess_game_id')
+            game = utils.get_game(game_id)
+            white = obj.white
+            black = obj.black
+        if game['white'] != obj.white.lichess:
+            admin_site.message_user(request,'Note that lichess id %s does not correspond to current player %s' %(game['white'],obj.white))
+            if game['black'] != obj.black.lichess:
+                admin_site.message_user(request,'Note that lichess id %s does not correspond to current player %s' %(game['black'],obj.black))
+            obj.lichess = game_id
+            obj.date = game['date']
+            obj.result = game['result']
+            if 'pgn' in game.keys():
+                obj.pgn = game['pgn']
+            obj.save()
+            utils.standings_save(obj.league)
+            utils.standings_update(obj.league)
+
+        admin_site.message_user(request, 'added lichess details to %s'%(obj))
+
+    if not admin_site.has_change_permission(request, obj):
+        raise PermissionDenied
+
+        # do cool management stuff here
+    preserved_filters = admin_site.get_preserved_filters(request)
+    form_url = request.build_absolute_uri()
+    form_url = request.META.get('PATH_INFO', None)
+
+    form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+    context = {
+        'title': 'Manage %s' % obj,
+        'has_change_permission': admin_site.has_change_permission(request, obj),
+        'opts': opts,
+        #'errors': form.errors,
+        'app_label': opts.app_label,
+        'original': obj,
+        'form_url' : form_url,
+        'game_form' : game_form
+    }
+
+    return render(request, admin_site.manage_view_template, context)
