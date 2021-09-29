@@ -238,18 +238,9 @@ def index(request):
 
 
 from io import BytesIO
-from itertools import cycle
 
-
-import matplotlib
-import matplotlib.image as image
-import os
-from matplotlib import pyplot as plt
-matplotlib.use("pdf") ## Include this line to make PDF output
 
 from django.http import HttpResponse
-from django.templatetags.static import static
-from django.conf import settings
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
@@ -260,40 +251,16 @@ from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundFor
 import utils
 
 from swissdutch.dutch import DutchPairingEngine
-#from .utils import get_arena_games, get_swiss_games, get_game
+from .utils import get_arena_games, get_swiss_games, get_game, make_table_pdf, standings_save, standings_update
 
 
-def download_league_pdf(self, request, id):
+def download_league_pdf(request, id, admin_site):
     obj = League.objects.get(pk=id)
     response = HttpResponse(content_type='application/pdf')
     filename = '%s_%s'%(obj,obj.updated_date.date())
     response['Content-Disposition'] = 'attachement; filename={0}.pdf'.format(filename)
     buffer = BytesIO()
-    fig, (ax1, ax2) = plt.subplots(figsize=(8.27, 11.69), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
-    ax1.set_axis_off()
-    ax2.set_axis_off()
-    standings = Standings.objects.filter(league = obj)
-    ax2.text(0.5, 1.02, obj, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
-    table = ax2.table(
-        cellText = [ [s.player, s.matches, s.win, s.draws, s.lost, s.points ] for s in standings],
-        colLabels = ['Name', 'P', 'W', 'D', 'L', 'Pts'],
-        colWidths = [0.4, 0.12, 0.12, 0.12, 0.12, 0.12],
-        cellLoc ='center',  
-        cellColours = [ [c for i in range(6)] for j,c in zip(range(len(standings)),cycle([(1,1,1,1.0), (0,0,0,0.1)])) ],
-        loc ='upper left',
-        rowLabels = [ s.position for s in standings ],
-    )
-    table.auto_set_font_size(False)
-    table.set_fontsize(14)
-    table_props = table.properties()
-    for i,c in table_props['celld'].items():
-        c.set_height(0.03)
-
-
-    ax2.text(0.5, 0.1, "Last updated on %s"%(obj.updated_date.date()), horizontalalignment='center', verticalalignment='center')
-
-    im = image.imread(settings.BASE_DIR + static('img/wcc_logo.png'))
-    ax1.imshow(im)
+    fig = make_table_pdf(obj)
     fig.savefig(buffer, format='pdf')
     pdf = buffer.getvalue()
     buffer.close()
@@ -315,11 +282,11 @@ def manage_league_view(request, id, admin_site ):
     if request.POST:
         games = {}
         if request.POST.get('lichess_arena_id') is not None:
-            games.update(utils.get_arena_games(request.POST.get('lichess_arena_id')))
+            games.update(get_arena_games(request.POST.get('lichess_arena_id')))
         if request.POST.get('lichess_swiss_id') is not None:
-            games.update(utils.get_swiss_games(request.POST.get('lichess_swiss_id')))
+            games.update(get_swiss_games(request.POST.get('lichess_swiss_id')))
         if request.POST.get('lichess_game_id') is not None:
-            games.update(utils.get_game(request.POST.get('lichess_game_id')))
+            games.update(get_game(request.POST.get('lichess_game_id')))
         if request.POST.get('round_no') is not None:
             message = ''
             for g in Schedule.objects.filter(league=obj,round=request.POST.get('round_no')):
@@ -359,8 +326,8 @@ def manage_league_view(request, id, admin_site ):
             schedule.save()
             ngames+=1
         if ngames + nchanges > 0 :
-            utils.standings_save(obj)
-            utils.standings_update(obj)
+            standings_save(obj)
+            standings_update(obj)
 
         admin_site.message_user(request, 'added %i games to %s'%(ngames + nchanges,obj))
 

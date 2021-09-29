@@ -552,3 +552,44 @@ def create_round_robin(league, dates):
     rounds = create_balanced_round_robin(list(league.players.all()))
     create_round_robin_games(league,rounds,dates)
 
+
+# figure making
+import matplotlib
+import matplotlib.image as image
+import os
+from matplotlib import pyplot as plt
+matplotlib.use("pdf") ## Include this line to make PDF output
+
+from django.templatetags.static import static
+from django.conf import settings
+
+from itertools import cycle
+
+def make_table_pdf(league):
+    fig, (ax1, ax2) = plt.subplots(figsize=(8.27, 11.69), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
+    ax1.set_axis_off()
+    ax2.set_axis_off()
+    standings = Standings.objects.filter(league = league)
+    ax2.text(0.5, 1.02, league, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
+    table = ax2.table(
+        cellText = [ [s.player, s.matches, s.win, s.draws, s.lost, s.points ] for s in standings],
+        colLabels = ['Name', 'P', 'W', 'D', 'L', 'Pts'],
+        colWidths = [0.4, 0.12, 0.12, 0.12, 0.12, 0.12],
+        cellLoc ='center',  
+        cellColours = [ [c for i in range(6)] for j,c in zip(range(len(standings)),cycle([(1,1,1,1.0), (0,0,0,0.1)])) ],
+        loc ='upper left',
+        rowLabels = [ s.position for s in standings ],
+    )
+    table.auto_set_font_size(False)
+    table.set_fontsize(14)
+    table_props = table.properties()
+    for i,c in table_props['celld'].items():
+        c.set_height(0.03)
+
+
+    ax2.text(0.5, 0.1, "Last updated on %s"%(league.updated_date.date()), horizontalalignment='center', verticalalignment='center')
+
+    im = image.imread(settings.BASE_DIR + static('img/wcc_logo.png'))
+    ax1.imshow(im)
+
+    return fig

@@ -14,8 +14,9 @@ from .utils import standings_save, standings_update
 from tinymce.widgets import TinyMCE
 
 from django.forms import BaseInlineFormSet
+import requests
 
-from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, download_league_pdf
+from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, download_league_pdf, make_table_pdf
 
 class LimitModelFormset(BaseInlineFormSet):
     """ Base Inline formset to limit inline Model query results. """
@@ -114,6 +115,9 @@ class LeagueAdminForm(forms.ModelForm):
             'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',})
         }
 
+from matplotlib.backends.backend_pdf import PdfPages
+from django.http import HttpResponse
+from io import BytesIO
 
 class LeagueAdmin(ModelAdmin):
     change_form_template = 'change_form.html'
@@ -132,13 +136,37 @@ class LeagueAdmin(ModelAdmin):
         return mark_safe("<a href='%s'>Go</a>" % url)
 
     prepopulated_fields = {'slug': ('name', 'season',), }
-    actions=['update_standings']
+    actions=['update_standings', 'make_pdf', 'update_ratings']
     list_display = ('name','link')
     def update_standings(self,request,queryset):
         for obj in queryset:
             standings_save(obj)
             standings_update(obj)
             self.message_user(request, "league standings updated")
+
+    def update_ratings(self,request,queryset):
+        for obj in queryset:
+            standings = Standings.objects.filter(league=obj)
+            for s in standings:
+                s.rating = s.player.rating
+                s.save()
+            self.message_user(request, "Ratings of players in league updated")
+
+
+    def make_pdf(self, request, queryset):
+        response = HttpResponse(content_type='application/pdf')
+        filename = 'league_tables'
+        response['Content-Disposition'] = 'attachement; filename={0}.pdf'.format(filename)
+        buffer = BytesIO()
+        with PdfPages(buffer) as pdf:
+            for obj in queryset:
+                fig = make_table_pdf(obj)
+                pdf.savefig()
+
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
 
     def save_model(self, request, obj, form, change):
         obj.save()
@@ -172,6 +200,17 @@ class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
     list_filter = ('name',)
 
+    actions = ['update_ratings']
+    def update_ratings(self, request, queryset):
+        for p in queryset:
+            if p.ecf == None: continue
+            url = 'https://www.ecfrating.org.uk/v2/new/api.php?v2/ratings/Standard/%s/%s'%(p.ecf, datetime.today().date())
+            grade = requests.get(url)
+            if grade:
+                grade = grade.json()
+                self.message_user(request, '%s rating updated from %i to %i'%(p, p.rating, grade['revised_rating']))
+                p.rating = grade['revised_rating']
+                p.save()
 
 class ScheduleAdmin(admin.ModelAdmin):
     change_form_template = 'change_game_form.html'

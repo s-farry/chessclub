@@ -16,6 +16,7 @@
                {% else %}
                <th class="num text-center"></th>
                <th>{% trans "Player" %}</th>
+               <th class="num text-center">{% trans "Rating" %}</th>
                <th class="num text-center">{% trans "Played" %}</th>
                <th class="num text-center">{% trans "Won" %}</th>
                <th class="num text-center">{% trans "Drew" %}</th>
@@ -30,6 +31,9 @@
         <tr>
             <td>{{player.position}}</td>
             <td><a href="{% url 'player' player.player.id league.slug %}">{{player.player}}</a></td>
+            {% if not request|is_mobile %}
+            <td class="text-center">{% if player.rating %} {{player.rating}} {% else %} - {% endif %}</td>
+            {% endif %}
             <td class="text-center">{{player.matches}}</td>
             <td class="text-center">{{player.win}}</td>
             <td class="text-center">{{player.draws}}</td>            
