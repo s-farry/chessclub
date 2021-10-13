@@ -14,11 +14,10 @@ class TeamRoster(ListView):
         context = super(TeamRoster, self).get_context_data(**kwargs)
         
         season_name = ''
-        print(self.kwargs)
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
         else:
-            season = Season.objects.all().last()
+            season = Season.objects.all().first()
         season_pk = season.pk
         season_name = ": {} {}".format(season.name, season.name)
 
@@ -209,7 +208,7 @@ def player(request, player_id, **kwargs):
         games[league.season][league] = Schedule.objects.filter((Q(white=player_id) | Q(black=player_id)) & Q(league = league)).order_by('date')
     else:
         season = Season.objects.last()
-        '''
+        
         if player in season.players.all(): games[season] = {}
         for league in season.league_set.all():
             league_pk = league.pk
@@ -217,7 +216,7 @@ def player(request, player_id, **kwargs):
             if len(season_league_games) > 0:
                 if season not in games.keys(): games[season] = {}
                 games[season][league]  = season_league_games
-        '''
+        
     return render(request, 'games.html', {'player': player, 'games': games})
 
 def game(request, game_id):
@@ -246,7 +245,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
-from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm, RoundRobinForm
+from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm, RoundRobinForm, ScheduleModelFormset, ClubNightForm
 
 import utils
 
@@ -383,7 +382,7 @@ def create_round_robin_view(request, id, admin_site ):
         admin_site.message_user(request, 'Created Round Robin Games')
         date = request.POST.get('datetime_0')
         time = request.POST.get('datetime_1')
-        round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+        round_date = datetime.datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
         games = utils.create_round_robin(obj, [ round_date ])
 
         #context['pairs'] = pairs
@@ -424,7 +423,7 @@ def create_round_view(request, id, admin_site ):
         request.session['pairs'] = ()
         date = request.POST.get('date')
         time = request.POST.get('time')
-        round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+        round_date = datetime.datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
         roundno = request.POST.get('round')
         games = utils.create_games_from_id_pairs(obj, roundno, id_pairs, round_date)
         for g in games:
@@ -446,7 +445,7 @@ def create_round_view(request, id, admin_site ):
             # create it and send it back for confirmation
             date = request.POST.get('datetime_0')
             time = request.POST.get('datetime_1')
-            round_date = datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+            round_date = datetime.datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
             rounds = obj.get_rounds()
             standings = Standings.objects.filter(league = obj)
             next_round_no = 1
@@ -519,3 +518,50 @@ def manage_schedule_view(request, id, admin_site ):
     }
 
     return render(request, admin_site.manage_view_template, context)
+
+
+
+def add_club_night_view(request, admin_site ):
+    opts = Schedule._meta
+    season = Season.objects.all().last()
+    leagues = League.objects.filter(season=season)
+    league = leagues.last()
+    formset = ScheduleModelFormset(queryset=Schedule.objects.none(), initial = [{'league' : league}])
+    for f in formset:
+        f.fields['league'].choices = [ (l.id, l.__str__()) for l in leagues]
+    clubnight_form = ClubNightForm()
+    if not admin_site.has_change_permission(request, Schedule):
+        raise PermissionDenied
+
+    # do cool management stuff here
+    preserved_filters = admin_site.get_preserved_filters(request)
+    form_url = request.build_absolute_uri()
+    form_url = request.META.get('PATH_INFO', None)
+
+    form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+    context = {
+        'title': 'Add Club Night',
+        'has_change_permission': admin_site.has_change_permission(request, Schedule),
+        'opts': opts,
+        #'errors': form.errors,
+        'app_label': opts.app_label,
+        'form_url' : form_url,
+        'clubnight_form' : clubnight_form,
+        'formset' : formset
+    }
+
+    if request.POST:
+        date = request.POST.get('datetime_0')
+        time = request.POST.get('datetime_1')
+        round_night = datetime.datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
+        formset_result = ScheduleModelFormset(request.POST)
+        admin_site.message_user(request, 'Added Club Night on %s at %s' %(date,time))
+        for form in formset_result:
+            game = form.save(commit = False)
+            game.datetime = round_night
+            #game.save()
+            admin_site.message_user(request, 'Added %s %s %s in the %s' %(game.white, game.get_result_display(), game.black, game.league))
+
+
+    return render(request, admin_site.add_clubnight_template, context)

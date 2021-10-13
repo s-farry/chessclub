@@ -6,6 +6,7 @@ from functools import update_wrapper
 from .forms import LichessEventForm
 from league.utils import create_arena_event
 import datetime
+from django.utils import timezone
 # Register your models here.
 
 
