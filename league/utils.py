@@ -12,6 +12,8 @@ import argparse
 import requests
 import io
 import dateutil.parser
+from django.db.models import Q
+
 
 # for creating online tournaments
 
@@ -111,7 +113,7 @@ from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER
 # for updating standings
 def standings_save(instance):
         league = League.objects.get(pk=instance.pk)
-        league.updated_date = datetime.now()
+        league.updated_date = datetime.datetime.now()
         league.save()
         for player in league.players.all():
             obj, created = Standings.objects.get_or_create(league = league, player = player)
@@ -132,7 +134,6 @@ def standings_position_update(league):
 
 def standings_update(instance):
         standings = Standings.objects.filter(league = instance.pk)
-        now = timezone.now()
         # to calculate NBS and Buchholz score
         player_wins   = {}
         player_losses = {}
