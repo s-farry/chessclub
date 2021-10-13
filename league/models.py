@@ -144,7 +144,7 @@ class Schedule(models.Model):
 
     def __str__(self):
         if self.white and self.black:
-            return "{}: {} v {}".format(self.league, self.white, self.black) 
+            return "{}: {} {} {}".format(self.league, self.print_result, self.white, self.black) 
         elif self.white:
             return "{}: {} (bye)".format(self.league, self.white) 
         else:
