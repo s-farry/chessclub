@@ -138,9 +138,9 @@ if DEBUG:
     #STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 #only want this on server
-#if 'DJANGO_DEBUG' not in os.environ:
-#    SESSION_COOKIE_DOMAIN = 'themovieroom.co.uk'
-#    SESSION_ENGINE='django.contrib.sessions.backends.db'
+if 'DJANGO_DEBUG' not in os.environ:
+    SESSION_COOKIE_DOMAIN = 'wallaseychessclub.uk'
+    SESSION_ENGINE='django.contrib.sessions.backends.db'
 TINYMCE_SPELLCHECKER = True
 TINYMCE_DEFAULT_CONFIG = {
     'height': 360,

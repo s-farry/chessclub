@@ -20,12 +20,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 import os
 
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User, Group
+
+
+
 
 import league.urls
 from . import views
 from .admin import *
 admin.site = admin_site
 admin.autodiscover()
+#admin.site.register(get_user_model())
+#admin.site.register(Group)
+
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     url(r'^$', views.index, name='index'),

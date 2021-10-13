@@ -16,7 +16,7 @@ from tinymce.widgets import TinyMCE
 from django.forms import BaseInlineFormSet
 import requests
 
-from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, download_league_pdf, make_table_pdf
+from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, download_league_pdf, make_table_pdf, add_club_night_view
 
 class LimitModelFormset(BaseInlineFormSet):
     """ Base Inline formset to limit inline Model query results. """
@@ -213,9 +213,10 @@ class PlayerAdmin(admin.ModelAdmin):
                 p.save()
 
 class ScheduleAdmin(admin.ModelAdmin):
+    change_list_template = 'change_game_list.html'
     change_form_template = 'change_game_form.html'
     manage_view_template = 'manage_game_form.html'
-
+    add_clubnight_template = 'add_club_night.html'
     list_filter = ('league',)
 
     def get_urls(self):
@@ -226,7 +227,7 @@ class ScheduleAdmin(admin.ModelAdmin):
             return update_wrapper(wrapper, view)
 
         info = self.model._meta.app_label, self.model._meta.model_name
-        urls = [url(r'^(.+)/manage/$', wrap(manage_schedule_view),name='%s_%s_manage' % info)]
+        urls = [url(r'^addclubnight/', wrap(add_club_night_view),name='%s_%s_addclubnight' % info)]
         super_urls = super(ScheduleAdmin, self).get_urls()
         return urls + super_urls
 

@@ -589,7 +589,7 @@ def make_table_pdf(league):
 
     ax2.text(0.5, 0.1, "Last updated on %s"%(league.updated_date.date()), horizontalalignment='center', verticalalignment='center')
 
-    im = image.imread(settings.BASE_DIR + static('img/wcc_logo.png'))
+    im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
     ax1.imshow(im)
 
     return fig
