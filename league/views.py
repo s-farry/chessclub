@@ -560,7 +560,7 @@ def add_club_night_view(request, admin_site ):
         for form in formset_result:
             game = form.save(commit = False)
             game.datetime = round_night
-            #game.save()
+            game.save()
             admin_site.message_user(request, 'Added %s %s %s in the %s' %(game.white, game.get_result_display(), game.black, game.league))
 
 
