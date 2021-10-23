@@ -431,7 +431,7 @@ def create_round_view(request, id, admin_site ):
             if g.black == None: admin_site.message_user(request, '%s will get a bye'%(g.white))
             else: admin_site.message_user(request, '%s will play %s'%(g.white, g.black))
             g.save()
-        utils.standings_position_update(obj)
+        utils.standings_update(obj)
 
 
     elif request.POST and request.POST.get('create_swiss_round') is not None:
@@ -554,14 +554,21 @@ def add_club_night_view(request, admin_site ):
     if request.POST:
         date = request.POST.get('datetime_0')
         time = request.POST.get('datetime_1')
+        leagues_updated = []
         round_night = datetime.datetime.strptime('%s %s'%(date,time), '%Y-%m-%d %H:%M:%S')
         formset_result = ScheduleModelFormset(request.POST)
         admin_site.message_user(request, 'Added Club Night on %s at %s' %(date,time))
         for form in formset_result:
-            game = form.save(commit = False)
-            game.datetime = round_night
-            game.save()
-            admin_site.message_user(request, 'Added %s %s %s in the %s' %(game.white, game.get_result_display(), game.black, game.league))
+            if form.is_valid():
+                game = form.save(commit = False)
+                game.date = round_night
+                game.save()
+                admin_site.message_user(request, 'Added %s %s %s in the %s on %s' %(game.white, game.get_result_display(), game.black, game.league, game.date))
+                if game.league not in leagues_updated: leagues_updated += [ game.league ]
+            else:
+                admin_site.message_user(request, 'Game between %s and %s is not valid'%(form.cleaned_data['white'], form.cleaned_data['black']))
+        for obj in leagues_updated:
+            standings_update(obj)
 
 
     return render(request, admin_site.add_clubnight_template, context)

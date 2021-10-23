@@ -39,8 +39,10 @@
       //newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
         newElement.find(':input').not(':input[type=button], :input[type=submit], :input[type=reset], :button').each(function() {
           var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+
           var id = 'id_' + name;
           //$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+          $(this).attr({'name': name, 'id': id});
       });
       newElement.find('label').each(function() {
           var forValue = $(this).attr('for');
@@ -70,6 +72,8 @@
                   updateElementIndex(this, prefix, i);
               });
           }
+          total--;
+          $('#id_' + prefix + '-TOTAL_FORMS').val(total);
       }
       return false;
   }
