@@ -342,6 +342,7 @@ def manage_league_view(request, id, admin_site ):
     form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
 
     context = {
+        'site_header' : 'Wallasey Chess Club Administration',
         'title': 'Manage %s' % obj,
         'has_change_permission': admin_site.has_change_permission(request, obj),
         'opts': opts,
@@ -368,6 +369,7 @@ def create_round_robin_view(request, id, admin_site ):
     form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
 
     context = {
+            'site_header' : 'Wallasey Chess Club Administration',
             'title': 'Create Round Robin for %s' % obj,
             'has_change_permission': admin_site.has_change_permission(request, obj),
             'opts': opts,
@@ -408,6 +410,7 @@ def create_round_view(request, id, admin_site ):
     form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
 
     context = {
+            'site_header' : 'Wallasey Chess Club Administration',
             'title': 'Create Round for %s' % obj,
             'has_change_permission': admin_site.has_change_permission(request, obj),
             'opts': opts,
@@ -417,6 +420,7 @@ def create_round_view(request, id, admin_site ):
             'original': obj,
             'form_url' : form_url,
     }
+    
     if request.POST and request.POST.get('create_swiss_games'):
         # rond has been paired and confirmed, make the games
         id_pairs = request.session.get('pairs')
@@ -507,6 +511,7 @@ def manage_schedule_view(request, id, admin_site ):
     form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
 
     context = {
+        'site_header' : 'Wallasey Chess Club Administration',
         'title': 'Manage %s' % obj,
         'has_change_permission': admin_site.has_change_permission(request, obj),
         'opts': opts,
@@ -541,6 +546,7 @@ def add_club_night_view(request, admin_site ):
     form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
 
     context = {
+        'site_header' : 'Wallasey Chess Club Administration',
         'title': 'Add Club Night',
         'has_change_permission': admin_site.has_change_permission(request, Schedule),
         'opts': opts,

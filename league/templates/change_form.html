@@ -4,22 +4,10 @@
 {% block object-tools-items %}
 
 {% url opts|admin_urlname:'manage' original.pk|admin_urlquote as manage_url %}
-{% url opts|admin_urlname:'create_round' original.pk|admin_urlquote as create_round_url %}
-{% url opts|admin_urlname:'create_round_robin' original.pk|admin_urlquote as create_round_robin_url %}
-{% url opts|admin_urlname:'download_pdf' original.pk|admin_urlquote as download_pdf_url %}
 
 <li>
 
     <a href="{% add_preserved_filters manage_url %}" class="historylink">{% trans "Manage" %}</a>
-</li>
-<li>
-    <a href="{% add_preserved_filters create_round_url %}" class="historylink">{% trans "Create Round" %}</a>
-</li>
-<li>
-    <a href="{% add_preserved_filters create_round_robin_url %}" class="historylink">{% trans "Create Round Robin" %}</a>
-</li>
-<li>
-    <a href="{% add_preserved_filters download_pdf_url %}" class="historylink" target="_blank">{% trans "PDF" %}</a>
 </li>
 {{ block.super }}
 {% endblock %}

@@ -2,14 +2,18 @@
 {% load i18n admin_urls admin_modify %}
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-  {{block.super}}
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ app_label|capfirst|escape }}</a>
+&rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+&rsaquo; <a href="{% url opts|admin_urlname:'change' object_id=original.id %}"> {{ original|truncatewords:"18" }} </a>
+&rsaquo; <a href="{% url opts|admin_urlname:'manage' original.pk|admin_urlquote %}"> Manage </a>
+&rsaquo; {% trans 'Create Round Robin' %}
+
 </div>
 {% endblock %}
 
 {% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
-<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css"/>
-<link rel="stylesheet" type="text/css" href="/static/admin/css/global.css"/>
+{{ block.super }}
 <link rel="stylesheet" type="text/css" href="/static/admin/css/widgets.css"/>
 {% endblock %}
 {% block extrahead %}
@@ -29,7 +33,6 @@
     {{ form.as_p }}
     <input type="submit" value="Create Round Robin" name = "create_round_robin">
   </form>
-  <p>Go back to <a href="{{league_url}}">{{original}}</a></p>
 </div>
 
 {% endblock %}
