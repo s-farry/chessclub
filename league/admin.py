@@ -133,7 +133,7 @@ class LeagueAdmin(ModelAdmin):
 
     def link(self, obj):
         url = reverse('league',args = {obj.slug})
-        return mark_safe("<a href='%s'>Go</a>" % url)
+        return mark_safe("<a href='%s' target='blank'>Open</a>" % url)
 
     prepopulated_fields = {'slug': ('name', 'season',), }
     actions=['update_standings', 'make_pdf', 'update_ratings']

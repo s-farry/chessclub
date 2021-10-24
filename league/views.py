@@ -530,10 +530,15 @@ def add_club_night_view(request, admin_site ):
     opts = Schedule._meta
     season = Season.objects.all().last()
     leagues = League.objects.filter(season=season)
+    players = season.players.all()
     league = leagues.last()
     formset = ScheduleModelFormset(queryset=Schedule.objects.none(), initial = [{'league' : league}])
     for f in formset:
+        player_choices = [('', '---------')]
+        player_choices += [ (p.id, p.__str__()) for p in players]
         f.fields['league'].choices = [ (l.id, l.__str__()) for l in leagues]
+        f.fields['white'].choices = player_choices
+        f.fields['black'].choices = player_choices
     clubnight_form = ClubNightForm()
     if not admin_site.has_change_permission(request, Schedule):
         raise PermissionDenied
