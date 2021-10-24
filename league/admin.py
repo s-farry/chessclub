@@ -233,10 +233,11 @@ class ScheduleAdmin(admin.ModelAdmin):
         return urls + super_urls
 
     def save_model(self, request, obj, form, change):
-        if not change:
+        super(ScheduleAdmin, self).save_model(request, obj, form, change)
+        if not change and (not obj.white_rating or not obj.black_rating):
             obj.white_rating = obj.white.rating
             obj.black_rating = obj.black.rating
-        super(ScheduleAdmin, self).save_model(request, obj, form, change)
+            obj.save()
 
 
 admin.site.register(League, LeagueAdmin)

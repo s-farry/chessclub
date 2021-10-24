@@ -573,6 +573,8 @@ def add_club_night_view(request, admin_site ):
             if form.is_valid():
                 game = form.save(commit = False)
                 game.date = round_night
+                game.white_rating = game.white.rating
+                game.black_rating = game.black.rating
                 game.save()
                 admin_site.message_user(request, 'Added %s %s %s in the %s on %s' %(game.white, game.get_result_display(), game.black, game.league, game.date))
                 if game.league not in leagues_updated: leagues_updated += [ game.league ]
