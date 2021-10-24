@@ -31,8 +31,8 @@ from . import views
 from .admin import *
 admin.site = admin_site
 admin.autodiscover()
-#admin.site.register(get_user_model())
-#admin.site.register(Group)
+admin.site.register(get_user_model())
+admin.site.register(Group)
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
