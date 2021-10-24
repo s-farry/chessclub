@@ -37,7 +37,7 @@
                         {{ n.text|safe|truncatewords:"150" }}{%if n.text|wordcount > 120 %}<a href="{% url 'news' %}">read more</a>{% endif %}
                     </div>
                     <div class = "news-footer">
-                        Published on {{n.published_date}}
+                        Published on {{n.published_date}} by {{n.author}}
                     </div>
                     <hr>
                 </div>
