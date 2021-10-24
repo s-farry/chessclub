@@ -7,6 +7,8 @@ from .forms import LichessEventForm
 from league.utils import create_arena_event
 import datetime
 from django.utils import timezone
+from django.core.mail import send_mail
+
 # Register your models here.
 
 
@@ -107,9 +109,21 @@ class NewsAdmin(admin.ModelAdmin):
         form = super(NewsAdmin, self).get_form(request, obj, **kwargs)
         return form
 
-
     def get_readonly_fields(self, request, obj=None):
         return []
+
+    def save_model(self, request, obj, form, change):
+        obj.author = request.user
+        super(NewsAdmin, self).save_model(request, obj, form, change)
+        if not change:
+            email_message = '''
+            The news item %s by %s is awaiting approval
+            -----------------
+            %s
+            -----------------
+            Visit <a href="%s">%s</a> to approve
+            '''%(obj.title, obj.author, obj.text, "link", "link")
+            send_mail('%s awaiting approval'%(obj.title), email_message, 'contact@wallaseychessclub.uk', ['contact@wallaseychessclub.uk'], fail_silently=False)
 
 
 admin.site.register(news, NewsAdmin)

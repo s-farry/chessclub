@@ -11,6 +11,7 @@ from django import forms
 from datetime import datetime
 from .utils import standings_save, standings_update
 
+
 from tinymce.widgets import TinyMCE
 
 from django.forms import BaseInlineFormSet

@@ -114,7 +114,11 @@ class Schedule(models.Model):
     date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
     pgn  = models.TextField(null = True, blank=True)
     white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'), null = True, blank = True)
-    black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'), null = True, blank = True)
+    black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'),
+     null = True, blank = True)
+    white_rating = models.IntegerField(null = True, blank = True, verbose_name=('White Rating'))
+    black_rating = models.IntegerField(null = True, blank = True, verbose_name=('Black Rating'))
+
     result = models.IntegerField(verbose_name=_('result'),
         choices=(RESULTS),
         default=3

@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 STATUS_CHOICES = (
     ('d', 'Draft'),
@@ -24,6 +26,7 @@ class news(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
     published_date = models.DateTimeField(auto_now=True, null = True)
     image = models.ImageField(blank=True, upload_to = 'images')
+    author = models.ForeignKey(User, related_name='author', on_delete=models.CASCADE, verbose_name=('Author'), null = True, blank = True)
 
     def name(self):              # __unicode__ on Python 2
         return "%s" % (self.title)
