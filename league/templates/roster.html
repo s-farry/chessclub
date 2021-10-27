@@ -3,7 +3,9 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-    <h1 class = "mt-4">{% if page_name %}{{ page_name }}{% else %} {% trans "Club Members" %} {% endif %} {% if team %} {{team.short_name}} {% endif %} {% if season %} <small class="pull-right">{{season.name}}</small> {% endif %}</h1>
+    <h1 class = "mt-4">{% if page_name %}{{ page_name }}{% else %} {% trans "Club Members" %} {% endif %} {% if team %} {{team.short_name}} {% endif %}</h1>
+    
+    <h2>{% if season %} {{season.name}} {% endif %}</h2>
     <hr />
         {% if roster %}
         <div>

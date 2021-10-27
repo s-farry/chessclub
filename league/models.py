@@ -64,7 +64,7 @@ class PlayerCustomFields(models.Model):
 
 class Season(models.Model):
     name    = models.CharField(max_length=200, null=False, verbose_name=_('Name'))
-    players = models.ManyToManyField(Player, blank=True, related_name='seasons', verbose_name=_('Seasons'))
+    players = models.ManyToManyField(Player, blank=True, related_name='seasons', verbose_name=_('Players'))
     slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
 
     def __str__(self):

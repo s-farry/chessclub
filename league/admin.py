@@ -111,9 +111,10 @@ class LeagueAdminForm(forms.ModelForm):
         model = League
         fields = '__all__'
         exclude = []
-        
+
         widgets = {
-            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',})
+            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
+            #'players' : ModelAdmin.filter_horizontal()
         }
 
 from matplotlib.backends.backend_pdf import PdfPages
@@ -125,6 +126,7 @@ class LeagueAdmin(ModelAdmin):
     manage_view_template = 'manage_form.html'
     create_round_template = 'create_round.html'
     create_round_robin_template = 'create_round_robin.html'
+    filter_horizontal = ('players',)
 
     form = LeagueAdminForm
     inlines = [
@@ -239,10 +241,14 @@ class ScheduleAdmin(admin.ModelAdmin):
             obj.black_rating = obj.black.rating
             obj.save()
 
+class SeasonAdmin(admin.ModelAdmin):
+    filter_horizontal = ('players',)
+
+
 
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
-admin.site.register(Season)
+admin.site.register(Season, SeasonAdmin)
     
 # Register your models here.

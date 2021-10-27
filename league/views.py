@@ -17,12 +17,11 @@ class TeamRoster(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
         else:
-            season = Season.objects.all().first()
-        season_pk = season.pk
-        season_name = ": {} {}".format(season.name, season.name)
+            season = Season.objects.all().last()
+        season_name = season.name
 
 
-        context['table_name'] = season_name
+        context['season'] = season
         context['slug'] = self.kwargs.get('season')
         
         return context
@@ -33,9 +32,8 @@ class TeamRoster(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
         else:
-            season = Season.objects.all()[0]
+            season = Season.objects.last()
         season_pk = season.pk
-        season_name = season.name
         qs = self.model.objects.filter(seasons=season_pk).order_by('-rating')
 
         return qs
