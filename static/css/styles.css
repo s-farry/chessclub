@@ -10,13 +10,6 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-html {
-  font-family: sans-serif;
-  line-height: 1.15;
-  font-size: 10px;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
 
 :root {
   --blue: #007bff;
@@ -58,13 +51,25 @@ html {
   box-sizing: border-box;
 }
 
+
+
+
+html {
+  font-family: sans-serif;
+  line-height: 1.15;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 .nav-link{
-  font-size:8px;
+  font-size:inherit;
+  text-align:center;
 }
 
 @media (min-width: 700px) {
   html{
-    font-size: 12px;
+    font-size: 16px;
   }
   .nav-link{
     font-size:inherit;
@@ -72,7 +77,7 @@ html {
 }
 @media (min-width: 900px) {
   html{
-    font-size: 14px;
+    font-size: 16px;
   }
 }
     
@@ -3951,7 +3956,6 @@ a:hover, a:focus {
 
 .nav-link {
   display: block;
-  padding: 0.5rem 1rem;
   text-decoration:none;
 }
 .nav-link:hover, .nav-link:focus {
@@ -4302,9 +4306,11 @@ a:hover, a:focus {
 .navbar-expand .navbar-nav .dropdown-menu {
   position: absolute;
 }
-.navbar-expand .navbar-nav .nav-link {
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
+@media (min-width: 576px) {
+  .navbar-expand .navbar-nav .nav-link {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
 }
 .navbar-expand > .container,
 .navbar-expand > .container-fluid,
@@ -10222,6 +10228,7 @@ body {
 
 .sb-topnav {
   padding-left: 0;
+  padding-top: 1rem;
   height: var(--top-height);
   z-index: 1039;
   display: flex;
@@ -10365,10 +10372,6 @@ div .puzzle{width:calc(400px);}
 }
 }
 
-#logo{width:100px;}
-
-#wcc_logo{width:80%;}
-
 td a { 
   display: block; 
 }
@@ -10408,6 +10411,11 @@ td a {
 
 .navbar-logo{
   height:calc(var(--top-height) - 4.0em);
+  max-width:95%;
+  align-items:center;
+  align-content:center;
+  justify-content: center;
+
 }
 
 h1{text-transform:uppercase;font-size:2.0rem;}
