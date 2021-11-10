@@ -1,10 +1,11 @@
 from django.conf.urls import url
 
-from .views import StandingsFull, ScheduleFull, TeamRoster, game, index, player, fixtures, season_summary
+from .views import StandingsFull, ScheduleFull, TeamRoster, game, index, player, fixtures, season, leagues
 
 urlpatterns = [
     url(r'^$', index, name='league_index'),
-    url(r'^season/(?P<season_slug>[-\w]+)$', season_summary, name='season' ),
+    url(r'^season/(?P<season_slug>[-\w]+)$', season, name='season' ),
+    url(r'^test/(?P<season_slug>[-\w]+)/$', leagues, name = 'league'),
     url(r'^members$', TeamRoster.as_view(), name='club_members' ),
     url(r'^(?P<league>[-\w]+)/standings$', StandingsFull.as_view(), name='standings_full' ),
     url(r'^(?P<league>[-\w]+)/schedule$', ScheduleFull.as_view(), name='schedule_full' ),

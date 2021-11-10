@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from league.models import Schedule, Standings, League, Player, Season, STANDINGS_ORDER
+from league.models import Schedule, Standings, League, Player, Season, Team, TeamFixture, STANDINGS_ORDER
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -159,19 +159,22 @@ def fixtures(request, league, **kwargs):
     games = Schedule.objects.filter(league=l)
     #let's decide how to break this down, if we have rounds, do that
     #else we group by date
-    rounds = set([ g.round for g in games if g.round != None])
+    reverse = False
+    if l.get_format_display() == "Knockout":
+        reverse = True
+    rounds = sorted(set([ g.round for g in games if g.round != None]), reverse = reverse)
     dates = sorted(set([ g.date.date() for g in games if g.date != None]))
     games_display = {}
     useRounds = (len(rounds) > 0)
     latest = None
     if len(rounds) > 0:
-        latest = list(rounds)[0]
+        latest = l.get_round_display(list(rounds)[0])
         pccurrcomplete = 0 
         pcprevcomplete = 0
         for r in rounds:
             #games_round = games.filter(Q(round=r) & ~Q(black=None) & ~Q(white=None)).order_by('date')
             games_round = games.filter(round=r).order_by('date')
-            games_display[r] = games_round
+            games_display[l.get_round_display(r)] = games_round
             #now find which round to show, the last complete one
             pcprevcomplete = pccurrcomplete
             ncomplete = 0
@@ -179,7 +182,7 @@ def fixtures(request, league, **kwargs):
                 if g.result != 3: ncomplete += 1
             pccurrcomplete = float(ncomplete) / len(games_round)
             if pcprevcomplete == 1.0 or pccurrcomplete > 0:
-                latest = r
+                latest = l.get_round_display(r)
     else:
         # no rounds, let's organise by date instead
         #games_display['rounds'] = False
@@ -221,15 +224,18 @@ def game(request, game_id):
     f = get_object_or_404(Schedule, id=game_id)
     return render(request, 'game.html', {'game': f})
 
-def season_summary(request, season_slug):
+def leagues(request, season_slug):
     f = get_object_or_404(Season, slug = season_slug)
     return render(request, 'league.html', {'season' : f, 'leagues' : League.objects.filter(season=f)})
 
 def index(request):
     season_slug = Season.objects.all().last().slug
-    return season_summary(request, season_slug)
+    return leagues(request, season_slug)
 
 
+def season(request, season_slug):
+    f = get_object_or_404(Season, slug = season_slug)
+    return render(request, 'season.html', {'season' : f, 'teams' : { t : t.players.all().order_by('-rating') for t in Team.objects.filter(season=f) }, 'fixtures' : TeamFixture.objects.all(), 'members' : f.players.all().order_by('-rating') })
 
 # these views are used in the admin
 

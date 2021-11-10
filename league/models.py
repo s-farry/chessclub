@@ -5,6 +5,7 @@ from django.utils.timezone import now
 
 from django.db.models import Q
 import re
+import math
 
 STANDINGS_ORDER_HUMAN = (
     (0, _('Points, Wins, Lost')), 
@@ -22,7 +23,7 @@ RESULTS = (
     (0, '1/2-1/2',), (1,'1-0'), (2,'0-1'), (3,'-')
 )
 TOURNAMENT_FORMATS = (
-    (0, 'League',), (1,'Swiss'), (2,'Round Robin'),
+    (0, 'League',), (1,'Swiss'), (2,'Round Robin'), (3,'Knockout')
 )
 POINTS = (
     (0, 0), (1,0.5), (2,1), (3, 2), (4,3),
@@ -108,6 +109,15 @@ class League(models.Model):
         games = Schedule.objects.filter((~Q(result=3)) & Q(league = self))
         return list(set(g.round for g in games))
 
+    def get_round_display(self, round):
+        if self.format == 3:
+            if round == 0 : return "Preliminary Round"
+            elif round == 1: return "Final"
+            elif round == 2: return "Semi-Finals"
+            elif round == 3: return "Quarter-Finals"
+            else: return "Last %i" %(math.pow(2,round))
+        else: return "Round %i"%(round)
+
 class Schedule(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
     round = models.IntegerField(null=True, blank=True, verbose_name=_('Round'))
@@ -155,8 +165,27 @@ class Schedule(models.Model):
         else:
             return "{}: {} (bye)".format(self.league, self.black) 
 
+class Team(models.Model):
+    name = models.CharField(max_length=200, null=True, verbose_name=_('Team Name'))
+    league = models.CharField(max_length=200, null=True, verbose_name=_('League'))
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    players = models.ManyToManyField(Player, blank=True, related_name='team_players', verbose_name=_('Players'))
 
+    def __str__(self):
+        return '%s (%s)'%(self.name, self.season)
 
+class TeamFixture(models.Model):
+    league = models.CharField(max_length=200, null=True, verbose_name=_('League'))
+    date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('Team'), null = True, blank = True)
+    opponent = models.CharField(max_length=200, null=True, verbose_name=_('Opponent'))
+    home_score = models.IntegerField(null = True, blank = True)
+    away_score = models.IntegerField(null = True, blank = True)
+    home = models.BooleanField()
+
+    class Meta:
+        verbose_name = _('Team Fixture')
+        verbose_name_plural = _('Team Fixtures')
 
 class Standings(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))

@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
-from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER, POINTS
+from .models import League, Schedule, Standings, Player, Season, Team, TeamFixture, STANDINGS_ORDER, POINTS
 from django.utils import timezone
 from django.urls import resolve, reverse
 from django.utils.safestring import mark_safe
@@ -245,10 +245,17 @@ class SeasonAdmin(admin.ModelAdmin):
     filter_horizontal = ('players',)
 
 
+class TeamAdmin(admin.ModelAdmin):
+    filter_horizontal = ('players',)
+
+
 
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Season, SeasonAdmin)
-    
+admin.site.register(Team, TeamAdmin)
+admin.site.register(TeamFixture)
+
+
 # Register your models here.
