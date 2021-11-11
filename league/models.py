@@ -53,6 +53,12 @@ class Player(models.Model):
     def __str__(self):
         if self.surename: return "{} {}".format(self.name, self.surename)
         else: return self.name
+
+    def ecf_grade(self):
+        grade = 0
+        if self.rating and self.rating > 700:
+            grade = int(round((self.rating - 700) / 7.5))
+        return grade
     
     
 class PlayerCustomFields(models.Model):
@@ -175,7 +181,6 @@ class Team(models.Model):
         return '%s (%s)'%(self.name, self.season)
 
 class TeamFixture(models.Model):
-    league = models.CharField(max_length=200, null=True, verbose_name=_('League'))
     date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('Team'), null = True, blank = True)
     opponent = models.CharField(max_length=200, null=True, verbose_name=_('Opponent'))
@@ -186,6 +191,10 @@ class TeamFixture(models.Model):
     class Meta:
         verbose_name = _('Team Fixture')
         verbose_name_plural = _('Team Fixtures')
+    
+    def __str__(self):
+        return '%s v %s - %s'%(self.team.name, self.opponent, self.team.league)
+
 
 class Standings(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))

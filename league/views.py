@@ -224,8 +224,11 @@ def game(request, game_id):
     f = get_object_or_404(Schedule, id=game_id)
     return render(request, 'game.html', {'game': f})
 
-def leagues(request, season_slug):
-    f = get_object_or_404(Season, slug = season_slug)
+def leagues(request, **kwargs):
+    if 'season_slug' in kwargs:
+        f = get_object_or_404(Season, slug = kwargs['season_slug'])
+    else:
+        f = Season.objects.all().last()
     return render(request, 'league.html', {'season' : f, 'leagues' : League.objects.filter(season=f)})
 
 def index(request):
@@ -235,7 +238,11 @@ def index(request):
 
 def season(request, season_slug):
     f = get_object_or_404(Season, slug = season_slug)
-    return render(request, 'season.html', {'season' : f, 'teams' : { t : t.players.all().order_by('-rating') for t in Team.objects.filter(season=f) }, 'fixtures' : TeamFixture.objects.all(), 'members' : f.players.all().order_by('-rating') })
+    teams = Team.objects.filter(season=f)
+    team_squads = { t : t.players.all().order_by('-rating') for t in teams }
+    fixtures = TeamFixture.objects.filter(team__in=teams)
+    members = f.players.all().order_by('-rating')
+    return render(request, 'season.html', {'season' : f, 'teams' : team_squads , 'fixtures' : fixtures, 'members' : members })
 
 # these views are used in the admin
 

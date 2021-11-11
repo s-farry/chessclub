@@ -15,7 +15,9 @@
 <img src = "{% static 'img/blank-profile-picture-973460_1280.png' %}" width="10%">
 {% endif %}
 {% if player.rating %}
-<p>Rating: {{player.rating}}</p>
+<p>Rating: {{player.rating}}
+  <br>
+ECF Equivalent: {{player.ecf_grade}}</p>
 {% endif %}
 {% if player.ecf %}
 <img src = "{% static 'img/ecf.jpeg' %}" width="40px"> <a href = "https://www.ecfrating.org.uk/v2/new/list_games_player.php?player_no={{player.ecf}}">{{player.ecf}}</a>

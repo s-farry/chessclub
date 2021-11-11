@@ -5,7 +5,7 @@
 {% load league_tags %}
 {% block content %}
 <div class="text-center">
-<h1 class="mt-4">{{league.name}}</h1> <h2><a href="{% url 'season' league.season.slug %}">{{league.season.name}}</a></h2>
+<h1 class="mt-4">{{league.name}}</h1> <h2><a href="{% url 'tournaments' league.season.slug %}">{{league.season.name}}</a></h2>
 </div>
 <div class='text-center m-3'>
   {% if league.format != 3 %}
@@ -15,8 +15,6 @@
   {% if latest %} |
   <a class="page-link" href="#" onclick="openFixtures(event)"><i class="fas fa-list"></i> Fixtures</a> {% else %} | <i class="fas fa-list"></i> Fixtures{% endif %}
   
-  <!-- <a class="page-link" href="{% url 'league_index' %}"><i class="fas fa-chess-board"></i> All Leagues</a>-->
-
   {% if league.description %}|<a class="page-link" href="#" onclick="openDetails(event)"><i class="fas fa-info-circle"></i> Details</a> {% else %} <i class="fas fa-info-circle"></i> Details {% endif %}</div>
 
 
@@ -197,7 +195,7 @@ window.onload = function(e){
     openDetails(e);
   }
   else {
-    {% if league.format == 2 %}
+    {% if league.format == 3 %}
     openFixtures(e)
     {% else %}
     openTable(e);
