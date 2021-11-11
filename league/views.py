@@ -196,8 +196,8 @@ def fixtures(request, league, **kwargs):
 
     #let's get the standings now
     order = STANDINGS_ORDER[l.standings_order][1]
-    standing = Standings.objects.filter(league=l).order_by(*order)
-    return render(request, 'fixtures.html', {'games': games_display, 'useRounds' : useRounds, 'latest' : latest, 'standings' : standing, 'league' : l })
+    standings = Standings.objects.filter(league=l).order_by(*order)
+    return render(request, 'fixtures.html', {'games': games_display, 'useRounds' : useRounds, 'latest' : latest, 'standings' : standings, 'league' : l })
 
 
 def player(request, player_id, **kwargs):

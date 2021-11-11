@@ -8,7 +8,7 @@
 <h1 class="mt-4">{{league.name}}</h1> <h2><a href="{% url 'season' league.season.slug %}">{{league.season.name}}</a></h2>
 </div>
 <div class='text-center m-3'>
-  {% if league.format == 0 %}
+  {% if league.format != 3 %}
   <a class="page-link" href="#" onclick="openTable(event)"><i class="fas fa-table"></i> Table</a> 
   {% else %}<i class="fas fa-table"></i> Table {% endif %}
 
@@ -78,7 +78,7 @@
   {% if standings %}
       {% if league.format == 1 %}
         {% include 'content/swiss_table.html' with standings=standings rounds=league.get_rounds league=league %}
-      {% elif league.format == 2 %}
+      {% elif league.format == 0 %}
         {% include 'content/full_table.html' with standings=standings %}
       {% endif %}
   {% endif %} 
@@ -197,7 +197,11 @@ window.onload = function(e){
     openDetails(e);
   }
   else {
+    {% if league.format == 2 %}
+    openFixtures(e)
+    {% else %}
     openTable(e);
+    {% endif %}
   }
   if (showRound && showLeague == "{{league}}"){
     openRound(e, showRound);
