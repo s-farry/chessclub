@@ -39,8 +39,8 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     url(r'^$', views.index, name='index'),
     #path('league/', league.urls),
-    url(r'^league/', include('league.urls')),
-    url(r'^content/', include('content.urls')),
+    url(r'^', include('league.urls')),
+    url(r'^', include('content.urls')),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
 
