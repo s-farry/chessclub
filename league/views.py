@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
 import datetime
+from openpyxl import Workbook
 
 class TeamRoster(ListView):
     template_name = 'roster.html'
@@ -236,8 +237,11 @@ def index(request):
     return leagues(request, season_slug)
 
 
-def season(request, season_slug):
-    f = get_object_or_404(Season, slug = season_slug)
+def season(request, **kwargs):
+    if 'season_slug' in kwargs:
+        f = get_object_or_404(Season, slug = kwargs['season_slug'])
+    else:
+        f = Season.objects.all().last()
     teams = Team.objects.filter(season=f)
     team_squads = { t : t.players.all().order_by('-rating') for t in teams }
     fixtures = TeamFixture.objects.filter(team__in=teams)
@@ -256,7 +260,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
-from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm, RoundRobinForm, ScheduleModelFormset, ClubNightForm
+from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm, RoundRobinForm, ScheduleModelFormset, ClubNightForm, ExportGamesForm
 
 import utils
 
@@ -596,3 +600,72 @@ def add_club_night_view(request, admin_site ):
 
 
     return render(request, admin_site.add_clubnight_template, context)
+
+
+
+def export_games_view(request, admin_site ):
+    opts = Schedule._meta
+    season = Season.objects.all().last()
+    #leagues = League.objects.filter(season=season)
+    #players = season.players.all()
+    #leagues = leagues.last()
+    form = ExportGamesForm()
+    if not admin_site.has_change_permission(request, Schedule):
+        raise PermissionDenied
+
+    # do cool management stuff here
+    preserved_filters = admin_site.get_preserved_filters(request)
+    form_url = request.build_absolute_uri()
+    form_url = request.META.get('PATH_INFO', None)
+
+    form_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, form_url)
+
+    context = {
+        'site_header' : 'Wallasey Chess Club Administration',
+        'title': 'Export Games',
+        'has_change_permission': admin_site.has_change_permission(request, Schedule),
+        'opts': opts,
+        #'errors': form.errors,
+        'app_label': opts.app_label,
+        'form_url' : form_url,
+        'form' : form,
+    }
+
+    if request.POST:
+
+        start_date = request.POST.get('start_0')
+        start_time = request.POST.get('start_1')
+        end_date = request.POST.get('end_0')
+        end_time = request.POST.get('end_1')
+        start = datetime.datetime.strptime('%s %s'%(start_date,start_time), '%Y-%m-%d %H:%M:%S')
+        end = datetime.datetime.strptime('%s %s'%(end_date,end_time), '%Y-%m-%d %H:%M:%S')
+
+        leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
+        games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end])
+
+        response = HttpResponse(content_type='application/xlsx')
+        filename = 'test'
+        response['Content-Disposition'] = 'attachement; filename={0}.xlsx'.format(filename)
+        buffer = BytesIO()
+        wb = Workbook()
+        ws = wb.active
+        for i,g in enumerate(games):
+            a = ws.cell(row=i+1, column=1)
+            b = ws.cell(row=i+1, column=2)
+            c = ws.cell(row=i+1, column=3)
+            d = ws.cell(row=i+1, column=4)
+            e = ws.cell(row=i+1, column=5)
+            f = ws.cell(row=i+1, column=6)
+            a.value = g.date.strftime("%m/%d/%Y")
+            b.value = g.white.ecf
+            c.value = g.white.__str__()
+            d.value = g.get_result_display()
+            e.value = g.white.ecf
+            f.value = g.black.__str__()
+        wb.save(buffer)
+        ss = buffer.getvalue()
+        buffer.close()
+        response.write(ss)
+        return response
+
+    return render(request, admin_site.export_games_template, context)

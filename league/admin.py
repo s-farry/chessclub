@@ -10,6 +10,7 @@ from django.utils.safestring import mark_safe
 from django import forms
 from datetime import datetime
 from .utils import standings_save, standings_update
+from django.contrib.admin import DateFieldListFilter
 
 
 from tinymce.widgets import TinyMCE
@@ -17,7 +18,7 @@ from tinymce.widgets import TinyMCE
 from django.forms import BaseInlineFormSet
 import requests
 
-from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, download_league_pdf, make_table_pdf, add_club_night_view
+from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, download_league_pdf, make_table_pdf, add_club_night_view, export_games_view
 
 class LimitModelFormset(BaseInlineFormSet):
     """ Base Inline formset to limit inline Model query results. """
@@ -77,6 +78,10 @@ class ScheduleInline(admin.TabularInline):
                 kwargs["queryset"] = Player.objects.filter(pk__in = players)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
     
+
+class TeamFixtureInline(admin.TabularInline):
+    model = TeamFixture
+
 class StandingsInline(admin.TabularInline):
     model = Standings
 
@@ -220,7 +225,8 @@ class ScheduleAdmin(admin.ModelAdmin):
     change_form_template = 'change_game_form.html'
     manage_view_template = 'manage_game_form.html'
     add_clubnight_template = 'add_club_night.html'
-    list_filter = ('league',)
+    export_games_template = 'export_games.html'
+    list_filter = ('league',('date', DateFieldListFilter) )
 
     def get_urls(self):
         from django.conf.urls import url
@@ -230,7 +236,11 @@ class ScheduleAdmin(admin.ModelAdmin):
             return update_wrapper(wrapper, view)
 
         info = self.model._meta.app_label, self.model._meta.model_name
-        urls = [url(r'^addclubnight/', wrap(add_club_night_view),name='%s_%s_addclubnight' % info)]
+        urls = [url(r'^addclubnight/', wrap(add_club_night_view), name='%s_%s_addclubnight' 
+        % info)]
+        urls += [url(r'^exportgames/', wrap(export_games_view),name='%s_%s_exportgames' 
+        % info)]
+
         super_urls = super(ScheduleAdmin, self).get_urls()
         return urls + super_urls
 
@@ -248,6 +258,10 @@ class SeasonAdmin(admin.ModelAdmin):
 class TeamAdmin(admin.ModelAdmin):
     filter_horizontal = ('players',)
 
+    inlines = [
+        TeamFixtureInline,
+    ]
+
 
 
 admin.site.register(League, LeagueAdmin)
@@ -255,7 +269,6 @@ admin.site.register(Player, PlayerAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(Team, TeamAdmin)
-admin.site.register(TeamFixture)
 
 
 # Register your models here.

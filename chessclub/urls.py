@@ -21,8 +21,6 @@ from django.conf.urls.static import static
 import os
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.admin import UserAdmin, GroupAdmin
-from django.contrib.auth.models import User, Group
 
 
 
@@ -32,8 +30,6 @@ from . import views
 from .admin import *
 admin.site = admin_site
 admin.autodiscover()
-admin.site.register(User, UserAdmin)
-admin.site.register(Group, GroupAdmin)
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),

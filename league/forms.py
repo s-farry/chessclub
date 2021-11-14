@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.admin import widgets
-from .models import Player, Schedule
+from .models import Player, Schedule, League
 from datetime import datetime, timedelta
+from calendar import monthrange
 
 class RoundForm(forms.Form):
     datetime = forms.DateTimeField(label='Date for Next Round', widget = widgets.AdminSplitDateTime, )
@@ -28,6 +29,25 @@ class ClubNightForm(forms.Form):
     last = monday.replace(hour = 19, minute = 30, second = 0)
     if thursday > monday: last = thursday.replace(hour = 19, minute = 30, second = 0)
     datetime = forms.DateTimeField(label='Date of Club Night', widget = widgets.AdminSplitDateTime, initial = last)
+
+class ExportGamesForm(forms.Form):
+    now = datetime.today()
+    year     = now.year
+    month   = now.month
+    if now.day < 10:
+        if month == 1:
+            year = year - 1
+            month = 12
+        else:
+            month = month - 1
+
+    month_days = monthrange(year, month)
+    start = forms.DateTimeField(label='Start', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = 1))
+    end   = forms.DateTimeField(label='End', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = month_days[1]))
+
+    leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.all() )
+
+
 
 ScheduleModelFormset = modelformset_factory(
     Schedule,
