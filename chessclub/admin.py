@@ -1,6 +1,9 @@
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
+
 class MyAdminSite(AdminSite):
     # Text to put at the end of each page's <title>.
     site_title = ugettext_lazy('Wallasey Chess Club')
@@ -15,3 +18,6 @@ class MyAdminSite(AdminSite):
         return True
 
 admin_site = MyAdminSite()
+
+admin_site.register(User, UserAdmin)
+admin_site.register(Group, GroupAdmin)

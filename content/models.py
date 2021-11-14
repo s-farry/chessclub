@@ -24,7 +24,7 @@ class news(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
-    published_date = models.DateTimeField(auto_now=True, null = True)
+    published_date = models.DateTimeField(null = True, blank = True)
     image = models.ImageField(blank=True, upload_to = 'images')
     author = models.ForeignKey(User, related_name='author', on_delete=models.CASCADE, verbose_name=('Author'), null = True, blank = True)
 
