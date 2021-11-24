@@ -1,0 +1,50 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_modify %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ app_label|capfirst|escape }}</a>
+    &rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+
+    &rsaquo; {% trans 'Export Games' %}
+</div>
+ {% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/static/admin/css/widgets.css"/>
+{% endblock %}
+{% block extrahead %}
+{{ block.super }}
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+
+{{ media }}
+{{ form.media }}
+{% endblock %}
+{% block content %}
+
+<div>
+
+  {% url 'admin:league_league_change' original.pk|admin_urlquote as league_url %}
+
+
+
+  <form class="form-horizontal" method="POST" action="{{ form_url }}">
+    {% csrf_token %}
+
+      <div class="col-4">
+        {{ form.as_p }}
+        <input type="submit" value="Export Spreadsheet" name = "export_spreadsheet">
+
+      </div>
+    </form>
+
+</div>
+
+{% endblock %}
