@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.admin import widgets
-from .models import Player, Schedule, League
+from .models import Player, Schedule, League, Season
 from datetime import datetime, timedelta
 from calendar import monthrange
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 class RoundForm(forms.Form):
     datetime = forms.DateTimeField(label='Date for Next Round', widget = widgets.AdminSplitDateTime, )
@@ -44,8 +45,8 @@ class ExportGamesForm(forms.Form):
     month_days = monthrange(year, month)
     start = forms.DateTimeField(label='Start', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = 1))
     end   = forms.DateTimeField(label='End', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = month_days[1]))
-
-    leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.all() )
+    season = Season.objects.all().last()
+    leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.filter(season=season),  widget = FilteredSelectMultiple('Leagues',False,))
 
 
 

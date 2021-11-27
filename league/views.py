@@ -610,10 +610,11 @@ def add_club_night_view(request, admin_site ):
 def export_games_view(request, admin_site ):
     opts = Schedule._meta
     season = Season.objects.all().last()
-    #leagues = League.objects.filter(season=season)
-    #players = season.players.all()
-    #leagues = leagues.last()
-    form = ExportGamesForm()
+    leagues = League.objects.filter(season=season)
+    initial_leagues = leagues.filter(Q(name='Wallasey Championship') | Q(name='Wallasey Premiership'))
+    form = ExportGamesForm(initial = {'leagues' : initial_leagues})
+    #form.fields['leagues'].queryset = leagues
+
     if not admin_site.has_change_permission(request, Schedule):
         raise PermissionDenied
 
