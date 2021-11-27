@@ -145,6 +145,17 @@ class Schedule(models.Model):
         verbose_name = _('Game')
         verbose_name_plural = _('Games')
 
+    def print_result(self, plain = False):
+        for a,b in RESULTS:
+            if self.result == a:
+                if plain: return b
+                if b == "1/2-1/2":
+                    return r"&#189;-&#189;"
+                elif b == "-":
+                    return "v"
+                else:
+                    return b
+                    
     def get_result(self, plain = False):
         for a,b in RESULTS:
             if self.result == a:
