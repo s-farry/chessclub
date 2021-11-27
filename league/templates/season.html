@@ -143,8 +143,9 @@ function openTeam(e, team) {
     tabcontent[i].style.display = "none";
   }
   document.getElementById('team-'+team).style.display = "block";
-  currentTeam = team;
-  document.getElementById('team-current').innerText=teamTexts[i];
+  currentTeam = teamTexts[team];
+
+  document.getElementById('team-current').innerText=currentTeam;
   sessionStorage.setItem('showTeams', team);
 
   
@@ -157,23 +158,30 @@ function previous(e){
 
 function next(e){
   var i = teamTexts.indexOf(currentTeam);
-  if (i != -1 && i < teamLinks.length-1 ) openTeam(e,i+1);
+  if (i != -1 && i < teamTexts.length-1 ) openTeam(e,i+1);
 }
 
 window.onload = function(e){
+  var teamTexts = [];
+  {% for team,players in teams.items %}
+  teamTexts.push( '{{team.name}}' );
+  {% endfor %}
+  var currentTeam = teamTexts[0];
+
   var showMembers = window.sessionStorage.getItem('showMembers');
   var showTeams   = window.sessionStorage.getItem('showTeams');
   var showFixtures   = window.sessionStorage.getItem('showFixtures');
-  if (showMembers == "true") {
-    openMembers(e);
+  openTeam(e, 0);
+
+  if (showTeams == "true") {
+    openTeams(e);
   }
   else if (showFixtures == "true"){
     openFixtures(e);
   }
   else {
-    openTeams(e);
+    openMembers(e);
   }
-  openTeam(e, 0);
 }
 </script>
 {% endblock %}

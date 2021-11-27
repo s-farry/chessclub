@@ -150,7 +150,7 @@ class LeagueAdmin(ModelAdmin):
         for obj in queryset:
             standings_save(obj)
             standings_update(obj)
-            self.message_user(request, "league standings updated")
+            self.message_user(request, "Standings for %s updated"%(obj))
 
     def update_ratings(self,request,queryset):
         for obj in queryset:

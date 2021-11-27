@@ -5,7 +5,10 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
 import datetime
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
+
+from django.conf import settings
+from django.templatetags.static import static
 
 class TeamRoster(ListView):
     template_name = 'roster.html'
@@ -597,6 +600,7 @@ def add_club_night_view(request, admin_site ):
                 admin_site.message_user(request, 'Game between %s and %s is not valid'%(form.cleaned_data['white'], form.cleaned_data['black']))
         for obj in leagues_updated:
             standings_update(obj)
+            standings_save(obj)
 
 
     return render(request, admin_site.add_clubnight_template, context)
@@ -630,9 +634,67 @@ def export_games_view(request, admin_site ):
         'form_url' : form_url,
         'form' : form,
     }
+    if request.POST and request.POST['export_ecf'] is not None:
+        start_date = request.POST.get('start_0')
+        start_time = request.POST.get('start_1')
+        end_date = request.POST.get('end_0')
+        end_time = request.POST.get('end_1')
+        start = datetime.datetime.strptime('%s %s'%(start_date,start_time), '%Y-%m-%d %H:%M:%S')
+        end = datetime.datetime.strptime('%s %s'%(end_date,end_time), '%Y-%m-%d %H:%M:%S')
 
-    if request.POST:
+        leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
+        games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end]).order_by('date')
 
+        response = HttpResponse(content_type='application/xlsx')
+        filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
+        
+        response['Content-Disposition'] = 'attachement; filename={0}.xlsx'.format(filename)
+        buffer = BytesIO()
+        wb = load_workbook(settings.BASE_DIR + static("export/ecf_template.xlsx"))
+        worksheet_players = wb.get_sheet_by_name('Player List')
+
+        i = 1
+        display_players = {}
+        while i < 1000: # for sanity's sake
+            i = i+1
+            display_name = worksheet_players.cell(row=i, column=1).value
+            if display_name is None: break
+            ecf_code = worksheet_players.cell(row=i, column=3).value
+            if ecf_code == '':
+                player_search = []
+                player_name = worksheet_players.cell(row=i, column=4).value
+                if player_name == '': continue
+                for p in Player.objects.all():
+                    if player_name == '%s, %s'%(p.surename, p.name):
+                        player_search+= [p]
+            else:
+                player_search = Player.objects.filter(ecf = ecf_code)
+            for p in player_search:
+                display_players[p] = display_name
+        print(display_players.keys())
+        worksheet_games   = wb.get_sheet_by_name('Games')
+        for i,g in enumerate(games):
+            a = worksheet_games.cell(row=i+3, column=1)
+            b = worksheet_games.cell(row=i+3, column=2)
+            c = worksheet_games.cell(row=i+3, column=3)
+            d = worksheet_games.cell(row=i+3, column=4)
+            e = worksheet_games.cell(row=i+3, column=5)
+            f = worksheet_games.cell(row=i+3, column=6)
+            a.value = g.date.strftime("%d/%m/%Y")
+            if g.white in display_players.keys():
+                b.value = display_players[g.white]
+            c.value = g.get_result()[0]
+            d.value = g.get_result()[1]
+            if g.black in display_players.keys():
+                e.value = display_players[g.black]
+            f.value = "Club Championship"
+        wb.save(buffer)
+        ss = buffer.getvalue()
+        buffer.close()
+        response.write(ss)
+        return response
+
+    elif request.POST:
         start_date = request.POST.get('start_0')
         start_time = request.POST.get('start_1')
         end_date = request.POST.get('end_0')
