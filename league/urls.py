@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import StandingsFull, ScheduleFull, TeamRoster, game, index, player, fixtures, season, leagues
+from .views import StandingsFull, ScheduleFull, TeamRoster, game, index, player, fixtures, season, leagues, export_league_pdf
 
 urlpatterns = [
     url(r'^tournaments$', leagues, name='tournaments'),
@@ -14,5 +14,5 @@ urlpatterns = [
     url(r'^game/(?P<game_id>[0-9]+)$', game, name='game'),
     url(r'^player/(?P<player_id>[0-9]+)/(?P<league>[-\w]+)$', player, name='player'),
     url(r'^player/(?P<player_id>[0-9]+)$', player, name='player'),
-
+    url(r'^export_league_pdf/(?P<league>[-\w]+)$', export_league_pdf, name='export_league_pdf')
 ]

@@ -277,11 +277,11 @@ from swissdutch.dutch import DutchPairingEngine
 from .utils import get_arena_games, get_swiss_games, get_game, make_table_pdf, standings_save, standings_update
 
 
-def download_league_pdf(request, id, admin_site):
-    obj = League.objects.get(pk=id)
+def export_league_pdf(request, league):
+    obj = get_object_or_404(League, slug=league)
     response = HttpResponse(content_type='application/pdf')
     filename = '%s_%s'%(obj,obj.updated_date.date())
-    response['Content-Disposition'] = 'attachement; filename={0}.pdf'.format(filename)
+    response['Content-Disposition'] = 'attachment; filename={0}.pdf'.format(filename)
     buffer = BytesIO()
     fig = make_table_pdf(obj)
     fig.savefig(buffer, format='pdf')

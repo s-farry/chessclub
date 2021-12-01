@@ -18,7 +18,7 @@ from tinymce.widgets import TinyMCE
 from django.forms import BaseInlineFormSet
 import requests
 
-from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, download_league_pdf, make_table_pdf, add_club_night_view, export_games_view
+from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, export_league_pdf, make_table_pdf, add_club_night_view, export_games_view
 
 class LimitModelFormset(BaseInlineFormSet):
     """ Base Inline formset to limit inline Model query results. """
@@ -197,7 +197,7 @@ class LeagueAdmin(ModelAdmin):
         name='%s_%s_create_round' % info)]
         urls += [url(r'^(.+)/create_round_robin/$', wrap(create_round_robin_view),
         name='%s_%s_create_round_robin' % info)]
-        urls += [url(r'^(.+)/download_pdf/$', wrap(download_league_pdf),
+        urls += [url(r'^(.+)/download_pdf/$', wrap(export_league_pdf),
         name='%s_%s_download_pdf' % info)]
 
         super_urls = super(LeagueAdmin, self).get_urls()
