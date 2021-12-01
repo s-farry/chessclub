@@ -167,6 +167,18 @@ class Schedule(models.Model):
                     return ('0','1')
                 else:
                     return b
+    def get_ecf_result(self, plain = False):
+        for a,b in RESULTS:
+            if self.result == a:
+                if b == "1/2-1/2":
+                    return '55'
+                elif b == "1-0":
+                    return '10'
+                elif b == "0-1":
+                    return '01'
+                else:
+                    return b
+
 
     def clean_pgn(self):
         pgn = self.pgn

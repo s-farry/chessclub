@@ -52,14 +52,14 @@
               <td class="text-center">{{match.date.date}}</td>
               {% endif %}
               <td class="text-center"><a href="{% url 'player' match.white.id match.league.slug %}">{{match.white}}</a></td>
-              <td class="text-center">Bye</a></td>
+              <td class="text-center">{% if match.result == 1 %}Bye{% else %} - {% endif %}</a></td>
               <td></td>
               {% elif match.black %}
               {% if useRounds == True %}
               <td class="text-center">{{match.date.date}}</td>
               {% endif %}
               <td></td>
-              <td class="text-center">Bye</a></td>
+              <td class="text-center">{% if match.result == 2 %}Bye{% else %} - {% endif %}</a></td>
               <td class="text-center"><a href="{% url 'player' match.black.id match.league.slug %}">{{match.black}}</a></td>
               {% endif %}
 

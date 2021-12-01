@@ -161,12 +161,18 @@ class PlayerSchedule(ListView):
 def fixtures(request, league, **kwargs):
     l = get_object_or_404(League, slug=league)
     games = Schedule.objects.filter(league=l)
-    #let's decide how to break this down, if we have rounds, do that
+    #let's decide how to break this down, if we have rounds
+    # group by round
     #else we group by date
     reverse = False
     if l.get_format_display() == "Knockout":
-        reverse = True
-    rounds = sorted(set([ g.round for g in games if g.round != None]), reverse = reverse)
+        rounds = sorted(set([ g.round for g in games if g.round != None]), reverse = True)
+        # if there is a preliminary round, put it at the front
+        if rounds[-1] == 0:
+            rounds.remove(0)
+            rounds.insert(0,0)
+    else:
+        rounds = sorted(set([ g.round for g in games if g.round != None]))
     dates = sorted(set([ g.date.date() for g in games if g.date != None]))
     games_display = {}
     useRounds = (len(rounds) > 0)
@@ -635,7 +641,7 @@ def export_games_view(request, admin_site ):
         'form_url' : form_url,
         'form' : form,
     }
-    if request.POST and request.POST['export_ecf'] is not None:
+    if request.POST and request.POST.get('export_ecf_spreadsheet') is not None:
         start_date = request.POST.get('start_0')
         start_time = request.POST.get('start_1')
         end_date = request.POST.get('end_0')
@@ -694,7 +700,61 @@ def export_games_view(request, admin_site ):
         buffer.close()
         response.write(ss)
         return response
+    if request.POST and request.POST.get('export_ecf_txt') is not None:
+        start_date = request.POST.get('start_0')
+        start_time = request.POST.get('start_1')
+        end_date = request.POST.get('end_0')
+        end_time = request.POST.get('end_1')
+        start = datetime.datetime.strptime('%s %s'%(start_date,start_time), '%Y-%m-%d %H:%M:%S')
+        end = datetime.datetime.strptime('%s %s'%(end_date,end_time), '%Y-%m-%d %H:%M:%S')
 
+        leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
+        players_by_league = [ l.players.all() for l in leagues ]
+        players = players_by_league[0]
+        for i in range(len(players_by_league) - 1):
+            players = players.union(players_by_league[i+1])
+        players = players.order_by('-surename','name')
+
+        games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end]).order_by('date')
+
+        response = HttpResponse(content_type='text/plain')
+        filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
+        
+        response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
+        #buffer = BytesIO()
+        #f = open('{0}.txt'.format(filename), 'w')
+        response.write('''#EVENT DETAILS
+#EVENT CODE=TLWALI2122
+#SUBMISSION INDEX=%i
+#EVENT NAME=Wallasey Chess Club Internal 2021/22
+#EVENT DATE=09/09/2021
+#FINAL RESULTS DATE=30/06/2022
+#RESULTS OFFICER=Steve Lloyd
+#RESULTS OFFICER ADDRESS=grading@cdchessleague.org.uk
+#TREASURER=Mark Spriggs
+#TREASURER ADDRESS=spriggsmlj@gmail.com
+#MINUTES FOR GAME=90
+#PLAYER LIST
+'''%(3)
+        )
+        player_pins = {}
+        for i,p in enumerate(players):
+            player_pins[p] = i+1
+            response.write('''#PIN=%i
+#ECF CODE=%s
+#NAME=%s,%s
+#CLUB CODE=7WAL
+'''%(i+1,p.ecf,p.surename,p.name))
+        response.write('#MATCH RESULTS=Club Championship\n')
+        for g in games:
+            if g.result not in [0,1,2]: continue
+            response.write('#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n'%(player_pins[g.white], player_pins[g.black], g.get_ecf_result(), g.date.strftime("%d/%m/%y")))
+        response.write('#FINISH#')
+        #f.save(buffer)
+        #ss = buffer.getvalue()
+        #buffer.close()
+        #response.write(ss)
+        return response
     elif request.POST:
         start_date = request.POST.get('start_0')
         start_time = request.POST.get('start_1')
