@@ -700,7 +700,7 @@ def export_games_view(request, admin_site ):
         buffer.close()
         response.write(ss)
         return response
-    if request.POST and request.POST.get('export_ecf_txt') is not None:
+    elif request.POST and request.POST.get('export_ecf_txt') is not None:
         start_date = request.POST.get('start_0')
         start_time = request.POST.get('start_1')
         end_date = request.POST.get('end_0')
@@ -713,7 +713,7 @@ def export_games_view(request, admin_site ):
         players = players_by_league[0]
         for i in range(len(players_by_league) - 1):
             players = players.union(players_by_league[i+1])
-        players = players.order_by('-surename','name')
+        players = players.order_by('surename','name')
 
         games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end]).order_by('date')
 
@@ -742,7 +742,7 @@ def export_games_view(request, admin_site ):
             player_pins[p] = i+1
             response.write('''#PIN=%i
 #ECF CODE=%s
-#NAME=%s,%s
+#NAME=%s, %s
 #CLUB CODE=7WAL
 '''%(i+1,p.ecf,p.surename,p.name))
         response.write('#MATCH RESULTS=Club Championship\n')
