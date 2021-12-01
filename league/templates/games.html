@@ -51,7 +51,7 @@ ECF Equivalent: {{player.ecf_grade}}</p>
             <tbody>
             {% for match in games %}
             <tr>
-              {% if league.get_rounds|length > 0 %} <td class="text-center">{{match.round}}</th> {% endif %}
+              {% if league.get_rounds|length > 0 %} <td class="text-center">{{match.get_round_display}}</th> {% endif %}
                 <td class="text-center">{% if match.date %}{{match.date.date}}{% endif %}</td>
                 {% if match.white == player and match.black %} 
                 <td class="text-center"><a href="{% url 'player' match.black.id league.slug %}">{{match.black}}</a></td>

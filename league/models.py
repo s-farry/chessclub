@@ -117,7 +117,7 @@ class League(models.Model):
 
     def get_round_display(self, round):
         if self.format == 3:
-            if round == 0 : return "Preliminary Round"
+            if round == 0 : return "Preliminary"
             elif round == 1: return "Final"
             elif round == 2: return "Semi-Finals"
             elif round == 3: return "Quarter-Finals"
@@ -179,6 +179,8 @@ class Schedule(models.Model):
                 else:
                     return b
 
+    def get_round_display(self):
+        return self.league.get_round_display(self.round)
 
     def clean_pgn(self):
         pgn = self.pgn

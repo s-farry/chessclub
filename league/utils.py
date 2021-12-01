@@ -117,7 +117,9 @@ def standings_save(instance):
         league.save()
         for player in league.players.all():
             obj, created = Standings.objects.get_or_create(league = league, player = player)
-            if created: obj.rating = player.rating
+            if created:
+                obj.rating = player.rating
+                obj.save()
         
         standings = Standings.objects.filter(league = league).exclude(player__in = league.players.all())
         for player in standings:
