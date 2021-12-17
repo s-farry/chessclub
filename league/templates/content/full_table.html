@@ -23,7 +23,7 @@
                <th class="num text-center">{% trans "Lost" %}</th>
                <th class="num text-center">{% trans "Points" %}</th>
                <th class="num text-center">{% trans "Form" %}</th>
-               <th class="num text-center">{% trans "Performance" %}</th>
+<!--               <th class="num text-center">{% trans "Performance" %}</th> !-->
                {% endif %}
             </tr>
            </thead>
@@ -52,7 +52,7 @@
                     {% endif %}
                 {% endfor %}
             </td>
-            <td class="text-center">{{ player.performance|floatformat:0 }}</td>
+<!--            <td class="text-center">{{ player.performance|floatformat:0 }}</td> !-->
             {% endif %}
         </tr>
     {% endfor %}
