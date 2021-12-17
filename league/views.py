@@ -554,7 +554,7 @@ def add_club_night_view(request, admin_site ):
     opts = Schedule._meta
     season = Season.objects.all().last()
     leagues = League.objects.filter(season=season)
-    players = season.players.all()
+    players = season.players.all().order_by('-surename', '-name')
     league = leagues.last()
     formset = ScheduleModelFormset(queryset=Schedule.objects.none(), initial = [{'league' : league}])
     for f in formset:
@@ -652,6 +652,7 @@ def export_games_view(request, admin_site ):
         leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
         games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end]).order_by('date')
 
+
         response = HttpResponse(content_type='application/xlsx')
         filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
         
@@ -709,20 +710,23 @@ def export_games_view(request, admin_site ):
         end = datetime.datetime.strptime('%s %s'%(end_date,end_time), '%Y-%m-%d %H:%M:%S')
 
         leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
+        extra_games = Schedule.objects.filter(id__in=request.POST.getlist('games'))
+        extra_player_ids = set([g.white.id for g in extra_games] + [g.black.id for g in extra_games])
+        extra_players = Player.objects.filter(id__in = extra_player_ids)
         players_by_league = [ l.players.all() for l in leagues ]
         players = players_by_league[0]
         for i in range(len(players_by_league) - 1):
             players = players.union(players_by_league[i+1])
+        players = players.union(extra_players)
         players = players.order_by('surename','name')
 
-        games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end]).order_by('date')
+        games = Schedule.objects.filter(Q(league__in = leagues)).filter(date__range=[start, end])
+        games = games.union(extra_games).order_by('date')
 
         response = HttpResponse(content_type='text/plain')
         filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
         
         response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
-        #buffer = BytesIO()
-        #f = open('{0}.txt'.format(filename), 'w')
         response.write('''#EVENT DETAILS
 #EVENT CODE=TLWALI2122
 #SUBMISSION INDEX=%i

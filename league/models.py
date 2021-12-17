@@ -191,11 +191,11 @@ class Schedule(models.Model):
 
     def __str__(self):
         if self.white and self.black:
-            return "{}: {} {} {}".format(self.league, self.white, self.print_result(plain = True), self.black) 
+            return "{}: {} {} {}".format(self.date.date(), self.white, self.print_result(plain = True), self.black) 
         elif self.white:
-            return "{}: {} (bye)".format(self.league, self.white) 
+            return "{}: {} (bye)".format(self.date.date(), self.white) 
         else:
-            return "{}: {} (bye)".format(self.league, self.black) 
+            return "{}: {} (bye)".format(self.date.date(), self.black) 
 
 class Team(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('Team Name'))
@@ -227,11 +227,11 @@ class Standings(models.Model):
     player = ChainedForeignKey(Player, chained_field='season', chained_model_field='teams', related_name='team', verbose_name=_('Team'))
     position = models.IntegerField(null=True, blank=True, default=1, verbose_name=_('Position'))
     matches = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches'))
-    win = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won'))
-    lost = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Lost'))
-    draws = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Draw'))
+    win    = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won'))
+    lost   = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Lost'))
+    draws  = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Draw'))
     points = models.FloatField(null=True, blank=False, default=0, verbose_name=_('Points'))
-    form = models.CharField(max_length=50,null=True)
+    form   = models.CharField(max_length=50,null=True)
     rating = models.IntegerField(null = True, blank = True, verbose_name=('Rating'))
     nbs    = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Neustadtl Sonneborn-Berger Score'))
     buchholzcut1  = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Buchholz Cut 1 Score'))
@@ -239,6 +239,7 @@ class Standings(models.Model):
     opprating = models.FloatField(null = True, blank = True, verbose_name=('Average Rating of Opponent less 1'))
     win1 = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won With Black'))
     matches1 = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches With Black'))
+    performance = models.FloatField(null=True, blank=True, default=0, verbose_name=_('Performance Rating'))
 
 
     def __str__(self):

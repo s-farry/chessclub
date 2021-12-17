@@ -30,57 +30,15 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 <article id="league-{{ slug }}-player" class="news">
     <div class = "col-md-7 ml-auto mr-auto text-center">
       {% for league,games in leagues.items %}
-        <table class="table table-striped table-hover league-table">
-          <thead>
-            <tr>
-              {% if league.get_rounds|length > 0 %}
-              <td colspan="6" class="text-center bg-white text-dark">
-                {% else %}
-                <td colspan="5" class="text-center bg-white text-dark">
-                {% endif %}
-                <a href="{% url 'league' league.slug %}"><h2>{{league.name}}</h2></a><a href="{% url 'season' season.slug %}"><h5>({{season}})</h5></a></td></tr>
-              <tr>
-                {% if league.get_rounds|length > 0 %} <th class="text-center">{% trans "Round" %}</th> {% endif %}
-                <th class="text-center">{% trans "Date" %}</th>
-                <th class="text-center">{% trans "Opponent" %}</th>
-                <th class="text-center">{% trans "Rating" %}</th>
-                <th class="text-center">{% trans "Colour" %}</th>
-                <th class="text-center">{% trans "Result" %}</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for match in games %}
-            <tr>
-              {% if league.get_rounds|length > 0 %} <td class="text-center">{{match.get_round_display}}</th> {% endif %}
-                <td class="text-center">{% if match.date %}{{match.date.date}}{% endif %}</td>
-                {% if match.white == player and match.black %} 
-                <td class="text-center"><a href="{% url 'player' match.black.id league.slug %}">{{match.black}}</a></td>
-                <td class="text-center"><a href="{% url 'player' match.black.id league.slug %}">{% if match.black_rating %}{{match.black_rating}}{% else %}-{% endif %}</a></td>
-                <td class="text-center"><i class="far fa-circle"></i></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %} &#189; {% elif match.result == 1 %} 1 {% elif match.result == 2 %} 0 {% else %} - {% endif %}</a></td>
-                {% elif match.black == player and match.white %}
-                <td class="text-center"><a href="{% url 'player' match.white.id league.slug %}">{{match.white}}</a></td>
-                <td class="text-center"><a href="{% url 'player' match.white.id league.slug %}">{% if match.white_rating %}{{match.white_rating}}{% else %}-{% endif %}</a></td>
-                <td class="text-center"><i class="fas fa-circle"></i></td>
-                <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}
-                  &#189; {% elif match.result == 1 %} 0 {% elif match.result == 2 %} 1 {% else %} - {% endif %}</a></td>
-                  {% else %}
-
-                <td class="text-center"><a href="{% url 'game' match.id %}">Bye</a></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                  {% endif %}
-            </tr>
-    {% endfor %}
-    
-                   </tbody>
-            </table>
-            {% endfor %}
-            {% endfor %}
-
-          </div>
-        
+        {% if league.format == 1 %}
+          {% include 'content/game_list.html' with season=season league=league game=games%}
+        {% elif league.format == 0 %}
+          {% include 'content/game_list.html' with season=season eague=league game=games%}
+        {% endif %}
+      {% endfor %}
+    </div>        
 </article>
+{% endfor %}
 <hr />
 
 {% endblock %}

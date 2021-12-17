@@ -110,6 +110,26 @@ def create_arena_event(name, d, time=5, increment=3, duration=90):
 
 from .models import League, Schedule, Standings, Player, Season, STANDINGS_ORDER, POINTS
 
+def get_performance_score(player, tournament):
+    white_games = Schedule.objects.filter(white=player, league = tournament.pk)
+    black_games = Schedule.objects.filter(black=player, league = tournament.pk)
+    performance, n = 0.0, 0
+    for g in white_games:
+        if g.black.rating != None and g.black.rating > 0:
+            n+=1
+            performance += g.black.rating
+            if g.result == 1: performance += 400
+            elif g.result == 2 : performance -= 400
+    for g in black_games:
+        if g.white.rating != None and g.white.rating > 0:
+            n+=1
+            performance += g.white.rating
+            if g.result == 2: performance += 400
+            elif g.result == 1 : performance -= 400
+    performance /= n
+    return performance
+
+
 # for updating standings
 def standings_save(instance):
         league = League.objects.get(pk=instance.pk)
@@ -242,13 +262,15 @@ def standings_update(instance):
                     opponent_scores += [ player_points[p]]
                     opponent_ratings += [ player_ratings[p]]
             if len (opponent_scores) > 0:
-                standings.buchholz = sum(opponent_scores)
-                standings.buchholzcut1 = standings.buchholz - min(opponent_scores)
-                standings.opprating = (sum(opponent_ratings) - min(opponent_ratings)) / max(1, len(opponent_ratings) - 1)
+                standing.buchholz = sum(opponent_scores)
+                standing.buchholzcut1 = standing.buchholz - min(opponent_scores)
+                standing.opprating = (sum(opponent_ratings) - min(opponent_ratings)) / max(1, len(opponent_ratings) - 1)
+                standing.performance = get_performance_score(standing.player, instance)
             else:
-                standings.buchholz = 0
-                standings.buchholzcut1 = 0
-                standings.opprating = 0
+                standing.buchholz = 0
+                standing.buchholzcut1 = 0
+                standing.opprating = 0
+                standing.performance = 0
             standing.nbs = nbs
             standing.save()
 

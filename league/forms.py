@@ -47,6 +47,7 @@ class ExportGamesForm(forms.Form):
     end   = forms.DateTimeField(label='End', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = month_days[1]))
     season = Season.objects.all().last()
     leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.filter(season=season),  widget = FilteredSelectMultiple('Leagues',False,))
+    games      = forms.ModelMultipleChoiceField( required = False, label = "Extra Games", queryset = Schedule.objects.filter(league__season=season).order_by('-date'))
 
 
 
