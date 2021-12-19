@@ -641,67 +641,7 @@ def export_games_view(request, admin_site ):
         'form_url' : form_url,
         'form' : form,
     }
-    if request.POST and request.POST.get('export_ecf_spreadsheet') is not None:
-        start_date = request.POST.get('start_0')
-        start_time = request.POST.get('start_1')
-        end_date = request.POST.get('end_0')
-        end_time = request.POST.get('end_1')
-        start = datetime.datetime.strptime('%s %s'%(start_date,start_time), '%Y-%m-%d %H:%M:%S')
-        end = datetime.datetime.strptime('%s %s'%(end_date,end_time), '%Y-%m-%d %H:%M:%S')
-
-        leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
-        games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end]).order_by('date')
-
-
-        response = HttpResponse(content_type='application/xlsx')
-        filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
-        
-        response['Content-Disposition'] = 'attachement; filename={0}.xlsx'.format(filename)
-        buffer = BytesIO()
-        wb = load_workbook(settings.BASE_DIR + static("export/ecf_template.xlsx"))
-        worksheet_players = wb.get_sheet_by_name('Player List')
-
-        i = 1
-        display_players = {}
-        while i < 1000: # for sanity's sake
-            i = i+1
-            display_name = worksheet_players.cell(row=i, column=1).value
-            if display_name is None: break
-            ecf_code = worksheet_players.cell(row=i, column=3).value
-            if ecf_code == '':
-                player_search = []
-                player_name = worksheet_players.cell(row=i, column=4).value
-                if player_name == '': continue
-                for p in Player.objects.all():
-                    if player_name == '%s, %s'%(p.surename, p.name):
-                        player_search+= [p]
-            else:
-                player_search = Player.objects.filter(ecf = ecf_code)
-            for p in player_search:
-                display_players[p] = display_name
-        print(display_players.keys())
-        worksheet_games   = wb.get_sheet_by_name('Games')
-        for i,g in enumerate(games):
-            a = worksheet_games.cell(row=i+3, column=1)
-            b = worksheet_games.cell(row=i+3, column=2)
-            c = worksheet_games.cell(row=i+3, column=3)
-            d = worksheet_games.cell(row=i+3, column=4)
-            e = worksheet_games.cell(row=i+3, column=5)
-            f = worksheet_games.cell(row=i+3, column=6)
-            a.value = g.date.strftime("%d/%m/%Y")
-            if g.white in display_players.keys():
-                b.value = display_players[g.white]
-            c.value = g.get_result()[0]
-            d.value = g.get_result()[1]
-            if g.black in display_players.keys():
-                e.value = display_players[g.black]
-            f.value = "Club Championship"
-        wb.save(buffer)
-        ss = buffer.getvalue()
-        buffer.close()
-        response.write(ss)
-        return response
-    elif request.POST and request.POST.get('export_ecf_txt') is not None:
+    if request.POST:
         start_date = request.POST.get('start_0')
         start_time = request.POST.get('start_1')
         end_date = request.POST.get('end_0')
@@ -722,12 +662,12 @@ def export_games_view(request, admin_site ):
 
         games = Schedule.objects.filter(Q(league__in = leagues)).filter(date__range=[start, end])
         games = games.union(extra_games).order_by('date')
-
-        response = HttpResponse(content_type='text/plain')
-        filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
+        if request.POST.get('export_ecf_txt'):
+            response = HttpResponse(content_type='text/plain')
+            filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
         
-        response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
-        response.write('''#EVENT DETAILS
+            response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
+            response.write('''#EVENT DETAILS
 #EVENT CODE=TLWALI2122
 #SUBMISSION INDEX=%i
 #EVENT NAME=Wallasey Chess Club Internal 2021/22
@@ -740,59 +680,30 @@ def export_games_view(request, admin_site ):
 #MINUTES FOR GAME=90
 #PLAYER LIST
 '''%(3)
-        )
-        player_pins = {}
-        for i,p in enumerate(players):
-            player_pins[p] = i+1
-            response.write('''#PIN=%i
+            )
+            player_pins = {}
+            for i,p in enumerate(players):
+                player_pins[p] = i+1
+                response.write('''#PIN=%i
 #ECF CODE=%s
 #NAME=%s, %s
 #CLUB CODE=7WAL
 '''%(i+1,p.ecf,p.surename,p.name))
-        response.write('#MATCH RESULTS=Club Championship\n')
-        for g in games:
-            if g.result not in [0,1,2]: continue
-            response.write('#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n'%(player_pins[g.white], player_pins[g.black], g.get_ecf_result(), g.date.strftime("%d/%m/%y")))
-        response.write('#FINISH#')
-        #f.save(buffer)
-        #ss = buffer.getvalue()
-        #buffer.close()
-        #response.write(ss)
-        return response
-    elif request.POST:
-        start_date = request.POST.get('start_0')
-        start_time = request.POST.get('start_1')
-        end_date = request.POST.get('end_0')
-        end_time = request.POST.get('end_1')
-        start = datetime.datetime.strptime('%s %s'%(start_date,start_time), '%Y-%m-%d %H:%M:%S')
-        end = datetime.datetime.strptime('%s %s'%(end_date,end_time), '%Y-%m-%d %H:%M:%S')
+            response.write('#MATCH RESULTS=Club Championship\n')
+            for g in games:
+                if g.result not in [0,1,2]: continue
+                response.write('#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n'%(player_pins[g.white], player_pins[g.black], g.get_ecf_result(), g.date.strftime("%d/%m/%y")))
+            response.write('#FINISH#')
+            return response
+        else:
+            response = HttpResponse(content_type='text/plain')
+            filename = 'WallaseyChess Club Games %s-%s - Plain'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
+            response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
+            response.write('#MATCH RESULTS=Club Championship\n')
+            for g in games:
+                if g.result not in [0,1,2]: continue
+                response.write('%s %s %s %s \n'%(g.date.strftime("%d/%m/%y"), g.white, g.get_result_display(), g.black))
 
-        leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
-        games = Schedule.objects.filter(league__in = leagues).filter(date__range=[start, end])
-
-        response = HttpResponse(content_type='application/xlsx')
-        filename = 'test'
-        response['Content-Disposition'] = 'attachement; filename={0}.xlsx'.format(filename)
-        buffer = BytesIO()
-        wb = Workbook()
-        ws = wb.active
-        for i,g in enumerate(games):
-            a = ws.cell(row=i+1, column=1)
-            b = ws.cell(row=i+1, column=2)
-            c = ws.cell(row=i+1, column=3)
-            d = ws.cell(row=i+1, column=4)
-            e = ws.cell(row=i+1, column=5)
-            f = ws.cell(row=i+1, column=6)
-            a.value = g.date.strftime("%m/%d/%Y")
-            b.value = g.white.ecf
-            c.value = g.white.__str__()
-            d.value = g.get_result_display()
-            e.value = g.white.ecf
-            f.value = g.black.__str__()
-        wb.save(buffer)
-        ss = buffer.getvalue()
-        buffer.close()
-        response.write(ss)
         return response
 
     return render(request, admin_site.export_games_template, context)
