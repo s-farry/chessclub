@@ -684,15 +684,15 @@ def export_games_view(request, admin_site ):
             player_pins = {}
             for i,p in enumerate(players):
                 player_pins[p] = i+1
-                response.write('''#PIN=%i
-#ECF CODE=%s
-#NAME=%s, %s
-#CLUB CODE=7WAL
-'''%(i+1,p.ecf,p.surename,p.name))
+                if not p.ecf: continue
+                response.write('#PIN=%i\n'%(i+1))
+                if p.ecf: response.write('#ECF CODE=%s\n'%(p.ecf))
+                response.write('#NAME=%s, %s\n'%(p.surename,p.name))
+                response.write('#CLUB CODE=7WAL\n')
             response.write('#MATCH RESULTS=Club Championship\n')
             for g in games:
                 if g.result not in [0,1,2]: continue
-                response.write('#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n'%(player_pins[g.white], player_pins[g.black], g.get_ecf_result(), g.date.strftime("%d/%m/%y")))
+                response.write('#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n'%(player_pins[g.white], player_pins[g.black], g.get_ecf_result(), g.date.strftime("%d/%m/%Y")))
             response.write('#FINISH#')
             return response
         else:
