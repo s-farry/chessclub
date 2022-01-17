@@ -8,6 +8,9 @@ from league.utils import create_arena_event
 import datetime
 from django.utils import timezone
 from django.core.mail import send_mail
+from django.contrib.auth import get_permission_codename
+
+
 
 # Register your models here.
 
@@ -89,9 +92,11 @@ class NewsAdmin(admin.ModelAdmin):
     list_display = ['title', 'status']
     list_filter = [ 'status' ]
     search_fields = [ 'title' ]
+
     actions = ['make_published']
     
     form = NewsAdminForm
+
     def make_published(self, request, queryset):
         rows_updated = queryset.update(status='p')
         for obj in queryset:
@@ -104,6 +109,15 @@ class NewsAdmin(admin.ModelAdmin):
             message_bit = "%s news items were" % rows_updated
         self.message_user(request, "%s successfully marked as published." % message_bit)
     make_published.short_description = "Mark selected news items as published"
+    make_published.allowed_permissions = ['publish']
+
+
+
+    def has_publish_permission(self, request):
+        """Does the user have the publish permission?"""
+        opts = self.opts
+        codename = get_permission_codename('publish', opts)
+        return request.user.has_perm('%s.%s' % (opts.app_label, codename))
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(NewsAdmin, self).get_form(request, obj, **kwargs)

@@ -17,6 +17,9 @@ class Puzzle(models.Model):
 class news(models.Model):
     class Meta:
         verbose_name_plural = "News"
+        permissions = [
+            ("publish", "Can mark a news item as published"),
+        ]
 
     title = models.CharField(max_length = 200, default = "Feature")
     text = models.CharField(max_length = 10000)

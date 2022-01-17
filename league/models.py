@@ -66,6 +66,7 @@ class PlayerCustomFields(models.Model):
     custom_field_order = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=200, null=True)
 
+
     def __str__(self):
         return "{}".format(self.name)
 
@@ -73,6 +74,16 @@ class Season(models.Model):
     name    = models.CharField(max_length=200, null=False, verbose_name=_('Name'))
     players = models.ManyToManyField(Player, blank=True, related_name='seasons', verbose_name=_('Players'))
     slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
+    results_officer = models.CharField(max_length=200,null=True,blank=True)
+    results_officer_address = models.CharField(max_length=200, null = True, blank=True)
+    treasurer = models.CharField(max_length=200,null=True,blank=True)
+    treasurer_address = models.CharField(max_length=200, null = True, blank=True)
+
+    start = models.DateField(null=True, blank=True)
+    end   = models.DateField(null=True, blank=True)
+    ecf_code = models.CharField(max_length=20,null=True,blank=True)
+    event_name = models.CharField(max_length=200, null=True,blank=True)
+
 
     def __str__(self):
         return "{}".format(self.name) 
@@ -92,6 +103,7 @@ class League(models.Model):
     lost_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for loss'), choices = (POINTS))
     draw_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for draw'), choices = (POINTS))
     format = models.IntegerField(default = 0, choices=(TOURNAMENT_FORMATS))
+
 
     '''
     def formfield(self, **kwargs):

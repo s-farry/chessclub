@@ -251,6 +251,16 @@ class ScheduleAdmin(admin.ModelAdmin):
             obj.black_rating = obj.black.rating
             obj.save()
 
+    def update_ratings(self,request,queryset):
+        for obj in queryset:
+            white_rating = obj.white_rating
+            black_rating = obj.black_rating
+            obj.white_rating = obj.white.rating
+            obj.black_rating = obj.black.rating
+            obj.save()
+            self.message_user(request, "Ratings in %s %s %s updated from (%i,%i) to (%i,%i)"%(obj.white, obj.get_result_display(), obj.black, white_rating, black_rating, obj.white_rating, obj.black_rating))
+    actions=['update_ratings']
+
 class SeasonAdmin(admin.ModelAdmin):
     filter_horizontal = ('players',)
 

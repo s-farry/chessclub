@@ -45,9 +45,22 @@ class ExportGamesForm(forms.Form):
     month_days = monthrange(year, month)
     start = forms.DateTimeField(label='Start', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = 1))
     end   = forms.DateTimeField(label='End', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = month_days[1]))
+    
     season = Season.objects.all().last()
     leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.filter(season=season),  widget = FilteredSelectMultiple('Leagues',False,))
     games      = forms.ModelMultipleChoiceField( required = False, label = "Extra Games", queryset = Schedule.objects.filter(league__season=season).order_by('-date'))
+    players_exclude      = forms.ModelMultipleChoiceField( required = False, label = "Players to exclude", queryset = season.players.order_by('surename', 'name'))
+    ecf_code          = forms.CharField(initial = season.ecf_code)
+    event_name        = forms.CharField(initial = season.event_name)
+    results_officer   = forms.CharField(initial = season.results_officer )
+    results_officer_address   = forms.CharField(initial = season.results_officer_address )
+    treasurer         = forms.CharField(initial = season.treasurer)
+    treasurer_address = forms.CharField(initial = season.treasurer_address )
+    minutes           = forms.IntegerField(initial=90)
+    start_date       = forms.DateField(initial = season.start)
+    end_date      = forms.DateField(initial = season.end )
+    submission_index  = forms.IntegerField(initial=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    
 
 
 

@@ -554,7 +554,7 @@ def add_club_night_view(request, admin_site ):
     opts = Schedule._meta
     season = Season.objects.all().last()
     leagues = League.objects.filter(season=season)
-    players = season.players.all().order_by('-surename', '-name')
+    players = season.players.all().order_by('surename', 'name')
     league = leagues.last()
     formset = ScheduleModelFormset(queryset=Schedule.objects.none(), initial = [{'league' : league}])
     for f in formset:
@@ -652,12 +652,14 @@ def export_games_view(request, admin_site ):
         leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
         extra_games = Schedule.objects.filter(id__in=request.POST.getlist('games'))
         extra_player_ids = set([g.white.id for g in extra_games] + [g.black.id for g in extra_games])
-        extra_players = Player.objects.filter(id__in = extra_player_ids)
-        players_by_league = [ l.players.all() for l in leagues ]
+        players_to_exclude = request.POST.getlist('players_exclude')
+        extra_players = Player.objects.filter(id__in = extra_player_ids).exclude(id__in = players_to_exclude)
+        players_by_league = [ l.players.all().exclude(id__in = players_to_exclude) for l in leagues ]
         players = players_by_league[0]
         for i in range(len(players_by_league) - 1):
             players = players.union(players_by_league[i+1])
         players = players.union(extra_players)
+        players = players
         players = players.order_by('surename','name')
 
         games = Schedule.objects.filter(Q(league__in = leagues)).filter(date__range=[start, end])
@@ -665,32 +667,49 @@ def export_games_view(request, admin_site ):
         if request.POST.get('export_ecf_txt'):
             response = HttpResponse(content_type='text/plain')
             filename = 'WallaseyChess Club Games %s-%s'%(start.strftime("%d%b%y"), end.strftime("%d%b%y"))
-        
+            start_date = ''
+            if request.POST.get('start_date'):
+                start_date = datetime.datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d').strftime('%d/%m/%Y')
+            end_date   = ''
+            if request.POST.get('end_date'):
+                end_date = datetime.datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').strftime('%d/%m/%Y')
             response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
             response.write('''#EVENT DETAILS
-#EVENT CODE=TLWALI2122
-#SUBMISSION INDEX=%i
-#EVENT NAME=Wallasey Chess Club Internal 2021/22
-#EVENT DATE=09/09/2021
-#FINAL RESULTS DATE=30/06/2022
-#RESULTS OFFICER=Steve Lloyd
-#RESULTS OFFICER ADDRESS=grading@cdchessleague.org.uk
-#TREASURER=Mark Spriggs
-#TREASURER ADDRESS=spriggsmlj@gmail.com
-#MINUTES FOR GAME=90
+#EVENT CODE=%s
+#SUBMISSION INDEX=%s
+#EVENT NAME=%s
+#EVENT DATE=%s
+#FINAL RESULTS DATE=%s
+#RESULTS OFFICER=%s
+#RESULTS OFFICER ADDRESS=%s
+#TREASURER=%s
+#TREASURER ADDRESS=%s
+#MINUTES FOR GAME=%s
 #PLAYER LIST
-'''%(3)
+'''%(
+    request.POST.get('ecf_code'),
+    request.POST.get('submission_index'),
+    request.POST.get('event_name'),
+    start_date,
+    end_date,
+    request.POST.get('results_officer'),
+    request.POST.get('results_officer_address'),
+    request.POST.get('treasurer'),
+    request.POST.get('treasurer_address'),
+    request.POST.get('minutes'))
+
             )
             player_pins = {}
             for i,p in enumerate(players):
                 player_pins[p] = i+1
-                if not p.ecf: continue
                 response.write('#PIN=%i\n'%(i+1))
                 if p.ecf: response.write('#ECF CODE=%s\n'%(p.ecf))
                 response.write('#NAME=%s, %s\n'%(p.surename,p.name))
                 response.write('#CLUB CODE=7WAL\n')
             response.write('#MATCH RESULTS=Club Championship\n')
             for g in games:
+                if g.white.id in players_to_exclude or g.black.id in players_to_exclude: continue
+
                 if g.result not in [0,1,2]: continue
                 response.write('#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n'%(player_pins[g.white], player_pins[g.black], g.get_ecf_result(), g.date.strftime("%d/%m/%Y")))
             response.write('#FINISH#')
@@ -701,6 +720,7 @@ def export_games_view(request, admin_site ):
             response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
             response.write('#MATCH RESULTS=Club Championship\n')
             for g in games:
+                if g.white.id in players_to_exclude or g.black.id in players_to_exclude: continue
                 if g.result not in [0,1,2]: continue
                 response.write('%s %s %s %s \n'%(g.date.strftime("%d/%m/%y"), g.white, g.get_result_display(), g.black))
 
