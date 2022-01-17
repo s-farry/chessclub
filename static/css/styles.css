@@ -175,6 +175,10 @@ small {
   font-size: 80%;
 }
 
+large {
+  font-size: 120%;
+}
+
 sub,
 sup {
   position: relative;
@@ -1975,10 +1979,10 @@ pre code {
 }
 
 .league-table th:first-of-type {
-  border-top-left-radius: 30px;
+  border-top-left-radius: 10px;
 }
 .league-table th:last-of-type {
-  border-top-right-radius: 30px;
+  border-top-right-radius: 10px;
 }
 .league-table tr:last-of-type td:first-of-type {
   border-bottom-left-radius: 10px;
@@ -10473,9 +10477,6 @@ h2{text-transform:uppercase;font-size:1.5rem;}
 }
 header:hover .close{
   opacity:1.0;
-}
-.table {
-  font-size:0.8rem;
 }
 .form-won, .form-draw, .form-lost{
   width:1.3em;

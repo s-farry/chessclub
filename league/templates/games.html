@@ -22,9 +22,11 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 {% if player.ecf %}
 <img src = "{% static 'img/ecf.jpeg' %}" width="40px"> <a href = "https://www.ecfrating.org.uk/v2/new/list_games_player.php?player_no={{player.ecf}}">{{player.ecf}}</a>
 {% endif %}
+<!--
 {% if player.lichess %}
 <img src = "{% static 'img/lichess.png' %}" width="40px"> <a href = "https://lichess.org/@/{{player.lichess}}">{{player.lichess}}</a>
 {% endif %}
+-->
 </div>
 {% for season,leagues in games.items %}
 <article id="league-{{ slug }}-player" class="news">
