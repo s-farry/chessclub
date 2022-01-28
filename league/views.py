@@ -24,7 +24,6 @@ class TeamRoster(ListView):
             season = Season.objects.all().last()
         season_name = season.name
 
-
         context['season'] = season
         context['slug'] = self.kwargs.get('season')
         
@@ -652,7 +651,7 @@ def export_games_view(request, admin_site ):
         leagues = [ League.objects.get(id=l) for l in request.POST.getlist('leagues')]
         extra_games = Schedule.objects.filter(id__in=request.POST.getlist('games'))
         extra_player_ids = set([g.white.id for g in extra_games] + [g.black.id for g in extra_games])
-        players_to_exclude = request.POST.getlist('players_exclude')
+        players_to_exclude = [int(id) for id in request.POST.getlist('players_exclude')]
         extra_players = Player.objects.filter(id__in = extra_player_ids).exclude(id__in = players_to_exclude)
         players_by_league = [ l.players.all().exclude(id__in = players_to_exclude) for l in leagues ]
         players = players_by_league[0]
@@ -708,9 +707,10 @@ def export_games_view(request, admin_site ):
                 response.write('#CLUB CODE=7WAL\n')
             response.write('#MATCH RESULTS=Club Championship\n')
             for g in games:
+                if not g.white or not g.black: continue
+                if g.result not in [0,1,2]: continue
                 if g.white.id in players_to_exclude or g.black.id in players_to_exclude: continue
 
-                if g.result not in [0,1,2]: continue
                 response.write('#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n'%(player_pins[g.white], player_pins[g.black], g.get_ecf_result(), g.date.strftime("%d/%m/%Y")))
             response.write('#FINISH#')
             return response
@@ -720,8 +720,9 @@ def export_games_view(request, admin_site ):
             response['Content-Disposition'] = 'attachment; filename={0}.txt'.format(filename)
             response.write('#MATCH RESULTS=Club Championship\n')
             for g in games:
-                if g.white.id in players_to_exclude or g.black.id in players_to_exclude: continue
+                if not g.black or not g.white: continue
                 if g.result not in [0,1,2]: continue
+                if g.white.id in players_to_exclude or g.black.id in players_to_exclude: continue
                 response.write('%s %s %s %s \n'%(g.date.strftime("%d/%m/%y"), g.white, g.get_result_display(), g.black))
 
         return response
