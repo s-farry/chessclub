@@ -17,7 +17,6 @@ matplotlib==3.4.3
 ndjson==0.3.1
 numpy==1.21.2
 openpyxl==3.0.9
-Pillow==7.1.2
 pyparsing==2.4.7
 python-chess==1.999
 python-dateutil==2.8.1

@@ -20,7 +20,7 @@
 ECF Equivalent: {{player.ecf_grade}}</p>
 {% endif %}
 {% if player.ecf %}
-<img src = "{% static 'img/ecf.jpeg' %}" width="40px"> <a href = "https://www.ecfrating.org.uk/v2/new/list_games_player.php?player_no={{player.ecf}}">{{player.ecf}}</a>
+<img src = "{% static 'img/ecf.jpeg' %}" width="40px"> <a href = "https://www.ecfrating.org.uk/v2/new/player.php?ECF_code={{player.ecf}}">{{player.ecf}}</a>
 {% endif %}
 <!--
 {% if player.lichess %}
@@ -35,7 +35,7 @@ ECF Equivalent: {{player.ecf_grade}}</p>
         {% if league.format == 1 %}
           {% include 'content/game_list.html' with season=season league=league game=games%}
         {% elif league.format == 0 %}
-          {% include 'content/game_list.html' with season=season eague=league game=games%}
+          {% include 'content/game_list.html' with season=season league=league game=games%}
         {% endif %}
       {% endfor %}
     </div>        

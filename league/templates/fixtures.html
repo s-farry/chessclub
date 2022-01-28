@@ -5,25 +5,24 @@
 {% load league_tags %}
 {% block content %}
 <div class="text-center">
-<h1 class="mt-4">{{league.name}}</h1> <h2><a href="{% url 'tournaments' league.season.slug %}">{{league.season.name}}</a></h2>
+<!--<h1 class="mt-4">{{league.name}}</h1> <h2><a href="{% url 'tournaments' league.season.slug %}">{{league.season.name}}</a></h2>-->
+<h1 class="mt-4">{{league.name}}</h1> <h2>{{league.season.name}}</h2>
+
 </div>
-<div class='text-center m-3'>
-  {% if league.format != 3 %}<a class="page-link" href="#" onclick="openTable(event)"><i class="fas fa-table"></i> Table</a> {% else %}<i class="fas fa-table"></i> Table {% endif %}
-  | {% if latest %}<a class="page-link" href="#" onclick="openFixtures(event)"><i class="fas fa-list"></i> Fixtures</a> {% else %} | <i class="fas fa-list"></i> Fixtures{% endif %}
-  | {% if league.description %}<a class="page-link" href="#" onclick="openDetails(event)"><i class="fas fa-info-circle"></i> Details</a> {% else %} <i class="fas fa-info-circle"></i> Details {% endif %}
-  | {% if league.format != 3 %}<a class="page-link" alt="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank"><i class="fas fa-file-pdf"></i> </a> 
-  {% else %}<i class="fas fa-file-pdf"></i> {% endif %}
-</div>
+<nav class='navbar-expand d-flex justify-content-center'>
+  <ul class = "navbar-nav">
+    <li>{% if league.format != 3 %}<a class="px-3" href="#" onclick="openTable(event)" title="SSSSSSTable"><i class="fas fa-table"></i> Table</a> {% endif %}</li>
+    <li>{% if latest %}<a class="px-3" href="#" onclick="openFixtures(event)" title="SSSSSSFixtures"><i class="fas fa-list"></i> Fixtures</a> {% else %} <i class="fas fa-list"></i> Fixtures |{% endif %}</li>
+  {% if league.description %}<li><a class="px-3" href="#" onclick="openDetails(event)" title="SSDetails"><i class="fas fa-info-circle"></i> Details</a> </li>{% endif %}
+  {% if league.format != 3 %}<li><a class="px-3" alt="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" title="aa"><i class="fas fa-file-pdf"></i></a></li>
+  {% endif %}
+  </ul>
+</nav>
 <div class = 'text-center m-3 small'>
   Last updated on {{ league.updated_date }}
 </div>
   
 <div class = "col-md-8 ml-auto mr-auto d-none" id="league_fixtures">
-  <div class="tab d-flex justify-content-center">
-    <button class="tablinks" id="tablink-previous" onclick="previous(event)" > < </button>
-    <button id = 'round-current'>{{latest}}</button>
-    <button class="tablinks" id = "tablink-next" onclick="next(event)"> > </button>
-  </div>
 {% if games %}
   {% include 'content/fixtures_list.html' with games=games useRounds=useRounds %}
 {% endif %} 
@@ -60,23 +59,26 @@ var currentRound = 0;
 
   
 function openRound(e, round) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
+  var roundElement = document.getElementById('round-'+round);
+  // we won't do anything if the round element doesn't exist
+  if (roundElement){
+    // Declare all variables
+    var i, tabcontent, tablinks;
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    // there needs to be a check in here to make sure
+    // the round exists, otherwise there's some 
+    // odd behaviour very occasionally later in the same session
+    // if a round has been deleted
+    document.getElementById('round-'+round).style.display = "block";
+    currentRound = round;
+    document.getElementById('round-current').innerText=roundTexts[round];
+    //evt.currentTarget.className += " active";
+    sessionStorage.setItem('showRound', round);
   }
-  // there needs to be a check in here to make sure
-  // the round exists, otherwise there's some 
-  // odd behaviour very occasionally later in the same session
-  // if a round has been deleted
-  document.getElementById('round-'+round).style.display = "block";
-  currentRound = round;
-  document.getElementById('round-current').innerText=roundTexts[round];
-  //evt.currentTarget.className += " active";
-  sessionStorage.setItem('showRound', round);
-
 }
 function current(e){
   openRound(e,currentRound);
@@ -157,11 +159,15 @@ window.onload = function(e){
     openTable(e);
     {% endif %}
   }
-  if (showRound && showLeague == "{{league}}"){
-    openRound(e, showRound);
-  }
-  else{
-    openRound(e, currentRound);
+
+
+  if ( document.getElementsByClassName("tabcontent").length > 0 ){
+    if (showRound && showLeague == "{{league}}"){
+      openRound(e, showRound);
+    }
+    else{
+      openRound(e, currentRound);
+    }
   }
   window.sessionStorage.setItem('showLeague','{{league}}')
 }

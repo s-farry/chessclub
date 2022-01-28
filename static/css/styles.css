@@ -3218,12 +3218,13 @@ input[type=button].btn-block {
   width: 100%;
   padding: 0.25rem 1.5rem;
   clear: both;
+  color:rgba(255, 255, 255, 0.5);
   font-weight: 400;
-  color: #212529;
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
   border: 0;
+  text-decoration:none;
 }
 .dropdown-item:hover, .dropdown-item:focus {
   color: #16181b;
@@ -3950,6 +3951,16 @@ a:hover, a:focus {
   font-weight:bold;
 }
 
+/* The pseudo element has the same content and hover style, so it pre-sets the width of the element and visibility: hidden hides the pseudo element from actual view. */
+a::before {
+    display: block;
+    content: attr(title);
+    font-weight: bold;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
 .nav {
   display: flex;
   flex-wrap: wrap;
@@ -4652,7 +4663,7 @@ a:hover, a:focus {
 }
 
 .page-link {
-  /*position: relative;
+  position: relative;
   display: block;*/
   padding: 0.5rem 0.75rem;
   margin-left: -1px;

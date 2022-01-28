@@ -39,16 +39,35 @@
         {% endblock %}
     </head>
     <body class="sb-nav-fixed">
-        <div class = "sb-topnav bg-black">
+        <div class = "sb-topnav bg-black py-3">
             <img class = "navbar-logo" src = "{% static 'img/wcc_logo.png' %}">
-            <nav class = "navbar navbar-expand navbar-dark bg-black">
+            <nav class = "navbar navbar-expand navbar-dark">
                 <ul class="navbar-nav">
-                    <li><a class="nav-link" href="{% url 'index' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i> Home</div></a></li>
-                    <li><a class="nav-link" href="{% url 'news' %}"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i> News</div></a></li>
-                    <li><a class="nav-link" href="{% url 'details' %}">
+                    <li><a class="nav-link" href="{% url 'index' %}" title = "CHHome"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i> Home</div></a></li>
+                    <li><a class="nav-link" href="{% url 'news' %}" title = "CHNews"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i> News</div></a></li>
+                    <li><a class="nav-link" href="{% url 'details' %}" title="CHDetails">
                         <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i>  Details</div></a></li>
-                    <li><a class="nav-link" href="{% url 'tournaments' %}"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i> Tournaments</div></a></li>
-                    <li><a class="nav-link" href="{% url 'members' %}"><div class="sb-nav-link-icon"><i class="fas fa-users"></i> Season</div></a></li>
+                    <li class = "nav-link dropdown"><a class="nav-link dropdown-toggle" id="tournamentDropDown", href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="CHTournamentsDD"><i class="fas fa-chess-board"></i> Tournaments
+                        <div class="dropdown-menu bg-black" aria-labelledby="tournamentDropdown">
+                            <a class="dropdown-item" href="{% url 'tournament' 'wallasey-championship-2021-2022' %}" title="Wallasey Championship">Wallasey Championship</a>
+                            <a class="dropdown-item" href="{% url 'tournament' 'wallasey-premiership-2021-2022' %}" title="Wallasey Premiership">Wallasey Premiership</a>
+                            <a class="dropdown-item" href="{% url 'tournament' 'david-camm-knockout-trophy-21-22' %}" title="David Camm Knockout">David Camm Knockout</a>
+                            <a class="dropdown-item" href="{% url 'tournament' 'open-major-knockout-21-22' %}" title="Open Major Knockout">Open Major Knockout</a>
+
+                        </div>
+</a></li>
+                    <!--
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="login.html">Logout</a>
+                        </div>
+                    </li>
+                -->
+        
+                    <li><a class="nav-link" href="{% url 'members' %}" title="CHSeason"><div class="sb-nav-link-icon"><i class="fas fa-users"></i> Season</div></a></li>
                 </ul>
             </nav>
         </div>
@@ -74,11 +93,12 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Wallasey Chess Club 2021</div>
+                            <div class="text-muted">Copyright &copy; Wallasey Chess Club 2022</div>
                             <div>
-                                <a href="#">Privacy Policy</a>
+                                <!--<a href="#">Privacy Policy</a>
                                 &middot;
                                 <a href="#">Terms &amp; Conditions</a>
+                                -->
                             </div>
                         </div>
                     </div>
