@@ -43,11 +43,11 @@
             <img class = "navbar-logo" src = "{% static 'img/wcc_logo.png' %}">
             <nav class = "navbar navbar-expand navbar-dark">
                 <ul class="navbar-nav">
-                    <li><a class="nav-link" href="{% url 'index' %}" title = "CHHome"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i> Home</div></a></li>
-                    <li><a class="nav-link" href="{% url 'news' %}" title = "CHNews"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i> News</div></a></li>
-                    <li><a class="nav-link" href="{% url 'details' %}" title="CHDetails">
+                    <li><a class="nav-link" href="{% url 'index' %}" title = "CH Home"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i> Home</div></a></li>
+                    <li><a class="nav-link" href="{% url 'news' %}" title = "CH News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i> News</div></a></li>
+                    <li><a class="nav-link" href="{% url 'details' %}" title="CH Details">
                         <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i>  Details</div></a></li>
-                    <li class = "nav-link dropdown"><a class="nav-link dropdown-toggle" id="tournamentDropDown", href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="CHTournamentsDD"><i class="fas fa-chess-board"></i> Tournaments
+                    <li class = "nav-link dropdown"><a class="nav-link dropdown-toggle" id="tournamentDropDown", href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="CH Tournaments DD"><i class="fas fa-chess-board"></i> Tournaments
                         <div class="dropdown-menu bg-black" aria-labelledby="tournamentDropdown">
                             <a class="dropdown-item" href="{% url 'tournament' 'wallasey-championship-2021-2022' %}" title="Wallasey Championship">Wallasey Championship</a>
                             <a class="dropdown-item" href="{% url 'tournament' 'wallasey-premiership-2021-2022' %}" title="Wallasey Premiership">Wallasey Premiership</a>

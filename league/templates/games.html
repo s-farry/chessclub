@@ -36,6 +36,8 @@ ECF Equivalent: {{player.ecf_grade}}</p>
           {% include 'content/game_list.html' with season=season league=league game=games%}
         {% elif league.format == 0 %}
           {% include 'content/game_list.html' with season=season league=league game=games%}
+        {% else %}
+          {% include 'content/game_list.html' with season=season league=league game=games%}
         {% endif %}
       {% endfor %}
     </div>        
