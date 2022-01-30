@@ -15,6 +15,7 @@ import dateutil.parser
 from django.db.models import Q
 
 
+import numpy as np
 # for creating online tournaments
 
 def get_client():
@@ -583,6 +584,7 @@ import matplotlib
 import matplotlib.image as image
 import os
 from matplotlib import pyplot as plt
+from matplotlib import table
 matplotlib.use("pdf") ## Include this line to make PDF output
 
 from django.templatetags.static import static
@@ -590,7 +592,7 @@ from django.conf import settings
 
 from itertools import cycle
 
-def make_table_pdf(league):
+def make_table(league):
     fig, (ax1, ax2) = plt.subplots(figsize=(8.27, 11.69), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
     ax1.set_axis_off()
     ax2.set_axis_off()
@@ -618,3 +620,92 @@ def make_table_pdf(league):
     ax1.imshow(im)
 
     return fig
+
+import matplotlib as mpl
+
+def mergecells(table, ix0, ix1):
+    ix0,ix1 = np.asarray(ix0), np.asarray(ix1)
+    d = ix1 - ix0
+    if not (0 in d and 1 in np.abs(d)):
+        raise ValueError("ix0 and ix1 should be the indices of adjacent cells. ix0: %s, ix1: %s" % (ix0, ix1))
+
+    if d[0]==-1:
+        edges = ('BRL', 'TRL')
+    elif d[0]==1:
+        edges = ('TRL', 'BRL')
+    elif d[1]==-1:
+        edges = ('BTR', 'BTL')
+    else:
+        edges = ('BTL', 'BTR')
+
+    # hide the merged edges
+    for ix,e in zip((ix0, ix1), edges):
+        table[ix[0], ix[1]].visible_edges = e
+
+    txts = [table[ix[0], ix[1]].get_text() for ix in (ix0, ix1)]
+    tpos = [np.array(t.get_position()) for t in txts]
+
+    # center the text of the 0th cell between the two merged cells
+    trans = (tpos[1] - tpos[0])/2
+    if trans[0] > 0:
+        # reduce the transform distance in order to center the text
+        trans[0] /= 2
+    elif trans[0] < 0:
+        # increase the transform distance...
+        trans[0] *= 2
+
+    txts[0].set_transform(mpl.transforms.Affine2D().translate(*trans))
+
+    # hide the text in the 1st cell
+    txts[1].set_visible(False)
+
+def make_crosstable(league):
+    fig, (ax1, ax2) = plt.subplots(figsize=(11.69, 8.27), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
+    ax1.set_axis_off()
+    ax2.set_axis_off()
+    standings = Standings.objects.filter(league = league)
+    ax2.text(0.5, 1.02, league, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
+
+    cellTexts, rowLabels = [], []
+    cellColours = []
+    colLabels = ['Name'] + [str(i) for i in range(1, len(standings)+1)] + ['Pts' ]
+    for i,p1 in enumerate(standings):
+        cellTexts += [ [p1.player] + ["" for p2 in standings ] + [p1.points]]
+        cellTexts += [ [""] + ["" for p2 in standings ] + [""]]
+        rowLabels += [ p1.position, "" ]
+        cellColour = [ (1,1,1,1.0) for i in range(len(standings) + 2) ]
+        cellColour[ i+1 ] = (0,0,0,0.8)
+        cellColours += [ cellColour, cellColour ]
+
+    
+    crosstable = ax2.table(
+        cellText = cellTexts,
+        colLabels = colLabels,
+        colWidths = [0.2] + len(standings) * [ (1.0 - 0.2 - 0.05)/len(standings) ] + [ 0.05],
+        cellColours = cellColours,
+        #cellLoc ='center',  
+        #cellColours = [ [c for i in range(6)] for j,c in zip(range(len(standings)),cycle([(1,1,1,1.0), (0,0,0,0.1)])) ],
+        loc ='upper left',
+        rowLabels = rowLabels,
+    )
+
+    for i in range(len(standings)):
+        mergecells(crosstable, (i*2+1,-1), (i*2+2,-1))
+        mergecells(crosstable, (i*2+1,0), (i*2+2,0))
+        mergecells(crosstable, (i*2+1,len(standings)+1), (i*2+2, len(standings)+1))
+
+        
+    crosstable.auto_set_font_size(False)
+    crosstable.set_fontsize(10)
+    crosstable_props = crosstable.properties()
+    for i,c in crosstable_props['celld'].items():
+        c.set_height(0.035)
+
+    #ax2.add_table(crosstable)
+    ax2.text(0.5, 0.1, "Last updated on %s"%(league.updated_date.date()), horizontalalignment='center', verticalalignment='center')
+
+    im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
+    ax1.imshow(im)
+
+    return fig
+

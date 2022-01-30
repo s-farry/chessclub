@@ -270,10 +270,8 @@ from django.utils.safestring import mark_safe
 
 from .forms import LichessArenaForm, LichessSwissForm, LichessGameForm, RoundForm, PrintRoundForm, RoundRobinForm, ScheduleModelFormset, ClubNightForm, ExportGamesForm
 
-import utils
-
 from swissdutch.dutch import DutchPairingEngine
-from .utils import get_arena_games, get_swiss_games, get_game, make_table_pdf, standings_save, standings_update
+from .utils import get_arena_games, get_swiss_games, get_game, make_table, make_crosstable, standings_save, standings_update
 
 
 def export_league_pdf(request, league):
@@ -282,12 +280,26 @@ def export_league_pdf(request, league):
     filename = '%s_%s'%(obj,obj.updated_date.date())
     response['Content-Disposition'] = 'attachment; filename={0}.pdf'.format(filename)
     buffer = BytesIO()
-    fig = make_table_pdf(obj)
+    fig = make_table(obj)
     fig.savefig(buffer, format='pdf')
     pdf = buffer.getvalue()
     buffer.close()
     response.write(pdf)
     return response
+
+def export_crosstable_pdf(request, league):
+    obj = get_object_or_404(League, slug=league)
+    response = HttpResponse(content_type='application/pdf')
+    filename = '%s_%s'%(obj,obj.updated_date.date())
+    response['Content-Disposition'] = 'attachment; filename={0}.pdf'.format(filename)
+    buffer = BytesIO()
+    fig = make_crosstable(obj)
+    fig.savefig(buffer, format='pdf')
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
 
 def manage_league_view(request, id, admin_site ):
     opts       = League._meta

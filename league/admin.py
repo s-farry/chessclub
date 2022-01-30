@@ -18,7 +18,9 @@ from tinymce.widgets import TinyMCE
 from django.forms import BaseInlineFormSet
 import requests
 
-from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, export_league_pdf, make_table_pdf, add_club_night_view, export_games_view
+import utils
+
+from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, export_league_pdf, export_crosstable_pdf, add_club_night_view, export_games_view, make_table, make_crosstable
 
 class LimitModelFormset(BaseInlineFormSet):
     """ Base Inline formset to limit inline Model query results. """
@@ -176,6 +178,23 @@ class LeagueAdmin(ModelAdmin):
         response.write(pdf)
         return response
 
+    def make_crosstable(self, request, queryset):
+        response = HttpResponse(content_type='application/pdf')
+        filename = 'league_crosstables'
+        response['Content-Disposition'] = 'attachement; filename={0}.pdf'.format(filename)
+        buffer = BytesIO()
+        with PdfPages(buffer) as pdf:
+            for obj in queryset:
+                fig = make_crosstable_pdf(obj)
+                pdf.savefig()
+
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
+
+    
     def save_model(self, request, obj, form, change):
         obj.save()
         form.save_m2m()
@@ -199,7 +218,10 @@ class LeagueAdmin(ModelAdmin):
         name='%s_%s_create_round_robin' % info)]
         urls += [url(r'^(.+)/download_pdf/$', wrap(export_league_pdf),
         name='%s_%s_download_pdf' % info)]
+        urls += [url(r'^(.+)/download_crosstable/$', wrap(export_crosstable_pdf),
+        name='%s_%s_download_crosstable' % info)]
 
+        
         super_urls = super(LeagueAdmin, self).get_urls()
         return urls + super_urls
     
