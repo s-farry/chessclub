@@ -647,10 +647,10 @@ def mergecells(table, ix0, ix1):
 
     # center the text of the 0th cell between the two merged cells
     trans = (tpos[1] - tpos[0])/2
-    if trans[0] > 0:
-        # reduce the transform distance in order to center the text
+    if trans[0] > 0 and txts[0].get_ha() == 'right':
+        # reduce thç∂e transform distance in order to center the text
         trans[0] /= 2
-    elif trans[0] < 0:
+    elif trans[0] < 0 and txts[0].get_ha() == 'right':
         # increase the transform distance...
         trans[0] *= 2
 

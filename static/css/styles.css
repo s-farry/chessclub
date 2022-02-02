@@ -459,8 +459,6 @@ h6, .h6 {
 hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 small,
@@ -10412,10 +10410,12 @@ td a {
   margin-top:0.5rem;
 }
 .news-header{
-  font-size:1.1em;
-  text-decoration:underline;
+  font-size:1.2em;
   text-transform:uppercase;
-  color:black;
+  font-weight:bold;
+  line-height: 22px;
+  margin: 0;
+  letter-spacing: 1px;
 }
 
 .news-footer{

@@ -18,13 +18,13 @@
                 <img src = "{% static 'img/chess-2.jpg' %}">
             </div>
             -->
-        <div class = "header"><i class="fas fa-chess-knight"></i> About Us</div>
+        <div class = "header mb-3"><i class="fas fa-chess-knight"></i> About Us</div>
             <div class = "news-body">
                 Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and have teams playing against other clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone! New members are always welcome so please get in touch by <a href="mailto:contact@wallaseychessclub.uk">e-mail</a> or just come down to the club one evening. We play at Wallasey Central Conservative Club on Mondays and Thursday evenings, with the games starting at 7.30pm.
             </div>
         </div>
         <div class = "row">
-            <div class = "header">
+            <div class = "header mb-3">
                 <i class="fas fa-rss"></i> Latest News
             </div>
             {% for n in news %}
@@ -34,7 +34,7 @@
                         {% if n.image %}
                         <img src="{{ n.image.url }}">
                         {% endif %}
-                        {{ n.text|safe|truncatewords:"150" }}{%if n.text|wordcount > 120 %}<a href="{% url 'news' %}">read more</a>{% endif %}
+			{{ n.text|safe }}
                     </div>
                     <div class = "news-footer">
                         Published on {{n.published_date}} by {{n.author}}
@@ -51,7 +51,6 @@
                 <div class = "d-flex justify-content-center news-body">
                     <div id="board" class='merida zeit'></div>
                 </div>
-                <a class="page-link" href = "{% url 'puzzles' %}">More Puzzles >></a>
         </div>
         <div class = "row">
             <div class = "header"><i class="fas fa-calendar-alt"></i> Club Calendar</div>
