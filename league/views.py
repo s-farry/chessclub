@@ -169,7 +169,7 @@ def fixtures(request, league, **kwargs):
         # if there is a preliminary round, put it at the back
         if rounds[0] == 0:
             rounds.remove(0)
-            rounds.insert(-1,0)
+            rounds.append(0)
     else:
         rounds = sorted(set([ g.round for g in games if g.round != None]), reverse = True)
     dates = sorted(set([ g.date.date() for g in games if g.date != None]), reverse = True)
