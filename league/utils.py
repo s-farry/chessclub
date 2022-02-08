@@ -383,7 +383,7 @@ def get_last_round(league):
                     elif game.result == 2:
                         white._score += league.lost_points
                         black._score += league.win_points
-                  
+                
     return paired_players
 
 
@@ -614,7 +614,7 @@ def make_table(league):
         c.set_height(0.03)
 
 
-    ax2.text(0.5, 0.1, "Last updated on %s"%(league.updated_date.date()), horizontalalignment='center', verticalalignment='center')
+    ax2.text(0.5, 0.1, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
 
     im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
     ax1.imshow(im)
@@ -623,8 +623,8 @@ def make_table(league):
 
 import matplotlib as mpl
 
-def mergecells(table, ix0, ix1):
-    ix0,ix1 = np.asarray(ix0), np.asarray(ix1)
+def hide_edges(table, idx0, idx1):
+    ix0,ix1 = np.asarray(idx0), np.asarray(idx1)
     d = ix1 - ix0
     if not (0 in d and 1 in np.abs(d)):
         raise ValueError("ix0 and ix1 should be the indices of adjacent cells. ix0: %s, ix1: %s" % (ix0, ix1))
@@ -642,18 +642,23 @@ def mergecells(table, ix0, ix1):
     for ix,e in zip((ix0, ix1), edges):
         table[ix[0], ix[1]].visible_edges = e
 
+
+def mergecells(table, idx0, idx1):
+    ix0,ix1 = np.asarray(idx0), np.asarray(idx1)
+    hide_edges(table, idx0, idx1)
     txts = [table[ix[0], ix[1]].get_text() for ix in (ix0, ix1)]
     tpos = [np.array(t.get_position()) for t in txts]
 
     # center the text of the 0th cell between the two merged cells
     trans = (tpos[1] - tpos[0])/2
     if trans[0] > 0 and txts[0].get_ha() == 'right':
-        # reduce thç∂e transform distance in order to center the text
+        # reduce the transform distance in order to center the text
         trans[0] /= 2
     elif trans[0] < 0 and txts[0].get_ha() == 'right':
         # increase the transform distance...
         trans[0] *= 2
 
+    print('trans', tpos[0], tpos[1], trans, txts)
     txts[0].set_transform(mpl.transforms.Affine2D().translate(*trans))
 
     # hide the text in the 1st cell
@@ -661,48 +666,84 @@ def mergecells(table, ix0, ix1):
 
 def make_crosstable(league):
     fig, (ax1, ax2) = plt.subplots(figsize=(11.69, 8.27), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.95, bottom=0.05)
     ax1.set_axis_off()
     ax2.set_axis_off()
     standings = Standings.objects.filter(league = league)
+    games     = Schedule.objects.filter(league=league)
     ax2.text(0.5, 1.02, league, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
 
     cellTexts, rowLabels = [], []
     cellColours = []
-    colLabels = ['Name'] + [str(i) for i in range(1, len(standings)+1)] + ['Pts' ]
+    colLabels = ['Name'] + [str(i+1) for i in range(len(standings))] + ['P','W','D','L','Pts' ]
     for i,p1 in enumerate(standings):
-        cellTexts += [ [p1.player] + ["" for p2 in standings ] + [p1.points]]
-        cellTexts += [ [""] + ["" for p2 in standings ] + [""]]
-        rowLabels += [ p1.position, "" ]
-        cellColour = [ (1,1,1,1.0) for i in range(len(standings) + 2) ]
-        cellColour[ i+1 ] = (0,0,0,0.8)
-        cellColours += [ cellColour, cellColour ]
+        p1_white_games = games.filter(white = p1.player)
+        p1_black_games = games.filter(black = p1.player)
 
-    
+        rowTexts = [ p1.player ]
+        rowLabels += [ p1.position ]
+        rowColour = [ (1, 1, 1, 1.0) ]
+        for p2 in standings:
+            p1_p2_white_games = p1_white_games.filter(black = p2.player)
+            p1_p2_black_games = p1_black_games.filter(white = p2.player)
+            if len(p1_p2_white_games) == 1:
+                points_text = '%i\n'%(p1_p2_white_games[0].get_white_points())
+            else:
+                points_text = '\n'
+                
+            if len(p1_p2_black_games) == 1:
+                points_text += '%i'%(p1_p2_black_games[0].get_black_points())
+                
+            rowTexts += [ points_text ]
+
+            if p1.player == p2.player: rowColour += [ (0,0,0,0.2)]
+            else: rowColour += [(1,1,1,1.0)]
+        rowTexts += [ p1.matches, p1.win, p1.draws, p1.lost, '%i'%(p1.points) ]
+        rowColour += [(1,1,1,1.0), (1,1,1,1.0), (1,1,1,1.0), (1,1,1,1.0), (1,1,1,1.0)]
+        cellColours += [ rowColour ]
+        cellTexts += [ rowTexts ]
+
+
     crosstable = ax2.table(
         cellText = cellTexts,
         colLabels = colLabels,
-        colWidths = [0.2] + len(standings) * [ (1.0 - 0.2 - 0.05)/len(standings) ] + [ 0.05],
+        colWidths = [0.2] + len(standings) * [ (1.0 - 0.2 - 0.05*5)/len(standings) ] + ([ 0.05]*5),
         cellColours = cellColours,
-        #cellLoc ='center',  
+        cellLoc ='center',  
         #cellColours = [ [c for i in range(6)] for j,c in zip(range(len(standings)),cycle([(1,1,1,1.0), (0,0,0,0.1)])) ],
         loc ='upper left',
         rowLabels = rowLabels,
     )
-
-    for i in range(len(standings)):
-        mergecells(crosstable, (i*2+1,-1), (i*2+2,-1))
-        mergecells(crosstable, (i*2+1,0), (i*2+2,0))
-        mergecells(crosstable, (i*2+1,len(standings)+1), (i*2+2, len(standings)+1))
-
-        
+    
     crosstable.auto_set_font_size(False)
-    crosstable.set_fontsize(10)
+    crosstable.set_fontsize(min(10, int(200.0/len(standings))))
     crosstable_props = crosstable.properties()
     for i,c in crosstable_props['celld'].items():
-        c.set_height(0.035)
+        c.set_height(min(0.06,0.9/len(standings)))
 
+    cells = [key for key in crosstable._cells if ((key[1] in [-1,0] + [ len(standings) + i for i in [1,2,3,4,5] ]) or (key[0] == 0)) ]
+    for cell in cells:
+        crosstable._cells[cell].get_text().set_ha('right')
+        font_size = min(14, int(280.0/len(standings)))
+        text_size = len(crosstable._cells[cell].get_text().get_text())
+        # reduce font size if we really have a lot of text
+        if text_size > 15:
+            font_size = 15.0 / text_size * font_size
+
+
+        crosstable._cells[cell].set_fontsize(font_size)
+    '''
+    
+    for i in range(len(standings)):
+        for j in (-1,0):
+            mergecells(crosstable, (i*2+1,j), (i*2+2,j))
+        for j in range(6):
+            mergecells(crosstable, (i*2+1,len(standings)+j), (i*2+2, len(standings)+j))
+        for j in range(len(standings)):
+            hide_edges(crosstable, (i*2+1, j+1), (i*2+2,j+1))
+    '''
     #ax2.add_table(crosstable)
-    ax2.text(0.5, 0.1, "Last updated on %s"%(league.updated_date.date()), horizontalalignment='center', verticalalignment='center')
+    ax2.text(0.5, 0.01, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
 
     im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
     ax1.imshow(im)

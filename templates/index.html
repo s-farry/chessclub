@@ -31,13 +31,15 @@
                 <div class = "news-item">
                     <div class = "news-header">{{n.title}}</div>
                     <div class = "news-body">
+                        {{n.published_date.date}}
+
                         {% if n.image %}
                         <img src="{{ n.image.url }}">
                         {% endif %}
 			{{ n.text|safe }}
                     </div>
                     <div class = "news-footer">
-                        Published on {{n.published_date}} by {{n.author}}
+                        Published by {{n.author.first_name}} {{n.author.last_name}}
                     </div>
                     <hr>
                 </div>

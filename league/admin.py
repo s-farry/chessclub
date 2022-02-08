@@ -269,16 +269,22 @@ class ScheduleAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super(ScheduleAdmin, self).save_model(request, obj, form, change)
         if not change and (not obj.white_rating or not obj.black_rating):
-            obj.white_rating = obj.white.rating
-            obj.black_rating = obj.black.rating
+            if obj.white:
+                obj.white_rating = obj.white.rating
+            if obj.black:
+                obj.black_rating = obj.black.rating
             obj.save()
 
     def update_ratings(self,request,queryset):
         for obj in queryset:
-            white_rating = obj.white_rating
-            black_rating = obj.black_rating
-            obj.white_rating = obj.white.rating
-            obj.black_rating = obj.black.rating
+            white_rating = 0
+            black_rating = 0
+            if obj.white:
+                white_rating = obj.white_rating
+                obj.white_rating = obj.white.rating
+            if obj.black:
+                black_rating = obj.black_rating
+                obj.black_rating = obj.black.rating
             obj.save()
             self.message_user(request, "Ratings in %s %s %s updated from (%i,%i) to (%i,%i)"%(obj.white, obj.get_result_display(), obj.black, white_rating, black_rating, obj.white_rating, obj.black_rating))
     actions=['update_ratings']

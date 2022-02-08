@@ -179,6 +179,32 @@ class Schedule(models.Model):
                     return ('0','1')
                 else:
                     return b
+
+    def get_white_points(self):
+        for a,b in RESULTS:
+            if self.result == a:
+                if b == "1/2-1/2":
+                    return self.league.get_draw_points_display()
+                elif b == "1-0":
+                    return self.league.get_win_points_display()
+                elif b == "0-1":
+                    return self.league.get_lost_points_display()
+                else:
+                    return 0
+
+    def get_black_points(self):
+        for a,b in RESULTS:
+            if self.result == a:
+                if b == "1/2-1/2":
+                    return self.league.get_draw_points_display()
+                elif b == "1-0":
+                    return self.league.get_lost_points_display()
+                elif b == "0-1":
+                    return self.league.get_win_points_display()
+                else:
+                    return 0
+
+
     def get_ecf_result(self, plain = False):
         for a,b in RESULTS:
             if self.result == a:

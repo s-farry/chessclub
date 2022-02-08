@@ -11,15 +11,15 @@
 </div>
 <nav class='navbar-expand d-flex justify-content-center'>
   <ul class = "navbar-nav">
-    <li>{% if league.format != 3 %}<a class="px-3" href="#" onclick="openTable(event)" title="SSSSSSTable"><i class="fas fa-table"></i> Table</a> {% endif %}</li>
-    <li>{% if latest %}<a class="px-3" href="#" onclick="openFixtures(event)" title="SSSSSSFixtures"><i class="fas fa-list"></i> Fixtures</a> {% else %} <i class="fas fa-list"></i> Fixtures |{% endif %}</li>
-  {% if league.description %}<li><a class="px-3" href="#" onclick="openDetails(event)" title="SSDetails"><i class="fas fa-info-circle"></i> Details</a> </li>{% endif %}
-  {% if league.format != 3 %}<li><a class="px-3" alt="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" title="aa"><i class="fas fa-file-pdf"></i></a></li>
-  {% endif %}
-  </ul>
+  {% if league.format != 3 %} <li><a class="text-decoration-none" href="#" onclick="openTable(event)" title="SSSSTable"> | <i class="fas fa-table"></i>Table</a></li>{% endif %}
+  {% if latest %}             <li><a class="text-decoration-none" href="#" onclick="openFixtures(event)" title="SSSSFixtures"> | <i class="fas fa-list"></i>Fixtures</a></li>{% else %} <li><i class="fas fa-list"></i> Fixtures </li>{% endif %}
+  {% if league.description %} <li><a class="text-decoration-none" href="#" onclick="openDetails(event)" title="SSSSDetails"> | <i class="fas fa-info-circle"></i>Details</a> </li>{% endif %}
+  {% if league.format != 3 %} <li><a class="text-decoration-none" alt="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" title="aa"> | <i class="fas fa-file-pdf"></i></a></li>{% endif %}
+  <li>|</li>
+</ul>
 </nav>
 <div class = 'text-center m-3 small'>
-  Last updated on {{ league.updated_date }}
+  Last updated on {{ league.updated_date.date }}
 </div>
   
 <div class = "col-md-8 ml-auto mr-auto d-none" id="league_fixtures">

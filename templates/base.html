@@ -47,27 +47,19 @@
                     <li><a class="nav-link" href="{% url 'news' %}" title = "CH News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i> News</div></a></li>
                     <li><a class="nav-link" href="{% url 'details' %}" title="CH Details">
                         <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i>  Details</div></a></li>
-                    <li class = "nav-link dropdown"><a class="nav-link dropdown-toggle" id="tournamentDropDown", href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="CH Tournaments DD"><i class="fas fa-chess-board"></i> Tournaments
+                    <li class = "dropdown"><a class="nav-link" id="tournamentDropDown", href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="CH Tournaments DD"><i class="fas fa-chess-board"></i> <span class="dropdown-toggle">Tournaments</span>
                         <div class="dropdown-menu bg-black" aria-labelledby="tournamentDropdown">
                             <a class="dropdown-item" href="{% url 'tournament' 'wallasey-championship-2021-2022' %}" title="Wallasey Championship">Wallasey Championship</a>
                             <a class="dropdown-item" href="{% url 'tournament' 'wallasey-premiership-2021-2022' %}" title="Wallasey Premiership">Wallasey Premiership</a>
+                            <a class="dropdown-item" href="{% url 'tournament' 'wallasey-major-21-22' %}" title="Wallasey Major">Wallasey Major</a>
+                          
                             <a class="dropdown-item" href="{% url 'tournament' 'david-camm-knockout-trophy-21-22' %}" title="David Camm Knockout">David Camm Knockout</a>
                             <a class="dropdown-item" href="{% url 'tournament' 'open-major-knockout-21-22' %}" title="Open Major Knockout">Open Major Knockout</a>
 
                         </div>
 </a></li>
-                    <!--
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="login.html">Logout</a>
-                        </div>
-                    </li>
-                -->
         
-                    <li><a class="nav-link" href="{% url 'members' %}" title="CHSeason"><div class="sb-nav-link-icon"><i class="fas fa-users"></i> Season</div></a></li>
+                    <li><a class="nav-link" href="{% url 'members' %}" title="CHHSeason"><div class="sb-nav-link-icon"><i class="fas fa-users"></i> Season</div></a></li>
                 </ul>
             </nav>
         </div>

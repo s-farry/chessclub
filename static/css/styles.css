@@ -3216,7 +3216,7 @@ input[type=button].btn-block {
   width: 100%;
   padding: 0.25rem 1.5rem;
   clear: both;
-  color:rgba(255, 255, 255, 0.5);
+  color:rgba(255, 255, 255, 1.0);
   font-weight: 400;
   text-align: inherit;
   white-space: nowrap;
