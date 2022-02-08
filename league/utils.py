@@ -116,13 +116,13 @@ def get_performance_score(player, tournament):
     black_games = Schedule.objects.filter(black=player, league = tournament.pk)
     performance, n = 0.0, 0
     for g in white_games:
-        if g.black.rating != None and g.black.rating > 0:
+        if g.black and g.black.rating != None and g.black.rating > 0:
             n+=1
             performance += g.black.rating
             if g.result == 1: performance += 400
             elif g.result == 2 : performance -= 400
     for g in black_games:
-        if g.white.rating != None and g.white.rating > 0:
+        if g.white and g.white.rating != None and g.white.rating > 0:
             n+=1
             performance += g.white.rating
             if g.result == 2: performance += 400
