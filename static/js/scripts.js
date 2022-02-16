@@ -9,7 +9,8 @@
     // Add active state to sidbar nav links
     var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
         $(".sb-topnav a.nav-link").each(function() {
-            if (this.href === path) {
+            console.log(this.href, path, path.match(this.href + '/.*'))
+            if (this.href === path || path.match(this.href + '/.*')) {
                 $(this).addClass("active");
             }
         });

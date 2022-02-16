@@ -4,6 +4,7 @@ from .views import StandingsFull, ScheduleFull, TeamRoster, game, index, player,
 
 urlpatterns = [
     url(r'^tournaments$', leagues, name='tournaments'),
+    url(r'^tournament$', leagues, name='tournament'),
     url(r'^tournaments/(?P<season_slug>[-\w]+)$', leagues, name='tournaments'),
     url(r'^season$', season, name='season' ),
     url(r'^season/(?P<season_slug>[-\w]+)$', season, name='season' ),
