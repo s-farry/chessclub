@@ -48,6 +48,19 @@
               {% endif %}
 
             </tr>
+            {% if match.comment %}
+            <tr>
+            <td class="text-center small" colspan=4 hidden></td>
+            </tr>
+            <tr>
+            {% if useRounds %}
+            <td class="text-center small" colspan=4>{{match.comment}}</td>
+            {% else %}
+            <td class="text-center small" colspan=3>{{match.comment}}</td>
+            {% endif %}
+            </tr>
+            {% endif %}
+
             {% endfor %}
         {% endfor %}
 

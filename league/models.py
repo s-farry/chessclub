@@ -152,6 +152,7 @@ class Schedule(models.Model):
         default=3
     )
     lichess = models.CharField(max_length=200, null = True, verbose_name=_('Lichess ID'), blank=True)
+    comment = models.CharField(max_length=200, null = True, verbose_name=_('Comment'), blank=True)
 
     class Meta:
         verbose_name = _('Game')
@@ -261,23 +262,25 @@ class TeamFixture(models.Model):
 
 
 class Standings(models.Model):
-    league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
-    player = ChainedForeignKey(Player, chained_field='season', chained_model_field='teams', related_name='team', verbose_name=_('Team'))
+    league   = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
+    player   = ChainedForeignKey(Player, chained_field='season', chained_model_field='teams', related_name='team', verbose_name=_('Team'))
     position = models.IntegerField(null=True, blank=True, default=1, verbose_name=_('Position'))
-    matches = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches'))
-    win    = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won'))
-    lost   = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Lost'))
-    draws  = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Draw'))
-    points = models.FloatField(null=True, blank=False, default=0, verbose_name=_('Points'))
-    form   = models.CharField(max_length=50,null=True)
-    rating = models.IntegerField(null = True, blank = True, verbose_name=('Rating'))
-    nbs    = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Neustadtl Sonneborn-Berger Score'))
+    matches  = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches'))
+    win      = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won'))
+    lost     = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Lost'))
+    draws    = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Draw'))
+    points   = models.FloatField(null=True, blank=False, default=0, verbose_name=_('Points'))
+    form     = models.CharField(max_length=50,null=True)
+    rating   = models.IntegerField(null = True, blank = True, verbose_name=('Rating'))
+
+    # these are all potential tie breaker metrics
+    nbs           = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Neustadtl Sonneborn-Berger Score'))
     buchholzcut1  = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Buchholz Cut 1 Score'))
     buchholz      = models.FloatField(null=True, blank = False, default = 0, verbose_name=('Buchholz Score'))
-    opprating = models.FloatField(null = True, blank = True, verbose_name=('Average Rating of Opponent less 1'))
-    win1 = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won With Black'))
-    matches1 = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches With Black'))
-    performance = models.FloatField(null=True, blank=True, default=0, verbose_name=_('Performance Rating'))
+    opprating     = models.FloatField(null = True, blank = True, verbose_name=('Average Rating of Opponent less 1'))
+    win1          = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Won With Black'))
+    matches1      = models.IntegerField(null=True, blank=True, default=0, verbose_name=_('Matches With Black'))
+    performance   = models.FloatField(null=True, blank=True, default=0, verbose_name=_('Performance Rating'))
 
 
     def __str__(self):

@@ -9,26 +9,24 @@
 <h1 class="mt-4">{{league.name}}</h1> <h2>{{league.season.name}}</h2>
 
 </div>
-<nav class='navbar-expand d-flex justify-content-center'>
-  <ul class = "navbar-nav">
-  {% if league.format != 3 %} <li><a class="text-decoration-none" href="#" onclick="openTable(event)" title="SSSSTable"> | <i class="fas fa-table"></i>Table</a></li>{% endif %}
-  {% if latest %}             <li><a class="text-decoration-none" href="#" onclick="openFixtures(event)" title="SSSSFixtures"> | <i class="fas fa-list"></i>Fixtures</a></li>{% else %} <li><i class="fas fa-list"></i> Fixtures </li>{% endif %}
-  {% if league.description %} <li><a class="text-decoration-none" href="#" onclick="openDetails(event)" title="SSSSDetails"> | <i class="fas fa-info-circle"></i>Details</a> </li>{% endif %}
-  {% if league.format != 3 %} <li><a class="text-decoration-none" alt="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" title="aa"> | <i class="fas fa-file-pdf"></i></a></li>{% endif %}
-  <li>|</li>
-</ul>
-</nav>
+
 <div class = 'text-center m-3 small'>
   Last updated on {{ league.updated_date.date }}
 </div>
+<div class='tab'>
+  {% if league.format != 3 %} <button class="tablinks" onclick="openTab(event, 'table')" id="button-table"><i class="fas fa-table"></i> Table</button>{% endif %}
+  {% if latest %}             <button class="tablinks" onclick="openTab(event, 'fixtures')" id="button-fixtures"><i class="fas fa-list"></i> Fixtures</button>{% endif %}
+  {% if league.description %} <button class="tablinks" onclick="openTab(event, 'details')" id="button-details"><i class="fas fa-info-circle"></i> Details </button>{% endif %}
+  {% if league.format != 3 %} <a class="text-decoration-none reserve-space float-right" title="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" reserve="aa"><i class="fas fa-file-pdf"></i></a>{% endif %}
+</div>
   
-<div class = "col-md-8 ml-auto mr-auto d-none" id="league_fixtures">
+<div class = "ml-auto mr-auto d-none tabcontent" id="tab-fixtures">
 {% if games %}
   {% include 'content/fixtures_list.html' with games=games useRounds=useRounds %}
 {% endif %} 
 </div>
 
-<div class = "ml-auto mr-auto d-none large" id = "league_table">
+<div class = "ml-auto mr-auto d-none large tabcontent" id = "tab-table">
   {% if standings %}
       {% if league.format == 1 %}
         {% include 'content/swiss_table.html' with standings=standings rounds=league.get_rounds league=league %}
@@ -38,7 +36,7 @@
   {% endif %} 
 </div>
 
-<div class = "col-md-8 ml-auto mr-auto d-none" id = "league_details">
+<div class = "col-md-8 ml-auto mr-auto d-none tabcontent" id = "tab-details">
   {% if league.description %}
   {{league.description|safe}}
   {% endif %} 
@@ -49,126 +47,41 @@
 {% block scripts %}
 <script>
 
-var currentRound = 0;
-  var roundTexts  = [];
+function openTab(e, s){
 
-  {% for round,fixtures in games.items %}
-    roundTexts.push( '{{round}}' );
-  {% endfor %}
-  var currentRound = roundTexts.indexOf('{{latest}}');
-
-  
-function openRound(e, round) {
-  var roundElement = document.getElementById('round-'+round);
-  // we won't do anything if the round element doesn't exist
-  if (roundElement){
-    // Declare all variables
-    var i, tabcontent, tablinks;
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    // there needs to be a check in here to make sure
-    // the round exists, otherwise there's some 
-    // odd behaviour very occasionally later in the same session
-    // if a round has been deleted
-    document.getElementById('round-'+round).style.display = "block";
-    currentRound = round;
-    document.getElementById('round-current').innerText=roundTexts[round];
-    //evt.currentTarget.className += " active";
-    sessionStorage.setItem('showRound', round);
-  }
-}
-function current(e){
-  openRound(e,currentRound);
+  var button = document.getElementById("button-"+s);
+  var tab    = document.getElementById("tab-"+s);
+  // Get all elements with class="tablinks" and remove the class "active"
+  var tablinks = document.getElementsByClassName("tablinks");
+  var tabs     = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].classList.remove("active")  }
+  for (i = 0; i < tabs.length; i++) {
+    tabs[i].classList.add("d-none")  }
+  button.classList.add("active");
+  tab.classList.remove("d-none");
 }
 
-function previous(e){
-  if (currentRound > 0 ) openRound(e,currentRound-1);
-}
-
-function next(e){
-  if (currentRound != -1 && currentRound < roundTexts.length-1 ) openRound(e,currentRound+1);
-}
-
-function openTable(e){
-  var fixtures = document.getElementById("league_fixtures");
-  var table = document.getElementById("league_table");
-  var details = document.getElementById("league_details");
-
-  if (table.classList.contains("d-none")) table.classList.remove("d-none");
-  if (!fixtures.classList.contains("d-none")) fixtures.classList.add("d-none");
-  if (!details.classList.contains("d-none")) details.classList.add("d-none");
-
-  sessionStorage.setItem('showFixtures',false);
-  sessionStorage.setItem('showTable',true);
-  sessionStorage.setItem('showDetails',false);
-}
-function openDetails(e){
-  var fixtures = document.getElementById("league_fixtures");
-  var table = document.getElementById("league_table");
-  var details = document.getElementById("league_details");
-
-  if (details.classList.contains("d-none")) details.classList.remove("d-none");
-  if (!fixtures.classList.contains("d-none")) fixtures.classList.add("d-none");
-  if (!table.classList.contains("d-none")) table.classList.add("d-none");
-  sessionStorage.setItem('showFixtures',false);
-  sessionStorage.setItem('showTable',false);
-  sessionStorage.setItem('showDetails',true);
-
-}
-
-function openFixtures(e){
-  var fixtures = document.getElementById("league_fixtures");
-  var table = document.getElementById("league_table");
-  var details = document.getElementById("league_details");
-
-  if (!table.classList.contains("d-none")) table.classList.add("d-none");
-  if (fixtures.classList.contains("d-none")) fixtures.classList.remove("d-none");
-  if (!details.classList.contains("d-none")) details.classList.add("d-none");
-
-  sessionStorage.setItem('showFixtures',true);
-  sessionStorage.setItem('showTable',false);
-  sessionStorage.setItem('showDetails',false);
-}
 
 window.onload = function(e){
-  var currentRound = 0;
-  var roundTexts  = [];
 
-  {% for round,fixtures in games.items %}
-    roundTexts.push( '{{round}}' );
-  {% endfor %}
-  var currentRound = roundTexts.indexOf('{{latest}}');
   var showFixtures = window.sessionStorage.getItem('showFixtures');
-  var showRound = window.sessionStorage.getItem('showRound');
   var showDetails = window.sessionStorage.getItem('showDetails');
-  var showRoundText = window.sessionStorage.getItem('showRoundText');
   var showLeague = window.sessionStorage.getItem('showLeague');
   if ( (showFixtures == "true" && showLeague == "{{league}}")){
-    openFixtures(e);
+    openTab(e, "fixtures");
   }
   else if (showDetails == "true"){
-    openDetails(e);
+    openTab(e, "details");
   }
   else {
     {% if league.format == 3 %}
-    openFixtures(e)
+    openTab(e, "fixtures")
     {% else %}
-    openTable(e);
+    openTab(e, "table");
     {% endif %}
   }
 
-
-  if ( document.getElementsByClassName("tabcontent").length > 0 ){
-    if (showRound && showLeague == "{{league}}"){
-      openRound(e, showRound);
-    }
-    else{
-      openRound(e, currentRound);
-    }
-  }
   window.sessionStorage.setItem('showLeague','{{league}}')
 }
 </script>
