@@ -127,7 +127,8 @@ def get_performance_score(player, tournament):
             performance += g.white.rating
             if g.result == 2: performance += 400
             elif g.result == 1 : performance -= 400
-    performance /= n
+    if n > 0:
+        performance /= n
     return performance
 
 
