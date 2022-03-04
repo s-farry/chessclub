@@ -146,7 +146,7 @@ class LeagueAdmin(ModelAdmin):
         return mark_safe("<a href='%s' target='blank'>Open</a>" % url)
 
     prepopulated_fields = {'slug': ('name', 'season',), }
-    actions=['update_standings', 'make_pdf', 'update_ratings']
+    actions=['update_standings', 'make_pdf', 'make_crosstable', 'update_ratings']
     list_display = ('name','link')
     def update_standings(self,request,queryset):
         for obj in queryset:
@@ -170,7 +170,7 @@ class LeagueAdmin(ModelAdmin):
         buffer = BytesIO()
         with PdfPages(buffer) as pdf:
             for obj in queryset:
-                fig = make_table_pdf(obj)
+                fig = make_table(obj)
                 pdf.savefig()
 
         pdf = buffer.getvalue()
@@ -185,7 +185,7 @@ class LeagueAdmin(ModelAdmin):
         buffer = BytesIO()
         with PdfPages(buffer) as pdf:
             for obj in queryset:
-                fig = make_crosstable_pdf(obj)
+                fig = make_crosstable(obj)
                 pdf.savefig()
 
         pdf = buffer.getvalue()
@@ -233,14 +233,18 @@ class PlayerAdmin(admin.ModelAdmin):
     actions = ['update_ratings']
     def update_ratings(self, request, queryset):
         for p in queryset:
-            if p.ecf == None: continue
+            if p.ecf == None:
+                self.message_user(request, '%s has no ECF code currently'%(p))
+                continue
             url = 'https://www.ecfrating.org.uk/v2/new/api.php?v2/ratings/Standard/%s/%s'%(p.ecf, datetime.today().date())
             grade = requests.get(url)
             if grade:
                 grade = grade.json()
-                self.message_user(request, '%s rating updated from %i to %i'%(p, p.rating, grade['revised_rating']))
+                curr_rating = p.rating if p.rating else 0
+                self.message_user(request, '%s rating updated from %i to %i'%(p, curr_rating, grade['revised_rating']))
                 p.rating = grade['revised_rating']
                 p.save()
+            print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
 class ScheduleAdmin(admin.ModelAdmin):
     change_list_template = 'change_game_list.html'
