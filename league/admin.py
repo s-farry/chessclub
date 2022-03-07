@@ -158,8 +158,9 @@ class LeagueAdmin(ModelAdmin):
         for obj in queryset:
             standings = Standings.objects.filter(league=obj)
             for s in standings:
-                s.rating = s.player.rating
-                s.save()
+                if s.player and s.player.rating:
+                    s.rating = s.player.rating
+                    s.save()
             self.message_user(request, "Ratings of players in league updated")
 
 
@@ -281,16 +282,19 @@ class ScheduleAdmin(admin.ModelAdmin):
 
     def update_ratings(self,request,queryset):
         for obj in queryset:
-            white_rating = 0
-            black_rating = 0
-            if obj.white:
-                white_rating = obj.white_rating
+            white_rating = obj.white_rating if obj.white_rating else 0
+            black_rating = obj.black_rating if obj.black_rating else 0
+            new_white_rating = white_rating
+            new_black_rating = black_rating
+            if obj.white and obj.white.rating:
+                new_white_rating = obj.white.rating
                 obj.white_rating = obj.white.rating
-            if obj.black:
-                black_rating = obj.black_rating
+            if obj.black and obj.black.rating:
+                new_black_rating = obj.black.rating
                 obj.black_rating = obj.black.rating
             obj.save()
-            self.message_user(request, "Ratings in %s %s %s updated from (%i,%i) to (%i,%i)"%(obj.white, obj.get_result_display(), obj.black, white_rating, black_rating, obj.white_rating, obj.black_rating))
+
+            self.message_user(request, "Ratings in %s %s %s updated from (%i,%i) to (%i,%i)"%(obj.white, obj.get_result_display(), obj.black, white_rating, black_rating, new_white_rating, new_black_rating))
     actions=['update_ratings']
 
 class SeasonAdmin(admin.ModelAdmin):
