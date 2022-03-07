@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from league.models import Schedule, Standings, League, Player, Season, Team, TeamFixture, STANDINGS_ORDER
+from league.models import Schedule, Standings, League, Player, Season, Team, TeamFixture, PGN, STANDINGS_ORDER
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -9,6 +9,7 @@ from openpyxl import Workbook, load_workbook
 
 from django.conf import settings
 from django.templatetags.static import static
+import re
 
 class TeamRoster(ListView):
     template_name = 'roster.html'
@@ -231,7 +232,12 @@ def player(request, player_id, **kwargs):
 
 def game(request, game_id):
     f = get_object_or_404(Schedule, id=game_id)
-    return render(request, 'game.html', {'game': f})
+    pgn = PGN.objects.filter(game=f)
+    body = None
+    if len(pgn) == 1:
+        body = re.sub(r"(\[%clk [0-9]:[0-9]+:[0-9]+\])", '', pgn[0].body)
+        body = re.sub(r"(\[%eval [a-zA-Z0-9_\#.-]*\])", '', body)
+    return render(request, 'game.html', {'game': f, 'pgn' : body})
 
 def leagues(request, **kwargs):
     if 'season_slug' in kwargs:

@@ -49,14 +49,14 @@
 
             </tr>
             {% if match.comment %}
-            <tr>
+            <tr class="border-bottom-0">
             <td class="text-center small" colspan=4 hidden></td>
             </tr>
-            <tr>
+            <tr class = "py-0">
             {% if useRounds %}
-            <td class="text-center small" colspan=4>{{match.comment}}</td>
+            <td class="text-center small py-0" colspan=4>{{match.comment}}</td>
             {% else %}
-            <td class="text-center small" colspan=3>{{match.comment}}</td>
+            <td class="text-center small py-0" colspan=3>{{match.comment}}</td>
             {% endif %}
             </tr>
             {% endif %}

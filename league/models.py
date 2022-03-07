@@ -139,8 +139,8 @@ class League(models.Model):
 class Schedule(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
     round = models.IntegerField(null=True, blank=True, verbose_name=_('Round'))
+    board = models.IntegerField(null=True, blank=True, verbose_name=_('Board'))
     date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
-    pgn  = models.TextField(null = True, blank=True)
     white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'), null = True, blank = True)
     black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'),
      null = True, blank = True)
@@ -221,13 +221,6 @@ class Schedule(models.Model):
     def get_round_display(self):
         return self.league.get_round_display(self.round)
 
-    def clean_pgn(self):
-        pgn = self.pgn
-        if pgn:
-            pgn = re.sub(r"(\[%clk [0-9]:[0-9]+:[0-9]+\])", '', self.pgn)
-            pgn = re.sub(r"(\[%eval [a-zA-Z0-9_\#.-]*\])", '', pgn)
-        return pgn
-
     def __str__(self):
         if self.white and self.black:
             return "{}: {} {} {}".format(self.date.date(), self.white, self.print_result(plain = True), self.black) 
@@ -235,6 +228,12 @@ class Schedule(models.Model):
             return "{}: {} (bye)".format(self.date.date(), self.white) 
         else:
             return "{}: {} (bye)".format(self.date.date(), self.black) 
+
+class PGN(models.Model):
+    body    = models.TextField()
+    game    = models.ForeignKey(Schedule, on_delete=models.CASCADE, verbose_name=_('Game'), related_name='pgn')
+    def __str__(self):
+        return self.game.__str__()
 
 class Team(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('Team Name'))

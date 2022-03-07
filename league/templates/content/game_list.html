@@ -39,6 +39,16 @@
         <td class="text-center"></td>
                 <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 3 %} - {% else %}  {% endif %}</td>
         {% endif %}
+        {% if match.comment %}
+
+        {% if league.get_rounds|length > 0 %}
+        <tr class="border-bottom-0"><td class="text-center small" colspan=6 hidden></td></tr>
+        <tr class = "py-0"><td class="text-center small py-0" colspan=6>{{match.comment}}</td></tr>
+        {% else %}
+        <tr class="border-bottom-0"><td class="text-center small" colspan=5 hidden></td></tr>
+        <tr class = "py-0"><td class="text-center small py-0" colspan=5>{{match.comment}}</td></tr>
+        {% endif %}
+        {% endif %}
         {% endfor %}
         </tr>
 </tbody></table>

@@ -17,19 +17,17 @@
     {%if game.lichess %}<a href = "https://lichess.org/{{game.lichess}}">lichess.org/{{game.lichess}}</a>{% endif %}
     <hr />
 </article>
-{% if game.pgn %}
+{% if pgn %}
 <div class = "game-board ml-auto mr-auto">
 <div id="board" class='merida zeit' tabindex="0"></div>
 </div>
-{% endif %}
 <hr />
-{% if game.pgn %}
 <script>
     window.addEventListener("load", function() {
     var board = document.getElementById('board');
     var width = board.parentElement.offsetWidth;
     /*var cfg = {pgn: pgn};*/
-    var pgn = `{{ game.clean_pgn|safe}}`;
+    var pgn = `{{ pgn|safe}}`;
 
     var cfg = {pgn: pgn, showCoords: true, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: false, notation: 'short', 'width' : width.toString()+'px', orientation: 'white', movable: {free : true } };
 
