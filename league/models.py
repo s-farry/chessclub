@@ -44,7 +44,7 @@ class Player(models.Model):
     image = models.ImageField(upload_to='uploads/teams/%Y/%m/%d/players/', null=True, blank=True, verbose_name=_('Player photo'))
     lichess = models.CharField(max_length=200, null = True, blank=True, verbose_name=_('Lichess ID'))
     ecf = models.CharField(max_length=7, null = True, blank=True, verbose_name=_('ECF Grading Ref'))
-    rating = models.IntegerField(default = 0, null = True, blank=True, verbose_name=_('Rating'))
+    rating = models.IntegerField(null = True, blank=True, verbose_name=_('Rating'))
 
     class Meta:
         verbose_name = _('Player')

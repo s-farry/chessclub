@@ -10242,6 +10242,14 @@ body {
   margin-right: 0.5rem;
 }
 
+.sb-nav-link-icon{
+  display:flex;
+  flex-direction:column;
+  flex-wrap:none;
+  align-items: center;
+  justify-content:center;
+}
+
 .sb-topnav {
   padding-left: 0;
   padding-top: 1rem;
@@ -10253,6 +10261,9 @@ body {
   flex-direction:column;
   flex-wrap:none;
 }
+
+
+
 .sb-topnav .navbar-brand {
   width: var(--sidebar-width);
   padding-left: 1rem;
@@ -10292,6 +10303,7 @@ body {
   padding-bottom: 0.75rem;
   position: relative;
 }
+
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
   font-size: 0.9rem;
 }
@@ -10380,7 +10392,7 @@ div .game-board{
 
 @media (min-width: 992px) {
 div .puzzle{width:calc(400px);}
-.sb-topnav{flex-direction:row;}
+.sb-topnav, .sb-nav-link-icon{flex-direction:row;}
 .navbar-logo{height:calc(var(--top-height) - 2.0em);}
 .sb-topnav {height:calc(var(--top-height) - 2.0em);}
 .sb-nav-fixed #layoutTopnav #layoutTopnav_content {
@@ -10395,9 +10407,8 @@ td a {
 .br-red{border: 1px solid red;}
 
 .news-item, .news-header, .news-footer, .news-body{
-  /*background-color:rgba(255,255,0,0.1);*/
-  /*border: 1px solid rgba(0, 0, 0, 0.125);*/
   width:100%;
+  word-wrap: break-word;
 }
 .header{
   font-size:1.2em;
@@ -10467,7 +10478,8 @@ h2{text-transform:uppercase;font-size:1.5rem;}
 .news-item img{
   float:left;
   margin:0.5rem;
-  width:160px;
+  width:260px;
+  max-width:90%
 }
 
 .table a:hover{

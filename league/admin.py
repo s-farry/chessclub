@@ -12,6 +12,7 @@ from datetime import datetime
 from .utils import standings_save, standings_update
 from django.contrib.admin import DateFieldListFilter
 
+from django_reverse_admin import ReverseModelAdmin
 
 from tinymce.widgets import TinyMCE
 
@@ -247,13 +248,14 @@ class PlayerAdmin(admin.ModelAdmin):
                 p.save()
             print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
-class ScheduleAdmin(admin.ModelAdmin):
+class ScheduleAdmin(ReverseModelAdmin):
     change_list_template = 'change_game_list.html'
     change_form_template = 'change_game_form.html'
     manage_view_template = 'manage_game_form.html'
     add_clubnight_template = 'add_club_night.html'
     export_games_template = 'export_games.html'
     list_filter = ('league',('date', DateFieldListFilter) )
+    inline_reverse = ['pgn']
 
     def get_urls(self):
         from django.conf.urls import url

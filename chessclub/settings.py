@@ -27,7 +27,7 @@ DEBUG = True
 if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
     DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'wallaseychessclub.uk','www.wallaseychessclub.uk']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.120','wallaseychessclub.uk','www.wallaseychessclub.uk']
 
 
 # Application definition
