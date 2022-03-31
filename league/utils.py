@@ -687,13 +687,17 @@ def make_crosstable(league):
         for p2 in standings:
             p1_p2_white_games = p1_white_games.filter(black = p2.player)
             p1_p2_black_games = p1_black_games.filter(white = p2.player)
-            if len(p1_p2_white_games) == 1:
-                points_text = '%i\n'%(p1_p2_white_games[0].get_white_points())
+            if len(p1_p2_white_games) > 0:
+                points = 0
+                for g in p1_p2_white_games: points += g.get_white_points()
+                points_text = '%i\n'%(points)
             else:
                 points_text = '\n'
                 
-            if len(p1_p2_black_games) == 1:
-                points_text += '%i'%(p1_p2_black_games[0].get_black_points())
+            if len(p1_p2_black_games) > 0:
+                points = 0
+                for g in p1_p2_black_games: points += g.get_black_points()
+                points_text += '%i'%(points)
                 
             rowTexts += [ points_text ]
 
