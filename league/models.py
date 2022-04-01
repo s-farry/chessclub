@@ -14,13 +14,13 @@ STANDINGS_ORDER_HUMAN = (
     (3, _('FIDE Swiss Tiebreak System'))
 )
 STANDINGS_ORDER = (
-    (0, ('-points', '-win', '-matches', 'lost','-rating', 'player__surename')), 
+    (0, ('-points', '-win', 'lost', 'matches', '-rating', 'player__surename')), 
     (1, ('-points', '-nbs', '-win', 'lost','-rating', 'player__surename')), 
     (2, ('-points',)), 
     (3, ('-points', '-buchholzcut1', '-buchholz', '-oprating', '-win', '-win1', '-matchblack','-nbs','-rating','player__surename'))
 )
 RESULTS = (
-    (0, '1/2-1/2',), (1,'1-0'), (2,'0-1'), (3,'-')
+    (0, '1/2-1/2',), (1,'1-0'), (2,'0-1'), (3,'-'), (4,'+--'), (5,'--+')
 )
 TOURNAMENT_FORMATS = (
     (0, 'League',), (1,'Swiss'), (2,'Round Robin'), (3,'Knockout')
@@ -166,6 +166,11 @@ class Schedule(models.Model):
                     return r"&#189;-&#189;"
                 elif b == "-":
                     return "v"
+                elif b == '--+':
+                    return '&#65293;&#65291; '
+                elif b == '+--':
+                    return '&#65291;&65293;'
+
                 else:
                     return b
                     
