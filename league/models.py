@@ -11,14 +11,14 @@ STANDINGS_ORDER_HUMAN = (
     (0, _('Points, Wins, Lost')), 
     (1, _('Points, Tiebreak, Wins, Lost, Rating')), 
     (2, _('Points, Score')), 
-    (3, _('FIDE Swiss Tiebreak System'))
+    (3, _('FIDE Swiss Tiebreak System')),
     (3, _('Win Percentage'))
 )
 STANDINGS_ORDER = (
     (0, ('-points', '-win', 'lost', 'matches', '-rating', 'player__surename')), 
     (1, ('-points', '-nbs', '-win', 'lost','-rating', 'player__surename')), 
     (2, ('-points',)), 
-    (3, ('-points', '-buchholzcut1', '-buchholz', '-oprating', '-win', '-win1', '-matchblack','-nbs','-rating','player__surename')),
+    (3, ('-points', '-buchholzcut1', '-buchholz', '-opprating', '-win', '-win1', '-matches1','-nbs','-rating','player__surename')),
     (4, ('-winpercent', '-win', 'lost', 'matches','-rating','player__surename'))
 
 )
