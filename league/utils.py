@@ -236,6 +236,7 @@ def standings_update(instance):
             standing.draws = draws
             standing.matches = matches
             standing.matches1 = matcheswblack
+            standing.winpercent = float(wins) / matches
 
             # save these to calculate the NBS tie break score
             player_points[player] = points
