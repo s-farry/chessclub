@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from datetime import datetime
 
 def latest(request):
-    return render(request, 'news.html', {'news' : news.objects.order_by("-published_date")[:3]})
+    return render(request, 'news.html', {'news' : news.objects.order_by("-published_date")})
 def details(request):
     return render(request, 'details.html')
 def puzzles(request):

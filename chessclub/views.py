@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from datetime import datetime
 
 def index(request):
-    news_objects   = news.objects.order_by("-published_date")[:3]
+    news_objects   = news.objects.order_by("-published_date")[:10]
     events_objects = event.objects.filter( Q(date__gte = datetime.now()) ).order_by('date')[:5]
     puzzles = Puzzle.objects.filter(date=datetime.now().date() )
     return render(request, 'index.html',{'leagues': League.objects.all(), 'news' : news_objects, 'events' : events_objects, 'puzzles' : puzzles } )
