@@ -138,6 +138,7 @@ def standings_save(instance):
         league.updated_date = datetime.datetime.now()
         league.save()
         for player in league.players.all():
+            print(player)
             obj, created = Standings.objects.get_or_create(league = league, player = player)
             if created:
                 obj.rating = player.rating

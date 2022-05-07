@@ -24,6 +24,8 @@ from league.models import Player, Season, League, Schedule, Standings
 from content.models import event
 from league.admin import standings_update, standings_save       
 
+from league.utils import *
+
 
 def get_players(club):
     return [ m['id'] for m in client.teams.get_members(club) ]

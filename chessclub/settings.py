@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['CHESSCLUB_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
     DEBUG = True
 
