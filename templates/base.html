@@ -20,6 +20,7 @@
         <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
+        <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
     <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
     <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
@@ -44,11 +45,11 @@
             <img class = "navbar-logo" src = "{% static 'img/wcc_logo.png' %}">
             <nav class = "navbar navbar-expand navbar-dark">
                 <ul class="navbar-nav">
-                    <li><a class="nav-link reserve-space" href="{% url 'index' %}" reserve = "CH Home" alt="Home"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i> Home</div></a></li>
-                    <li><a class="nav-link reserve-space" href="{% url 'news' %}" reserve = "CH News" alt="News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i> News</div></a></li>
+                    <li><a class="nav-link reserve-space" href="{% url 'index' %}" reserve = "CH Home" alt="Home"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i>&nbsp;Home</div></a></li>
+                    <li><a class="nav-link reserve-space" href="{% url 'news' %}" reserve = "CH News" alt="News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i>&nbsp;News</div></a></li>
                     <li><a class="nav-link reserve-space" href="{% url 'details' %}" reserve="CH Details" alt="Details">
-                        <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i>  Details</div></a></li>
-                    <li class = "dropdown"><a class="nav-link reserve-space" id="tournamentDropDown", href="{% url 'tournament'%}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH Tournaments DD"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i> <span class="dropdown-toggle"> Tournaments</span></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i> &nbsp;Details</div></a></li>
+                    <li class = "dropdown"><a class="nav-link reserve-space" id="tournamentDropDown", href="{% url 'tournament'%}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH Tournaments DD"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i> <span class="dropdown-toggle">&nbsp;Tournaments</span></div>
                         <div class="dropdown-menu bg-black" aria-labelledby="tournamentDropdown">
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'wallasey-championship-2021-2022' %}" title="Wallasey Championship">Wallasey Championship</a>
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'wallasey-premiership-2021-2022' %}" title="Wallasey Premiership">Wallasey Premiership</a>
@@ -60,7 +61,7 @@
                         </div>
 </a></li>
         
-                    <li><a class="nav-link reserve-space" href="{% url 'members' %}" reserve="CHHSeason" alt="Members"><div class="sb-nav-link-icon"><i class="fas fa-users"></i> Season</div></a></li>
+                    <li><a class="nav-link reserve-space" href="{% url 'members' %}" reserve="CHHSeason" alt="Members"><div class="sb-nav-link-icon"><i class="fas fa-users"></i>&nbsp;Season</div></a></li>
                 </ul>
             </nav>
         </div>
