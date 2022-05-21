@@ -145,9 +145,9 @@ class NewsAdmin(admin.ModelAdmin):
         return []
 
     def save_model(self, request, obj, form, change):
-        obj.author = request.user
         super(NewsAdmin, self).save_model(request, obj, form, change)
         if not change:
+            obj.author = request.user
             email_message = '''
             The news item %s by %s is awaiting approval
             -----------------
