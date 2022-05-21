@@ -20,13 +20,13 @@
   {% if league.format != 3 %} <a class="text-decoration-none reserve-space float-right" title="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" reserve="aa"><i class="fas fa-file-pdf"></i></a>{% endif %}
 </div>
   
-<div class = "ml-auto mr-auto d-none tabcontent" id="tab-fixtures">
+<div class = "ml-auto mr-auto d-none tabcontent mt-2" id="tab-fixtures">
 {% if games %}
   {% include 'content/fixtures_list.html' with games=games useRounds=useRounds %}
 {% endif %} 
 </div>
 
-<div class = "ml-auto mr-auto d-none large tabcontent" id = "tab-table">
+<div class = "ml-auto mr-auto d-none large tabcontent mt-2" id = "tab-table">
   {% if standings %}
       {% if league.format == 1 %}
         {% include 'content/swiss_table.html' with standings=standings rounds=league.get_rounds league=league %}
@@ -36,7 +36,7 @@
   {% endif %} 
 </div>
 
-<div class = "col-md-8 ml-auto mr-auto d-none tabcontent" id = "tab-details">
+<div class = "col-md-8 ml-auto mr-auto d-none tabcontent mt-3" id = "tab-details">
   {% if league.description %}
   {{league.description|safe}}
   {% endif %} 

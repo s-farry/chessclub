@@ -149,7 +149,7 @@ class Schedule(models.Model):
     date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
     white = models.ForeignKey(Player, related_name='white', on_delete=models.CASCADE, verbose_name=_('White'), null = True, blank = True)
     black = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Black'),
-     null = True, blank = True)
+    null = True, blank = True)
     white_rating = models.IntegerField(null = True, blank = True, verbose_name=('White Rating'))
     black_rating = models.IntegerField(null = True, blank = True, verbose_name=('Black Rating'))
 
@@ -173,7 +173,7 @@ class Schedule(models.Model):
                 elif b == "-":
                     return "v"
                 elif b == '--+':
-                    return '&#65293;&#65291; '
+                    return '&#65293;&#65291;'
                 elif b == '+--':
                     return '&#65291;&65293;'
 
@@ -184,13 +184,20 @@ class Schedule(models.Model):
         for a,b in RESULTS:
             if self.result == a:
                 if b == "1/2-1/2":
-                    return ('1/2','1/2')
+                    if plain: return ('1/2','1/2')
+                    else: return ('&#189;', '&#189;')
                 elif b == "1-0":
                     return ('1','0')
                 elif b == "0-1":
                     return ('0','1')
+                elif b == "-":
+                    return ("v",)
+                elif b == '--+':
+                    return ('&#65293;','&#65291;')
+                elif b == '+--':
+                    return ('&#65291;','&65293;')
                 else:
-                    return b
+                    return (b,)
 
     def get_white_points(self):
         for a,b in RESULTS:
@@ -250,6 +257,7 @@ class Team(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('Team Name'))
     league = models.CharField(max_length=200, null=True, verbose_name=_('League'))
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    listed_players = models.ManyToManyField(Player, blank=True, related_name='listed_team_players', verbose_name=_('Listed Players'))
     players = models.ManyToManyField(Player, blank=True, related_name='team_players', verbose_name=_('Players'))
 
     def __str__(self):

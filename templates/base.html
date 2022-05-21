@@ -14,7 +14,7 @@
         <meta http-equiv="Cache-control" content="no-cache">
         <meta name="language" content="English">
         <title>Wallasey Chess Club</title>
-        <link href="{% static 'css/styles.css' %}?v=1.2" rel="stylesheet" />
+        <link href="{% static 'css/styles.css' %}?v=1.3" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
         <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
@@ -54,15 +54,11 @@
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'wallasey-championship-2021-2022' %}" title="Wallasey Championship">Wallasey Championship</a>
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'wallasey-premiership-2021-2022' %}" title="Wallasey Premiership">Wallasey Premiership</a>
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'wallasey-major-21-22' %}" title="Wallasey Major">Wallasey Major</a>
-                          
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'david-camm-knockout-trophy-21-22' %}" title="David Camm Knockout">David Camm Knockout</a>
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'open-major-knockout-21-22' %}" title="Open Major Knockout">Open Major Knockout</a>
                             <a class="dropdown-item reserve-space" href="{% url 'tournament' 'wallasey-playoffs-21-22' %}" title="Open Major Knockout">Wallasey Playoffs</a>
-
-
                         </div>
-</a></li>
-        
+                    </a></li>
                     <li><a class="nav-link reserve-space" href="{% url 'members' %}" reserve="CHHSeason" alt="Members"><div class="sb-nav-link-icon"><i class="fas fa-users"></i>&nbsp;Season</div></a></li>
                 </ul>
             </nav>

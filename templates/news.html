@@ -11,19 +11,21 @@
 <h1 class="mt-4">News</h1>
 <hr>
 {% for n in news %}
-<div class = "news-item">
-    <div class = "news-header">
-    <h2>{{n.title}}</h2><br>
-</div>
-<div class = "news-body">
+<div class = "news-item" id="{{n.id}}">
+        <div class = "news-header d-flex"><div class="mr-auto">{{n.title}}</div><div class="small">{{n.published_date.date}}</div></div>
+<div class = "news-body clearfix">
+
+    {{n.published_date.date}}<br>
 {% if n.image %}
 <img src="{{n.image.url}}">
 {% endif %}
 {{n.text|safe}}
 </div>
+<br>
+
 <div class = "news-footer">
-    Published on {{n.published_date}} by {{n.author}}
-    </div>
+    Published by {{n.author.first_name}} {{n.author.last_name}}
+</div>
 </div>
 {% endfor %}
 {% endblock %}

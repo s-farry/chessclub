@@ -27,12 +27,12 @@
         <td class="text-center"><a href="{% url 'player' match.black.id %}" class="reserve-text" reserve="{{match.black}}">{{match.black}}</a></td>
         <td class="text-center"><a href="{% url 'player' match.black.id %}">{% if match.black_rating %}{{match.black_rating}}{% else %}-{% endif %}</a></td>
         <td class="text-center"><i class="far fa-circle"></i></td>
-        <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %} &#189; {% elif match.result == 1 %} 1 {% elif match.result == 2 %} 0 {% else %} - {% endif %}</a></td>
+        <td class="text-center"><a href="{% url 'game' match.id %}" class="reserve-text" reserve="00">{{match.get_result.0|safe}}</a></td>
         {% elif match.black == player and match.white %}
         <td class="text-center"><a href="{% url 'player' match.white.id %}" class="reserve-text" reserve="{{match.white}}">{{match.white}}</a></td>
         <td class="text-center"><a href="{% url 'player' match.white.id %}">{% if match.white_rating %}{{match.white_rating}}{% else %}-{% endif %}</a></td>
         <td class="text-center"><i class="fas fa-circle"></i></td>
-        <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 0 %}&#189; {% elif match.result == 1 %} 0 {% elif match.result == 2 %} 1 {% else %} - {% endif %}</a></td>
+        <td class="text-center"><a href="{% url 'game' match.id %}" class="reserve-text", reserve="00">{{match.get_result.1|safe}}</a></td>
         {% else %}
         <td class="text-center"><a href="{% url 'game' match.id %}">{% if match.result == 3 %} - {% else %} Bye {% endif %}</a></td>
         <td class="text-center"></td>

@@ -138,7 +138,6 @@ def standings_save(instance):
         league.updated_date = datetime.datetime.now()
         league.save()
         for player in league.players.all():
-            print(player)
             obj, created = Standings.objects.get_or_create(league = league, player = player)
             if created:
                 obj.rating = player.rating
@@ -237,7 +236,7 @@ def standings_update(instance):
             standing.draws = draws
             standing.matches = matches
             standing.matches1 = matcheswblack
-            standing.winpercent = float(wins) / matches
+            standing.winpercent = float(wins) / matches if matches > 0 else 0.0
 
             # save these to calculate the NBS tie break score
             player_points[player] = points
@@ -672,7 +671,7 @@ def make_crosstable(league):
     plt.subplots_adjust(left=0.1, right=0.9, top=0.95, bottom=0.05)
     ax1.set_axis_off()
     ax2.set_axis_off()
-    standings = Standings.objects.filter(league = league)
+    standings = Standings.objects.filter(league=league).order_by("position")
     games     = Schedule.objects.filter(league=league)
     ax2.text(0.5, 1.02, league, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
 

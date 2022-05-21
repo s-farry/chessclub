@@ -18,6 +18,7 @@ from django.contrib.auth import get_permission_codename
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
+from django.contrib.auth.models import User
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -88,14 +89,25 @@ class NewsAdminForm(forms.ModelForm):
         fields = ('title', 'text', 'image')
         model = news
 
+class NewsChangeAdminForm(forms.ModelForm):
+    title = forms.CharField(max_length=50)
+    text = forms.CharField(max_length= 10000, widget = TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}), label='News')
+    author = forms.ModelChoiceField(queryset=User.objects.all())
+    #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
+
+    class Meta:
+        fields = ('title', 'text', 'image')
+        model = news
+
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ['title', 'status']
+    list_display = ['title', 'status', 'author']
     list_filter = [ 'status' ]
     search_fields = [ 'title' ]
 
     actions = ['make_published']
     
     form = NewsAdminForm
+    change_form = NewsChangeAdminForm
 
     def make_published(self, request, queryset):
         rows_updated = queryset.update(status='p')
@@ -120,8 +132,14 @@ class NewsAdmin(admin.ModelAdmin):
         return request.user.has_perm('%s.%s' % (opts.app_label, codename))
 
     def get_form(self, request, obj=None, **kwargs):
-        form = super(NewsAdmin, self).get_form(request, obj, **kwargs)
-        return form
+        """
+        Use special form during foo creation
+        """
+        defaults = {}
+        if obj is not None:
+            defaults['form'] = self.change_form
+        defaults.update(kwargs)
+        return super().get_form(request, obj, **defaults)
 
     def get_readonly_fields(self, request, obj=None):
         return []
