@@ -10,8 +10,8 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<article id="league-{{ slug }}-{{team.slug}}" class="news">
-    <h1>{{ game.white }} {{game.print_result|safe}} {{ game.black }}</h1>
+<article id="league-{{ slug }}-{{team.slug}}" class="news mt-3">
+    <h1>{{ game.white }} {% if game.white_rating %}({{game.white_rating}}) {% endif %}{{game.print_result|safe}} {{ game.black }} {% if game.black_rating %}({{game.black_rating}}) {% endif %}</h1>
     <h2>{{game.league}}</h2>
     <h2>{{game.date.date}}</h2>
     {%if game.lichess %}<a href = "https://lichess.org/{{game.lichess}}">lichess.org/{{game.lichess}}</a>{% endif %}

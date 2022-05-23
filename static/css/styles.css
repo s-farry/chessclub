@@ -58,7 +58,7 @@
   html {
     font-family: sans-serif;
     line-height: 1.15;
-    font-size: 14px;
+    font-size: 12px;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
@@ -70,7 +70,7 @@
 
   @media (min-width: 700px) {
     html{
-      font-size: 14px;
+      font-size: 12px;
     }
     .nav-link{
       font-size:inherit;
@@ -78,13 +78,13 @@
   }
   @media (min-width: 900px) {
     html{
-      font-size: 16px;
+      font-size: 14px;
     }
   }
       
   @media (min-width: 1200px) {
     html{
-      font-size: 16px;
+      font-size: 14px;
     }
   }
   article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -10214,7 +10214,7 @@
   .news-item img{
     margin:0.5rem;
     width:260px;
-    max-width:70%;
+    max-width:50%;
     float:left;
   }
   .headline-item img{
@@ -10280,6 +10280,9 @@
 
     .headline-item img{
       float:left;
+    }
+    .headline-header, .news-header{
+      display:flex;
     }
   }
   .sb-nav-fixed .sb-topnav {
@@ -10473,11 +10476,16 @@
     }
 
   .headline-item, .headline-header, .headline-footer, .headline-body{
-    width:50%;
     word-wrap: break-word;
     margin-bottom:0.5rem;
     padding:0.5em;
     font-size:1.0rem;
+  }
+  .headline-item{
+    width:50%;
+  }
+  .headline-header, .headline-footer, .headline-body{
+    width:100%;
   }
 
   .news-header, .header{
