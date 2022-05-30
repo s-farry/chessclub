@@ -143,7 +143,7 @@ class League(models.Model):
         else: return "Round %i"%(round)
 
 class Schedule(models.Model):
-    league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'))
+    league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'), blank=True, null=True)
     round = models.IntegerField(null=True, blank=True, verbose_name=_('Round'))
     board = models.IntegerField(null=True, blank=True, verbose_name=_('Board'))
     date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
