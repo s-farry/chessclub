@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.admin import widgets
 from .models import Player, Schedule, League, Season
 from datetime import datetime, timedelta
+from django.db.models import Q
+
 from calendar import monthrange
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
@@ -48,7 +50,8 @@ class ExportGamesForm(forms.Form):
     
     season = Season.objects.all().last()
     leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.filter(season=season),  widget = FilteredSelectMultiple('Leagues',False,))
-    games      = forms.ModelMultipleChoiceField( required = False, label = "Extra Games", queryset = Schedule.objects.filter(league__season=season).order_by('-date'))
+
+    games      = forms.ModelMultipleChoiceField( required = False, label = "Extra Games", queryset=Schedule.objects.filter(Q(league__season=season) | (Q(date__isnull=False) & Q(date__gte=season.start) & Q(date__lte=season.end))).order_by('date'))
     players_exclude      = forms.ModelMultipleChoiceField( required = False, label = "Players to exclude", queryset = season.players.order_by('surename', 'name'))
     ecf_code          = forms.CharField(initial = season.ecf_code)
     event_name        = forms.CharField(initial = season.event_name)

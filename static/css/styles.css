@@ -10656,3 +10656,8 @@
 
       content: '';
   }
+
+  .profile {
+    width:160px;
+    max-width:50%;
+  }
