@@ -10,9 +10,9 @@
   <h1>{% if page_name %}{{ page_name }}{% else %} {{player}} {% endif %}</h1>
 
 {% if player.image %}
-<img src = "{player.image}">
+<img class="profile" src = "{{ player.image.url }}">
 {% else %}
-<img src = "{% static 'img/blank-profile-picture-973460_1280.png' %}" width="10%">
+<img class="profile" src = "{% static 'img/blank-profile-picture-973460_1280.png' %}" width="10%">
 {% endif %}
 {% if player.rating %}
 <p>Rating: {{player.rating}}
