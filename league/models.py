@@ -240,12 +240,15 @@ class Schedule(models.Model):
         return self.league.get_round_display(self.round)
 
     def __str__(self):
+        date = "TBC"
+        if self.date:
+            date = self.date.date()
         if self.white and self.black:
-            return "{}: {} {} {}".format(self.date.date(), self.white, self.print_result(plain = True), self.black) 
+            return "{}: {} {} {}".format(date, self.white, self.print_result(plain = True), self.black) 
         elif self.white:
-            return "{}: {} (bye)".format(self.date.date(), self.white) 
+            return "{}: {} (bye)".format(date, self.white) 
         else:
-            return "{}: {} (bye)".format(self.date.date(), self.black) 
+            return "{}: {} (bye)".format(date, self.black) 
 
 class PGN(models.Model):
     body    = models.TextField()
