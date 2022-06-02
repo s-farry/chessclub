@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
-from .models import League, Schedule, Standings, Player, Season, Team, TeamFixture, STANDINGS_ORDER, POINTS
+from .models import League, Schedule, Standings, Player, Season, Team, TeamFixture, STANDINGS_ORDER, POINTS, PGN
 from django.utils import timezone
 from django.urls import resolve, reverse
 from django.utils.safestring import mark_safe
@@ -84,6 +84,11 @@ class ScheduleInline(admin.TabularInline):
 
 class TeamFixtureInline(admin.TabularInline):
     model = TeamFixture
+
+class PgnInline(admin.TabularInline):
+    model = PGN
+    max_num = 1
+    extra = 1
 
 class StandingsInline(admin.TabularInline):
     model = Standings
@@ -257,6 +262,9 @@ class ScheduleAdmin(ReverseModelAdmin):
     list_filter = ('league',('date', DateFieldListFilter) )
     inline_reverse = ['pgn']
 
+    inlines = [
+        PgnInline,
+    ]
     def get_urls(self):
         from django.conf.urls import url
         def wrap(view):
