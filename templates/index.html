@@ -23,6 +23,7 @@
             {% endif %}
             <div class = "row">
                 {% for n in news %}
+                {% if forloop.counter < 2 %}
                     <div class = "news-item">
                         <div class = "news-header"><div class="mr-auto">{{n.title}}</div><div class="small">{{n.published_date.date}}</div></div>
                         <div class = "news-body cleafix">
@@ -35,8 +36,7 @@
                             Published by {{n.author.first_name}} {{n.author.last_name}}
                         </div>
                     </div>
-                {% endfor %}
-                {% for n in headlines %}
+                {% elif forloop.counter < 4 %}
                     <div class = "headline-item">
                         <div class = "headline-header"><div class="mr-auto">{{n.title}}</div><div class="small">{{n.published_date.date}}</div></div>
                         {% if n.image %}
@@ -48,20 +48,18 @@
                             Published by {{n.author.first_name}} {{n.author.last_name}}
                         </div>
                     </div>
+                {% else %}
+                {% if forloop.counter == 4 %}
+                <div class="news-header"></div>
+                {% endif %}
+                <div class="snippet-item">
+                <div class="snippet-header">{{n.title}}</div> {{ n.text|safe|truncatewords:"16" }}<a href="{% url 'news' %}#{{n.id}}">read more</a>
+                    <div class="snippet-footer">
+                {{n.published_date.date}}</div>
+                </div>
+                {% endif %}
                 {% endfor %}
             </div>
-        </div>
-
-        <div class = "col-md-4 mt-3">
-            {% if not request|is_mobile %}
-            <div class="row">
-            <div class = "header mb-3"><i class="fas fa-chess-knight"></i> About Us</div>
-                <div class = "news-body">
-                    Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and have teams playing against other clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone! New members are always welcome so please get in touch by <a href="mailto:contact@wallaseychessclub.uk">e-mail</a> or just come down to the club one evening. We play at Wallasey Central Conservative Club on Mondays and Thursday evenings, with the games starting at 7.30pm.
-                </div>
-            </div>
-            {% endif %}
-
 
             <div class = "row">
                 <div class = "header"><i class="fas fa-calendar-alt"></i> Club Calendar</div>
@@ -80,6 +78,31 @@
                     {% endfor %}
                 </div>
             
+            </div>
+        </div>
+
+        <div class = "col-md-4 mt-3">
+            {% if not request|is_mobile %}
+            <div class="row">
+            <div class = "header mb-3"><i class="fas fa-chess-knight"></i> About Us</div>
+                <div class = "news-body">
+                    Wallasey Chess Club is a member of the English Chess Federation, and is the biggest and friendliest chess club on the Wirral. We have many internal tournaments running throughout the year, and have teams playing against other clubs in both the Wirral and Merseyside Leagues - together with Cup competitions - so there is plenty of chess for everyone! New members are always welcome so please get in touch by <a href="mailto:contact@wallaseychessclub.uk">e-mail</a> or just come down to the club one evening. We play at Wallasey Central Conservative Club on Mondays and Thursday evenings, with the games starting at 7.30pm.
+                </div>
+            </div>
+            {% endif %}
+
+
+            <div class = "row" >
+
+            <div class="row">
+                <div class = "header mb-3"><i class="fab fa-twitter"></i> @WallaseyChess</div>
+                    <div class = "news-body">
+                        <a class="twitter-timeline" data-tweet-limit="3" href="https://twitter.com/WallaseyChess?ref_src=twsrc%5Etfw"></a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+                    </div>
+                </div>
+
             </div>
             <div class = "row">
                 <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>

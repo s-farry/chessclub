@@ -191,7 +191,7 @@ class Schedule(models.Model):
                 elif b == "0-1":
                     return ('0','1')
                 elif b == "-":
-                    return ("v",)
+                    return ("-","-","v",)
                 elif b == '--+':
                     return ('&#65293;','&#65291;')
                 elif b == '+--':

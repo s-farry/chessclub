@@ -10,7 +10,7 @@
     var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
         $(".sb-topnav a.nav-link").each(function() {
             console.log(this.href, path, path.match(this.href + '/.*'))
-            if (this.href === path || path.match(this.href + '/.*')) {
+            if (this.href === path || path.match(this.href + '/.*') || path.match(this.href + '#.*')) {
                 $(this).addClass("active");
             }
         });
