@@ -109,7 +109,7 @@ class StandingsInline(admin.TabularInline):
     #max_num=3
     actions = []
     readonly_fields = ('player',)
-    fields = ('points', 'matches','win','draws','lost','position')
+    fields = ('matches','win','draws','lost','position','points')
 
 
 
