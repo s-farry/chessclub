@@ -105,11 +105,11 @@ class StandingsInline(admin.TabularInline):
             return self.parent_model.objects.get(pk=resolved.args[0])
         return None
     ordering = ('position', '-points')
-    exclude = ('matches', 'win', 'lost', 'draws', 'score', 'score_lost')
-    max_num=3
+    exclude = ('score', 'score_lost')
+    #max_num=3
     actions = []
     readonly_fields = ('player',)
-    fields = ('points', 'position')
+    fields = ('points', 'matches','win','draws','lost','position')
 
 
 
@@ -143,7 +143,7 @@ class LeagueAdmin(ModelAdmin):
 
     form = LeagueAdminForm
     inlines = [
-        #StandingsInline, 
+        StandingsInline, 
         ScheduleInline,
     ]
 
@@ -325,6 +325,7 @@ admin.site.register(Player, PlayerAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(Team, TeamAdmin)
+admin.site.register(Standings)
 
 
 # Register your models here.
