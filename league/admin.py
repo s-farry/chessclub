@@ -153,7 +153,7 @@ class LeagueAdmin(ModelAdmin):
         return mark_safe("<a href='%s' target='blank'>Open</a>" % url)
 
     prepopulated_fields = {'slug': ('name', 'season',), }
-    actions=['update_standings', 'make_pdf', 'make_crosstable', 'update_ratings']
+    actions=['update_standings', 'make_pdf', 'make_crosstable', 'update_ratings', 'update_historical_ratings']
     list_display = ('name','link')
     def update_standings(self,request,queryset):
         for obj in queryset:
@@ -169,6 +169,26 @@ class LeagueAdmin(ModelAdmin):
                     s.rating = s.player.rating
                     s.save()
             self.message_user(request, "Ratings of players in league updated")
+
+
+    def update_historical_ratings(self, request, queryset):
+        for obj in queryset:
+            ratings_date = obj.season.end
+            standings = Standings.objects.filter(league=obj)
+            for s in standings:
+                p = s.player
+                if p.ecf == None:
+                    self.message_user(request, '%s has no ECF code currently'%(p))
+                    continue
+                url = 'https://www.ecfrating.org.uk/v2/new/api.php?v2/ratings/Standard/%s/%s'%(p.ecf, ratings_date)
+                grade = requests.get(url)
+                if grade:
+                    grade = grade.json()
+                    curr_rating = s.rating if s.rating else 0
+                    self.message_user(request, '%s rating updated from %i to %i'%(p, curr_rating, grade['revised_rating']))
+                    s.rating = grade['revised_rating']
+                    s.save()
+                print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
 
     def make_pdf(self, request, queryset):
