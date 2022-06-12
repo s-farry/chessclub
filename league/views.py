@@ -239,16 +239,19 @@ def game(request, game_id):
     return render(request, 'game.html', {'game': f, 'pgn' : body})
 
 def leagues(request, **kwargs):
-    if 'season_slug' in kwargs:
-        f = get_object_or_404(Season, slug = kwargs['season_slug'])
-    else:
-        f = Season.objects.all().last()
-    return render(request, 'league.html', {'season' : f, 'leagues' : League.objects.filter(season=f)})
+    #if 'season_slug' in kwargs:
+    #    f = get_object_or_404(Season, slug = kwargs['season_slug'])
+    #else:
+    #    f = Season.objects.all().last()
+    #return render(request, 'league.html', {'season' : f, 'leagues' : League.objects.filter(season=f)})
+    return render(request, 'tournaments.html')
 
 def index(request):
     season_slug = Season.objects.all().last().slug
     return leagues(request, season_slug)
 
+def cabinet(request):
+    return render(request, 'cabinet.html')
 
 def season(request, **kwargs):
     if 'season_slug' in kwargs:

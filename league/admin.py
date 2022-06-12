@@ -188,6 +188,9 @@ class LeagueAdmin(ModelAdmin):
                     self.message_user(request, '%s rating updated from %i to %i'%(p, curr_rating, grade['revised_rating']))
                     s.rating = grade['revised_rating']
                     s.save()
+                else:
+                    s.rating=None
+                    s.save()
                 print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
 
@@ -226,8 +229,10 @@ class LeagueAdmin(ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.save()
         form.save_m2m()
-        standings_save(obj)
-        standings_update(obj)
+        # create standings first time
+        if not change:
+            standings_save(obj)
+            #standings_update(obj)
 
     
     def get_urls(self):
