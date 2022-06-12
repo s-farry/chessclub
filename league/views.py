@@ -205,8 +205,7 @@ def fixtures(request, league, **kwargs):
             latest = max(prev_dates) if len(prev_dates) > 0 else dates[0]
 
     #let's get the standings now
-    order = STANDINGS_ORDER[l.standings_order][1]
-    standings = Standings.objects.filter(league=l).order_by(*order)
+    standings = Standings.objects.filter(league=l).order_by('position')
     return render(request, 'fixtures.html', {'games': games_display, 'useRounds' : useRounds, 'latest' : latest, 'standings' : standings, 'league' : l })
 
 

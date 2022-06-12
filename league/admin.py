@@ -92,6 +92,7 @@ class PgnInline(admin.TabularInline):
 
 class StandingsInline(admin.TabularInline):
     model = Standings
+    extra = 0
 
     def get_parent_object_from_request(self, request):
         """
@@ -108,8 +109,8 @@ class StandingsInline(admin.TabularInline):
     exclude = ('score', 'score_lost')
     #max_num=3
     actions = []
-    readonly_fields = ('player',)
-    fields = ('matches','win','draws','lost','position','points')
+    #readonly_fields = ('player',)
+    fields = ('position','matches','win','draws','lost','points')
 
 
 
