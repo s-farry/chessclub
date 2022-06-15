@@ -22,7 +22,7 @@ class TeamRoster(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
         else:
-            season = Season.objects.all().last()
+            season = Season.objects.order_by('end').last()
         season_name = season.name
 
         context['season'] = season
@@ -36,7 +36,7 @@ class TeamRoster(ListView):
         if self.kwargs.get('season'):
             season = Season.objects.get(slug=self.kwargs['season'])
         else:
-            season = Season.objects.last()
+            season = Season.objects.order_by('end').last()
         season_pk = season.pk
         qs = self.model.objects.filter(seasons=season_pk).order_by('-rating')
 
@@ -217,7 +217,7 @@ def player(request, player_id, **kwargs):
         games[league.season] = {}
         games[league.season][league] = Schedule.objects.filter((Q(white=player_id) | Q(black=player_id)) & Q(league = league)).order_by('date')
     else:
-        season = Season.objects.last()
+        season = Season.objects.order_by('end').last()
         
         if player in season.players.all(): games[season] = {}
         for league in season.league_set.all():
@@ -247,7 +247,7 @@ def leagues(request, **kwargs):
     return render(request, 'tournaments.html')
 
 def index(request):
-    season_slug = Season.objects.all().last().slug
+    season_slug = Season.objects.order_by('end').last().slug
     return leagues(request, season_slug)
 
 def cabinet(request):
@@ -257,7 +257,7 @@ def season(request, **kwargs):
     if 'season_slug' in kwargs:
         f = get_object_or_404(Season, slug = kwargs['season_slug'])
     else:
-        f = Season.objects.all().last()
+        f = Season.objects.order_by('end').last()
     teams = Team.objects.filter(season=f)
     team_squads = { t : t.players.all().order_by('-rating') for t in teams }
     fixtures = TeamFixture.objects.filter(team__in=teams)
@@ -571,7 +571,7 @@ def manage_schedule_view(request, id, admin_site ):
 
 def add_club_night_view(request, admin_site ):
     opts = Schedule._meta
-    season = Season.objects.all().last()
+    season = Season.objects.order_by('end').last()
     leagues = League.objects.filter(season=season)
     players = season.players.all().order_by('surename', 'name')
     league = leagues.last()
