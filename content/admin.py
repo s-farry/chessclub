@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import news, event
+from .models import news, event, album, image
 from tinymce.widgets import TinyMCE
 from django import forms
 from functools import update_wrapper
@@ -20,6 +20,13 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.contrib.auth.models import User
 
+
+class ImageInline(admin.TabularInline):
+    model = image
+
+class AlbumAdmin(admin.ModelAdmin):
+    list_display = ['title', 'description']
+    inlines = [ImageInline]
 
 class EventAdmin(admin.ModelAdmin):
     change_list_template = 'change_list.html'
@@ -160,3 +167,4 @@ class NewsAdmin(admin.ModelAdmin):
 
 admin.site.register(news, NewsAdmin)
 admin.site.register(event, EventAdmin)
+admin.site.register(album, AlbumAdmin)

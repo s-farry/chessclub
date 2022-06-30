@@ -21,7 +21,7 @@ import dateutil.parser
 
 
 from league.models import Player, Season, League, Schedule, Standings
-from content.models import event
+from content.models import event, album
 from league.admin import standings_update, standings_save       
 
 from league.utils import *

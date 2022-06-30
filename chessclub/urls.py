@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import url,include
+from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
 import os
@@ -23,36 +23,31 @@ import os
 from django.contrib.auth import get_user_model
 
 
-
-
 import league.urls
 from . import views
 from .admin import *
+
 admin.site = admin_site
 admin.autodiscover()
 
 urlpatterns = [
-    path('admin/', admin.site.urls, name='admin'),
-    url(r'^$', views.index, name='index'),
-    #path('league/', league.urls),
-    url(r'^', include('league.urls')),
-    url(r'^', include('content.urls')),
-    url(r'^chaining/', include('smart_selects.urls')),
-    url(r'^tinymce/', include('tinymce.urls')),
-
+    path("admin/", admin.site.urls, name="admin"),
+    url(r"^$", views.index, name="index"),
+    # path('league/', league.urls),
+    url(r"^", include("league.urls")),
+    url(r"^", include("content.urls")),
+    url(r"^chaining/", include("smart_selects.urls")),
+    url(r"^tinymce/", include("tinymce.urls")),
 ]
-if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
+if "DJANGO_DEBUG" in os.environ and os.environ["DJANGO_DEBUG"] == "1":
     urlpatterns += [
-        url(r'^404/$', views.page_not_found),
-        url(r'^500/$', views.server_error)
-
+        url(r"^404/$", views.page_not_found),
+        url(r"^500/$", views.server_error),
     ]
 
 
-handler404 = 'chessclub.views.page_not_found'
-handler500 = 'chessclub.views.server_error'
+handler404 = "chessclub.views.page_not_found"
+handler500 = "chessclub.views.server_error"
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
-
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
