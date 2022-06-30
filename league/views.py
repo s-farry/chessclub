@@ -789,7 +789,7 @@ def add_club_night_view(request, admin_site):
 
 def export_games_view(request, admin_site):
     opts = Schedule._meta
-    season = Season.objects.all().last()
+    season = Season.objects.all().order_by('end').last()
     leagues = League.objects.filter(season=season)
     initial_leagues = leagues.filter(
         Q(name="Wallasey Championship") | Q(name="Wallasey Premiership")
