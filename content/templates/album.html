@@ -15,18 +15,21 @@
 
 {% load i18n %}
 {% block content %}
-<div class="row">
-<h1 class="mt-4">{{album.title}}</h1>
-{% if album.description %}{{album.description}}{% endif %}
-{{album.updated.date}}
-
-</div>
+<h1 class="mt-4 text-align-center">{{album.title}}</h1>
+{% if album.description %}
+<div class = "row">{{album.description}}</div>
+    {% endif %}
+<hr>
 <div id="lightgallery" class="gallery">
     {% for image in images %}
     <a href="{{image.image.url}}" class="gallery__item gallery__item--{{forloop.counter}}">
         <img alt="{{image.altText}}" src="{{image.image.url}}" data-lg-size="1600-2400" class="gallery__img"/>
     </a>
     {% endfor %}
+</div>
+<div class="footer">
+    Last updated {{album.updated.date}}
+
 </div>
 {% endblock %}
 
