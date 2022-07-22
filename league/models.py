@@ -105,9 +105,9 @@ class League(models.Model):
         choices=(STANDINGS_ORDER_HUMAN),
         default=0
     )
-    win_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for win'), choices = (POINTS))
+    win_points = models.IntegerField(null=True, blank=False, default=2, verbose_name=_('Points for win'), choices = (POINTS))
     lost_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for loss'), choices = (POINTS))
-    draw_points = models.IntegerField(null=True, blank=False, default=0, verbose_name=_('Points for draw'), choices = (POINTS))
+    draw_points = models.IntegerField(null=True, blank=False, default=1, verbose_name=_('Points for draw'), choices = (POINTS))
     format = models.IntegerField(default = 0, choices=(TOURNAMENT_FORMATS))
 
 
@@ -141,6 +141,10 @@ class League(models.Model):
             elif round == 3: return "Quarter-Finals"
             else: return "Last %i" %(math.pow(2,round))
         else: return "Round %i"%(round)
+
+    def includes_half_points(self):
+        if self.win_points == 1 or self.lost_points == 1 or self.draw_points ==1 :
+            return True
 
 class Schedule(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, verbose_name=_('League'), blank=True, null=True)
@@ -258,10 +262,9 @@ class PGN(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('Team Name'))
+    captain = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Team Captain'), related_name='captain', null=True, blank=True)
     league = models.CharField(max_length=200, null=True, verbose_name=_('League'))
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    listed_players = models.ManyToManyField(Player, blank=True, related_name='listed_team_players', verbose_name=_('Listed Players'))
-    players = models.ManyToManyField(Player, blank=True, related_name='team_players', verbose_name=_('Players'))
 
     def __str__(self):
         return '%s (%s)'%(self.name, self.season)
@@ -280,6 +283,24 @@ class TeamFixture(models.Model):
     
     def __str__(self):
         return '%s v %s - %s'%(self.team.name, self.opponent, self.team.league)
+
+
+
+class TeamPlayer(models.Model):
+    team   = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('Team'))
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Team Player'))
+    listed  = models.BooleanField(default=False)
+    played = models.IntegerField(default=0,null=True, blank=True)
+    won    = models.IntegerField(default=0,null=True, blank=True)
+    draw   = models.IntegerField(default=0,null=True, blank=True)
+    lost   = models.IntegerField(default=0,null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Team Player')
+        verbose_name_plural = _('Team Players')
+    
+    def __str__(self):
+        return '%s - %s'%(self.player, self.team.name)
 
 
 class Standings(models.Model):

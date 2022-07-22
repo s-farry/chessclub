@@ -39,7 +39,11 @@
             <td class="text-center">{{player.win}}</td>
             <td class="text-center">{{player.draws}}</td>            
             <td class="text-center">{{player.lost}}</td>
-            <td class="text-center">{{ player.points|floatformat:0 }}</td>
+            {% if not league.includes_half_points %}
+                <td class="text-center">{{ player.points|floatformat:0 }}</td>
+            {% else %}
+                <td class="text-center">{{ player.swiss_points }}</td>
+            {% endif %}
             {% if not request|is_mobile %}
             <td class="text-center form">
                 {% for r in player.form %}
