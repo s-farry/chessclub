@@ -12,7 +12,7 @@
 {% block content %}
 <article id="league-{{ slug }}-{{team.slug}}" class="news mt-3">
     <h1><a href="{% url 'player' game.white.id %}">{{ game.white }} {% if game.white_rating %}({{game.white_rating}}) {% endif %}</a>{{game.print_result|safe}} <a href="{% url 'player' game.white.id %}">{{ game.black }} {% if game.black_rating %}({{game.black_rating}}) {% endif %}</a></h1>
-    {%if game.league %}<h2><a href="{% url 'tournament' game.league.slug %}">{{game.league}}</a></h2>{ % endif %}
+    {%if game.league %}<h2><a href="{% url 'tournament' game.league.slug %}">{{game.league}}</a></h2>{% endif %}
     <h2>{{game.date.date}}</h2>
     {%if game.lichess %}<a href = "https://lichess.org/{{game.lichess}}">lichess.org/{{game.lichess}}</a>{% endif %}
     <hr />
