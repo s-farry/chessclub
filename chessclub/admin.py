@@ -4,6 +4,10 @@ from django.utils.translation import ugettext_lazy
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
+from django.conf.urls import url, include
+
+from .views import preview
+
 class MyAdminSite(AdminSite):
     # Text to put at the end of each page's <title>.
     site_title = ugettext_lazy('Wallasey Chess Club')
@@ -16,6 +20,15 @@ class MyAdminSite(AdminSite):
 
     def has_module_permission(self,request):
         return True
+
+    def get_urls(self):
+        urls = super().get_urls()
+
+        my_urls = [
+            url(r'^preview/$', self.admin_view(preview))
+        ]
+
+        return my_urls + urls
 
 admin_site = MyAdminSite()
 

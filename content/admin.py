@@ -152,7 +152,6 @@ class NewsAdmin(admin.ModelAdmin):
         return []
 
     def save_model(self, request, obj, form, change):
-        super(NewsAdmin, self).save_model(request, obj, form, change)
         if not change:
             obj.author = request.user
             email_message = '''
@@ -163,6 +162,8 @@ class NewsAdmin(admin.ModelAdmin):
             Visit <a href="%s">%s</a> to approve
             '''%(obj.title, obj.author, obj.text, "link", "link")
             send_mail('%s awaiting approval'%(obj.title), email_message, 'contact@wallaseychessclub.uk', ['contact@wallaseychessclub.uk'], fail_silently=False)
+        
+        super(NewsAdmin, self).save_model(request, obj, form, change)
 
 
 admin.site.register(news, NewsAdmin)

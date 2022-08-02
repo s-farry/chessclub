@@ -25,6 +25,22 @@ def index(request):
         },
     )
 
+def preview(request):
+    news_objects = news.objects.order_by("-created_date")[:9]
+    events_objects = event.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+        :5
+    ]
+    puzzles = Puzzle.objects.filter(date=datetime.now().date())
+    return render(
+        request,
+        "index.html",
+        {
+            "leagues": League.objects.all(),
+            "news": news_objects,
+            "events": events_objects,
+            "puzzles": puzzles,
+        },
+    )
 
 def page_not_found(request, *args, **kwargs):
     return render(request, "404.html", *args, **kwargs)
