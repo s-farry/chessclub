@@ -5,7 +5,7 @@
 {% load league_tags %}
 {% block content %}
 <div class="text-center">
-<h1 class="mt-4">{{season}}</h1> <h2><a href="{% url 'season' season.slug %}">{{season.name}}</a></h2>
+<h1 class="mt-4">Season Details ( {{season.name }} )</h1>
 </div>
 
 <div class='tab'>
@@ -50,21 +50,23 @@
 
   {% for team,players in teams.items %}
   <div id = "team-{{forloop.counter0}}">
-     {{team.name}} ({{team.league}})
-    <table class="table table-striped table-bordered table-hover">
+    <table class="teams-table ml-auto mr-auto table-striped table-bordered table-hover align-items-center">
       <thead>
-        <th colspan="2">Squad</th>
+        <th colspan="2">
+          {{team.name}} ({{team.league}})</th>
         </thead>
         <thead>
+        <th></th>
         <th class="text-center w-60">{% trans "Player" %}</th>
         <th class="text-center w-20">Rating</th>
         </tr>
         </thead>
         <tbody>
         {% for player in players %}
-              <tr>           
-                <td class="text-center">{{player}}</td>
-                <td class="text-center">{{player.rating}}</td>
+              <tr>
+                <td>{{forloop.counter}}</td>           
+                <td class="text-center">{{player.player}} {% if team.captain == player.player %}(c){% endif %}</td>
+                <td class="text-center">{{player.player.rating}}</td>
               </tr>
               {% endfor %}
         </tbody>

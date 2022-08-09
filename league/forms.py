@@ -77,3 +77,44 @@ ScheduleModelFormset = modelformset_factory(
     #    })
     #}
 )
+
+from tinymce.widgets import TinyMCE
+class LeagueAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = League
+        fields = '__all__'
+        exclude = ['slug']
+
+        widgets = {
+            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
+            #'players' : ModelAdmin.filter_horizontal()
+        }
+
+
+class LeagueAdminChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = League
+        fields = '__all__'
+        exclude = []
+
+        widgets = {
+            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
+            #'players' : ModelAdmin.filter_horizontal()
+        }
+
+class SeasonAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Season
+        fields = '__all__'
+        exclude = ['slug']
+
+
+class SeasonAdminChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = Season
+        fields = '__all__'
+        exclude = []

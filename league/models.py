@@ -100,7 +100,7 @@ class League(models.Model):
     description = models.CharField(max_length = 10000, blank = True, null = True)
     slug = models.SlugField(unique=True, null=True, verbose_name=_('Slug'))
     players = models.ManyToManyField(Player, blank=True, related_name='players', verbose_name=_('Players'))
-    updated_date = models.DateTimeField()
+    updated_date = models.DateTimeField(blank=True, null = True)
     standings_order = models.IntegerField(verbose_name=_('Standings order'),
         choices=(STANDINGS_ORDER_HUMAN),
         default=0

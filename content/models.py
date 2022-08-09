@@ -75,3 +75,11 @@ class image(models.Model):
     altText = models.TextField(null=True, blank=True)
     album = models.ForeignKey(album, null=True, blank=True, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, upload_to = 'images')
+
+class simul(models.Model):
+    class Meta:
+        verbose_name_plural = "Simul Entrants"
+    name = models.CharField(null = False, blank = False, max_length=100)
+    email = models.CharField(null = False, blank = False, max_length=100)
+    def __str__(self):              # __unicode__ on Python 2
+        return self.name

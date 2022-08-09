@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ album }}{% endblock %}
+{% block header %} 
+<!-- CSS used -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+<link type="text/css" rel="stylesheet" href="{% static 'css/lightgallery.css' %}" />
+
+<!-- lightgallery plugins -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/lg-zoom.css' %}" />
+<link type="text/css" rel="stylesheet" href="{% static 'css/lg-thumbnail.css' %}" />
+
+{% endblock %}
+
+{% load i18n %}
+{% block content %}
+<h1 class="mt-4 text-align-center">Simultaneous Exhibition - 3rd September 2022</h1>
+{% if not entrant %}
+<div class = "row">Use the form below to declare your interest in the simultaneous exhibition by Grandmaster Stephen Gordon celebrate the 150th anniversary of Wallasey Chess Club. The exhibition will take place on Saturday 3rd September at 1pm at Wallasey Central Conservative Club. The entry fee is £5 and places are limited and restricted to Wallasey Chess Club members. Entries should be recieved by the 21st August, after which a ballot will be performed to determine the final places.</div>
+{% endif %}
+<hr>
+
+{% if entrant %}
+Thanks {{entrant.name}}, your interest has been registered, you should shortly receive an email confirmation to {{entrant.email}}.
+{% else %}
+
+<form action="{{ form_url }}" method = "post">
+
+{% csrf_token %}
+{{form.as_p}}
+
+
+<button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+
+{% endif %}
+
+<div class="footer">
+
+</div>
+{% endblock %}
+
+
+
+
+{% block scripts %}
+
+{% endblock %}

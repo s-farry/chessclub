@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import latest, details, puzzles, photoalbum
+from .views import latest, details, puzzles, photoalbum, simul_interest
 
 urlpatterns = [
 #    url(r'^$', index, name='content_index'),
@@ -9,5 +9,6 @@ urlpatterns = [
     url(r"^album/(?P<album>[-\w]+)$", photoalbum, name="album"),
     url(r'^content/news$', latest, name='news'),
     url(r'^content/details$', details, name='details'),
-    url(r'^puzzles$', puzzles, name='puzzles')
+    url(r'^puzzles$', puzzles, name='puzzles'),
+    url(r'^simul$', simul_interest, name='simul_interest')
 ]

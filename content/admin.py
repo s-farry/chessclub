@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import news, event, album, image
+from .models import news, event, album, image, simul
 from tinymce.widgets import TinyMCE
 from django import forms
 from functools import update_wrapper
@@ -169,3 +169,4 @@ class NewsAdmin(admin.ModelAdmin):
 admin.site.register(news, NewsAdmin)
 admin.site.register(event, EventAdmin)
 admin.site.register(album, AlbumAdmin)
+admin.site.register(simul)

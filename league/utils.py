@@ -133,7 +133,7 @@ def get_performance_score(player, tournament):
 
 
 # for updating standings
-def standings_save(instance):
+def standings_save(admin_site, request, instance):
         league = League.objects.get(pk=instance.pk)
         league.updated_date = datetime.datetime.now()
         league.save()
@@ -147,7 +147,7 @@ def standings_save(instance):
         for player in standings:
                 player.delete()
 
-def standings_position_update(league):
+def standings_position_update(admin_site, request, league):
     order = STANDINGS_ORDER[league.standings_order][1]
     standings = Standings.objects.filter(league = league.pk).order_by(*order)
     position = 0
@@ -156,7 +156,7 @@ def standings_position_update(league):
         player.position = position
         player.save()
 
-def standings_update(instance):
+def standings_update(admin_site, request, instance):
         standings = Standings.objects.filter(league = instance.pk)
         # to calculate NBS and Buchholz score
         player_wins   = {}
@@ -164,6 +164,15 @@ def standings_update(instance):
         player_draws  = {}
         player_points = {}
         player_ratings = {}
+
+        games = Schedule.objects.filter(league = instance.pk)
+
+        players = set([ g.white for g in games if g.white is not None ] + [ g.black for g in games if g.black is not None])
+
+        for p in players:
+            if p not in list(instance.players.all()):
+                admin_site.message_user(request, '%s has played a game in %s but is not listed among the league players'%(p,instance))
+
 
         for standing in standings:
             points = 0
@@ -277,7 +286,7 @@ def standings_update(instance):
             standing.nbs = nbs
             standing.save()
 
-        standings_position_update(instance)
+        standings_position_update(admin_site, request, instance)
 
 
 # for makign tournaments

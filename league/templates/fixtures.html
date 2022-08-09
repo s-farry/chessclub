@@ -31,7 +31,7 @@
       {% if league.format == 1 %}
         {% include 'content/swiss_table.html' with standings=standings rounds=league.get_rounds league=league %}
       {% elif league.format == 0 %}
-        {% include 'content/full_table.html' with standings=standings %}
+        {% include 'content/full_table.html' with standings=standings league=league %}
       {% endif %}
   {% endif %} 
 </div>

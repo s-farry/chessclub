@@ -8,6 +8,7 @@ from league.models import (
     Season,
     Team,
     TeamFixture,
+    TeamPlayer,
     PGN,
     STANDINGS_ORDER,
 )
@@ -297,7 +298,7 @@ def season(request, **kwargs):
     else:
         f = Season.objects.order_by("end").last()
     teams = Team.objects.filter(season=f)
-    team_squads = {t: t.players.all().order_by("-rating") for t in teams}
+    team_squads = {t: TeamPlayer.objects.filter(team=t).order_by("-player__rating") for t in teams}
     fixtures = TeamFixture.objects.filter(team__in=teams)
     members = f.players.all().order_by("-rating")
     return render(
@@ -781,8 +782,8 @@ def add_club_night_view(request, admin_site):
                     % (form.cleaned_data["white"], form.cleaned_data["black"]),
                 )
         for obj in leagues_updated:
-            standings_update(obj)
-            standings_save(obj)
+            standings_update(admin_site, request, obj)
+            standings_save(admin_site, request, obj)
 
     return render(request, admin_site.add_clubnight_template, context)
 

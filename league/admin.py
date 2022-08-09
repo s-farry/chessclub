@@ -3,7 +3,8 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
-from .models import League, Schedule, Standings, Player, Season, Team, TeamFixture, STANDINGS_ORDER, POINTS, PGN
+from .models import League, Schedule, Standings, Player, Season, Team, TeamPlayer, TeamFixture, STANDINGS_ORDER, POINTS, PGN
+from .forms import LeagueAdminForm, LeagueAdminChangeForm, SeasonAdminForm, SeasonAdminChangeForm
 from django.utils import timezone
 from django.urls import resolve, reverse
 from django.utils.safestring import mark_safe
@@ -12,9 +13,10 @@ from datetime import datetime
 from .utils import standings_save, standings_update
 from django.contrib.admin import DateFieldListFilter
 
+from django.template.defaultfilters import slugify
+
 from django_reverse_admin import ReverseModelAdmin
 
-from tinymce.widgets import TinyMCE
 
 from django.forms import BaseInlineFormSet
 import requests
@@ -85,6 +87,10 @@ class ScheduleInline(admin.TabularInline):
 class TeamFixtureInline(admin.TabularInline):
     model = TeamFixture
 
+
+class TeamPlayerInline(admin.TabularInline):
+    model = TeamPlayer
+
 class PgnInline(admin.TabularInline):
     model = PGN
     max_num = 1
@@ -119,18 +125,6 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
 
-class LeagueAdminForm(forms.ModelForm):
-
-    class Meta:
-        model = League
-        fields = '__all__'
-        exclude = []
-
-        widgets = {
-            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
-            #'players' : ModelAdmin.filter_horizontal()
-        }
-
 from matplotlib.backends.backend_pdf import PdfPages
 from django.http import HttpResponse
 from io import BytesIO
@@ -147,18 +141,19 @@ class LeagueAdmin(ModelAdmin):
         StandingsInline, 
         ScheduleInline,
     ]
+    change_form = LeagueAdminChangeForm
 
     def link(self, obj):
         url = reverse('league',args = {obj.slug})
         return mark_safe("<a href='%s' target='blank'>Open</a>" % url)
 
-    prepopulated_fields = {'slug': ('name', 'season',), }
+    #prepopulated_fields = {'slug': ('name', 'season_name',), }
     actions=['update_standings', 'make_pdf', 'make_crosstable', 'update_ratings', 'update_historical_ratings']
     list_display = ('name','link')
     def update_standings(self,request,queryset):
         for obj in queryset:
-            standings_save(obj)
-            standings_update(obj)
+            standings_save(self, request, obj)
+            standings_update(self, request, obj)
             self.message_user(request, "Standings for %s updated"%(obj))
 
     def update_ratings(self,request,queryset):
@@ -227,11 +222,14 @@ class LeagueAdmin(ModelAdmin):
 
     
     def save_model(self, request, obj, form, change):
-        obj.save()
+        if not change:
+            obj.slug = slugify('{}'.format('%s-%s'%(obj.name, obj.season.slug)))
+        #obj.save()
+        super().save_model(request, obj, form, change)
         form.save_m2m()
         # create standings first time
         if not change:
-            standings_save(obj)
+            standings_save(self, request, obj)
             #standings_update(obj)
 
     
@@ -257,6 +255,16 @@ class LeagueAdmin(ModelAdmin):
         
         super_urls = super(LeagueAdmin, self).get_urls()
         return urls + super_urls
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        Use special form during foo creation
+        """
+        defaults = {}
+        if obj is not None:
+            defaults['form'] = self.change_form
+        defaults.update(kwargs)
+        return super().get_form(request, obj, **defaults)
     
 
 class PlayerAdmin(admin.ModelAdmin):
@@ -335,13 +343,38 @@ class ScheduleAdmin(ReverseModelAdmin):
 
 class SeasonAdmin(admin.ModelAdmin):
     filter_horizontal = ('players',)
+    form = SeasonAdminForm
+    change_form = SeasonAdminChangeForm
 
+    def save_model(self, request, obj, form, change):
+        if not change:
+            y1 = obj.start.year
+            y2 = obj.end.year
+            if y1 == y2:
+                obj.slug = obj.start.strftime('%Y')
+            else:
+                obj.slug = '%s-%s'%(obj.start.strftime('%y'), obj.end.strftime('%y'))
+        super().save_model(request, obj, form, change)
+
+        form.save_m2m()
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        Use special form during creation
+        """
+        defaults = {}
+        if obj is not None:
+            defaults['form'] = self.change_form
+        defaults.update(kwargs)
+        return super().get_form(request, obj, **defaults)
+
+    
 
 class TeamAdmin(admin.ModelAdmin):
-    filter_horizontal = ('players',)
 
     inlines = [
         TeamFixtureInline,
+        TeamPlayerInline,
     ]
 
 
