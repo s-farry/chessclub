@@ -26,10 +26,10 @@ Thanks {{entrant.name}}, your interest has been registered, you should shortly r
 {% else %}
 
 <form action="{{ form_url }}" method = "post">
-
+<table>
 {% csrf_token %}
-{{form.as_p}}
-
+{{form.as_table}}
+</table>
 
 <button type="submit" class="btn btn-primary">Submit</button>
 
