@@ -81,5 +81,6 @@ class simul(models.Model):
         verbose_name_plural = "Simul Entrants"
     name = models.CharField(null = False, blank = False, max_length=100)
     email = models.CharField(null = False, blank = False, max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):              # __unicode__ on Python 2
         return self.name
