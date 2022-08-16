@@ -22,13 +22,26 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 {% if player.ecf %}
 <img src = "{% static 'img/ecf.jpeg' %}" width="40px"> <a href = "https://www.ecfrating.org.uk/v2/new/player.php?ECF_code={{player.ecf}}">{{player.ecf}}</a>
 {% endif %}
+{% if player.fide %}
+<img src = "{% static 'img/fide.jpeg' %}" width="40px"> <a href = "https://ratings.fide.com/profile/{{player.fide}}">{{player.fide}}</a>
+{% endif %}
 <!--
 {% if player.lichess %}
 <img src = "{% static 'img/lichess.png' %}" width="40px"> <a href = "https://lichess.org/@/{{player.lichess}}">{{player.lichess}}</a>
 {% endif %}
 -->
 </div>
+ 
+<ul>
 {% for season,leagues in games.items %}
+{% for s in seasons %}
+{% if season.id == s.id %}
+<li>{{s}}</li>
+{% else %}
+<li><a href = "{% url 'player' player_id=player.id season=s.slug %}">{{ s }} </a></li>
+{% endif %}
+{% endfor %}
+</ul>
 <article id="league-{{ slug }}-player" class="news">
     <div class = "col-md-7 ml-auto mr-auto text-center">
       {% for league,games in leagues.items %}

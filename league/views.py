@@ -235,6 +235,7 @@ def fixtures(request, league, **kwargs):
 
 def player(request, player_id, **kwargs):
     player = get_object_or_404(Player, id=player_id)
+    seasons = Season.objects.order_by("end").filter(players__in = [player])
     games = {}
     if "league" in kwargs:
         league = get_object_or_404(League, slug=kwargs["league"])
@@ -243,7 +244,10 @@ def player(request, player_id, **kwargs):
             (Q(white=player_id) | Q(black=player_id)) & Q(league=league)
         ).order_by("date")
     else:
-        season = Season.objects.order_by("end").last()
+        if "season" in kwargs:
+            season = get_object_or_404(Season, slug=kwargs["season"])
+        else:
+            season = Season.objects.order_by("end").last()
 
         if player in season.players.all():
             games[season] = {}
@@ -257,7 +261,7 @@ def player(request, player_id, **kwargs):
                     games[season] = {}
                 games[season][league] = season_league_games
 
-    return render(request, "games.html", {"player": player, "games": games})
+    return render(request, "games.html", {"player": player, "games": games, "seasons" : seasons })
 
 
 def game(request, game_id):
@@ -299,7 +303,8 @@ def season(request, **kwargs):
         f = Season.objects.order_by("end").last()
     teams = Team.objects.filter(season=f)
     team_squads = {t: TeamPlayer.objects.filter(team=t).order_by("-player__rating") for t in teams}
-    fixtures = TeamFixture.objects.filter(team__in=teams)
+    fixtures = TeamFixture.objects.filter(team__in=teams).order_by('date')
+    fixtures = [ f for f in fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
     members = f.players.all().order_by("-rating")
     return render(
         request,

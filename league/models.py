@@ -265,6 +265,7 @@ class Team(models.Model):
     captain = models.ForeignKey(Player, on_delete=models.CASCADE, verbose_name=_('Team Captain'), related_name='captain', null=True, blank=True)
     league = models.CharField(max_length=200, null=True, verbose_name=_('League'))
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    description = models.CharField(max_length = 10000, blank = True, null = True)
 
     def __str__(self):
         return '%s (%s)'%(self.name, self.season)
@@ -283,6 +284,12 @@ class TeamFixture(models.Model):
     
     def __str__(self):
         return '%s v %s - %s'%(self.team.name, self.opponent, self.team.league)
+
+    def print_result(self, plain = False):
+        if not self.home_score or not self.away_score:
+            return "v"
+        else:
+            return "%i - %i"%(self.home_sore, self.away_score)
 
 
 

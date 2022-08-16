@@ -27,8 +27,9 @@ urlpatterns = [
     url(r"^tournament/(?P<league>[-\w]+)$", fixtures, name="tournament"),
     url(r"^league/(?P<league>[-\w]+)$", fixtures, name="league"),
     url(r"^game/(?P<game_id>[0-9]+)$", game, name="game"),
-    url(r"^player/(?P<player_id>[0-9]+)/(?P<league>[-\w]+)$", player, name="player"),
-    url(r"^player/(?P<player_id>[0-9]+)$", player, name="player"),
+    url(r"^player/(?P<player_id>[0-9]+)/league=(?P<league>[-\w]+)$", player, name="player"),
+    url(r"^player/(?P<player_id>[0-9]+)/season=(?P<season>[-\w]+)$", player, name="player"),
+    url(r"^player/(?P<player_id>[0-9]+)[/]$", player, name="player"),
     url(
         r"^export_league_pdf/(?P<league>[-\w]+)$",
         export_league_pdf,
