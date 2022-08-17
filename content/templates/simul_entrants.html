@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ album }}{% endblock %}
+{% block header %} 
+<!-- CSS used -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+<link type="text/css" rel="stylesheet" href="{% static 'css/lightgallery.css' %}" />
+
+<!-- lightgallery plugins -->
+<link type="text/css" rel="stylesheet" href="{% static 'css/lg-zoom.css' %}" />
+<link type="text/css" rel="stylesheet" href="{% static 'css/lg-thumbnail.css' %}" />
+
+{% endblock %}
+
+{% load i18n %}
+{% block content %}
+<h1 class="mt-4 text-align-center">Simultaneous Exhibition - 3rd September 2022 - Entrants</h1>
+
+<table>
+    <th>
+        <td> Entrant </td>
+        <td> Date </td>
+    </th>
+    
+{% for entrant in entrants %}
+
+<tr>
+    <td>
+        {{entrant.name}}
+    </td>
+    <td>
+        {{entrant.created_at.date}}
+    </td>
+
+</tr>
+
+{% endfor %}
+
+
+</table>
+
+<div class="footer">
+
+</div>
+{% endblock %}
+
+
+
+
+{% block scripts %}
+
+{% endblock %}

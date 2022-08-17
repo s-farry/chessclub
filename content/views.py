@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from .models import news, Puzzle, album, image
+from .models import news, Puzzle, album, image, simul
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -43,4 +43,8 @@ def simul_interest(request):
     else:
         form_url = request.META.get('PATH_INFO', None)
         return render(request, 'simul_interest.html', {'form' : SimulForm, 'form_url' : form_url})
+
+def simul_entrants(request):
+    entrants = simul.objects.all().order_by('created_at')
+    return render(request, 'simul_entrants.html', {'entrants' : entrants})
     
