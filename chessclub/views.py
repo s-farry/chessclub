@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from league.models import Schedule, Standings, League, Player, STANDINGS_ORDER
+from league.models import Schedule, Standings, League, Player, STANDINGS_ORDER, TeamFixture
 from content.models import news, event, Puzzle
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +13,11 @@ def index(request):
     events_objects = event.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
         :5
     ]
+    team_fixtures = TeamFixture.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+        :5
+    ]
+
+    team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
     puzzles = Puzzle.objects.filter(date=datetime.now().date())
     return render(
         request,
@@ -22,6 +27,7 @@ def index(request):
             "news": news_objects,
             "events": events_objects,
             "puzzles": puzzles,
+            "fixtures" : team_fixtures,
         },
     )
 
@@ -30,6 +36,11 @@ def preview(request):
     events_objects = event.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
         :5
     ]
+    team_fixtures = TeamFixture.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+        :15
+    ]
+
+    team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
     puzzles = Puzzle.objects.filter(date=datetime.now().date())
     return render(
         request,
@@ -39,6 +50,7 @@ def preview(request):
             "news": news_objects,
             "events": events_objects,
             "puzzles": puzzles,
+            "fixtures" : team_fixtures,
         },
     )
 

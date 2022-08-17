@@ -283,7 +283,10 @@ class TeamFixture(models.Model):
         verbose_name_plural = _('Team Fixtures')
     
     def __str__(self):
-        return '%s v %s - %s'%(self.team.name, self.opponent, self.team.league)
+        if self.home:
+            return '%s v %s'%(self.team.name, self.opponent)
+        else:
+            return '%s v %s'%(self.team.name, self.opponent)
 
     def print_result(self, plain = False):
         if not self.home_score or not self.away_score:

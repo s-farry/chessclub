@@ -79,6 +79,22 @@
                     {% endfor %}
                 </div>
             
+                <div class = "row">
+                    <div class = "header"><i class="fas fa-calendar-alt"></i> League Fixtures</div>
+                    
+                    <div class = "calendar">
+                        {% if fixtures|length == 0 %}
+                        No fixtures scheduled at the moment.
+                        {% endif %}
+                        {% for fixture in fixtures %}
+                        <div class = "calendar-event">
+                            <table class = "calendar-event mr-2">
+                                <tr><td class = "calendar-day"> {{fixture.date|date:'D'}} </td><td class="px-2"> {{fixture}}</td></tr>
+                                <tr><td class = "calendar-month"> {{fixture.date|date:'d-M'}}</td><td class="px-2">{{fixture.team.league}}</td></tr>
+                            </table>
+                        </div>
+                        {% endfor %}
+                    </div>
             </div>
 
             <div class = "row" >
