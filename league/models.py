@@ -286,7 +286,7 @@ class TeamFixture(models.Model):
         if self.home:
             return '%s v %s'%(self.team.name, self.opponent)
         else:
-            return '%s v %s'%(self.team.name, self.opponent)
+            return '%s v %s'%(self.opponent, self.team.name)
 
     def print_result(self, plain = False):
         if not self.home_score or not self.away_score:
