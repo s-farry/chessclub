@@ -37,7 +37,7 @@ def preview(request):
         :5
     ]
     team_fixtures = TeamFixture.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
-        :15
+        :5
     ]
 
     team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]

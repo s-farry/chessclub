@@ -46,10 +46,15 @@ class MyMCEField(models.CharField):
 class Player(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('First name'))
     surename = models.CharField(max_length=200, null=True, blank=True, verbose_name=_('Last name'))
+    address = models.CharField(max_length=200, null=True, blank=True, verbose_name=_('Address'))
     birth_date = models.DateField(null=True, blank=True, verbose_name=_('Date of birth'))
     image = models.ImageField(upload_to='uploads/teams/%Y/%m/%d/players/', null=True, blank=True, verbose_name=_('Player photo'))
     lichess = models.CharField(max_length=200, null = True, blank=True, verbose_name=_('Lichess ID'))
+    chesscom = models.CharField(max_length=200, null = True, blank=True, verbose_name=_('Chess.com ID'))
     ecf = models.CharField(max_length=7, null = True, blank=True, verbose_name=_('ECF Grading Ref'))
+    fide = models.CharField(max_length=7, null = True, blank=True, verbose_name=_('FIDE ID'))
+    email = models.CharField(max_length=100, null = True, blank=True, verbose_name=_('email'))
+    phone = models.CharField(max_length=20, null = True, blank=True, verbose_name=_('phone'))
     rating = models.IntegerField(null = True, blank=True, verbose_name=_('Rating'))
 
     class Meta:
