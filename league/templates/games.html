@@ -30,32 +30,43 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 <img src = "{% static 'img/lichess.png' %}" width="40px"> <a href = "https://lichess.org/@/{{player.lichess}}">{{player.lichess}}</a>
 {% endif %}
 -->
-</div>
- 
-<ul>
-{% for season,leagues in games.items %}
-{% for s in seasons %}
-{% if season.id == s.id %}
-<li>{{s}}</li>
+
+{% if active_seasons|length > 1 %}
+<div class="row justify-content-center">
+<ul class="list-inline">
+
+{% for s in active_seasons %}
+{% if selected_season.id == s.id %}
+<li class="float-left px-1 font-weight-bolder">{{s}}</li>
 {% else %}
-<li><a href = "{% url 'player' player_id=player.id season=s.slug %}">{{ s }} </a></li>
+<li class="float-left px-1"><a class="reserve-space" reserve = "{{ s }}" href = "{% url 'player' player_id=player.id season=s.slug %}">{{ s }} </a></li>
 {% endif %}
 {% endfor %}
 </ul>
+</div>
+{% endif %}
+
+</div>
+ 
+{% for s,l in games.items %}
+
 <article id="league-{{ slug }}-player" class="news">
     <div class = "col-md-7 ml-auto mr-auto text-center">
-      {% for league,games in leagues.items %}
+      {% for league,games in l.items %}
         {% if league.format == 1 %}
-          {% include 'content/game_list.html' with season=season league=league game=games%}
+          {% include 'content/game_list.html' with season=s league=league game=games%}
         {% elif league.format == 0 %}
-          {% include 'content/game_list.html' with season=season league=league game=games%}
+          {% include 'content/game_list.html' with season=s league=league game=games%}
         {% else %}
-          {% include 'content/game_list.html' with season=season league=league game=games%}
+          {% include 'content/game_list.html' with season=s league=league game=games%}
         {% endif %}
       {% endfor %}
     </div>        
 </article>
+
+
+<hr>
+
 {% endfor %}
-<hr />
 
 {% endblock %}

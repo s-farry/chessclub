@@ -235,7 +235,7 @@ def fixtures(request, league, **kwargs):
 
 def player(request, player_id, **kwargs):
     player = get_object_or_404(Player, id=player_id)
-    seasons = Season.objects.order_by("end").filter(players__in = [player])
+    active_seasons = Season.objects.order_by("end").filter(players__in = [player])
     games = {}
     if "league" in kwargs:
         league = get_object_or_404(League, slug=kwargs["league"])
@@ -249,19 +249,16 @@ def player(request, player_id, **kwargs):
         else:
             season = Season.objects.order_by("end").last()
 
-        if player in season.players.all():
-            games[season] = {}
+        games[season] = {}
         for league in season.league_set.all():
             league_pk = league.pk
             season_league_games = Schedule.objects.filter(
                 Q(white=player_id) | Q(black=player_id), league=league_pk
             ).order_by("date")
             if len(season_league_games) > 0:
-                if season not in games.keys():
-                    games[season] = {}
                 games[season][league] = season_league_games
 
-    return render(request, "games.html", {"player": player, "games": games, "seasons" : seasons })
+    return render(request, "games.html", {"player": player, "games": games, "active_seasons" : active_seasons, "selected_season" : season })
 
 
 def game(request, game_id):

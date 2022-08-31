@@ -64,22 +64,22 @@
         <th colspan="3">
           {{team.name}} ({{team.league}})</th>
         </thead>
-        <thead>
+          <thead>
           {% if team.description %}
-          <tr>
-            <td colspan="3">{{team.description}}<td>
-          </tr>
-          {% endif %}
-        <th></th>
+          <th colspan="3">
+            {{team.description}}</th>
+        </thead>
+        {% endif %}
+          <th></th>
         <th class="text-center w-60">{% trans "Player" %}</th>
         <th class="text-center w-20">Rating</th>
         </tr>
         </thead>
         <tbody>
-        {% for player in players %}
+          {% for player in players %}
               <tr>
                 <td>{{forloop.counter}}</td>           
-                <td class="text-center"><a href="{% url 'player' player.player.id %}" class="reserve-space" reserve="{{player.player}}">{{player.player}}</a> {% if team.captain == player.player %}(c){% endif %}{% if player.listed %}[L]{% endif %}</td>
+                <td class="text-center"><a href="{% url 'player' player.player.id %}" class="reserve-space" reserve="{{player.player}}">{{player.player}}{% if team.captain == player.player %}(c){% endif %}{% if player.listed %}[L]{% endif %}</a></td>
                 <td class="text-center">{{player.player.rating}}</td>
               </tr>
               {% endfor %}

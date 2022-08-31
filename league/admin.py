@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from django import forms
 from datetime import datetime
 from .utils import standings_save, standings_update
-from django.contrib.admin import DateFieldListFilter
+from django.contrib.admin import DateFieldListFilter, SimpleListFilter
 
 from django.template.defaultfilters import slugify
 
@@ -267,10 +267,45 @@ class LeagueAdmin(ModelAdmin):
         return super().get_form(request, obj, **defaults)
     
 
+class SeasonListFilter(SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'season'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'season'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        latest_season = None
+        seasons = [
+            (s.slug, s) for s in Season.objects.all().order_by('end')
+        ]
+        return seasons
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # Compare the requested value
+        # to decide how to filter the queryset.
+        if self.value():
+            return queryset.filter(id__in=[p.id for p in Season.objects.filter(slug=self.value())[0].players.all()])
+
+
+
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
-    list_filter = ('name',)
-
+    list_filter = (SeasonListFilter,)
+    ordering = ('surename',)
     actions = ['update_ratings']
     def update_ratings(self, request, queryset):
         for p in queryset:

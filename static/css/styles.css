@@ -10859,3 +10859,8 @@
   /* grid-column: 5 / span 4; */
   /* grid-row: 6 / span 3; */
 }
+
+
+.list-style-none {
+  list-style-type: none;
+}

@@ -76,8 +76,7 @@ class PlayerCustomFields(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     custom_field_order = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=200, null=True)
-
-
+    
     def __str__(self):
         return "{}".format(self.name)
 
