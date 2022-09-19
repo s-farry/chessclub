@@ -22,39 +22,6 @@ from django.conf import settings
 from django.templatetags.static import static
 import re
 
-
-class TeamRoster(ListView):
-    template_name = "roster.html"
-    model = Player
-    context_object_name = "roster"
-
-    def get_context_data(self, **kwargs):
-        context = super(TeamRoster, self).get_context_data(**kwargs)
-
-        season_name = ""
-        if self.kwargs.get("season"):
-            season = Season.objects.get(slug=self.kwargs["season"])
-        else:
-            season = Season.objects.order_by("end").last()
-        season_name = season.name
-
-        context["season"] = season
-        context["slug"] = self.kwargs.get("season")
-
-        return context
-
-    def get_queryset(self, *args, **kwargs):
-        qs = self.model.objects.all()
-        if self.kwargs.get("season"):
-            season = Season.objects.get(slug=self.kwargs["season"])
-        else:
-            season = Season.objects.order_by("end").last()
-        season_pk = season.pk
-        qs = self.model.objects.filter(seasons=season_pk).order_by("-rating")
-
-        return qs
-
-
 class StandingsFull(ListView):
     template_name = "standings.html"
     model = Standings
@@ -120,53 +87,6 @@ class ScheduleFull(ListView):
         return qs
 
 
-"""
-class PlayerSchedule(ListView):
-    template_name = 'games.html'
-    model = Schedule
-    context_object_name = 'schedule'
-    
-    def get_context_data(self, **kwargs):
-        context = super(PlayerSchedule, self).get_context_data(**kwargs)
-        if self.kwargs.get('player'):
-            player = Player.objects.get(id=self.kwargs['player'])
-            context['player'] = player
-        
-        if self.kwargs.get('league'):
-            league = League.objects.get(slug=self.kwargs['league'])
-            context['league'] = league
-        context['page_name'] = _('Schedule')      
-        
-        return context
-
-
-    def get_queryset(self, *args, **kwargs):
-        if self.kwargs.get('player') and not self.kwargs.get('league'):
-            player_pk = Player.objects.get(id=self.kwargs.get('player')).pk
-            #qs = self.model.objects.filter(Q(white=player_pk) | Q(black=player_pk)).order_by('date')
-            toReturn = {}
-            games = {}
-            league_pk = league.pk
-            league_name = league.name
-            player = Player.objects.get(id=self.kwargs.get('player'))
-            
-            if not self.kwargs.get('league'):
-                season = Season.objects.last()
-                for league in season.leagues:
-                    season_league_games = self.model.objects.filter(Q(white=player) | Q(black=player), league = league ).order_by('-date')
-                    if len(season_league_games) > 0:
-                        if season not in games.keys(): games[season] = {}
-                        games[season][league] = season_league_games
-            else:
-                league = League.objects.get(id = self.kwargs.get('league'))
-                season = league.season
-                season_league_games = self.model.objects.filter(Q(white=player) | Q(black=player), league = league ).order_by('-date')
-                games[season][league] = season_league_games
-            toReturn['player'] = player
-            toReturn['games'] = games
-        return toReturn
-
-"""
 
 # Create your views here.
 
@@ -302,11 +222,52 @@ def season(request, **kwargs):
     team_squads = {t: TeamPlayer.objects.filter(team=t).order_by("-player__rating") for t in teams}
     fixtures = TeamFixture.objects.filter(team__in=teams).order_by('date')
     fixtures = [ f for f in fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
+    team_fixtures = {t: TeamFixture.objects.filter(team=t).order_by("date") for t in teams}
     members = f.players.all().order_by("-rating")
     return render(
         request,
         "season.html",
-        {"season": f, "teams": team_squads, "fixtures": fixtures, "members": members},
+        {"season": f, "teams": team_squads, "fixtures": fixtures, "members": members, "team_fixtures" : team_fixtures },
+    )
+
+def members(request, **kwargs):
+    if "season_slug" in kwargs:
+        f = get_object_or_404(Season, slug=kwargs["season_slug"])
+    else:
+        f = Season.objects.order_by("end").last()
+    members = f.players.all().order_by("-rating")
+    return render(
+        request,
+        "roster.html",
+        {"season" : f, "members": members },
+    )
+
+def team_fixtures(request, **kwargs):
+    if "season_slug" in kwargs:
+        f = get_object_or_404(Season, slug=kwargs["season_slug"])
+    else:
+        f = Season.objects.order_by("end").last()
+    teams = Team.objects.filter(season=f)
+    fixtures = TeamFixture.objects.filter(team__in=teams).order_by('date')
+    fixtures = [ f for f in fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
+    team_fixtures = {t: TeamFixture.objects.filter(team=t).order_by("date") for t in teams}
+    return render(
+        request,
+        "team_fixtures.html",
+        {"season": f, "fixtures": fixtures, "fixtures_by_team" : team_fixtures },
+    )
+
+def team_squads(request, **kwargs):
+    if "season_slug" in kwargs:
+        f = get_object_or_404(Season, slug=kwargs["season_slug"])
+    else:
+        f = Season.objects.order_by("end").last()
+    teams = Team.objects.filter(season=f)
+    team_squads = {t: TeamPlayer.objects.filter(team=t).order_by("-player__rating") for t in teams}
+    return render(
+        request,
+        "team_squads.html",
+        {"season": f, "teams": team_squads },
     )
 
 
@@ -795,10 +756,9 @@ def export_games_view(request, admin_site):
     season = Season.objects.all().order_by('end').last()
     leagues = League.objects.filter(season=season)
     initial_leagues = leagues.filter(
-        Q(name="Wallasey Championship") | Q(name="Wallasey Premiership")
+        Q(name="Championship") | Q(name="Premiership")
     )
     form = ExportGamesForm(initial={"leagues": initial_leagues})
-    # form.fields['leagues'].queryset = leagues
 
     if not admin_site.has_change_permission(request, Schedule):
         raise PermissionDenied
@@ -817,7 +777,6 @@ def export_games_view(request, admin_site):
         "title": "Export Games",
         "has_change_permission": admin_site.has_change_permission(request, Schedule),
         "opts": opts,
-        #'errors': form.errors,
         "app_label": opts.app_label,
         "form_url": form_url,
         "form": form,
@@ -850,13 +809,18 @@ def export_games_view(request, admin_site):
         for i in range(len(players_by_league) - 1):
             players = players.union(players_by_league[i + 1])
         players = players.union(extra_players)
-        players = players
         players = players.order_by("surename", "name")
+        games_by_league = {}
+        for l in leagues:
+            games_by_league[l] = Schedule.objects.filter(league = l).filter(
+                date__range=[start, end]
+            ).union(extra_games.filter(league=l)).order_by("date")
 
-        games = Schedule.objects.filter(Q(league__in=leagues)).filter(
-            date__range=[start, end]
-        )
-        games = games.union(extra_games).order_by("date")
+        extra_leagues = set([game.league for game in extra_games if game.league not in leagues])
+
+        for l in extra_leagues:
+            games_by_league[l] = extra_games.filter(league=l).order_by("date")
+
         if request.POST.get("export_ecf_txt"):
             response = HttpResponse(content_type="text/plain")
             filename = "WallaseyChess Club Games %s-%s" % (
@@ -911,24 +875,25 @@ def export_games_view(request, admin_site):
                     response.write("#ECF CODE=%s\n" % (p.ecf))
                 response.write("#NAME=%s, %s\n" % (p.surename, p.name))
                 response.write("#CLUB CODE=7WAL\n")
-            response.write("#MATCH RESULTS=Club Championship\n")
-            for g in games:
-                if not g.white or not g.black:
-                    continue
-                if g.result not in [0, 1, 2]:
-                    continue
-                if g.white.id in players_to_exclude or g.black.id in players_to_exclude:
-                    continue
+            for league, games in games_by_league.items():
+                response.write("#MATCH RESULTS=%s\n"%(league.name))
+                for g in games:
+                    if not g.white or not g.black:
+                        continue
+                    if g.result not in [0, 1, 2]:
+                        continue
+                    if g.white.id in players_to_exclude or g.black.id in players_to_exclude:
+                        continue
 
-                response.write(
-                    "#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n"
-                    % (
-                        player_pins[g.white],
-                        player_pins[g.black],
-                        g.get_ecf_result(),
-                        g.date.strftime("%d/%m/%Y"),
+                    response.write(
+                        "#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n"
+                        % (
+                            player_pins[g.white],
+                            player_pins[g.black],
+                            g.get_ecf_result(),
+                            g.date.strftime("%d/%m/%Y"),
+                        )
                     )
-                )
             response.write("#FINISH#")
             return response
         else:
@@ -940,23 +905,24 @@ def export_games_view(request, admin_site):
             response["Content-Disposition"] = "attachment; filename={0}.txt".format(
                 filename
             )
-            response.write("#MATCH RESULTS=Club Championship\n")
-            for g in games:
-                if not g.black or not g.white:
-                    continue
-                if g.result not in [0, 1, 2]:
-                    continue
-                if g.white.id in players_to_exclude or g.black.id in players_to_exclude:
-                    continue
-                response.write(
-                    "%s %s %s %s \n"
-                    % (
-                        g.date.strftime("%d/%m/%y"),
-                        g.white,
-                        g.get_result_display(),
-                        g.black,
+            for league, games in games_by_league:
+                response.write("#MATCH RESULTS=Club Championship\n")
+                for g in games:
+                    if not g.black or not g.white:
+                        continue
+                    if g.result not in [0, 1, 2]:
+                        continue
+                    if g.white.id in players_to_exclude or g.black.id in players_to_exclude:
+                        continue
+                    response.write(
+                        "%s %s %s %s \n"
+                        % (
+                            g.date.strftime("%d/%m/%y"),
+                            g.white,
+                            g.get_result_display(),
+                            g.black,
+                        )
                     )
-                )
 
         return response
 
