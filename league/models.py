@@ -296,7 +296,7 @@ class TeamFixture(models.Model):
         if not self.home_score or not self.away_score:
             return "v"
         else:
-            return "%i - %i"%(self.home_sore, self.away_score)
+            return "%i - %i"%(self.home_score, self.away_score)
 
 
 

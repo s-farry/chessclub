@@ -9,6 +9,19 @@ STATUS_CHOICES = (
     ('w', 'Withdrawn'),
 )
 
+class htmlobject(models.Model):
+    class Meta:
+        verbose_name_plural = "HTML Objects"
+        verbose_name = "HTML Object"
+
+    title = models.CharField(max_length = 200)
+    body = models.TextField(max_length = 10000)
+
+    def name(self):
+        return "%s" % (self.title)
+    def __str__(self):
+        return "%s" % (self.title)
+
 class Puzzle(models.Model):
     pgn  = models.TextField(null = True, blank=True)
     date = models.DateField(null = True, blank = True)
