@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_name }}{% endblock %}
+
+{% load i18n %}
+{% load league_tags %}
+{% block content %}
+<div class="text-center">
+<h1 class="mt-4">Team Squads</h1> <h2>{{season.name}}</h2>
+</div>
+
+
+
+<div class = "ml-auto mr-auto mt-2" id="tab-teams">
+
+  {% for team,players in teams.items %}
+  <div id = "team-{{forloop.counter0}}">
+    <table class="teams-table ml-auto mr-auto table-striped table-bordered table-hover align-items-center league-table">
+      <thead>
+        <th colspan="3" class="text-center">
+          {{team.name}} ({{team.league}})</th>
+        </thead>
+          <thead>
+          {% if team.description %}
+          <th colspan="3">
+            {{team.description}}</th>
+        </thead>
+        {% endif %}
+          <th></th>
+        <th class="text-center w-60">{% trans "Player" %}</th>
+        <th class="text-center w-20">Rating</th>
+        </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+              <tr>
+                <td>{{forloop.counter}}</td>           
+                <td class="text-center"><a href="{% url 'player' player.player.id %}" class="reserve-space" reserve="{{player.player}}">{{player.player}}{% if team.captain == player.player %}(c){% endif %}{% if player.listed %}[L]{% endif %}</a></td>
+                <td class="text-center">{{player.player.rating}}</td>
+              </tr>
+              {% endfor %}
+        </tbody>
+        </table>
+          </div>
+  {% endfor %}
+  
+
+
+</div>
+{% endblock %}

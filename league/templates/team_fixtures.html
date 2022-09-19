@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_name }}{% endblock %}
+
+{% load i18n %}
+{% load league_tags %}
+{% load user_agents %}
+
+{% block content %}
+<div class="text-center">
+<h1 class="mt-4">Team Fixtures</h1> <h2>{{season.name}}</h2>
+
+</div>
+
+<!--
+<div class='tab'>
+    {% for team,team_fixtures in fixtures_by_team.items %}
+    <button class="tablinks" onclick="openTab(event,'{{team.name}}')" id="button-{{team.name}}"><i class="fas fa-table"></i> {{team.name}}</button>
+    {% endfor %}
+</div>
+-->
+<div class="text-center">
+<select id ="ddl" name="ddl" onchange="openTab(event,this.value);" class="bg-black border-none text-white">
+  <option value='all'>All Fixtures</option>
+  {% for team,team_fixtures in fixtures_by_team.items %}
+  <option value='{{team.name}}'>{{team.name}}</option>
+  {% endfor %}
+</select>
+</div>
+<div class = "col-md-8 ml-auto mr-auto d-none tabcontent mt-2" id="tab-all">
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+      <tr>
+        <th class="text-center w-20"></th>
+        <th class="text-center w-20"><i class="fas fa-chess"></i></th>
+        <th class="text-center w-10">{% trans "Result" %}</th>
+        <th class="text-center w-20"><i class="fas fa-chess"></i></th>
+        {% if not request|is_mobile %}
+        <th class="text-center w-20">League</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for match in fixtures %}
+    <tr>           
+      <td class="text-center">{{match.date.date}}</td>
+      {% if match.home %}
+      <td class="text-center">{{match.team.name}}</td>
+        <td class="text-center">{{match.print_result|safe}}</td>
+        <td class="text-center">{{match.opponent}}</td>
+        {% else %}
+
+        <td class="text-center">{{match.opponent}}</td>
+        <td class="text-center">{{match.print_result|safe}}</td>
+        <td class="text-center">{{match.team.name}}</td>
+        {% endif %}
+        {% if not request|is_mobile %}
+      <td class="text-center">{{match.team.league}}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+           </tbody>
+    </table>
+</div>
+
+{% for team,team_fixtures in fixtures_by_team.items %}
+<div class = "col-md-8 ml-auto mr-auto d-none tabcontent mt-2" id="tab-{{team.name}}">
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+      <tr>
+        <th class="text-center w-20"></th>
+        <th class="text-center w-20"><i class="fas fa-chess"></i></th>
+        <th class="text-center w-10">{% trans "Result" %}</th>
+        <th class="text-center w-20"><i class="fas fa-chess"></i></th>
+        
+        {% if not request|is_mobile %}
+        <th class="text-center w-20">League</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for match in team_fixtures %}
+    <tr>           
+      <td class="text-center">{{match.date.date}}</td>
+      {% if match.home %}
+      <td class="text-center">{{match.team.name}}</td>
+        <td class="text-center">{{match.print_result|safe}}</td>
+        <td class="text-center">{{match.opponent}}</td>
+        {% else %}
+
+        <td class="text-center">{{match.opponent}}</td>
+        <td class="text-center">{{match.print_result|safe}}</td>
+        <td class="text-center">{{match.team.name}}</td>
+        {% endif %}
+        {% if not request|is_mobile %}
+      <td class="text-center">{{match.team.league}}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+           </tbody>
+    </table>
+</div>
+{% endfor %}
+
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+
+function openTab(e, s){
+  console.log(e,s);
+  var tab    = document.getElementById("tab-"+s);
+  // Get all elements with class="tablinks" and remove the class "active"
+  var tablinks = document.getElementsByClassName("tablinks");
+  var tabs     = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].classList.remove("active")  }
+  for (i = 0; i < tabs.length; i++) {
+    tabs[i].classList.add("d-none")  }
+  tab.classList.remove("d-none");
+}
+
+
+window.onload = function(e){
+  openTab(e, "all");
+  let element = document.getElementById("ddl");
+  element.value = "all";
+}
+</script>
+{% endblock %}
