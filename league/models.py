@@ -34,6 +34,13 @@ TOURNAMENT_FORMATS = (
 POINTS = (
     (0, 0), (1,0.5), (2,1), (3, 2), (4,3),
 )
+TEAM_SCORES = (
+    (0, 0), (1,0.5), (2,1), (3, 1.5),
+    (4, 2), (5,2.5), (6,3), (7, 3.5),
+    (8, 4), (9,4.5), (10,5), (11, 5.5),
+    (12, 6), (13,6.5), (14,7), (15, 7.5),
+    (16, 8), (17,8.5), (18,9), (19, 9.5), (20, 10),
+)
 
 from tinymce.widgets import TinyMCE
 
@@ -114,15 +121,6 @@ class League(models.Model):
     draw_points = models.IntegerField(null=True, blank=False, default=1, verbose_name=_('Points for draw'), choices = (POINTS))
     format = models.IntegerField(default = 0, choices=(TOURNAMENT_FORMATS))
 
-
-    '''
-    def formfield(self, **kwargs):
-        # This is a fairly standard way to set up some defaults
-        # while letting the caller override them.
-        defaults = {'description': MyMCEField}
-        defaults.update(kwargs)
-        return super().formfield(**defaults)
-    '''
     class Meta:
         verbose_name = _('League')
         verbose_name_plural = _('Leagues')
@@ -278,8 +276,8 @@ class TeamFixture(models.Model):
     date = models.DateTimeField(verbose_name=_('Date'),blank=True, null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_('Team'), null = True, blank = True)
     opponent = models.CharField(max_length=200, null=True, verbose_name=_('Opponent'))
-    home_score = models.IntegerField(null = True, blank = True)
-    away_score = models.IntegerField(null = True, blank = True)
+    home_score = models.IntegerField(null = True, blank = True, choices = TEAM_SCORES)
+    away_score = models.IntegerField(null = True, blank = True, choices=TEAM_SCORES)
     home = models.BooleanField()
 
     class Meta:
@@ -296,7 +294,22 @@ class TeamFixture(models.Model):
         if not self.home_score or not self.away_score:
             return "v"
         else:
-            return "%i - %i"%(self.home_score, self.away_score)
+            home_score = self.home_score / 2.0
+            away_score = self.away_score / 2.0
+            if home_score == 0.5:
+                home_display_score = "&#189;"
+            elif home_score%1 == 0.5:
+                home_display_score = "%i&#189;"%(math.floor(home_score))
+            else:
+                home_display_score = "%i"%(math.floor(home_score))
+            if away_score == 0.5:
+                away_display_score = "&#189;"
+            elif away_score%1 == 0.5:
+                away_display_score = "%i&#189;"%(math.floor(away_score))
+            else:
+                away_display_score = "%i"%(math.floor(away_score))
+
+            return "%s - %s"%(home_display_score, away_display_score)
 
 
 
