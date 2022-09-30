@@ -905,7 +905,7 @@ def export_games_view(request, admin_site):
             response["Content-Disposition"] = "attachment; filename={0}.txt".format(
                 filename
             )
-            for league, games in games_by_league:
+            for league, games in games_by_league.items():
                 response.write("#MATCH RESULTS=Club Championship\n")
                 for g in games:
                     if not g.black or not g.white:
