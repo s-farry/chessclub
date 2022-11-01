@@ -37,18 +37,19 @@ class ExportGamesForm(forms.Form):
     now = datetime.today()
     year     = now.year
     month   = now.month
-    if now.day < 10:
+    if now.day < 5:
         if month == 1:
             year = year - 1
             month = 12
         else:
             month = month - 1
 
-    month_days = monthrange(year, month)
-    start = forms.DateTimeField(label='Start', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = 1))
-    end   = forms.DateTimeField(label='End', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = month_days[1]))
-    
     season = Season.objects.order_by('end').last()
+
+    month_days = monthrange(year, month)
+    start = forms.DateTimeField(label='Start', widget = widgets.AdminSplitDateTime, initial = datetime.combine(season.start, datetime.min.time()))
+    end   = forms.DateTimeField(label='End', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = month_days[1], hour=23, minute=59))
+    
     leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.filter(season=season),  widget = FilteredSelectMultiple('Leagues',False,))
 
     games      = forms.ModelMultipleChoiceField( required = False, label = "Extra Games", queryset=Schedule.objects.filter(Q(league__season=season) | (Q(date__isnull=False) & Q(date__gte=season.start) & Q(date__lte=season.end))).order_by('date'))

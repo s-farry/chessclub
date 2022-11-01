@@ -625,7 +625,7 @@ def make_table(league):
         c.set_height(0.03)
 
 
-    ax2.text(0.5, 0.1, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
+    ax2.text(0.5, 0.05, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
 
     im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
     ax1.imshow(im)
