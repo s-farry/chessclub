@@ -32,7 +32,10 @@
       var replacement = prefix + '-' + ndx;
       if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
       if (el.id) el.id = el.id.replace(id_regex, replacement);
-      if (el.name) el.name = el.name.replace(id_regex, replacement);
+      if (el.name) {
+        el.name = el.name.replace(id_regex, replacement);
+
+    }
   }
   function cloneMore(selector, prefix) {
       var newElement = $(selector).clone(true);
@@ -55,11 +58,13 @@
       total++;
       $('#id_' + prefix + '-TOTAL_FORMS').val(total);
       $(selector).after(newElement);
+      /*
       var conditionRow = $('.form-row:not(:last)');
       conditionRow.find('.btn.add-form-row')
       .removeClass('btn-success').addClass('btn-danger')
       .removeClass('add-form-row').addClass('remove-form-row')
       .html('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
+      */
       return false;
   }
   function deleteForm(prefix, btn) {
@@ -103,7 +108,7 @@
   <form class="form-horizontal" method="POST" action="{{ form_url }}">
     {% csrf_token %}
 
-    <div class="row form-row spacer">
+    <div class="row spacer">
       <div class="col-4">
         {{ clubnight_form.as_p }}
       </div>
@@ -121,7 +126,7 @@
                 {{form.result}}
                 {{form.league}}
                 <div class="input-group-append">
-                    <button class="btn btn-success add-form-row">+</button>
+                    <button class="btn btn-danger remove-form-row">-</button>
                 </div>
             </div>
         </div>
@@ -129,6 +134,7 @@
     {% endfor %}
     <div class="row spacer">
         <div class="col-4 offset-2">
+            <button class="btn btn-success add-form-row">+</button>
             <button type="submit" class="btn btn-block btn-primary">Create</button>
         </div>
     </div>
