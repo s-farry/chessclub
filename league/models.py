@@ -200,7 +200,7 @@ class Schedule(models.Model):
                 elif b == '--+':
                     return ('&#65293;','&#65291;')
                 elif b == '+--':
-                    return ('&#65291;','&65293;')
+                    return ('&#65291;','&#65293;')
                 else:
                     return (b,)
 
