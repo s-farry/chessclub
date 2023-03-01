@@ -9,8 +9,12 @@ from datetime import datetime
 from .forms import SimulForm
 from django.core.mail import send_mail
 
-def latest(request):
-    return render(request, 'news.html', {'news' : news.objects.order_by("-published_date")})
+def latest(request, **kwargs):
+    if 'article' in kwargs.keys():
+        article = get_object_or_404(news, id=kwargs['article'])
+        return render(request, 'news.html', {'news' : [ article ] })
+    else:
+        return render(request, 'news.html', {'news' : news.objects.order_by("-published_date")})
 def details(request):
     return render(request, 'details.html')
 def puzzles(request):

@@ -16,6 +16,7 @@ from django.db.models import Q
 
 
 import numpy as np
+
 # for creating online tournaments
 
 def get_client():
@@ -596,7 +597,11 @@ import matplotlib.image as image
 import os
 from matplotlib import pyplot as plt
 from matplotlib import table
+import matplotlib.font_manager
 matplotlib.use("pdf") ## Include this line to make PDF output
+
+#matplotlib.rcParams['font.family'] = 'sans-serif'
+matplotlib.rcParams['font.sans-serif'] = ['Tahoma']
 
 from django.templatetags.static import static
 from django.conf import settings
@@ -610,7 +615,7 @@ def make_table(league):
     standings = Standings.objects.filter(league = league)
     ax2.text(0.5, 1.02, league, horizontalalignment='center', verticalalignment='center', fontsize=20.0)
     table = ax2.table(
-        cellText = [ [s.player, s.matches, s.win, s.draws, s.lost, s.points ] for s in standings],
+        cellText = [ [s.player, s.matches, s.win, s.draws, s.lost, s.total_points() ] for s in standings],
         colLabels = ['Name', 'P', 'W', 'D', 'L', 'Pts'],
         colWidths = [0.4, 0.12, 0.12, 0.12, 0.12, 0.12],
         cellLoc ='center',  
@@ -625,7 +630,7 @@ def make_table(league):
         c.set_height(0.03)
 
 
-    ax2.text(0.5, 0.05, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
+    ax2.text(0.5, 0.0, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
 
     im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
     ax1.imshow(im)
@@ -676,8 +681,13 @@ def mergecells(table, idx0, idx1):
     txts[1].set_visible(False)
 
 def make_crosstable(league):
+    '''
+    Make the cross table for a given league
+
+    return matplotlib.figure
+    '''
     fig, (ax1, ax2) = plt.subplots(figsize=(11.69, 8.27), nrows=2, gridspec_kw={'height_ratios': [1, 19], 'hspace' : 0.15})
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.95, bottom=0.05)
+    plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.05)
     ax1.set_axis_off()
     ax2.set_axis_off()
     standings = Standings.objects.filter(league=league).order_by("position")
@@ -725,7 +735,6 @@ def make_crosstable(league):
         colWidths = [0.2] + len(standings) * [ (1.0 - 0.2 - 0.05*5)/len(standings) ] + ([ 0.05]*5),
         cellColours = cellColours,
         cellLoc ='center',  
-        #cellColours = [ [c for i in range(6)] for j,c in zip(range(len(standings)),cycle([(1,1,1,1.0), (0,0,0,0.1)])) ],
         loc ='upper left',
         rowLabels = rowLabels,
     )
@@ -742,26 +751,39 @@ def make_crosstable(league):
         font_size = min(14, int(280.0/len(standings)))
         text_size = len(crosstable._cells[cell].get_text().get_text())
         # reduce font size if we really have a lot of text
-        if text_size > 15:
+        if text_size > 25:
             font_size = 15.0 / text_size * font_size
 
 
         crosstable._cells[cell].set_fontsize(font_size)
-    '''
-    
-    for i in range(len(standings)):
-        for j in (-1,0):
-            mergecells(crosstable, (i*2+1,j), (i*2+2,j))
-        for j in range(6):
-            mergecells(crosstable, (i*2+1,len(standings)+j), (i*2+2, len(standings)+j))
-        for j in range(len(standings)):
-            hide_edges(crosstable, (i*2+1, j+1), (i*2+2,j+1))
-    '''
-    #ax2.add_table(crosstable)
-    ax2.text(0.5, 0.01, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
+
+    ax2.text(0.5, 0.0, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
 
     im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
     ax1.imshow(im)
 
     return fig
 
+
+def is_active_season(player_id, season_id):
+    '''
+    Was the player active in the given season
+    Check if they are listed in the season
+    and if they played any games
+    '''
+    player = Player.objects.get(id=player_id)
+    season = Season.objects.get(id=season_id)
+    listed_seasons = Season.objects.order_by("end").filter(players__in = [player])
+    if season not in listed_seasons:
+        return False
+
+    leagues = League.objects.filter(season__in=[season])
+
+    for league in leagues:
+        games = Schedule.objects.filter(
+            (Q(white=player_id) | Q(black=player_id)) & Q(league=league)
+        )
+        if len(games) > 0 :
+            return True
+
+    return False

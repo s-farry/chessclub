@@ -22,6 +22,8 @@ from django.conf import settings
 from django.templatetags.static import static
 import re
 
+from .utils import is_active_season
+
 class StandingsFull(ListView):
     template_name = "standings.html"
     model = Standings
@@ -155,7 +157,8 @@ def fixtures(request, league, **kwargs):
 
 def player(request, player_id, **kwargs):
     player = get_object_or_404(Player, id=player_id)
-    active_seasons = Season.objects.order_by("end").filter(players__in = [player])
+    active_seasons = [ s for s in Season.objects.order_by("end").filter(players__in = [player]) if is_active_season(player_id, s.id)  ]
+    
     games = {}
     if "league" in kwargs:
         league = get_object_or_404(League, slug=kwargs["league"])

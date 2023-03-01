@@ -31,24 +31,32 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 {% endif %}
 -->
 
-{% if active_seasons|length > 1 %}
-<div class="row justify-content-center">
-<ul class="list-inline">
-
-{% for s in active_seasons %}
-{% if selected_season.id == s.id %}
-<li class="float-left px-1 font-weight-bolder">{{s}}</li>
-{% else %}
-<li class="float-left px-1"><a class="reserve-space" reserve = "{{ s }}" href = "{% url 'player' player_id=player.id season=s.slug %}">{{ s }} </a></li>
-{% endif %}
-{% endfor %}
-</ul>
-</div>
-{% endif %}
 
 </div>
  
+<hr>
+
 {% for s,l in games.items %}
+
+
+
+{% if active_seasons|length > 1 %}
+
+
+<div class="justify-content-center d-flex">
+
+  {% for s in active_seasons %}
+  
+  {% if selected_season.id == s.id %}
+  <button class="tablink bg-black"><a class="reserve-space nav-link" reserve = "  {{ s }}  ">{{ s }} </a></button>
+  {% else %}
+  <button class="tablink" onclick="location.href='{% url 'player' player_id=player.id season=s.slug %}'">{{ s }}</button>
+  {% endif %}
+  {% endfor %}
+  </div>
+{% endif %}
+
+
 
 <article id="league-{{ slug }}-player" class="news">
     <div class = "col-md-7 ml-auto mr-auto text-center">
@@ -66,6 +74,9 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 
 
 <hr>
+
+
+
 
 {% endfor %}
 

@@ -8,24 +8,40 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
+
+{% if news|length == 1 %}
+
+<h1 class="display-5 fst-italic mt-4">{{news.0.title}}</h1>
+<div class="mb-4 d-flex" id="{{n.id}}">
+  <div class="{% if news.0.image %}col-md-7 {% else %} col-md-12 {% endif %} px-0 clearfix">
+    <div class="mb-1">{{ news.0.published_date.date }}</div>
+    <p class="lead my-3">{{ news.0.text|safe}}</p>
+  </div>
+  
+  {% if news.0.image %}
+  <div class="col-md-5 px-0 clearfix">
+      <img class="mw-100" src="{{ news.0.image.url }}">
+  </div>
+  {% endif %}
+
+</div>
+{% else %}
+
+
 <h1 class="mt-4">News</h1>
 <hr>
 {% for n in news %}
-<div class = "news-item" id="{{n.id}}">
-        <div class = "news-header d-flex"><div class="mr-auto">{{n.title}}</div><div class="small">{{n.published_date.date}}</div></div>
-<div class = "news-body clearfix">
-{% if n.image %}
-<img src="{{n.image.url}}">
-{% endif %}
-{{n.text|safe}}
-</div>
-<br>
 
-<div class = "news-footer">
-    Published by {{n.author.first_name}} {{n.author.last_name}}
+
+<div class="d-flex" id="{{n.id}}">
+      <h2 class="fst-italic"><a href="{% url 'news' n.id %}">{{n.title}}</a></h2>
+      <span class="ml-auto">{{ n.published_date.date }}</span>
+
 </div>
-</div>
-<hr>
+
+
+
 {% endfor %}
+{% endif %}
 {% endblock %}
 }

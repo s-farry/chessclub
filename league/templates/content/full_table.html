@@ -31,7 +31,7 @@
     {% for player in standings %}
         <tr>
             <td>{{player.position}}</td>
-            <td><a href="{% url 'player' player.player.id %}" class="reserve-space" reserve="{{player.player}}">{{player.player}}</a></td>
+            <td><a href="{% url 'player' player.player.id league.season.slug %}" class="reserve-space" reserve="{{player.player}}">{{player.player}}</a></td>
             {% if not request|is_mobile %}
             <td class="text-center">{% if player.rating %} {{player.rating}} {% else %} - {% endif %}</td>
             {% endif %}

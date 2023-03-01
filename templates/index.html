@@ -24,35 +24,56 @@
         <div class = "col mr-3 mt-3">
             <div class = "row">
                 <div class = "header mb-3"><i class="fas fa-newspaper"></i> Latest News</div>
-                {% for n in news %}
-                {% if forloop.counter < 2 %}
-                    <div class = "news-item">
-                        <div class = "news-header"><div class="mr-auto">{{n.title}}</div><div class="small">{{n.published_date.date}}</div></div>
-                        <div class = "news-body cleafix">
-                            {% if n.image %}
-                            <img src="{{ n.image.url }}">
-                            {% endif %}
-                            {{ n.text|safe }}
-                        </div>
-                        <div class = "news-footer">
-                            Published by {{n.author.first_name}} {{n.author.last_name}}
-                        </div>
-                    </div>
-                {% elif forloop.counter < 6 %}
-                    <div class = "headline-item">
-                        <div class = "headline-header"><div class="mr-auto">{{n.title}}</div><div class="small">{{n.published_date.date}}</div></div>
-                        {% if n.image %}
-                        <img src="{{ n.image.url }}">
-                        {% endif %}
-                        {{ n.text|safe|truncatewords:"50" }}<a href="{% url 'news' %}#{{n.id}}">read more</a>
 
-                        <div class = "headline-footer">
-                            Published by {{n.author.first_name}} {{n.author.last_name}}
-                        </div>
-                    </div>
-                {% endif %}
-                {% endfor %}
-            </div>
+
+  <div class="p-4 p-md-5 mb-4 text-white rounded bg-black d-flex">
+    <div class="{% if n.image %}col-md-6 {% else %} col-md-12 {% endif %}">
+      <h1 class="display-5 fst-italic">{{news.0.title}}</h1>
+      <div class="mb-1">{{ news.0.published_date.date }}</div>
+      <p class="lead my-3">
+        {{ news.0.text|safe |truncatewords:"100"}}</p>
+      <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" class="stretched-link">read more</a></p>
+      {% if n.image %}
+      <div class="col-md-6 px-0 clearfix">
+          <img class="mw-100" src="{{ n.image.url }}">
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row mb-2">
+      <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <h4 class="mb-0">{{ news.1.title }}</h4>
+          <div class="mb-1 text-muted">{{ news.1.published_date.date }}</div>
+          <p class="card-text mb-auto">{{ news.1.text | safe|truncatewords:"50" }}</p>
+          <a href="{% url 'news' news.1.id %}" class="stretched-link">read more</a>
+        </div>
+        {% if news.1.image %}
+        <div class="col-auto d-none d-lg-block">
+            <img src="{{ news.1.image.url }}">
+        </div>
+        {% endif %} 
+    </div>
+      <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <h4 class="mb-0">{{ news.2.title }}</h4>
+          <div class="mb-1 text-muted">{{ news.2.published_date.date }}</div>
+          <p class="card-text mb-auto">{{ news.2.text | safe|truncatewords:"50" }}</p>
+          <a href="{% url 'news' news.2.id %}" class="stretched-link">read more</a>
+        </div>
+        
+        {% if news.2.image %}
+        <!--
+        <div class="col-auto d-none d-lg-block">
+            <img src="{{ news.2.image.url }}">
+        </div>
+    -->
+        {% endif %}
+      </div>
+    </div>
+  
+    </div>
 
             <div class = "row">
                 <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>
@@ -80,11 +101,12 @@
                     </div>
                     {% endfor %}
                 </div>
-            
-                <div class = "row">
-                    <div class = "header"><i class="fas fa-calendar-alt"></i> League Fixtures</div>
+            </div>
+            <!--
+            <div class = "row">
+                <div class = "header"><i class="fas fa-calendar-alt"></i> League Fixtures</div>
                     
-                    <div class = "calendar">
+                <div class = "calendar">
                         {% if fixtures|length == 0 %}
                         No fixtures scheduled at the moment.
                         {% endif %}
@@ -96,20 +118,18 @@
                             </table>
                         </div>
                         {% endfor %}
-                    </div>
+                </div>
             </div>
-
-            <div class = "row" >
+        -->
 
             <div class="row">
-                <div class = "header mb-3"><i class="fab fa-twitter"></i> @WallaseyChess</div>
-                    <div class = "news-body">
+                <div class = "header mb-3"><i fpricingffclass="fab fa-twitter"></i> @WallaseyChess</div>
+                    <div class = "w-100">
                         <a class="twitter-timeline" data-tweet-limit="3" href="https://twitter.com/WallaseyChess?ref_src=twsrc%5Etfw"></a>
                         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
 
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

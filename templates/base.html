@@ -14,7 +14,7 @@
         <meta http-equiv="Cache-control" content="no-cache">
         <meta name="language" content="English">
         <title>Wallasey Chess Club</title>
-        <link href="{% static 'css/styles.css' %}?v=1.8" rel="stylesheet" />
+        <link href="{% static 'css/styles.css' %}?v=1.9" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
         <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
@@ -43,10 +43,13 @@
     <body class="sb-nav-fixed">
         <div class = "sb-topnav bg-black py-3">
             <img class = "navbar-logo" src = "{% static 'img/wcc_logo.png' %}">
-            <nav class = "navbar navbar-expand navbar-dark">
-                <ul class="navbar-nav">
+            <nav class = "navbar navbar-expand navbar-dark overflow-y-visible">
+                <ul class="navbar-nav navbar-menu">
                     <li><a class="nav-link reserve-space" href="{% url 'index' %}" reserve = "CH Home" alt="Home"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i>&nbsp;Home</div></a></li>
                     <li><a class="nav-link reserve-space" href="{% url 'news' %}" reserve = "CH News" alt="News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i>&nbsp;News</div></a></li>
+                    <li><a class="nav-link reserve-space" href="{% url 'index' %}" reserve = "CH Home" alt="Home"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i>&nbsp;Home</div></a></li>
+                    <li><a class="nav-link reserve-space" href="{% url 'news' %}" reserve = "CH News" alt="News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i>&nbsp;News</div></a></li>
+
                     <li><a class="nav-link reserve-space" href="{% url 'details' %}" reserve="CH Details" alt="Details">
                         <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i> &nbsp;Details</div></a></li>
                     <li class = "dropdown"><a class="nav-link reserve-space" id="tournamentDropDown", href="{% url 'tournament'%}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH Tournaments DD"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i> <span class="dropdown-toggle">&nbsp;Tournaments</span></div>
@@ -63,7 +66,7 @@
                         <div class="dropdown-menu dropdown-menu-right bg-black" aria-labelledby="seasonDropdown">
                             <a class="dropdown-item reserve-space" href="{% url 'members' %}" title="Members">Members</a>
                             <a class="dropdown-item reserve-space" href="{% url 'team_squads' %}" title="Team Squads">Team Squads</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'team_fixtures' %}" title="Team Fixtures">Team Fixtures</a>
+                            <!--<a class="dropdown-item reserve-space" href="{% url 'team_fixtures' %}" title="Team Fixtures">Team Fixtures</a>-->
                         </div>
                     </a></li>
                 </ul>
@@ -91,12 +94,6 @@
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Wallasey Chess Club 2022</div>
-                            <div>
-                                <!--<a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                                -->
-                            </div>
                         </div>
                     </div>
                 </footer>
