@@ -31,11 +31,11 @@
            <tbody>
         {% for player in standings %}
             {% if league.promotion and forloop.counter == league.promotion %}
-            <tr class="border-bottom-dashed">
+            <tr class="border-bottom-solid">
             {% elif league.playoffs and forloop.counter == league.playoffs|add:league.promotion %}
             <tr class="border-bottom-dashed">
             {% elif league.relegation and forloop.counter == standings|length|add:league.get_minus_relegation %}
-            <tr class="border-bottom-dashed">
+            <tr class="border-bottom-solid">
             {% else %}
             <tr>
             {% endif %}

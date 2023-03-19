@@ -49,12 +49,7 @@
           <p class="card-text mb-auto">{{ news.1.text | safe|truncatewords:"50" }}</p>
           <a href="{% url 'news' news.1.id %}" class="stretched-link">read more</a>
         </div>
-        {% if news.1.image %}
-        <div class="col-auto d-none d-lg-block">
-            <img src="{{ news.1.image.url }}">
-        </div>
-        {% endif %} 
-    </div>
+            </div>
       <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
           <h4 class="mb-0">{{ news.2.title }}</h4>
@@ -63,13 +58,6 @@
           <a href="{% url 'news' news.2.id %}" class="stretched-link">read more</a>
         </div>
         
-        {% if news.2.image %}
-        <!--
-        <div class="col-auto d-none d-lg-block">
-            <img src="{{ news.2.image.url }}">
-        </div>
-    -->
-        {% endif %}
       </div>
     </div>
   

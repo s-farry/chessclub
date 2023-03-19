@@ -11718,3 +11718,10 @@
   border-bottom-width:2px;
   border-bottom-color:#555;
 }
+
+
+.border-bottom-solid{
+  border-bottom-style:solid;
+  border-bottom-width:2px;
+  border-bottom-color:#555;
+}
