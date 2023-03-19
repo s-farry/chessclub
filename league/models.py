@@ -212,6 +212,11 @@ class League(models.Model):
     name = models.CharField(max_length=200, null=False, verbose_name=_("Name"))
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
     description = models.CharField(max_length=10000, blank=True, null=True)
+
+    promotion = models.IntegerField(blank=True, null=True)
+    playoffs  = models.IntegerField(blank=True, null=True)
+    relegation = models.IntegerField(blank=True, null=True)
+
     slug = models.SlugField(unique=True, null=True, verbose_name=_("Slug"))
     players = models.ManyToManyField(
         Player, blank=True, related_name="players", verbose_name=_("Players")
@@ -276,6 +281,9 @@ class League(models.Model):
     def includes_half_points(self):
         if self.win_points == 1 or self.lost_points == 1 or self.draw_points == 1:
             return True
+        
+    def get_minus_relegation(self):
+        return -self.relegation if self.relegation else None
 
 
 class Schedule(models.Model):
@@ -514,7 +522,7 @@ class Standings(models.Model):
         verbose_name=_("Team"),
     )
     position = models.IntegerField(
-        null=True, blank=True, default=1, verbose_name=_("Position")
+        null=True, blank=True, verbose_name=_("Position")
     )
     matches = models.IntegerField(
         null=True, blank=True, default=0, verbose_name=_("Matches")

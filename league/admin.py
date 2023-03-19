@@ -82,7 +82,19 @@ class ScheduleInline(admin.TabularInline):
                         players += [ g.black.pk]
                 kwargs["queryset"] = Player.objects.filter(pk__in = players)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
+
+    def save_related(self, request, form, formset, change):
+        print("saving related 2")
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if not change and (not instance.white_rating or not instance.black_rating):
+                if instance.white:
+                    instance.white_rating = instance.white.rating
+                if instance.black:
+                  instance.black_rating = instance.black.rating
+            # Do something with `instance`
+            instance.save()
+        formset.save_m2m()
 
 class TeamFixtureInline(admin.TabularInline):
     model = TeamFixture
@@ -129,12 +141,71 @@ from matplotlib.backends.backend_pdf import PdfPages
 from django.http import HttpResponse
 from io import BytesIO
 
+class SeasonLeagueFilter(SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'season'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'season'
+
+
+    def choices(self, changelist):
+        choices = super().choices(changelist)
+        next(choices)
+        return choices
+    
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        seasons = Season.objects.all().order_by('end')
+        lookup_items = [
+            #('all', 'All' ),
+        ]
+        if len(seasons) > 0:
+            lookup_items += [
+                (None, seasons.last() )
+            ]
+            lookup_items += [
+                (s.slug, s) for s in Season.objects.all().order_by('-end') if s != seasons.last()
+            ]
+
+        return lookup_items
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # Compare the requested value
+        # to decide how to filter the queryset.
+
+        seasons = Season.objects.all().order_by('end')
+        if self.value():
+            season = Season.objects.filter(slug=self.value())[0]
+            return queryset.filter(id__in=[p.id for p in League.objects.filter(season=season)])
+        elif len(seasons) > 0:
+            return queryset.filter(id__in=[p.id for p in League.objects.filter(season=seasons.last())])
+        else:
+            return queryset
+    
+
+
+
 class LeagueAdmin(ModelAdmin):
     change_form_template = 'change_form.html'
     manage_view_template = 'manage_form.html'
     create_round_template = 'create_round.html'
     create_round_robin_template = 'create_round_robin.html'
     filter_horizontal = ('players',)
+
+    list_filter = (SeasonLeagueFilter,)
 
     form = LeagueAdminForm
     inlines = [
@@ -266,15 +337,35 @@ class LeagueAdmin(ModelAdmin):
         defaults.update(kwargs)
         return super().get_form(request, obj, **defaults)
     
+    def save_related(self, request, form, formsets, change):
+        for formset in formsets:
+            if formset.model == Schedule:
+                instances = formset.save(commit=False)
+                for instance in instances:
+                    if instance.pk: continue
 
-class SeasonListFilter(SimpleListFilter):
+                    if (not instance.white_rating or not instance.black_rating):
+                        if instance.white:
+                            instance.white_rating = instance.white.rating
+                        if instance.black:
+                            instance.black_rating = instance.black.rating
+                    instance.save()
+
+        super(LeagueAdmin, self).save_related(request, form, formsets, change)
+
+class SeasonPlayersFilter(SimpleListFilter):
     # Human-readable title which will be displayed in the
     # right admin sidebar just above the filter options.
-    title = 'season'
+    title = 'Season'
 
     # Parameter for the filter that will be used in the URL query.
     parameter_name = 'season'
 
+    def choices(self, changelist):
+        choices = super().choices(changelist)
+        next(choices)
+        return choices
+    
     def lookups(self, request, model_admin):
         """
         Returns a list of tuples. The first element in each
@@ -283,9 +374,8 @@ class SeasonListFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
-        latest_season = None
         seasons = [
-            (s.slug, s) for s in Season.objects.all().order_by('end')
+            (s.slug, s) for s in Season.objects.all().order_by('-end')
         ]
         return seasons
 
@@ -295,16 +385,19 @@ class SeasonListFilter(SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
+        seasons = Season.objects.all().order_by('-end')
         # Compare the requested value
         # to decide how to filter the queryset.
         if self.value():
             return queryset.filter(id__in=[p.id for p in Season.objects.filter(slug=self.value())[0].players.all()])
-
-
+        elif len(seasons) > 0:
+            return queryset.filter(id__in=[p.id for p in seasons[0].players.all()])
+        else:
+            return queryset
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
-    list_filter = (SeasonListFilter,)
+    list_filter = (SeasonPlayersFilter,)
     ordering = ('surename',)
     actions = ['update_ratings']
     def update_ratings(self, request, queryset):
@@ -322,13 +415,97 @@ class PlayerAdmin(admin.ModelAdmin):
                 p.save()
             print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
+
+
+class LeagueGamesFilter(SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'League'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'season'
+   
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        seasons = Season.objects.all()
+        leagues = []
+        if len(seasons) > 0:
+            leagues += [
+               (l.slug, l) for l in League.objects.filter(season=seasons.last())
+            ]
+            
+        return leagues
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # Compare the requested value
+        # to decide how to filter the queryset.
+        if self.value():
+            print(self.value())
+            return queryset.filter(league__slug=self.value())
+        else:
+            return queryset
+
+
+
+class HistoricalLeagueGamesFilter(SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'Older League'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'season'
+   
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        seasons = Season.objects.all()
+        leagues = []
+        if len(seasons) > 0:
+            leagues += [
+               (l.slug, l) for l in League.objects.exclude(season=seasons.last())
+            ]
+        return leagues
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # Compare the requested value
+        # to decide how to filter the queryset.
+        if self.value():
+            print(self.value())
+            return queryset.filter(league__slug=self.value())
+        else:
+            return queryset
+
+
+
+
 class ScheduleAdmin(ReverseModelAdmin):
     change_list_template = 'change_game_list.html'
     change_form_template = 'change_game_form.html'
     manage_view_template = 'manage_game_form.html'
     add_clubnight_template = 'add_club_night.html'
     export_games_template = 'export_games.html'
-    list_filter = ('league',('date', DateFieldListFilter) )
+    list_filter = (LeagueGamesFilter,('date', DateFieldListFilter), HistoricalLeagueGamesFilter )
     inline_reverse = ['pgn']
 
     inlines = [
@@ -351,6 +528,7 @@ class ScheduleAdmin(ReverseModelAdmin):
         return urls + super_urls
 
     def save_model(self, request, obj, form, change):
+        print("saving schedule admin")
         super(ScheduleAdmin, self).save_model(request, obj, form, change)
         if not change and (not obj.white_rating or not obj.black_rating):
             if obj.white:
@@ -358,6 +536,34 @@ class ScheduleAdmin(ReverseModelAdmin):
             if obj.black:
                 obj.black_rating = obj.black.rating
             obj.save()
+
+
+    def save_formset(self, request, form, formset, change):
+        print("saving formset")
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if not change and (not instance.white_rating or not instance.black_rating):
+                if instance.white:
+                    instance.white_rating = instance.white.rating
+                if instance.black:
+                  instance.black_rating = instance.black.rating
+            # Do something with `instance`
+            instance.save()
+        formset.save_m2m()
+
+    def save_related(self, request, form, formset, change):
+        print("saving related 1")
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if not change and (not instance.white_rating or not instance.black_rating):
+                if instance.white:
+                    instance.white_rating = instance.white.rating
+                if instance.black:
+                  instance.black_rating = instance.black.rating
+            # Do something with `instance`
+            instance.save()
+        formset.save_m2m()
+
 
     def update_ratings(self,request,queryset):
         for obj in queryset:
@@ -418,8 +624,8 @@ admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Season, SeasonAdmin)
-admin.site.register(Team, TeamAdmin)
-admin.site.register(Standings)
+#admin.site.register(Team, TeamAdmin)
+#admin.site.register(Standings)
 
 
 # Register your models here.

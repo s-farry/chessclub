@@ -2,7 +2,8 @@
 {% load league_tags %}
 {% load user_agents %}
 
-        <table class="table table-striped table-hover league-table">
+        <!--<table class="table table-striped table-hover league-table"> -->
+            <table class="table table-striped table-hover league-table">
            <thead>
             <tr>
                {% if request|is_mobile %}
@@ -28,8 +29,16 @@
             </tr>
            </thead>
            <tbody>
-    {% for player in standings %}
-        <tr>
+        {% for player in standings %}
+            {% if league.promotion and forloop.counter == league.promotion %}
+            <tr class="border-bottom-dashed">
+            {% elif league.playoffs and forloop.counter == league.playoffs|add:league.promotion %}
+            <tr class="border-bottom-dashed">
+            {% elif league.relegation and forloop.counter == standings|length|add:league.get_minus_relegation %}
+            <tr class="border-bottom-dashed">
+            {% else %}
+            <tr>
+            {% endif %}
             <td>{{player.position}}</td>
             <td><a href="{% url 'player' player.player.id league.season.slug %}" class="reserve-space" reserve="{{player.player}}">{{player.player}}</a></td>
             {% if not request|is_mobile %}

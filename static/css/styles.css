@@ -2537,7 +2537,6 @@
   }
   .table {
     width: 100%;
-    margin-bottom: 1rem;
     color: #212529;
   }
   .table th,
@@ -11711,4 +11710,11 @@
 }
 .overflow-y-visible {
   overflow-y:visible;
+}
+
+
+.border-bottom-dashed{
+  border-bottom-style:dashed;
+  border-bottom-width:2px;
+  border-bottom-color:#555;
 }

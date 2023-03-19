@@ -26,19 +26,19 @@
                 <div class = "header mb-3"><i class="fas fa-newspaper"></i> Latest News</div>
 
 
-  <div class="p-4 p-md-5 mb-4 text-white rounded bg-black d-flex">
-    <div class="{% if n.image %}col-md-6 {% else %} col-md-12 {% endif %}">
+  <div class="p-4 p-md-5 mb-4 text-white rounded bg-black d-flex text-left">
+    <div class="{% if news.0.image %}col-md-6 {% else %} col-md-12 {% endif %} text-left">
       <h1 class="display-5 fst-italic">{{news.0.title}}</h1>
       <div class="mb-1">{{ news.0.published_date.date }}</div>
       <p class="lead my-3">
         {{ news.0.text|safe |truncatewords:"100"}}</p>
       <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" class="stretched-link">read more</a></p>
-      {% if n.image %}
-      <div class="col-md-6 px-0 clearfix">
-          <img class="mw-100" src="{{ n.image.url }}">
-      </div>
-      {% endif %}
     </div>
+    {% if news.0.image %}
+    <div class="col-md-6 px-0 clearfix">
+        <img class="mw-100 float-left" src="{{ news.0.image.url }}">
+    </div>
+    {% endif %}
   </div>
 
   <div class="row mb-2">
