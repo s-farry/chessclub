@@ -537,34 +537,6 @@ class ScheduleAdmin(ReverseModelAdmin):
                 obj.black_rating = obj.black.rating
             obj.save()
 
-
-    def save_formset(self, request, form, formset, change):
-        print("saving formset")
-        instances = formset.save(commit=False)
-        for instance in instances:
-            if not change and (not instance.white_rating or not instance.black_rating):
-                if instance.white:
-                    instance.white_rating = instance.white.rating
-                if instance.black:
-                  instance.black_rating = instance.black.rating
-            # Do something with `instance`
-            instance.save()
-        formset.save_m2m()
-
-    def save_related(self, request, form, formset, change):
-        print("saving related 1")
-        instances = formset.save(commit=False)
-        for instance in instances:
-            if not change and (not instance.white_rating or not instance.black_rating):
-                if instance.white:
-                    instance.white_rating = instance.white.rating
-                if instance.black:
-                  instance.black_rating = instance.black.rating
-            # Do something with `instance`
-            instance.save()
-        formset.save_m2m()
-
-
     def update_ratings(self,request,queryset):
         for obj in queryset:
             white_rating = obj.white_rating if obj.white_rating else 0
