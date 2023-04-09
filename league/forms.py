@@ -119,3 +119,29 @@ class SeasonAdminChangeForm(forms.ModelForm):
         model = Season
         fields = '__all__'
         exclude = []
+
+
+
+
+class SeasonAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Season
+        fields = '__all__'
+        exclude = ['slug']
+
+
+class ScheduleKnockoutForm(forms.ModelForm):
+
+    class Meta:
+        model = Schedule
+        fields = ('round','date','white','black','result')
+        exclude = []
+
+
+class ScheduleLeagueForm(forms.ModelForm):
+
+    class Meta:
+        model = Schedule
+        fields = ('date','white','black','result')
+        exclude = []

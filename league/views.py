@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
+from django.core.exceptions import ValidationError
+
 from league.models import (
     Schedule,
     Standings,
@@ -175,11 +177,20 @@ def player(request, player_id, **kwargs):
         games[season] = {}
         for league in season.league_set.all():
             league_pk = league.pk
-            season_league_games = Schedule.objects.filter(
-                Q(white=player_id) | Q(black=player_id), league=league_pk
-            ).order_by("date")
-            if len(season_league_games) > 0:
-                games[season][league] = season_league_games
+            if league.get_format_display() == "Knockout":
+                season_league_games_normal = Schedule.objects.filter(
+                   Q(white=player_id) | Q(black=player_id), league=league_pk
+                )
+
+                if len(season_league_games_normal) > 0:
+                    games[season][league] = sorted(season_league_games_normal, key = lambda g : g.round if g.round!=0 else 100, reverse=True)
+
+            else:
+                season_league_games = Schedule.objects.filter(
+                    Q(white=player_id) | Q(black=player_id), league=league_pk
+                ).order_by("date")
+                if len(season_league_games) > 0:
+                    games[season][league] = season_league_games
 
     return render(request, "games.html", {"player": player, "games": games, "active_seasons" : active_seasons, "selected_season" : season })
 
@@ -879,7 +890,7 @@ def export_games_view(request, admin_site):
                 response.write("#NAME=%s, %s\n" % (p.surename, p.name))
                 response.write("#CLUB CODE=7WAL\n")
             for league, games in games_by_league.items():
-                response.write("#MATCH RESULTS=%s\n"%(league.name))
+                response.write("#MATCH RESULTS=%s\n"%(league.name if league else "Friendlies"))
                 for g in games:
                     if not g.white or not g.black:
                         continue
@@ -887,6 +898,13 @@ def export_games_view(request, admin_site):
                         continue
                     if g.white.id in players_to_exclude or g.black.id in players_to_exclude:
                         continue
+
+                    if g.white not in player_pins.keys():
+                        raise ValidationError("The game %s v %s in %s is included but %s is not listed in any league."%(g.white, g.black, g.white, league.name if league else "Friendlies"))
+
+                    if g.black not in player_pins.keys():
+                        raise ValidationError("The game %s v %s in %s is included but %s is not listed in any league."%(g.white, g.black, g.black, league.name if league else "Friendlies"))
+
 
                     response.write(
                         "#PIN1=%i#PIN2=%i#SCORE=%s#COLOUR=WHITE#GAME DATE=%s\n"
@@ -909,7 +927,7 @@ def export_games_view(request, admin_site):
                 filename
             )
             for league, games in games_by_league.items():
-                response.write("#MATCH RESULTS=Club Championship\n")
+                response.write("#MATCH RESULTS=%s\n"%(league.name if league else "Friendlies"))
                 for g in games:
                     if not g.black or not g.white:
                         continue

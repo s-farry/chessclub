@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
 from .models import League, Schedule, Standings, Player, Season, Team, TeamPlayer, TeamFixture, STANDINGS_ORDER, POINTS, PGN
-from .forms import LeagueAdminForm, LeagueAdminChangeForm, SeasonAdminForm, SeasonAdminChangeForm
+from .forms import LeagueAdminForm, LeagueAdminChangeForm, SeasonAdminForm, SeasonAdminChangeForm, ScheduleKnockoutForm, ScheduleLeagueForm
 from django.utils import timezone
 from django.urls import resolve, reverse
 from django.utils.safestring import mark_safe
@@ -64,6 +64,17 @@ class ScheduleInline(admin.TabularInline):
             return 0
         return self.extra
 
+
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        Use special form during foo creation
+        """
+        defaults = {}
+        if obj is not None:
+            defaults['form'] = self.change_form
+        defaults.update(kwargs)
+        return super().get_form(request, obj, **defaults)
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if 'object_id' in kwargs:
@@ -84,7 +95,6 @@ class ScheduleInline(admin.TabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_related(self, request, form, formset, change):
-        print("saving related 2")
         instances = formset.save(commit=False)
         for instance in instances:
             if not change and (not instance.white_rating or not instance.black_rating):
