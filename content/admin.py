@@ -27,10 +27,10 @@ class HtmlObjectAdminForm(forms.ModelForm):
 
     class Meta:
         fields = ('title', 'body', 'active')
-        model = news
+        model = htmlobject
 
 class HtmlObjectAdmin(admin.ModelAdmin):
-    list_display = ['title', 'body']
+    list_display = ['title', 'body', 'active']
     search_fields = [ 'title' ]
     form = HtmlObjectAdminForm
 
