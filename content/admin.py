@@ -26,7 +26,7 @@ class HtmlObjectAdminForm(forms.ModelForm):
     body = forms.CharField(max_length= 10000, widget = TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}), label='News')
 
     class Meta:
-        fields = ('title', 'body')
+        fields = ('title', 'body', 'active')
         model = news
 
 class HtmlObjectAdmin(admin.ModelAdmin):

@@ -155,8 +155,8 @@
         var pgn = `{{puzzle.pgn|safe}}`;
         var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', 'width' : width.toString()+'px' };
         PGNV.pgnTactic('board', cfg);
-        {% endfor %}
-    }
+        }
         )
+        {% endfor %}
     </script> 
     {% endblock %}
