@@ -52,3 +52,31 @@
         {% endfor %}
         </tr>
 </tbody></table>
+
+{% if standings|length > 0 %}
+<table class="table table-striped table-hover league-table">
+        <thead>
+                <tr>
+                <th class="text-center">{% trans "P" %}</th>
+                <th class="text-center">{% trans "W" %}</th>
+                <th class="text-center">{% trans "D" %}</th>
+                <th class="text-center">{% trans "L" %}</th>
+                <th class="text-center">{% trans "Win %" %}</th>
+                <th class="text-center">{% trans "R<sub>p</sub>" %}</th>
+                </tr>
+        </thead>
+        <tbody>
+        {% for standing in standings %}
+                <tr>
+                <td class="text-center">{{ standing.matches }}</td>
+                <td class="text-center">{{ standing.win }}</td>
+                <td class="text-center">{{ standing.draws }}</td>
+                <td class="text-center">{{ standing.lost }}</td>
+                <td class="text-center">{{ standing.winpercent }}</td>
+                <td class="text-center">{{ standing.performance }}</td>
+
+                {% endfor %}
+                </tr>
+        </tbody></table>
+
+{% endif %}

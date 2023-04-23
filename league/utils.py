@@ -630,7 +630,7 @@ def make_table(league):
         c.set_height(0.03)
 
 
-    ax2.text(0.5, 0.0, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
+    ax2.text(0.5, -0.1, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
 
     im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
     ax1.imshow(im)
@@ -748,7 +748,7 @@ def make_crosstable(league):
     cells = [key for key in crosstable._cells if ((key[1] in [-1,0] + [ len(standings) + i for i in [1,2,3,4,5] ]) or (key[0] == 0)) ]
     for cell in cells:
         crosstable._cells[cell].get_text().set_ha('right')
-        font_size = min(14, int(280.0/len(standings)))
+        font_size = min(11, int(260.0/len(standings)))
         text_size = len(crosstable._cells[cell].get_text().get_text())
         # reduce font size if we really have a lot of text
         if text_size > 25:

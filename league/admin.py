@@ -25,6 +25,8 @@ import utils
 
 from .views import create_round_robin_view, create_round_view, manage_league_view, manage_schedule_view, export_league_pdf, export_crosstable_pdf, add_club_night_view, export_games_view, make_table, make_crosstable
 
+from .views import send_email as send_email_view
+
 class LimitModelFormset(BaseInlineFormSet):
     """ Base Inline formset to limit inline Model query results. """
     def __init__(self, *args, **kwargs):
@@ -270,6 +272,7 @@ class LeagueAdmin(ModelAdmin):
                 print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
 
+
     def make_pdf(self, request, queryset):
         response = HttpResponse(content_type='application/pdf')
         filename = 'league_tables'
@@ -409,7 +412,25 @@ class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
     list_filter = (SeasonPlayersFilter,)
     ordering = ('surename',)
-    actions = ['update_ratings']
+    actions = ['update_ratings', 'send_email']
+    send_email_template = 'send_email.html'
+
+
+    def get_urls(self):
+        from django.conf.urls import url
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, self, **kwargs)
+            return update_wrapper(wrapper, view)
+
+        info = self.model._meta.app_label, self.model._meta.model_name
+        urls = [url(r'^sendemail/', wrap(send_email_view),name='%s_%s_sendemail' 
+        % info)]
+
+        super_urls = super(PlayerAdmin, self).get_urls()
+        return urls + super_urls
+
+
     def update_ratings(self, request, queryset):
         for p in queryset:
             if p.ecf == None:
@@ -424,6 +445,11 @@ class PlayerAdmin(admin.ModelAdmin):
                 p.rating = grade['revised_rating']
                 p.save()
             print('Rating not found for %s for ecf code %s'%(p,p.ecf))
+
+    def send_email(self, request, queryset):
+        emails = [obj.email for obj in queryset if obj.email ]
+        return send_email_view(request, self.admin_site, 'send_email.html', context={'emails' : emails})
+
 
 
 

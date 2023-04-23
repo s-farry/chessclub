@@ -60,13 +60,14 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 
 <article id="league-{{ slug }}-player" class="news">
     <div class = "col-md-7 ml-auto mr-auto text-center">
-      {% for league,games in l.items %}
+
+      {% for league,performance in l.items %}
         {% if league.format == 1 %}
-          {% include 'content/game_list.html' with season=s league=league game=games%}
+          {% include 'content/game_list.html' with season=s league=league games=performance.0 standings=performance.1%}
         {% elif league.format == 0 %}
-          {% include 'content/game_list.html' with season=s league=league game=games%}
+          {% include 'content/game_list.html' with season=s league=league games=performance.0 standings=performance.1%}
         {% else %}
-          {% include 'content/game_list.html' with season=s league=league game=games%}
+          {% include 'content/game_list.html' with season=s league=league games=performance.0 standings=performance.1%}
         {% endif %}
       {% endfor %}
     </div>        

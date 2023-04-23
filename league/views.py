@@ -177,20 +177,21 @@ def player(request, player_id, **kwargs):
         games[season] = {}
         for league in season.league_set.all():
             league_pk = league.pk
+            season_league_standings = Standings.objects.filter(player=player_id, league=league_pk)
             if league.get_format_display() == "Knockout":
-                season_league_games_normal = Schedule.objects.filter(
+                season_league_games = Schedule.objects.filter(
                    Q(white=player_id) | Q(black=player_id), league=league_pk
                 )
+                season_league_games = sorted(season_league_games, key = lambda g : g.round if g.round!=0 else 100, reverse=True)
 
-                if len(season_league_games_normal) > 0:
-                    games[season][league] = sorted(season_league_games_normal, key = lambda g : g.round if g.round!=0 else 100, reverse=True)
 
             else:
                 season_league_games = Schedule.objects.filter(
                     Q(white=player_id) | Q(black=player_id), league=league_pk
                 ).order_by("date")
-                if len(season_league_games) > 0:
-                    games[season][league] = season_league_games
+
+            if len(season_league_games) > 0:
+                games[season][league] = ( season_league_games, season_league_standings )
 
     return render(request, "games.html", {"player": player, "games": games, "active_seasons" : active_seasons, "selected_season" : season })
 
@@ -307,6 +308,7 @@ from .forms import (
     ScheduleModelFormset,
     ClubNightForm,
     ExportGamesForm,
+    SendEmailForm
 )
 
 from swissdutch.dutch import DutchPairingEngine
@@ -948,3 +950,37 @@ def export_games_view(request, admin_site):
         return response
 
     return render(request, admin_site.export_games_template, context)
+
+
+
+def send_email(request, admin_site, template, context):
+    send_email_form = SendEmailForm()
+
+    opts = Player._meta
+    # do cool management stuff here
+    form_url = request.build_absolute_uri()
+    form_url = request.META.get("PATH_INFO", None)
+
+    context.update({
+        "site_header": "Wallasey Chess Club Administration",
+        "title": "Send Email",
+        "form_url": form_url,
+        "form": send_email_form,
+        "opts": opts,
+        #'errors': form.errors,
+        "app_label": opts.app_label,
+    })
+
+    #if request.POST:
+    #    email_id = request.post.get("email_id")
+    #    email_cc = request.post.get("email_cc")
+    #    email_bcc = request.post.get("email_bcc")
+    #    subject = request.post.get("subject")
+    #    msg = request.post.get("msg")
+    #    #attachment = forms.FileField()
+
+    #    admin_site.user_message("Sending email to %s"%(email_id))
+
+    return render(request, template, context)
+
+
