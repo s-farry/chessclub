@@ -1,12 +1,4 @@
-import berserk
-import lichess.api
-import fidetournament.tournament
 
-lichess_token = '2LearXaxmENFzfVv'
-session = berserk.TokenSession(lichess_token)
-client = berserk.Client(session = session)
-
-import chess.pgn
 import datetime
 from pytz import timezone
 
@@ -32,7 +24,7 @@ teams = {t.name : t for t in Team.objects.filter(season=season)}
 
 import xlrd
 
-fixture_list = xlrd.open_workbook('/home/sfarry/Downloads/table.xls', ignore_workbook_corruption=True)
+fixture_list = xlrd.open_workbook('table.xls', ignore_workbook_corruption=True)
 
 sheet = fixture_list.sheets()[0]
 nrows = sheet.nrows
