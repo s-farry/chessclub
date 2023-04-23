@@ -8369,6 +8369,13 @@
     height: auto !important;
   }
 
+  .mw-30 {
+    max-width: 30% !important;
+  }
+  .mw-50 {
+    max-width: 50% !important;
+  }
+
   .mw-100 {
     max-width: 100% !important;
   }

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load user_agents %}
 {% block title %}{{ game }}{% endblock %}
 {% block header %} 
 <!-- CSS used -->
@@ -12,17 +13,24 @@
 {% if news|length == 1 %}
 
 <h1 class="display-5 fst-italic mt-4">{{news.0.title}}</h1>
-<div class="mb-4 d-flex" id="{{n.id}}">
-  <div class="{% if news.0.image %}col-md-7 {% else %} col-md-12 {% endif %} px-0 clearfix">
-    <div class="mb-1">{{ news.0.published_date.date }}</div>
-    <p class="lead my-3">{{ news.0.text|safe}}</p>
-  </div>
-  
+<div class="mb-4" id="{{n.id}}">
   {% if news.0.image %}
-  <div class="col-md-5 px-0 clearfix">
+  {% if request|is_mobile %}
+  <div class="px-0 clearfix">
       <img class="mw-100" src="{{ news.0.image.url }}">
   </div>
+  {% else %}
+
+  <img class="mw-30 px-1" align="right" src="{{ news.0.image.url }}">
   {% endif %}
+  {% endif %}
+
+  <div class="px-0 clearfix">
+    <div class="mb-1">{{ news.0.published_date.date }}</div>
+    <p class="lead my-3">{{ news.0.text|safe}}</p>
+    <div class="mb-1">Published by {{ news.0.author.first_name }} {{ news.0.author.last_name }}</div>
+  </div>
+  
 
 </div>
 {% else %}
@@ -44,4 +52,3 @@
 {% endfor %}
 {% endif %}
 {% endblock %}
-}
