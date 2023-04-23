@@ -101,7 +101,7 @@ class EventAdmin(admin.ModelAdmin):
     
 
 class NewsAdminForm(forms.ModelForm):
-    title = forms.CharField(max_length=50)
+    title = forms.CharField(max_length=200)
     text = forms.CharField(max_length= 10000, widget = TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}), label='News')
     #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
@@ -110,7 +110,7 @@ class NewsAdminForm(forms.ModelForm):
         model = news
 
 class NewsChangeAdminForm(forms.ModelForm):
-    title = forms.CharField(max_length=50)
+    title = forms.CharField(max_length=200)
     text = forms.CharField(max_length= 10000, widget = TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}), label='News')
     author = forms.ModelChoiceField(queryset=User.objects.all())
     #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
