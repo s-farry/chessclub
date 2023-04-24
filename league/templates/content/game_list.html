@@ -49,34 +49,39 @@
         <tr class = "py-0"><td class="text-center small py-0" colspan=5>{{match.comment}}</td></tr>
         {% endif %}
         {% endif %}
-        {% endfor %}
         </tr>
+        {% endfor %}
+
+        {% if standings|length > 0 %}
+                {% for standing in standings %}
+                <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td colspan={% if league.get_rounds|length > 0 %}"2" {% else %} "2" {% endif %}>
+                        +{{ standing.win }}
+                        -{{ standing.lost }}
+                        ={{ standing.draws }}
+                        </td>
+                </td>
+        </tr>
+<tr>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td></td>
+        <td></td>
+        <td colspan={% if league.get_rounds|length > 0 %}"2" {% else %} "2" {% endif %}>
+                R<sub>p</sub> = {{ standing.performance|floatformat:0 }}
+        </td>
+</td>
+</tr>
+                        {% endfor %}
+        
+        {% endif %}
+
 </tbody></table>
-
-{% if standings|length > 0 %}
-<table class="table table-striped table-hover league-table">
-        <thead>
-                <tr>
-                <th class="text-center">{% trans "P" %}</th>
-                <th class="text-center">{% trans "W" %}</th>
-                <th class="text-center">{% trans "D" %}</th>
-                <th class="text-center">{% trans "L" %}</th>
-                <th class="text-center">{% trans "Win %" %}</th>
-                <th class="text-center">{% trans "R<sub>p</sub>" %}</th>
-                </tr>
-        </thead>
-        <tbody>
-        {% for standing in standings %}
-                <tr>
-                <td class="text-center">{{ standing.matches }}</td>
-                <td class="text-center">{{ standing.win }}</td>
-                <td class="text-center">{{ standing.draws }}</td>
-                <td class="text-center">{{ standing.lost }}</td>
-                <td class="text-center">{{ standing.winpercent }}</td>
-                <td class="text-center">{{ standing.performance }}</td>
-
-                {% endfor %}
-                </tr>
-        </tbody></table>
-
-{% endif %}
