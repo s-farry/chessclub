@@ -149,9 +149,6 @@ class ScheduleLeagueForm(forms.ModelForm):
 
 
 class SendEmailForm(forms.Form):
-    #email_id = forms.EmailField()
-    #email_cc = forms.EmailField()
-    #email_bcc = forms.EmailField()
     subject = forms.CharField(max_length=200)
     msg = forms.CharField(widget=forms.Textarea)
-    attachment = forms.FileField()
+    attachment = forms.FileField(required=False)

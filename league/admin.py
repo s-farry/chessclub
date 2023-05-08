@@ -424,8 +424,7 @@ class PlayerAdmin(admin.ModelAdmin):
             return update_wrapper(wrapper, view)
 
         info = self.model._meta.app_label, self.model._meta.model_name
-        urls = [url(r'^sendemail/', wrap(send_email_view),name='%s_%s_sendemail' 
-        % info)]
+        urls = [url(r'^sendemail/', wrap(send_email_view),name='%s_%s_sendemail'% info)]
 
         super_urls = super(PlayerAdmin, self).get_urls()
         return urls + super_urls
@@ -447,7 +446,7 @@ class PlayerAdmin(admin.ModelAdmin):
             print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
     def send_email(self, request, queryset):
-        emails = [obj.email for obj in queryset if obj.email ]
+        emails = ';'.join([obj.email for obj in queryset if obj.email ])
         return send_email_view(request, self.admin_site, 'send_email.html', context={'emails' : emails})
 
 

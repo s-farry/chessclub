@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mass_mail
+from django.core.mail import EmailMessage
 
 from league.models import (
     Schedule,
@@ -953,33 +955,41 @@ def export_games_view(request, admin_site):
 
 
 
-def send_email(request, admin_site, template, context):
+def send_email(request, admin_site, template='send_email.html', context=None):
     send_email_form = SendEmailForm()
 
     opts = Player._meta
-    # do cool management stuff here
     form_url = request.build_absolute_uri()
-    form_url = request.META.get("PATH_INFO", None)
+
+    if not context:
+        context = {}
 
     context.update({
         "site_header": "Wallasey Chess Club Administration",
         "title": "Send Email",
-        "form_url": form_url,
+        "form_url": form_url + "sendemail/",
         "form": send_email_form,
         "opts": opts,
-        #'errors': form.errors,
         "app_label": opts.app_label,
     })
 
-    #if request.POST:
-    #    email_id = request.post.get("email_id")
-    #    email_cc = request.post.get("email_cc")
-    #    email_bcc = request.post.get("email_bcc")
-    #    subject = request.post.get("subject")
-    #    msg = request.post.get("msg")
-    #    #attachment = forms.FileField()
+    if request.POST and request.POST.get("msg"):
+        emails = request.POST.get("emails")
+        subject = request.POST.get("subject")
+        msg = request.POST.get("msg")
+        attachment = request.POST.get("attachment")
 
-    #    admin_site.user_message("Sending email to %s"%(email_id))
+
+        email_message = EmailMessage(
+                subject,
+                msg,
+                "contact@wallaseychessclub.uk",
+                ["contact@wallaseychessclub.uk"] + emails.split(';'),
+        )
+        if attachment:
+            email_message.attach()
+        
+        email_message.send(fail_silently=False)
 
     return render(request, template, context)
 
