@@ -183,7 +183,7 @@ class NewsAdmin(admin.ModelAdmin):
 
 class DropDownItemInline(admin.TabularInline):
     model = dropdownitem
-    max_num = 6
+    max_num = 20
     extra = 1
 
 class MenuItemAdmin(ReverseModelAdmin):
