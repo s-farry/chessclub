@@ -13,20 +13,24 @@
 {% if news|length == 1 %}
 
 <h1 class="display-5 fst-italic mt-4">{{news.0.title}}</h1>
+
+<div class="mb-1">{{ news.0.published_date.date }}</div>
 <div class="mb-4" id="{{n.id}}">
   {% if news.0.image %}
   {% if request|is_mobile %}
-  <div class="px-0 clearfix">
+  <figure class="px-0 clearfix">
       <img class="mw-100" src="{{ news.0.image.url }}">
-  </div>
+      {% if news.0.caption %}<figcaption>{{ news.0.caption }}</figcaption> {% endif %}
+  </figure>
   {% else %}
-
-  <img class="mw-30 px-1" align="right" src="{{ news.0.image.url }}">
+  <figure class="mw-30 px-1 float-right">
+  <img class="mw-100" align="right" src="{{ news.0.image.url }}">
+  {% if news.0.caption %}<figcaption class="py-1"><i>TESTING {{ news.0.caption }}</i></figcaption> {% endif %}
+  </figure>
   {% endif %}
   {% endif %}
 
   <div class="px-0 clearfix">
-    <div class="mb-1">{{ news.0.published_date.date }}</div>
     <p class="lead my-3">{{ news.0.text|safe}}</p>
     <div class="mb-1">Published by {{ news.0.author.first_name }} {{ news.0.author.last_name }}</div>
   </div>

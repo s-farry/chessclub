@@ -38,9 +38,10 @@
       <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" class="stretched-link">read more</a></p>
     </div>
     {% if news.0.image %}
-    <div class="col-md-6 px-0 clearfix">
+    <figure class="col-md-6 px-0 clearfix">
         <img class="mw-100 float-left" src="{{ news.0.image.url }}">
-    </div>
+        {% if news.0.caption %}<figcaption class="text-small"><i>{{ news.0.caption }}</i></figcaption> {% endif %}
+    </figure>
     {% endif %}
   </div>
 
@@ -52,9 +53,10 @@
     <div class="mb-1">{{ news.0.published_date.date }}</div>
 
   {% if news.0.image %}
-  <div class="col-md-12 px-0 clearfix">
+  <figure class="col-md-12 px-0 clearfix">
       <img class="mw-100 float-left" src="{{ news.0.image.url }}">
-  </div>
+      {% if news.0.caption %}<figcaption>{{ news.0.caption }}</figcaption> {% endif %}
+  </figure>
   {% endif %}
     <p class="lead my-3">
       {{ news.0.text|safe |truncatewords:"100"}}</p>
@@ -84,6 +86,28 @@
         
       </div>
     </div>
+
+
+    <div class="row mb-2">
+        <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <h4 class="mb-0">{{ news.3.title }}</h4>
+            <div class="mb-1 text-muted">{{ news.3.published_date.date }}</div>
+            <p class="card-text mb-auto">{{ news.3.text | safe|truncatewords:"50" }}</p>
+            <a href="{% url 'news' news.3.id %}" class="stretched-link">read more</a>
+          </div>
+              </div>
+        <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <h4 class="mb-0">{{ news.4.title }}</h4>
+            <div class="mb-1 text-muted">{{ news.4.published_date.date }}</div>
+            <p class="card-text mb-auto">{{ news.4.text | safe|truncatewords:"50" }}</p>
+            <a href="{% url 'news' news.4.id %}" class="stretched-link">read more</a>
+          </div>
+          
+        </div>
+      </div>
+
   
     </div>
 

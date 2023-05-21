@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
-from .models import League, Schedule, Standings, Player, Season, Team, TeamPlayer, TeamFixture, STANDINGS_ORDER, POINTS, PGN
+from .models import League, Schedule, Standings, Player, Season, Team, TeamPlayer, TeamFixture, STANDINGS_ORDER, POINTS, PGN, KNOCKOUT_ROUNDS
 from .forms import LeagueAdminForm, LeagueAdminChangeForm, SeasonAdminForm, SeasonAdminChangeForm, ScheduleKnockoutForm, ScheduleLeagueForm
 from django.utils import timezone
 from django.urls import resolve, reverse
@@ -50,6 +50,7 @@ def get_parent_object_from_request(self, request):
 class ScheduleInline(admin.TabularInline):
     model = Schedule
     fields = ('round','date','white','black','result')
+
     formfield_overrides = {
         models.IntegerField: {'widget': TextInput(attrs={'style':'width: 20px;'})},
     }
@@ -57,6 +58,23 @@ class ScheduleInline(admin.TabularInline):
     formset = LimitModelFormset
     max_num = 25
     extra = 5
+
+
+    def get_formset(self, request, instance, **kwargs):
+        """Take a copy of the instance"""
+        print(instance)
+        self.parent_instance = instance
+        return super().get_formset(request, instance, **kwargs)
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        print(self)
+        if db_field.name == 'round':
+            if self.parent_instance is not None and self.parent_instance.get_format_display()=='Knockout':
+                kwargs['widget'] = forms.Select(choices=KNOCKOUT_ROUNDS, attrs={'class': 'form-control'})
+        return super(ScheduleInline,self).formfield_for_dbfield(db_field,**kwargs)
+    
+    def __init__(self, *args, **kwargs):
+        super(ScheduleInline, self).__init__(*args, **kwargs)
 
     def get_extra (self, request, obj=None, **kwargs):
         """Dynamically sets the number of extra forms. 0 if the related object
@@ -66,20 +84,15 @@ class ScheduleInline(admin.TabularInline):
             return 0
         return self.extra
 
-
-
-    def get_form(self, request, obj=None, **kwargs):
-        """
-        Use special form during foo creation
-        """
-        defaults = {}
-        if obj is not None:
-            defaults['form'] = self.change_form
-        defaults.update(kwargs)
-        return super().get_form(request, obj, **defaults)
+  
+    def get_fields(self, request, obj=None):
+        #league = League.objects.get(id=resolve(request.path_info).kwargs['object_id'])
+        #if league is not None and league.get_format_display=='Knockout': self.knockout=True
+        return super().get_fields(request, obj)
+    
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if 'object_id' in kwargs:
+        if db_field.related_model == Player:
             league = League.objects.get(id=resolve(request.path_info).kwargs['object_id'])
             if league is not None:
                 # for ease of adding in the django admin, make it so that only
@@ -89,9 +102,9 @@ class ScheduleInline(admin.TabularInline):
                 # already played, maybe they should be added to the league automatically
                 games = Schedule.objects.filter(league = league.pk)
                 for g in games:
-                    if g.white.pk not in players:
+                    if g.white and g.white.pk not in players:
                         players += [ g.white.pk ]
-                    if g.black not in players:
+                    if g.black and g.black.pk not in players:
                         players += [ g.black.pk]
                 kwargs["queryset"] = Player.objects.filter(pk__in = players)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -219,12 +232,10 @@ class LeagueAdmin(ModelAdmin):
 
     list_filter = (SeasonLeagueFilter,)
 
-    form = LeagueAdminForm
     inlines = [
         StandingsInline, 
         ScheduleInline,
     ]
-    change_form = LeagueAdminChangeForm
 
     def link(self, obj):
         url = reverse('league',args = {obj.slug})
@@ -346,10 +357,17 @@ class LeagueAdmin(ModelAdmin):
         """
         defaults = {}
         if obj is not None:
-            defaults['form'] = self.change_form
+            defaults['form'] = LeagueAdminChangeForm
+        else:
+            defaults['form'] = LeagueAdminForm
         defaults.update(kwargs)
         return super().get_form(request, obj, **defaults)
     
+
+    def get_inline_instances(self, request, obj=None):
+        if not obj: return []
+        return super(LeagueAdmin, self).get_inline_instances(request, obj)
+
     def save_related(self, request, form, formsets, change):
         for formset in formsets:
             if formset.model == Schedule:

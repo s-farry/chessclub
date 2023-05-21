@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import news, event, album, image, simul, htmlobject
+from .models import news, event, album, image, simul, htmlobject, dropdownitem, menuitem
 from tinymce.widgets import TinyMCE
 from django import forms
 from functools import update_wrapper
@@ -9,6 +9,7 @@ import datetime
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.contrib.auth import get_permission_codename
+from django_reverse_admin import ReverseModelAdmin
 
 
 
@@ -26,7 +27,7 @@ class HtmlObjectAdminForm(forms.ModelForm):
     body = forms.CharField(max_length= 10000, widget = TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}), label='News')
 
     class Meta:
-        fields = ('title', 'body', 'active')
+        fields = ('title', 'body', 'type', 'active')
         model = htmlobject
 
 class HtmlObjectAdmin(admin.ModelAdmin):
@@ -106,7 +107,7 @@ class NewsAdminForm(forms.ModelForm):
     #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ('title', 'text', 'image')
+        fields = ('title', 'text', 'image', 'caption')
         model = news
 
 class NewsChangeAdminForm(forms.ModelForm):
@@ -116,7 +117,7 @@ class NewsChangeAdminForm(forms.ModelForm):
     #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ('title', 'text', 'image')
+        fields = ('title', 'text', 'image', 'caption')
         model = news
 
 class NewsAdmin(admin.ModelAdmin):
@@ -179,8 +180,23 @@ class NewsAdmin(admin.ModelAdmin):
         super(NewsAdmin, self).save_model(request, obj, form, change)
 
 
+
+class DropDownItemInline(admin.TabularInline):
+    model = dropdownitem
+    max_num = 6
+    extra = 1
+
+class MenuItemAdmin(ReverseModelAdmin):
+    inline_reverse = ['dropdownitem']
+
+    inlines = [
+        DropDownItemInline,
+    ]
+
+
 admin.site.register(htmlobject, HtmlObjectAdmin)
 admin.site.register(news, NewsAdmin)
 admin.site.register(event, EventAdmin)
 admin.site.register(album, AlbumAdmin)
 admin.site.register(simul)
+admin.site.register(menuitem, MenuItemAdmin)

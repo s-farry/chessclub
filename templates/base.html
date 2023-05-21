@@ -21,30 +21,46 @@
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Oswald" />
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
         <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
-    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-icon-114x114.png' %}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/apple-icon-120x120.png' %}">
-    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/apple-icon-144x144.png' %}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/apple-icon-152x152.png' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-icon-180x180.png' %}">
-    <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'img/android-icon-192x192.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'json/manifest.json' %}">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-        {% block header %}
-        {% endblock %}
+        <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
+        <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-icon-114x114.png' %}">
+        <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/apple-icon-120x120.png' %}">
+        <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/apple-icon-144x144.png' %}">
+        <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/apple-icon-152x152.png' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-icon-180x180.png' %}">
+        <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'img/android-icon-192x192.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'json/manifest.json' %}">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+            {% block header %}
+            {% endblock %}
     </head>
     <body class="sb-nav-fixed">
         <div class = "sb-topnav bg-black py-3">
             <img class = "navbar-logo" src = "{% static 'img/wcc_logo.png' %}">
             <nav class = "navbar navbar-expand navbar-dark overflow-y-visible">
                 <ul class="navbar-nav navbar-menu">
+                    {% for menu, dropdownitems in menuitems.items %}
+                    {% if dropdownitems|length > 0 %}
+                    <li class = "dropdown"><a class="nav-link reserve-space" id="{{ menu.text }}DropDown", href="{{ menu.url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH {{ menu.text }} DD"><div class="sb-nav-link-icon">{% if menu.icon %}{{ menu.icon|safe }} {% endif %} <span class="dropdown-toggle">&nbsp;{{ menu.text }}</span></div>
+                        <div class="dropdown-menu bg-black" aria-labelledby="{{ menu.text }}Dropdown">
+                    {% for d in dropdownitems %}
+                        <a class="dropdown-item reserve-space" href="{{ d.url }}" title="{{ d.text }}">{{ d.text }}</a>
+                    {% endfor %}
+                        </div>
+                    </a></li>
+                    {% else %}
+                    <li><a class="nav-link reserve-space" href="{{ menu.url }}" reserve = "CH {{menu.text}}">{% if menu.icon %}<div class="sb-nav-link-icon">{{ menu.icon|safe }} {% endif %} &nbsp;{{menu.text}}</div></a></li>
+                    {% endif %}
+                    {% endfor %}
+
+
+                    <!--
                     <li><a class="nav-link reserve-space" href="{% url 'index' %}" reserve = "CH Home" alt="Home"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i>&nbsp;Home</div></a></li>
                     <li><a class="nav-link reserve-space" href="{% url 'news' %}" reserve = "CH News" alt="News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i>&nbsp;News</div></a></li>
                     <li><a class="nav-link reserve-space" href="{% url 'details' %}" reserve="CH Details" alt="Details">
@@ -63,26 +79,28 @@
                         <div class="dropdown-menu dropdown-menu-right bg-black" aria-labelledby="seasonDropdown">
                             <a class="dropdown-item reserve-space" href="{% url 'members' %}" title="Members">Members</a>
                             <a class="dropdown-item reserve-space" href="{% url 'team_squads' %}" title="Team Squads">Team Squads</a>
-                            <!--<a class="dropdown-item reserve-space" href="{% url 'team_fixtures' %}" title="Team Fixtures">Team Fixtures</a>-->
+                            <a class="dropdown-item reserve-space" href="{% url 'team_fixtures' %}" title="Team Fixtures">Team Fixtures</a>-
                         </div>
                     </a></li>
+                -->
                 </ul>
             </nav>
         </div>
     
         <div id="layoutTopnav">
             <div id="layoutTopnav_content">
-            {% if notification %}
+            {% for notification in notifications %}
                 <header class="py-1 bg-gold w-100 mb-2">
                     <div class = "container-fluid text-center">
                         {{notification.body|safe}}
                     </div>
                     <div class = "close"><small><i class="fas fa-times-circle"></i></small></div>
-                    {% endif %}
+                    {% endfor %}
                 </header>
                 <main>
                     <div class="container-fluid">
                     {% block content %}
+
                     {% endblock %}
                     </div>
                     
@@ -90,7 +108,10 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Wallasey Chess Club 2022</div>
+
+
+
+                            <div class="text-muted">Copyright &copy; Wallasey Chess Club 2023</div>
                         </div>
                     </div>
                 </footer>

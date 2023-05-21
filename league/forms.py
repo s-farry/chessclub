@@ -85,16 +85,14 @@ class LeagueAdminForm(forms.ModelForm):
     class Meta:
         model = League
         fields = '__all__'
-        exclude = ['slug']
+        exclude = ['players','updated_date']
 
         widgets = {
             'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
-            #'players' : ModelAdmin.filter_horizontal()
         }
 
 
 class LeagueAdminChangeForm(forms.ModelForm):
-
     class Meta:
         model = League
         fields = '__all__'
@@ -102,8 +100,29 @@ class LeagueAdminChangeForm(forms.ModelForm):
 
         widgets = {
             'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
-            #'players' : ModelAdmin.filter_horizontal()
         }
+
+    def __init__(self, *args,**kwargs):
+        super (forms.ModelForm,self ).__init__(*args,**kwargs) # populates the post
+        if self.instance and self.instance.season:
+            queryset = self.instance.season.players.union(self.instance.players.all())
+            self.fields['players'].queryset = queryset.order_by('surename')
+
+
+class LeagueAdminKnockoutForm(forms.ModelForm):
+    class Meta:
+        model = League
+        fields = '__all__'
+        exclude = []
+
+        widgets = {
+            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
+        }
+
+    def __init__(self, *args,**kwargs):
+        super (forms.ModelForm,self ).__init__(*args,**kwargs) # populates the post
+        if self.instance and self.instance.season:
+            self.fields['players'].queryset = self.instance.season.players.order_by('surename')
 
 class SeasonAdminForm(forms.ModelForm):
 

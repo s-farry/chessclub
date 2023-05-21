@@ -2,11 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.template.defaultfilters import slugify
+from django.urls import reverse
 
 STATUS_CHOICES = (
     ('d', 'Draft'),
     ('p', 'Published'),
     ('w', 'Withdrawn'),
+)
+
+OBJECT_CHOICES = (
+    (0, 'notification'),
+    (1, 'about us')
+
 )
 
 class htmlobject(models.Model):
@@ -17,11 +24,63 @@ class htmlobject(models.Model):
     title = models.CharField(max_length = 200)
     body = models.TextField(max_length = 10000)
     active = models.BooleanField(default=True)
+    type   = models.IntegerField(choices=OBJECT_CHOICES, default=0)
 
     def name(self):
         return "%s" % (self.title)
     def __str__(self):
         return "%s" % (self.title)
+
+
+class menuitem(models.Model):
+    class Meta:
+        verbose_name_plural = "Menu Items"
+        verbose_name = "Menu Item"
+
+    order = models.IntegerField(blank=True, null=True)
+    icon  = models.CharField(max_length=200, blank=True, null=True)
+    text  = models.CharField(max_length=200)
+    link  = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.text
+    
+    def url(self):
+        split_link = self.link.split()
+        if len(split_link) == 0 :
+            return reverse(split_link)
+        elif len(split_link) > 0 :
+            return reverse(split_link[0], args = split_link[1:])
+        else:
+            return self.link
+
+
+class dropdownitem(models.Model):
+    class Meta:
+        verbose_name_plural = "Dropdown Items"
+        verbose_name = "Dropdown Item"
+
+    order = models.IntegerField(blank=True, null=True)
+    text = models.CharField(max_length=200)
+    link  = models.CharField(max_length=200, blank=True, null=True)
+
+    menuitem = models.ForeignKey(
+        menuitem,
+        on_delete=models.CASCADE,
+        verbose_name="Menu Item",
+        blank=True,
+        null=True,
+    )
+
+    def url(self):
+        split_link = self.link.split()
+        if len(split_link) == 0 :
+            return reverse(split_link)
+        elif len(split_link) > 0 :
+            return reverse(split_link[0], args = split_link[1:])
+        else:
+            return self.link
+
 
 class Puzzle(models.Model):
     pgn  = models.TextField(null = True, blank=True)
@@ -38,6 +97,7 @@ class news(models.Model):
 
     title = models.CharField(max_length = 200, default = "Feature")
     text = models.CharField(max_length = 10000)
+    caption = models.CharField(max_length = 500, blank=True, null=True)
     synopsis = models.CharField(max_length = 1000, default = '', null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -56,6 +116,8 @@ class event(models.Model):
     date = models.DateTimeField()
     link = models.CharField(max_length=200, blank = True, null = True)
     location = models.CharField(max_length=200, blank = True, null = True)
+    #image = models.ImageField(blank=True, upload_to = 'images')
+    #text = models.CharField(max_length = 10000)
 
     def name(self):              # __unicode__ on Python 2
         return "%s - %s" % (self.title)

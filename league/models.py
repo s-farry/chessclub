@@ -113,6 +113,16 @@ TEAM_SCORES = (
     (19, 9.5),
     (20, 10),
 )
+KNOCKOUT_ROUNDS = (
+    (0, 'Preliminary'),
+    (1, 'Final'),
+    (2, 'Semi-Final'),
+    (3, 'Quarter Final'),
+    (4, 'Last 16'),
+    (5, 'Last 32'),
+    (6, 'Last 64'),
+    (7, 'Last 128'),
+)
 
 from tinymce.widgets import TinyMCE
 
@@ -160,7 +170,10 @@ class Player(models.Model):
     phone = models.CharField(
         max_length=20, null=True, blank=True, verbose_name=_("phone")
     )
-    rating = models.IntegerField(null=True, blank=True, verbose_name=_("Rating"))
+    rating = models.IntegerField(null=True, blank=True, verbose_name=_("ECF Rating"))
+    fide_rating = models.IntegerField(null=True, blank=True, verbose_name=_("Fide Rating"))
+
+    joined_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         verbose_name = _("Player")
