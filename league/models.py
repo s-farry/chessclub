@@ -173,7 +173,7 @@ class Player(models.Model):
     rating = models.IntegerField(null=True, blank=True, verbose_name=_("ECF Rating"))
     fide_rating = models.IntegerField(null=True, blank=True, verbose_name=_("Fide Rating"))
 
-    joined_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    joined_date = models.DateField(blank=True, null=True)
 
     class Meta:
         verbose_name = _("Player")
@@ -190,6 +190,13 @@ class Player(models.Model):
         if self.rating and self.rating > 700:
             grade = int(round((self.rating - 700) / 7.5))
         return grade
+    
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id and not self.joined_date:
+            self.joined_date = now().date()
+        return super(Player, self).save(*args, **kwargs)
+
 
 
 class PlayerCustomFields(models.Model):

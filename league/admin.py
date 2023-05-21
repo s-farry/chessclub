@@ -219,9 +219,6 @@ class SeasonLeagueFilter(SimpleListFilter):
             return queryset.filter(id__in=[p.id for p in League.objects.filter(season=seasons.last())])
         else:
             return queryset
-    
-
-
 
 class LeagueAdmin(ModelAdmin):
     change_form_template = 'change_form.html'
@@ -405,11 +402,12 @@ class SeasonPlayersFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
-        seasons = [
+        seasons = [("all", 'All', )] + [
             (s.slug, s) for s in Season.objects.all().order_by('-end')
         ]
         return seasons
 
+    
     def queryset(self, request, queryset):
         """
         Returns the filtered queryset based on the value
@@ -419,13 +417,16 @@ class SeasonPlayersFilter(SimpleListFilter):
         seasons = Season.objects.all().order_by('-end')
         # Compare the requested value
         # to decide how to filter the queryset.
-        if self.value():
+        if self.value() and self.value()=='all':
+            return queryset
+        elif self.value():
             return queryset.filter(id__in=[p.id for p in Season.objects.filter(slug=self.value())[0].players.all()])
         elif len(seasons) > 0:
             return queryset.filter(id__in=[p.id for p in seasons[0].players.all()])
         else:
             return queryset
-
+    
+            
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'surename')
     list_filter = (SeasonPlayersFilter,)
