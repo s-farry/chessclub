@@ -105,8 +105,10 @@ class LeagueAdminChangeForm(forms.ModelForm):
     def __init__(self, *args,**kwargs):
         super (forms.ModelForm,self ).__init__(*args,**kwargs) # populates the post
         if self.instance and self.instance.season:
-            queryset = self.instance.season.players.union(self.instance.players.all())
-            self.fields['players'].queryset = queryset.order_by('surename')
+            #https://stackoverflow.com/questions/62711963/how-to-use-django-queryset-union-in-modeladmin-formfield-for-manytomany
+            queryset = self.instance.season.players.union(self.instance.season.extra_players.all())
+            queryset = Player.objects.filter(id__in = [q.id for q in queryset]).order_by('surename')
+            self.fields['players'].queryset = queryset
 
 
 class LeagueAdminKnockoutForm(forms.ModelForm):

@@ -691,7 +691,8 @@ def add_club_night_view(request, admin_site):
     opts = Schedule._meta
     season = Season.objects.order_by("end").last()
     leagues = League.objects.filter(season=season)
-    players = season.players.all().order_by("surename", "name")
+    players = season.players.all().union(season.extra_players.all())
+    players = players.order_by("surename", "name")
     league = leagues.last()
     formset = ScheduleModelFormset(
         queryset=Schedule.objects.none(), initial=[{"league": league}]

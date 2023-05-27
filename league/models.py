@@ -213,6 +213,9 @@ class Season(models.Model):
     players = models.ManyToManyField(
         Player, blank=True, related_name="seasons", verbose_name=_("Players")
     )
+    extra_players = models.ManyToManyField(
+        Player, blank=True, related_name="seasons_extras", verbose_name=_("Extra Players")
+    )
     slug = models.SlugField(unique=True, null=True, verbose_name=_("Slug"))
     results_officer = models.CharField(max_length=200, null=True, blank=True)
     results_officer_address = models.CharField(max_length=200, null=True, blank=True)

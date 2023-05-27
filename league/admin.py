@@ -62,12 +62,10 @@ class ScheduleInline(admin.TabularInline):
 
     def get_formset(self, request, instance, **kwargs):
         """Take a copy of the instance"""
-        print(instance)
         self.parent_instance = instance
         return super().get_formset(request, instance, **kwargs)
 
     def formfield_for_dbfield(self, db_field, **kwargs):
-        print(self)
         if db_field.name == 'round':
             if self.parent_instance is not None and self.parent_instance.get_format_display()=='Knockout':
                 kwargs['widget'] = forms.Select(choices=KNOCKOUT_ROUNDS, attrs={'class': 'form-control'})
@@ -505,7 +503,6 @@ class LeagueGamesFilter(SimpleListFilter):
         # Compare the requested value
         # to decide how to filter the queryset.
         if self.value():
-            print(self.value())
             return queryset.filter(league__slug=self.value())
         else:
             return queryset
@@ -545,7 +542,6 @@ class HistoricalLeagueGamesFilter(SimpleListFilter):
         # Compare the requested value
         # to decide how to filter the queryset.
         if self.value():
-            print(self.value())
             return queryset.filter(league__slug=self.value())
         else:
             return queryset
@@ -582,7 +578,6 @@ class ScheduleAdmin(ReverseModelAdmin):
         return urls + super_urls
 
     def save_model(self, request, obj, form, change):
-        print("saving schedule admin")
         super(ScheduleAdmin, self).save_model(request, obj, form, change)
         if not change and (not obj.white_rating or not obj.black_rating):
             if obj.white:
@@ -609,7 +604,7 @@ class ScheduleAdmin(ReverseModelAdmin):
     actions=['update_ratings']
 
 class SeasonAdmin(admin.ModelAdmin):
-    filter_horizontal = ('players',)
+    filter_horizontal = ('players','extra_players')
     form = SeasonAdminForm
     change_form = SeasonAdminChangeForm
 
