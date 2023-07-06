@@ -431,7 +431,7 @@ class Schedule(models.Model):
         return self.league.get_round_display(self.round)
 
     def __str__(self):
-        date = "TBC"
+        date = ""
         if self.date:
             date = self.date.date()
         if self.white and self.black:
@@ -439,9 +439,9 @@ class Schedule(models.Model):
                 date, self.white, self.print_result(plain=True), self.black
             )
         elif self.white:
-            return "{}: {} (bye)".format(date, self.white)
+            return "{}: {}".format(date, self.white)
         else:
-            return "{}: {} (bye)".format(date, self.black)
+            return "{}: {}".format(date, self.black)
 
 
 class PGN(models.Model):

@@ -740,21 +740,42 @@ def add_club_night_view(request, admin_site):
         for form in formset_result:
             if form.is_valid():
                 game = form.save(commit=False)
-                game.date = round_night
-                game.white_rating = game.white.rating
-                game.black_rating = game.black.rating
-                game.save()
-                admin_site.message_user(
-                    request,
-                    "Added %s %s %s in the %s on %s"
-                    % (
-                        game.white,
-                        game.get_result_display(),
-                        game.black,
-                        game.league,
-                        game.date,
-                    ),
-                )
+                existing_games = Schedule.objects.filter(Q(white=game.white) & Q(black = game.black) & Q(league = game.league) & Q(result=3) & ((Q(date=None) | Q(date=round_night))))
+
+                if len(existing_games) == 1 :
+                    result = game.result
+                    game = existing_games[0]
+                    game.result = result
+                    if not game.date: game.date = round_night
+
+                    game.save()
+                    admin_site.message_user(
+                        request,
+                        "Updated %s %s %s in the %s on %s"
+                        % (
+                            game.white,
+                            game.get_result_display(),
+                            game.black,
+                            game.league,
+                            game.date,
+                        ),
+                    )
+                else:
+                    game.date = round_night
+                    game.white_rating = game.white.rating
+                    game.black_rating = game.black.rating
+                    game.save()
+                    admin_site.message_user(
+                        request,
+                        "Added %s %s %s in the %s on %s"
+                        % (
+                            game.white,
+                            game.get_result_display(),
+                            game.black,
+                            game.league,
+                            game.date,
+                        ),
+                    )
                 if game.league not in leagues_updated:
                     leagues_updated += [game.league]
             else:
