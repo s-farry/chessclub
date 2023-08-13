@@ -645,7 +645,7 @@ admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Season, SeasonAdmin)
-#admin.site.register(Team, TeamAdmin)
+admin.site.register(Team, TeamAdmin)
 #admin.site.register(Standings)
 
 
