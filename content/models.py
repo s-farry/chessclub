@@ -46,6 +46,8 @@ class menuitem(models.Model):
         return self.text
     
     def url(self):
+        if not self.link:
+            return self.link
         split_link = self.link.split()
         if len(split_link) == 0 :
             return reverse(split_link)
@@ -63,6 +65,7 @@ class dropdownitem(models.Model):
     order = models.IntegerField(blank=True, null=True)
     text = models.CharField(max_length=200)
     link  = models.CharField(max_length=200, blank=True, null=True)
+    subitem = models.BooleanField(default=False)
 
     menuitem = models.ForeignKey(
         menuitem,
@@ -73,6 +76,8 @@ class dropdownitem(models.Model):
     )
 
     def url(self):
+        if not self.link:
+            return ''
         split_link = self.link.split()
         if len(split_link) == 0 :
             return reverse(split_link)
@@ -105,6 +110,7 @@ class news(models.Model):
     published_date = models.DateTimeField(null = True, blank = True)
     image = models.ImageField(blank=True, upload_to = 'images')
     author = models.ForeignKey(User, related_name='author', on_delete=models.CASCADE, verbose_name=('Author'), null = True, blank = True)
+    puzzle = models.ForeignKey(Puzzle, related_name='puzzle', on_delete=models.CASCADE, verbose_name=('Puzzle'), null=True, blank=True)
 
     def name(self):              # __unicode__ on Python 2
         return "%s" % (self.title)

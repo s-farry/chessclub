@@ -30,21 +30,25 @@
 
     {% if not request|is_mobile %}
 
-    <div class="{% if news.0.image %}col-md-6 {% else %} col-md-12 {% endif %} text-left">
+    <div class="{% if news.0.puzzle or news.0.image %} col-md-6 {% else %} col-md-12 {% endif %} text-left">
       <h1 class="display-5 fst-italic">{{news.0.title}}</h1>
       <div class="mb-1">{{ news.0.published_date.date }}</div>
-      <p class="lead my-3">
-        {{ news.0.text|safe |truncatewords:"100"}}</p>
-      <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" class="stretched-link">read more</a></p>
-    </div>
-    {% if news.0.image %}
-    <figure class="col-md-6 px-0 clearfix">
+          <p class="lead my-3">
+          {{ news.0.text|safe |truncatewords:"100"}}</p>
+        <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" {% if news.0.puzzle %} {% else %} class="stretched-link" {% endif %}>read more</a></p>
+      </div>
+      {% if news.0.image %}
+      <figure class="col-md-6 px-0 clearfix">
         <img class="mw-100 float-left" src="{{ news.0.image.url }}">
         {% if news.0.caption %}<figcaption class="text-small"><i>{{ news.0.caption }}</i></figcaption> {% endif %}
-    </figure>
-    {% endif %}
+      </figure>
+      {% endif %}
+      {% if news.0.puzzle %}
+      <div class='col-md-6 px-0 clearfix'>
+        <div id='board-{{ news.0.puzzle.id }}' class="merida zeit"></div>
+      </div>
+      {% endif %}
   </div>
-
 
   {% else %}
 
@@ -58,9 +62,15 @@
       {% if news.0.caption %}<figcaption>{{ news.0.caption }}</figcaption> {% endif %}
   </figure>
   {% endif %}
+
+  {% if news.0.puzzle %}
+  <div class='col-md-12 px-0 clearfix'>
+    <div id='board-{{ news.0.puzzle.id }}' class="merida zeit"></div>
+  </div>
+  {% endif %}
     <p class="lead my-3">
       {{ news.0.text|safe |truncatewords:"100"}}</p>
-    <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" class="stretched-link">read more</a></p>
+    <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" {% if news.0.puzzle %} {% else %} class="stretched-link" {% endif %}>read more</a></p>
   </div>
 </div>
 {% endif %}
@@ -161,26 +171,35 @@
             <div class="row">
                 <div class = "header mb-3"><i fpricingffclass="fab fa-twitter"></i> @WallaseyChess</div>
                     <div class = "w-100">
-                        <a class="twitter-timeline" data-tweet-limit="3" href="https://twitter.com/WallaseyChess?ref_src=twsrc%5Etfw"></a>
-                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
-
+                      <a class="twitter-timeline" href="https://twitter.com/WallaseyChess?ref_src=twsrc%5Etfw">Tweets by WallaseyChess</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        {% for puzzle in puzzles %}
         window.addEventListener("load", function() {
         var board = document.getElementById('board');
         var width = board.parentElement.offsetWidth;
         console.log(board.parentElement);
         console.log('width', width);
-        var pgn = `{{puzzle.pgn|safe}}`;
-        var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', 'width' : width.toString()+'px' };
-        PGNV.pgnTactic('board', cfg);
+        var pgn=`{news.0.puzzle.pgn}`
         }
         )
-        {% endfor %}
     </script> 
+
+{% if news.0.puzzle %}
+<script>
+  window.addEventListener("load", function() {
+  var board = document.getElementById('board-{{ news.0.puzzle.id }}');
+  var width = board.parentElement.offsetWidth;
+  console.log(board.parentElement);
+  console.log('width', width);
+  var pgn=`{{news.0.puzzle.pgn|safe}}`
+  var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', 'width' : width.toString()+'px' };
+  PGNV.pgnTactic('board-{{ news.0.puzzle.id }}', cfg);
+  }
+  )
+</script> 
+{% endif %}
     {% endblock %}

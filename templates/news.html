@@ -30,6 +30,9 @@
   {% endif %}
   {% endif %}
 
+  {% if news.0.puzzle %}
+
+  {% endif %}
   <div class="px-0 clearfix">
     <p class="lead my-3">{{ news.0.text|safe}}</p>
     <div class="mb-1">Published by {{ news.0.author.first_name }} {{ news.0.author.last_name }}</div>

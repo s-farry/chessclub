@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import news, event, album, image, simul, htmlobject, dropdownitem, menuitem
+from .models import news, event, album, image, simul, htmlobject, dropdownitem, menuitem, Puzzle
 from tinymce.widgets import TinyMCE
 from django import forms
 from functools import update_wrapper
@@ -107,7 +107,7 @@ class NewsAdminForm(forms.ModelForm):
     #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ('title', 'text', 'image', 'caption')
+        fields = ('title', 'text', 'image', 'caption','puzzle')
         model = news
 
 class NewsChangeAdminForm(forms.ModelForm):
@@ -117,7 +117,7 @@ class NewsChangeAdminForm(forms.ModelForm):
     #synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ('title', 'text', 'image', 'caption')
+        fields = ('title', 'text', 'image', 'caption','puzzle')
         model = news
 
 class NewsAdmin(admin.ModelAdmin):
@@ -199,4 +199,5 @@ admin.site.register(news, NewsAdmin)
 admin.site.register(event, EventAdmin)
 admin.site.register(album, AlbumAdmin)
 admin.site.register(simul)
+admin.site.register(Puzzle)
 admin.site.register(menuitem, MenuItemAdmin)

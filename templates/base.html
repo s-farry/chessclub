@@ -50,7 +50,11 @@
                     <li class = "dropdown"><a class="nav-link reserve-space" id="{{ menu.text }}DropDown", href="{{ menu.url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH {{ menu.text }} DD"><div class="sb-nav-link-icon">{% if menu.icon %}{{ menu.icon|safe }} {% endif %} <span class="dropdown-toggle">&nbsp;{{ menu.text }}</span></div>
                         <div class="dropdown-menu bg-black" aria-labelledby="{{ menu.text }}Dropdown">
                     {% for d in dropdownitems %}
+                    {% if d.subitem %}
+                        <a class="dropdown-subitem reserve-space" href="{{ d.url }}" title="{{ d.text }}">&#9658;&nbsp;{{ d.text }}</a>
+                    {% else %}
                         <a class="dropdown-item reserve-space" href="{{ d.url }}" title="{{ d.text }}">{{ d.text }}</a>
+                    {% endif %}
                     {% endfor %}
                         </div>
                     </a></li>
@@ -58,31 +62,6 @@
                     <li><a class="nav-link reserve-space" href="{{ menu.url }}" reserve = "CH {{menu.text}}">{% if menu.icon %}<div class="sb-nav-link-icon">{{ menu.icon|safe }} {% endif %} &nbsp;{{menu.text}}</div></a></li>
                     {% endif %}
                     {% endfor %}
-
-
-                    <!--
-                    <li><a class="nav-link reserve-space" href="{% url 'index' %}" reserve = "CH Home" alt="Home"><div class="sb-nav-link-icon"><i class="fas fa-chess"></i>&nbsp;Home</div></a></li>
-                    <li><a class="nav-link reserve-space" href="{% url 'news' %}" reserve = "CH News" alt="News"><div class="sb-nav-link-icon"><i class="far fa-newspaper"></i>&nbsp;News</div></a></li>
-                    <li><a class="nav-link reserve-space" href="{% url 'details' %}" reserve="CH Details" alt="Details">
-                        <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i> &nbsp;Details</div></a></li>
-                    <li class = "dropdown"><a class="nav-link reserve-space" id="tournamentDropDown", href="{% url 'tournament'%}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH Tournaments DD"><div class="sb-nav-link-icon"><i class="fas fa-chess-board"></i> <span class="dropdown-toggle">&nbsp;Tournaments</span></div>
-                        <div class="dropdown-menu bg-black" aria-labelledby="tournamentDropdown">
-                            <a class="dropdown-item reserve-space" href="{% url 'tournament' 'championship-22-23' %}" title="Championship">Championship</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'tournament' 'premiership-22-23' %}" title="Premiership">Premiership</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'tournament' 'major-22-23' %}" title="Major">Major</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'tournament' 'david-camm-knockout-22-23' %}" title="David Camm">David Camm</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'tournament' 'open-major-knockout-22-23' %}" title="Open Major">Open Major</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'tournaments' %}">All Tournaments</a>
-                        </div>
-                    </a></li>
-                    <li class = "dropdown"><a class="nav-link reserve-space" id="seasonDropDown", href="{% url 'season'%}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH Season DD"><div class="sb-nav-link-icon"><i class="fas fa-users"></i> <span class="dropdown-toggle">&nbsp;Season</span></div>
-                        <div class="dropdown-menu dropdown-menu-right bg-black" aria-labelledby="seasonDropdown">
-                            <a class="dropdown-item reserve-space" href="{% url 'members' %}" title="Members">Members</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'team_squads' %}" title="Team Squads">Team Squads</a>
-                            <a class="dropdown-item reserve-space" href="{% url 'team_fixtures' %}" title="Team Fixtures">Team Fixtures</a>-
-                        </div>
-                    </a></li>
-                -->
                 </ul>
             </nav>
         </div>
@@ -111,7 +90,7 @@
 
 
 
-                            <div class="text-muted">Copyright &copy; Wallasey Chess Club 2023</div>
+                            <div class="text-muted">Copyright &copy; Wallasey Chess Club 2021-2023</div>
                         </div>
                     </div>
                 </footer>
