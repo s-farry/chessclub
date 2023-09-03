@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ game }}{% endblock %}
+{% block header %} 
+<!-- CSS used -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+{% endblock %}
+{% load i18n %}
+{% load league_tags %}
+{% block content %}
+<h1 class="mt-4">Wallasey Chess Club</h1>
+<hr>
+<h2 class="mt-4">Internal League Rules for 2023/2024 Season</h2>
+<ul>
+<li>No internal league games to be played away from the club in any circumstances. Internal cup games up to the semi-final may be played in special circumstances.</li>
+<li>Top 15 will survive the drop from the Championship</li>
+<li>Top 18 will survive the drop from the Premiership</li>
+<li>If players finish on equal points at the top or bottom of the leagues, a tiebreak will be performed according to FIDE regulations.</li>
+<li>If you book a game and do not turn up without contacting your opponent, on the second occassion you will forfeit the game.</li>
+<li>No games to be started after 8pm in the winter leagues and 10pm in the summer leagues.</li>
+</ul>
+
+<h2 class="mt-4">Wirral League</h2>
+<ul>
+    <li> <a href="{{ MEDIA_URL }}/docs/wirral_chess_league_23_24_rules_regs.pdf" target="_blank">Tournament Rules and Regulations</a></li>
+</ul>
+
+<h2 class="mt-4">Merseyside League</h2>
+<ul>
+    
+</ul>
+
+
+
+<h2 class="mt-4">Other Documents</h2>
+<ul>
+    <li> <a href="{{ MEDIA_URL }}docs/Data Protection Policy WCC Final August 2023.pdf" target="_blank">Data Protection Policy</a></li>
+    <li> <a href="{{ MEDIA_URL }}docs/Safeguarding policy Final August 2023.pdf" target="_blank">Safeguarding Policy</a></li>
+</ul>
+
+
+
+{% endblock %}

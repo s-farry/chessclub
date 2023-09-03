@@ -8,5 +8,5 @@ def htmlobjects(request):
     if len(notifications) > 0:
         context['notifications'] = notifications
     if len(menuitems) > 0:
-        context['menuitems'] = {m : dropdownitem.objects.filter(menuitem=m) for m in menuitems}
+        context['menuitems'] = {m : dropdownitem.objects.filter(menuitem=m).order_by('order') for m in menuitems}
     return context

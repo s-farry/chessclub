@@ -5,6 +5,9 @@
 {% block header %} 
 <!-- CSS used -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<script src="{% static 'js/pgnv.js' %}" type="text/javascript"></script>
+<!-- CSS used -->
+<link rel="stylesheet" href="{% static 'css/pgnvjs.css' %}">
 {% endblock %}
 {% load i18n %}
 {% load league_tags %}
@@ -31,7 +34,9 @@
   {% endif %}
 
   {% if news.0.puzzle %}
-
+  <div class='mw-30 px-0 clearfix'>
+    <div id='board-{{ news.0.puzzle.id }}' class="merida zeit"></div>
+  </div>
   {% endif %}
   <div class="px-0 clearfix">
     <p class="lead my-3">{{ news.0.text|safe}}</p>
@@ -40,6 +45,23 @@
   
 
 </div>
+
+{% if news.0.puzzle %}
+<script>
+  window.addEventListener("load", function() {
+  var board = document.getElementById('board-{{ news.0.puzzle.id }}');
+  var width = board.parentElement.offsetWidth;
+  console.log(board.parentElement);
+  console.log('width', width);
+  var pgn=`{{news.0.puzzle.pgn|safe}}`
+  var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', 'width' : width.toString()+'px' };
+  PGNV.pgnTactic('board-{{ news.0.puzzle.id }}', cfg);
+  }
+  )
+</script> 
+{% endif %}
+
+
 {% else %}
 
 
@@ -58,4 +80,8 @@
 
 {% endfor %}
 {% endif %}
+
+
+
+
 {% endblock %}

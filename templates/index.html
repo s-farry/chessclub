@@ -11,81 +11,67 @@
     {% load league_tags %}
     {% load user_agents %}
     {% block content %}
-
-    <div class="row">
-        <div class = "header mb-3"><i class="fas fa-chess-knight"></i> About Us</div>
-            <div class = "news-body">
-                {{about.body|safe}}
-            </div>
-
-            
+<div>
+  <div class="row">
+    <div class = "header mb-3"><i class="fas fa-chess-knight"></i> About Us</div>
+    <div class = "news-body">
+      {{about.body|safe}}
+    </div>
+  </div>
+  <div class = "row">
+    <div class = "col mr-3 mt-3">
+      <div class = "row">
+        <div class = "header mb-3"><i class="fas fa-newspaper"></i> Latest News</div>
+        <div class="p-4 p-md-5 mb-4 text-white rounded bg-black d-flex text-left">
+        {% if not request|is_mobile %}
+          <div class="{% if news.0.puzzle or news.0.image %} col-md-6 {% else %} col-md-12 {% endif %} text-left">
+            <h1 class="display-5 fst-italic">{{news.0.title}}</h1>
+            <div class="mb-1">{{ news.0.published_date.date }}</div>
+            <p class="lead my-3">{{ news.0.text|safe |truncatewords:"100"}}</p>
+            <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" {% if news.0.puzzle %} {% else %} class="stretched-link" {% endif %}>read more</a></p>
+          </div>
+          {% if news.0.image %}
+          <figure class="col-md-6 px-0 clearfix">
+            <img class="mw-100 float-left" src="{{ news.0.image.url }}">
+            {% if news.0.caption %}<figcaption class="text-small"><i>{{ news.0.caption }}</i></figcaption> {% endif %}
+          </figure>
+          {% endif %}
+          {% if news.0.puzzle %}
+          <div class='col-md-6 px-0 clearfix'>
+            <div id='board-{{ news.0.puzzle.id }}' class="merida zeit"></div>
+          </div>
+          {% endif %}
         </div>
-    <div class = "row">
-        <div class = "col mr-3 mt-3">
-            <div class = "row">
-                <div class = "header mb-3"><i class="fas fa-newspaper"></i> Latest News</div>
-
-
-  <div class="p-4 p-md-5 mb-4 text-white rounded bg-black d-flex text-left">
-
-    {% if not request|is_mobile %}
-
-    <div class="{% if news.0.puzzle or news.0.image %} col-md-6 {% else %} col-md-12 {% endif %} text-left">
-      <h1 class="display-5 fst-italic">{{news.0.title}}</h1>
-      <div class="mb-1">{{ news.0.published_date.date }}</div>
-          <p class="lead my-3">
-          {{ news.0.text|safe |truncatewords:"100"}}</p>
-        <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" {% if news.0.puzzle %} {% else %} class="stretched-link" {% endif %}>read more</a></p>
-      </div>
-      {% if news.0.image %}
-      <figure class="col-md-6 px-0 clearfix">
-        <img class="mw-100 float-left" src="{{ news.0.image.url }}">
-        {% if news.0.caption %}<figcaption class="text-small"><i>{{ news.0.caption }}</i></figcaption> {% endif %}
-      </figure>
-      {% endif %}
-      {% if news.0.puzzle %}
-      <div class='col-md-6 px-0 clearfix'>
-        <div id='board-{{ news.0.puzzle.id }}' class="merida zeit"></div>
-      </div>
-      {% endif %}
-  </div>
-
-  {% else %}
-
-  <div class="col-md-12 text-left">
-    <h1 class="display-5 fst-italic">{{news.0.title}}</h1>
-    <div class="mb-1">{{ news.0.published_date.date }}</div>
-
-  {% if news.0.image %}
-  <figure class="col-md-12 px-0 clearfix">
-      <img class="mw-100 float-left" src="{{ news.0.image.url }}">
-      {% if news.0.caption %}<figcaption>{{ news.0.caption }}</figcaption> {% endif %}
-  </figure>
-  {% endif %}
-
-  {% if news.0.puzzle %}
-  <div class='col-md-12 px-0 clearfix'>
-    <div id='board-{{ news.0.puzzle.id }}' class="merida zeit"></div>
-  </div>
-  {% endif %}
-    <p class="lead my-3">
-      {{ news.0.text|safe |truncatewords:"100"}}</p>
-    <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" {% if news.0.puzzle %} {% else %} class="stretched-link" {% endif %}>read more</a></p>
-  </div>
-</div>
-{% endif %}
-
-
-
-  <div class="row mb-2">
-      <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <h4 class="mb-0">{{ news.1.title }}</h4>
-          <div class="mb-1 text-muted">{{ news.1.published_date.date }}</div>
-          <p class="card-text mb-auto">{{ news.1.text | safe|truncatewords:"50" }}</p>
-          <a href="{% url 'news' news.1.id %}" class="stretched-link">read more</a>
+        {% else %}
+        <div class="col-md-12 text-left">
+          <h1 class="display-5 fst-italic">{{news.0.title}}</h1>
+          <div class="mb-1">{{ news.0.published_date.date }}</div>
+          {% if news.0.image %}
+          <figure class="col-md-12 px-0 clearfix">
+            <img class="mw-100 float-left" src="{{ news.0.image.url }}">
+            {% if news.0.caption %}<figcaption>{{ news.0.caption }}</figcaption> {% endif %}
+          </figure>
+          {% endif %}
+          {% if news.0.puzzle %}
+          <div class='col-md-12 px-0 clearfix'>
+            <div id='board-{{ news.0.puzzle.id }}' class="merida zeit"></div>
+          </div>
+          {% endif %}
+          <p class="lead my-3">{{ news.0.text|safe |truncatewords:"100"}}</p>
+          <p class="lead mb-0"><a href="{% url 'news' news.0.id %}" {% if news.0.puzzle %} {% else %} class="stretched-link" {% endif %}>read more</a></p>
         </div>
-            </div>
+      </div>
+      {% endif %}
+
+      <div class="row mb-2">
+        <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <h4 class="mb-0">{{ news.1.title }}</h4>
+            <div class="mb-1 text-muted">{{ news.1.published_date.date }}</div>
+            <p class="card-text mb-auto">{{ news.1.text | safe|truncatewords:"50" }}</p>
+            <a href="{% url 'news' news.1.id %}" class="stretched-link">read more</a>
+          </div>
+        </div>
       <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
           <h4 class="mb-0">{{ news.2.title }}</h4>
@@ -93,90 +79,82 @@
           <p class="card-text mb-auto">{{ news.2.text | safe|truncatewords:"50" }}</p>
           <a href="{% url 'news' news.2.id %}" class="stretched-link">read more</a>
         </div>
-        
       </div>
     </div>
 
 
     <div class="row mb-2">
-        <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-static">
-            <h4 class="mb-0">{{ news.3.title }}</h4>
-            <div class="mb-1 text-muted">{{ news.3.published_date.date }}</div>
-            <p class="card-text mb-auto">{{ news.3.text | safe|truncatewords:"50" }}</p>
-            <a href="{% url 'news' news.3.id %}" class="stretched-link">read more</a>
-          </div>
-              </div>
-        <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-static">
-            <h4 class="mb-0">{{ news.4.title }}</h4>
-            <div class="mb-1 text-muted">{{ news.4.published_date.date }}</div>
-            <p class="card-text mb-auto">{{ news.4.text | safe|truncatewords:"50" }}</p>
-            <a href="{% url 'news' news.4.id %}" class="stretched-link">read more</a>
-          </div>
-          
+      <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <h4 class="mb-0">{{ news.3.title }}</h4>
+          <div class="mb-1 text-muted">{{ news.3.published_date.date }}</div>
+          <p class="card-text mb-auto">{{ news.3.text | safe|truncatewords:"50" }}</p>
+          <a href="{% url 'news' news.3.id %}" class="stretched-link">read more</a>
         </div>
       </div>
-
-  
+      <div class="col-md-6 g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <h4 class="mb-0">{{ news.4.title }}</h4>
+          <div class="mb-1 text-muted">{{ news.4.published_date.date }}</div>
+          <p class="card-text mb-auto">{{ news.4.text | safe|truncatewords:"50" }}</p>
+          <a href="{% url 'news' news.4.id %}" class="stretched-link">read more</a>
+        </div>
+      </div>
     </div>
 
-            <div class = "row">
-                <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>
-                    <div class = "ml-auto mr-auto puzzle">
-                        <div id="board" class='merida zeit'></div>
-                    </div>
-            </div>
-        </div>
-
-        <div class = "col-md-4 mt-3">
-
-            <div class = "row">
-                <div class = "header"><i class="fas fa-calendar-alt"></i> Club Calendar</div>
-                
-                <div class = "calendar">
-                    {% if events|length == 0 %}
-                    No events scheduled at the moment. Check back later!
-                    {% endif %}
-                    {% for event in events %}
-                    <div class = "calendar-event">
-                        <table class = "calendar-event mr-2">
-                            <tr><td class = "calendar-day"> {{event.date|date:'D'}} </td><td class="px-2"> <a class="event-link" {% if event.link %} href = "{{event.link}}" {% endif %}>{{event.title}}</a> </td></tr>
-                            <tr><td class = "calendar-month"> {{event.date|date:'d-M'}} </td><td class = "px-2"> {% if event.location %} {{event.location}}, {% endif %}{{event.date|date:'H:i'}}</td></tr>
-                        </table>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <!--
-            <div class = "row">
-                <div class = "header"><i class="fas fa-calendar-alt"></i> League Fixtures</div>
-                    
-                <div class = "calendar">
-                        {% if fixtures|length == 0 %}
-                        No fixtures scheduled at the moment.
-                        {% endif %}
-                        {% for fixture in fixtures %}
-                        <div class = "calendar-event">
-                            <table class = "calendar-event mr-2">
-                                <tr><td class = "calendar-day"> {{fixture.date|date:'D'}} </td><td class="px-2"> {{fixture}}</td></tr>
-                                <tr><td class = "calendar-month"> {{fixture.date|date:'d-M'}}</td><td class="px-2">{{fixture.team.league}}</td></tr>
-                            </table>
-                        </div>
-                        {% endfor %}
-                </div>
-            </div>
-        -->
-
-            <div class="row">
-                <div class = "header mb-3"><i fpricingffclass="fab fa-twitter"></i> @WallaseyChess</div>
-                    <div class = "w-100">
-                      <a class="twitter-timeline" href="https://twitter.com/WallaseyChess?ref_src=twsrc%5Etfw">Tweets by WallaseyChess</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class = "row">
+      <div class = "header"><i class="fas fa-puzzle-piece"></i> Daily Puzzle</div>
+      <div class = "ml-auto mr-auto puzzle">
+        <div id="board" class='merida zeit'></div>
+      </div>
     </div>
+  </div>
+
+</div>
+
+<div class = "col-md-4 mt-3">
+  <div class = "row">
+    <div class = "header"><i class="fas fa-calendar-alt"></i> Club Calendar</div>
+    <div class = "calendar">
+      {% if events|length == 0 %}
+      No events scheduled at the moment. Check back later!
+      {% endif %}
+      {% for event in events %}
+      <div class = "calendar-event">
+        <table class = "calendar-event mr-2">
+          <tr><td class = "calendar-day"> {{event.date|date:'D'}} </td><td class="px-2"> <a class="event-link" {% if event.link %} href = "{{event.link}}" {% endif %}>{{event.title}}</a> </td></tr>
+          <tr><td class = "calendar-month"> {{event.date|date:'d-M'}} </td><td class = "px-2"> {% if event.location %} {{event.location}}, {% endif %}{{event.date|date:'H:i'}}</td></tr>
+        </table>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <!--
+  <div class = "row">
+    <div class = "header"><i class="fas fa-calendar-alt"></i> League Fixtures</div>
+      <div class = "calendar">
+        {% if fixtures|length == 0 %}
+        No fixtures scheduled at the moment.
+        {% endif %}
+        {% for fixture in fixtures %}
+        <div class = "calendar-event">
+          <table class = "calendar-event mr-2">
+            <tr><td class = "calendar-day"> {{fixture.date|date:'D'}} </td><td class="px-2"> {{fixture}}</td></tr>
+            <tr><td class = "calendar-month"> {{fixture.date|date:'d-M'}}</td><td class="px-2">{{fixture.team.league}}</td></tr>
+          </table>
+        </div>
+        {% endfor %}
+      </div>
+  </div>
+-->
+
+  <div class="row">
+    <div class = "header mb-3"><i fpricingffclass="fab fa-twitter"></i> @WallaseyChess</div>
+      <div class = "w-100">
+        <a class="twitter-timeline" href="https://twitter.com/WallaseyChess?ref_src=twsrc%5Etfw">Tweets by WallaseyChess</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+      </div>
+  </div>
+</div>
     <script>
         window.addEventListener("load", function() {
         var board = document.getElementById('board');
