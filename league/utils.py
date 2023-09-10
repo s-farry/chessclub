@@ -952,5 +952,7 @@ def make_pretty_table(league):
         size=12
     )
 
+    ax.text((positions[0] + positions[-1])*0.5, -nrows * 0.05, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
+
 
     return fig
