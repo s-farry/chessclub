@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
-from .models import League, Schedule, Standings, Player, Season, Team, TeamPlayer, TeamFixture, STANDINGS_ORDER, POINTS, PGN, KNOCKOUT_ROUNDS
+from .models import League, Schedule, Standings, Player, Season, Team, TeamPlayer, TeamFixture, STANDINGS_ORDER, POINTS, PGN, KNOCKOUT_ROUNDS, COMMITTEE_POSITIONS, CommitteeMember
 from .forms import LeagueAdminForm, LeagueAdminChangeForm, SeasonAdminForm, SeasonAdminChangeForm, ScheduleKnockoutForm, ScheduleLeagueForm
 from django.utils import timezone
 from django.urls import resolve, reverse
@@ -154,6 +154,10 @@ class StandingsInline(admin.TabularInline):
     fields = ('position','matches','win','draws','lost','points')
 
 
+class CommitteeMemberInline(admin.TabularInline):
+    model = CommitteeMember
+
+
 
 from functools import update_wrapper
 from django.contrib import admin
@@ -286,7 +290,7 @@ class LeagueAdmin(ModelAdmin):
         buffer = BytesIO()
         with PdfPages(buffer) as pdf:
             for obj in queryset:
-                fig = make_table(obj)
+                fig = utils.make_pretty_table(obj)
                 pdf.savefig()
 
         pdf = buffer.getvalue()
@@ -607,6 +611,7 @@ class SeasonAdmin(admin.ModelAdmin):
     filter_horizontal = ('players','extra_players')
     form = SeasonAdminForm
     change_form = SeasonAdminChangeForm
+    inlines=[CommitteeMemberInline]
 
     def save_model(self, request, obj, form, change):
         if not change:

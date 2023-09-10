@@ -124,6 +124,21 @@ KNOCKOUT_ROUNDS = (
     (7, 'Last 128'),
 )
 
+
+COMMITTEE_POSITIONS = (
+    (0, _("President")),
+    (1, _("Secretary")),
+    (2, _("Assistant Secretary")),
+    (3, _("Tournament Secretary")),
+    (4, _("Club Steward")),
+    (5, _("Auditor")),
+    (6, _("Treasurer")),
+    (7, _("Club Captain")),
+    (8, _("Publicity Officer")),
+    (9, _("Promotions Officer")),
+    (10, _("Other")),
+)
+
 from tinymce.widgets import TinyMCE
 
 
@@ -531,6 +546,28 @@ class TeamPlayer(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.player, self.team.name)
+
+
+class CommitteeMember(models.Model):
+    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_("Season"))
+    member = models.ForeignKey(
+        Player, on_delete=models.CASCADE, verbose_name=_("Committee Member")
+    )
+    position = models.IntegerField(
+        verbose_name=_("Committe Position"), choices=(COMMITTEE_POSITIONS), null=True, blank=True
+    )
+    start_date = models.DateField(
+        null=True, blank=True, verbose_name=_("Start Date")
+    )
+    end_date = models.DateField(
+        null=True, blank=True, verbose_name=_("End Date")
+    )
+    class Meta:
+        verbose_name = _("Committee Member")
+        verbose_name_plural = _("Committee Members")
+
+    def __str__(self):
+        return "%s - %s" % (self.position, self.member)
 
 
 class Standings(models.Model):

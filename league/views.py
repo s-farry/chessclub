@@ -14,6 +14,7 @@ from league.models import (
     TeamFixture,
     TeamPlayer,
     PGN,
+    CommitteeMember,
     STANDINGS_ORDER,
 )
 from django.db.models import Q
@@ -161,7 +162,7 @@ def fixtures(request, league, **kwargs):
 
 def player(request, player_id, **kwargs):
     player = get_object_or_404(Player, id=player_id)
-    active_seasons = [ s for s in Season.objects.order_by("end").filter(players__in = [player]) if is_active_season(player_id, s.id)  ]
+    active_seasons = [ s for s in Season.objects.order_by("end") if is_active_season(player_id, s.id)  ]
     
     games = {}
     if "league" in kwargs:
@@ -210,6 +211,14 @@ def game(request, game_id):
 
 def trophycabinet(request):
     return render(request, "trophycabinet.html")
+
+def committee(request, **kwargs):
+    if "season_slug" in kwargs:
+        f = get_object_or_404(Season, slug=kwargs["season_slug"])
+    else:
+        f = Season.objects.order_by("end").last()
+    members = CommitteeMember.objects.filter(season=f)
+    return render(request, "committee.html", {"season": f, "members": members})
 
 
 def leagues(request, **kwargs):
@@ -319,6 +328,7 @@ from .utils import (
     get_swiss_games,
     get_game,
     make_table,
+    make_pretty_table,
     make_crosstable,
     standings_save,
     standings_update,
@@ -331,7 +341,7 @@ def export_league_pdf(request, league):
     filename = "%s_%s" % (obj, obj.updated_date.date())
     response["Content-Disposition"] = "attachment; filename={0}.pdf".format(filename)
     buffer = BytesIO()
-    fig = make_table(obj)
+    fig = make_pretty_table(obj)
     fig.savefig(buffer, format="pdf")
     pdf = buffer.getvalue()
     buffer.close()

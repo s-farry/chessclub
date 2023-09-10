@@ -23,10 +23,6 @@ def latest(request, **kwargs):
 def details(request):
     return render(request, "details.html")
 
-def committee(request):
-    return render(request, "committee.html")
-
-
 def rules(request):
     return render(request, "rules.html")
 

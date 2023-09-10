@@ -15,6 +15,7 @@ from .views import (
     trophycabinet,
     team_fixtures,
     team_squads,
+    committee
 )
 
 urlpatterns = [
@@ -36,6 +37,8 @@ urlpatterns = [
     url(r"^player/(?P<player_id>[0-9]+)/league=(?P<league>[-\w]+)$", player, name="player"),
     url(r"^player/(?P<player_id>[0-9]+)/season=(?P<season>[-\w]+)$", player, name="player"),
     url(r"^player/(?P<player_id>[0-9]+)[/]$", player, name="player"),
+    url(r"^committee$", committee, name="committee"),
+    url(r"^committee/(?P<season>[-\w]+)$", committee, name="committee"),
     url(
         r"^export_league_pdf/(?P<league>[-\w]+)$",
         export_league_pdf,

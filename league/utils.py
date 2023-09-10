@@ -601,7 +601,11 @@ import matplotlib.font_manager
 matplotlib.use("pdf") ## Include this line to make PDF output
 
 #matplotlib.rcParams['font.family'] = 'sans-serif'
-matplotlib.rcParams['font.sans-serif'] = ['Tahoma']
+#matplotlib.rcParams['font.sans-serif'] = ['Tahoma']
+# Say, "the default sans-serif font is COMIC SANS"
+matplotlib.rcParams['font.sans-serif'] = ['Garamond']
+# Then, "ALWAYS use sans-serif fonts"
+matplotlib.rcParams['font.family'] = "serif"
 
 from django.templatetags.static import static
 from django.conf import settings
@@ -630,6 +634,11 @@ def make_table(league):
         c.set_height(0.03)
 
 
+    #for cell in table._cells:
+        #text = table._cells[cell].get_text()
+        #text.set_fontstyle('italic')
+        #table._cells[cell]._text._fontproperties._family = 'serif'
+
     ax2.text(0.5, -0.1, "Last updated on %s"%(league.updated_date.date().strftime('%d %b %Y')), horizontalalignment='center', verticalalignment='center')
 
     im = image.imread(settings.BASE_DIR + static('img/wcc_logo_outline.png'))
@@ -637,7 +646,6 @@ def make_table(league):
 
     return fig
 
-import matplotlib as mpl
 
 def hide_edges(table, idx0, idx1):
     ix0,ix1 = np.asarray(idx0), np.asarray(idx1)
@@ -675,7 +683,7 @@ def mergecells(table, idx0, idx1):
         trans[0] *= 2
 
     print('trans', tpos[0], tpos[1], trans, txts)
-    txts[0].set_transform(mpl.transforms.Affine2D().translate(*trans))
+    txts[0].set_transform(matplotlib.transforms.Affine2D().translate(*trans))
 
     # hide the text in the 1st cell
     txts[1].set_visible(False)
@@ -773,7 +781,7 @@ def is_active_season(player_id, season_id):
     '''
     player = Player.objects.get(id=player_id)
     season = Season.objects.get(id=season_id)
-    listed_seasons = Season.objects.order_by("end").filter(players__in = [player])
+    listed_seasons = Season.objects.order_by("end").filter(Q(players__in = [player]) | Q(extra_players__in = [player]))
     if season not in listed_seasons:
         return False
 
@@ -787,3 +795,162 @@ def is_active_season(player_id, season_id):
             return True
 
     return False
+
+def ax_logo(ax):
+    
+    #Plots the logo of the team at a specific axes.
+    #Args:
+    #    ax (object): the matplotlib axes where we'll draw the image.
+    
+    im = image.imread(settings.BASE_DIR + static('img/wallaseychessclub_outline.png'))
+    ax.imshow(im)
+    ax.axis('off')
+    return ax
+
+'''
+def minutes_battery(minutes, ax):
+    
+    #This function takes an integer and an axes and 
+    #plots a battery chart.
+    
+    ax.set_xlim(0,1)
+    ax.set_ylim(0,1)
+    ax.barh([0.5], [1], fc = 'white', ec='black', height=.35)
+    ax.barh([0.5], [minutes/(90*38)], fc = '#00529F', height=.35)
+    text_ = ax.annotate(
+        xy=(minutes/(90*38), .5),
+        text=f'{minutes/(90*38):.0%}',
+        xytext=(-8,0),
+        textcoords='offset points',
+        weight='bold',
+        color='#EFE9E6',
+        va='center',
+        ha='center',
+        size=5
+    )
+    ax.set_axis_off()
+    return ax
+'''
+def make_pretty_table(league):
+    # adapted from https://www.sonofacorner.com/beautiful-tables/
+    fig = plt.figure(figsize=(8,10), dpi=300)
+    ax = plt.subplot()
+
+
+    standings = Standings.objects.filter(league = league).order_by('-position')
+
+    ncols = 6
+    nrows = len(standings)
+
+    ax.set_xlim(0, ncols + 5)
+    ax.set_ylim(0, nrows + 1)
+
+    positions = [0.25, 1.25, 6.5, 7.5, 8.5, 9.5, 10.5]
+    columns = ["position", "player", "matches", "win", "draws", "lost", "total_points" ]
+
+    # -- Add table's main text
+    for i,s in enumerate(standings):
+        for j, column in enumerate(columns):
+            if j < 2:
+                ha = 'left'
+            else:
+                ha = 'center'
+            if column == 'Min':
+                continue
+            else:
+                if column == "player":
+                    text_label = s.player.__str__()
+                elif column in ('matches', 'win', 'draws', 'lost', 'position'):
+                    text_label = "%i"%(getattr(s, column))
+                elif column in ('total_points'):
+                    text_label = (s.total_points())
+                else:
+                    text_label = '%s'%(getattr(s, column))
+                weight = 'normal'
+            ax.annotate(
+                xy=(positions[j], i + .5),
+                text=text_label,
+                ha=ha,
+                va='center',
+                weight=weight
+            )
+
+    # -- Transformation functions
+    DC_to_FC = ax.transData.transform
+    FC_to_NFC = fig.transFigure.inverted().transform
+    # -- Take data coordinates and transform them to normalized figure coordinates
+    DC_to_NFC = lambda x: FC_to_NFC(DC_to_FC(x))
+    # -- Add nation axes
+    ax_point_1 = DC_to_NFC([2.25, 0.25])
+    ax_point_2 = DC_to_NFC([2.75, 0.75])
+    ax_width = abs(ax_point_1[0] - ax_point_2[0])
+    ax_height = abs(ax_point_1[1] - ax_point_2[1])
+    #for x in range(0, nrows):
+    #    ax_coords = DC_to_NFC([2.25, x + .25])
+    #    flag_ax = fig.add_axes(
+    #        [ax_coords[0], ax_coords[1], ax_width, ax_height]
+    #    )
+    #    ax_logo(df_final['Nation'].iloc[x], flag_ax)
+
+    ax_point_1 = DC_to_NFC([4, 0.05])
+    ax_point_2 = DC_to_NFC([5, 0.95])
+    ax_width = abs(ax_point_1[0] - ax_point_2[0])
+    ax_height = abs(ax_point_1[1] - ax_point_2[1])
+    #for x in range(0, nrows):
+    #    ax_coords = DC_to_NFC([4, x + .025])
+    #    bar_ax = fig.add_axes(
+    #        [ax_coords[0], ax_coords[1], ax_width, ax_height]
+    #    )
+    #    minutes_battery(df_final['Min'].iloc[x], bar_ax)
+
+    # -- Add column names
+
+    column_names = ['', 'Name', 'P', 'W', 'D', 'L', 'Pts']
+    for index, c in enumerate(column_names):
+            if index < 2:
+                ha = 'left'
+            else:
+                ha = 'center'
+            ax.annotate(
+                xy=(positions[index], nrows + .25),
+                text=column_names[index],
+                ha=ha,
+                va='bottom',
+                weight='bold'
+            )
+
+    # Add dividing lines
+    ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [nrows, nrows], lw=1.5, color='black', marker='', zorder=4)
+    ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [0, 0], lw=1.5, color='black', marker='', zorder=4)
+    for x in range(1, nrows):
+        ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [x, x], lw=1.15, color='gray', ls=':', zorder=3 , marker='')
+
+    
+
+    ax.fill_between(
+        x=[0,positions[1]-0.4],
+        y1=nrows,
+        y2=0,
+        color='lightgrey',
+        alpha=0.5,
+        ec='None'
+    )
+    
+
+    ax.set_axis_off()
+    # -- Final details
+    logo_ax = fig.add_axes(
+        [0.8, 0.89, .1, .1]
+    )
+    ax_logo(logo_ax)
+    fig.text(
+        x=0.5, y=.91,
+        s='%s (%s)'%(league.name, league.season),
+        ha='center',
+        va='bottom',
+        weight='bold',
+        size=12
+    )
+
+
+    return fig
