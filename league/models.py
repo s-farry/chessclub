@@ -18,6 +18,7 @@ STANDINGS_ORDER_HUMAN = (
     (3, _("FIDE Swiss Tiebreak System")),
     (4, _("Win Percentage")),
     (5, _("Matches Played")),
+    (6, _("Points, Head-to-Head, Wins, Wins With Black, NBS")),
 )
 STANDINGS_ORDER = (
     (0, ("-points", "-win", "lost", "matches", "-rating", "player__surename")),
@@ -58,6 +59,15 @@ STANDINGS_ORDER = (
             "-win",
             "lost",
             "matches",
+            "-rating",
+            "player__surename",
+        ),
+        6,
+        (
+            "-points",
+            "-h2h"
+            "-win",
+            "-win1"
             "-rating",
             "player__surename",
         ),
@@ -627,6 +637,9 @@ class Standings(models.Model):
     )
     winpercent = models.FloatField(
         null=True, blank=True, default=0, verbose_name=_("Win Percentage")
+    )
+    h2h = models.IntegerField(
+        null=True, blank=True, default=0, verbose_name=_("Head to Head Record")
     )
 
     def __str__(self):
