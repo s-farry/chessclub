@@ -37,7 +37,7 @@ STANDINGS_ORDER = (
             "-nbs",
             "-rating",
             "player__surename",
-        ),
+        )
     ),
     (
         4,
@@ -49,7 +49,7 @@ STANDINGS_ORDER = (
             "matches",
             "-rating",
             "player__surename",
-        ),
+        )
     ),
     (
         5,
@@ -61,16 +61,18 @@ STANDINGS_ORDER = (
             "matches",
             "-rating",
             "player__surename",
-        ),
+        )
+    ),
+    (
         6,
         (
             "-points",
-            "-h2h"
+            "-h2h",
             "-win",
-            "-win1"
+            "-win1",
             "-rating",
             "player__surename",
-        ),
+        )
     ),
 )
 RESULTS = (
