@@ -167,6 +167,7 @@ class Player(models.Model):
     surename = models.CharField(
         max_length=200, null=True, blank=True, verbose_name=_("Last name")
     )
+    ecf_name = models.CharField(max_length=200, null=True, blank=True, verbose_name=_("Name for ECF"))
     address = models.CharField(
         max_length=200, null=True, blank=True, verbose_name=_("Address")
     )

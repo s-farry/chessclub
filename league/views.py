@@ -923,7 +923,10 @@ def export_games_view(request, admin_site):
                 response.write("#PIN=%i\n" % (i + 1))
                 if p.ecf:
                     response.write("#ECF CODE=%s\n" % (p.ecf))
-                response.write("#NAME=%s, %s\n" % (p.surename, p.name))
+                if p.ecf_name:
+                    response.write("#NAME=%s\n" % (p.ecf_name))
+                else:
+                    response.write("#NAME=%s, %s\n" % (p.surename, p.name) )
                 response.write("#CLUB CODE=7WAL\n")
             for league, games in games_by_league.items():
                 response.write("#MATCH RESULTS=%s\n"%(league.name if league else "Friendlies"))
