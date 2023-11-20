@@ -106,7 +106,13 @@ def fixtures(request, league, **kwargs):
     # else we group by date
     reverse = False
     if l.get_format_display() == "Knockout":
-        rounds = sorted(set([g.round for g in games if g.round != None]), reverse=False)
+
+        knockout_rounds = sorted(set([g.round for g in games if g.round != None and g.round < 0]), reverse=False)
+        rounds = sorted(set([g.round for g in games if g.round != None and g.round >= 0]), reverse=True)
+
+        rounds = knockout_rounds + rounds
+
+
         # if there is a preliminary round, put it at the back
         if rounds[0] == 0:
             rounds.remove(0)
