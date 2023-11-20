@@ -127,13 +127,23 @@ TEAM_SCORES = (
 )
 KNOCKOUT_ROUNDS = (
     (0, 'Preliminary'),
-    (1, 'Final'),
-    (2, 'Semi-Final'),
-    (3, 'Quarter Final'),
-    (4, 'Last 16'),
-    (5, 'Last 32'),
-    (6, 'Last 64'),
-    (7, 'Last 128'),
+    (-1, 'Final'),
+    (-2, 'Semi-Final'),
+    (-3, 'Quarter Final'),
+    (-4, 'Last 16'),
+    (-5, 'Last 32'),
+    (-6, 'Last 64'),
+    (-7, 'Last 128'),
+    (1, 'Round 1'),
+    (2, 'Round 2'),
+    (3, 'Round 3'),
+    (4, 'Round 4'),
+    (5, 'Round 5'),
+    (6, 'Round 6'),
+    (7, 'Round 7'),
+    (8, 'Round 8'),
+    (9, 'Round 9'),
+    (10, 'Round 10'),
 )
 
 
@@ -315,19 +325,12 @@ class League(models.Model):
         return list(set(g.round for g in games))
 
     def get_round_display(self, round):
+        display = 'Round %i' % (round)
         if self.format == 3:
-            if round == 0:
-                return "Preliminary"
-            elif round == 1:
-                return "Final"
-            elif round == 2:
-                return "Semi-Finals"
-            elif round == 3:
-                return "Quarter-Finals"
-            else:
-                return "Last %i" % (math.pow(2, round))
-        else:
-            return "Round %i" % (round)
+            for r in KNOCKOUT_ROUNDS:
+                if round==r[0]:
+                    display = r[1]
+        return display
 
     def includes_half_points(self):
         if self.win_points == 1 or self.lost_points == 1 or self.draw_points == 1:
