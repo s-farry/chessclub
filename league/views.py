@@ -107,7 +107,7 @@ def fixtures(request, league, **kwargs):
     reverse = False
     if l.get_format_display() == "Knockout":
 
-        knockout_rounds = sorted(set([g.round for g in games if g.round != None and g.round < 0]), reverse=False)
+        knockout_rounds = sorted(set([g.round for g in games if g.round != None and g.round < 0]), reverse=True)
         rounds = sorted(set([g.round for g in games if g.round != None and g.round >= 0]), reverse=True)
 
         rounds = knockout_rounds + rounds
