@@ -250,13 +250,13 @@ def standings_update(admin_site, request, instance):
         for i, match in enumerate(player_schedule):
             matches += 1
             if match.white == player:
-                if match.result == 1:
+                if match.result in (1,4):
                     if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                         form = "W" + form
                     wins += 1
                     points += instance.get_win_points_display()
                     wins_against += [match.black]
-                elif match.result == 2:
+                elif match.result in (2,5):
                     lost += 1
                     if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                         form = "L" + form
