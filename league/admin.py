@@ -158,6 +158,11 @@ class CommitteeMemberInline(admin.TabularInline):
     model = CommitteeMember
 
 
+class LeagueInline(admin.TabularInline):
+    model = League
+    fields = ('name', 'format', 'promotion', 'playoffs', 'relegation', 'standings_order', 'win_points', 'lost_points', 'draw_points')
+    extra=1
+
 
 from functools import update_wrapper
 from django.contrib import admin
@@ -235,6 +240,10 @@ class LeagueAdmin(ModelAdmin):
         StandingsInline, 
         ScheduleInline,
     ]
+
+    exclude = (
+        'slug',
+    )
 
     def link(self, obj):
         url = reverse('league',args = {obj.slug})
@@ -366,6 +375,9 @@ class LeagueAdmin(ModelAdmin):
     def get_inline_instances(self, request, obj=None):
         if not obj: return []
         return super(LeagueAdmin, self).get_inline_instances(request, obj)
+
+
+
 
     def save_related(self, request, form, formsets, change):
         for formset in formsets:
@@ -611,7 +623,7 @@ class SeasonAdmin(admin.ModelAdmin):
     filter_horizontal = ('players','extra_players')
     form = SeasonAdminForm
     change_form = SeasonAdminChangeForm
-    inlines=[CommitteeMemberInline]
+    inlines=[LeagueInline, CommitteeMemberInline]
 
     def save_model(self, request, obj, form, change):
         if not change:
