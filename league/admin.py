@@ -161,7 +161,7 @@ class CommitteeMemberInline(admin.TabularInline):
 class LeagueInline(admin.TabularInline):
     model = League
     fields = ('name', 'format', 'promotion', 'playoffs', 'relegation', 'standings_order', 'win_points', 'lost_points', 'draw_points')
-    extra=1
+    extra=0
 
 
 from functools import update_wrapper
