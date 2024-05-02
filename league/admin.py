@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db import models
+from django.conf.urls import url
 from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
@@ -241,7 +242,7 @@ class LeagueAdmin(ModelAdmin):
         ScheduleInline,
     ]
 
-    exclude = (
+    readonly_fields = (
         'slug',
     )
 
@@ -327,7 +328,6 @@ class LeagueAdmin(ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.slug = slugify('{}'.format('%s-%s'%(obj.name, obj.season.slug)))
-        #obj.save()
         super().save_model(request, obj, form, change)
         form.save_m2m()
         # create standings first time
@@ -337,7 +337,7 @@ class LeagueAdmin(ModelAdmin):
 
     
     def get_urls(self):
-        from django.conf.urls import url
+        
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, self, **kwargs)
@@ -624,6 +624,16 @@ class SeasonAdmin(admin.ModelAdmin):
     form = SeasonAdminForm
     change_form = SeasonAdminChangeForm
     inlines=[LeagueInline, CommitteeMemberInline]
+
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        for instance in instances:
+            if isinstance(instance, League):
+                instance.slug = slugify('{}'.format('%s-%s'%(instance.name, instance.season.slug)))
+            instance.save()
+        formset.save_m2m()
+
 
     def save_model(self, request, obj, form, change):
         if not change:
