@@ -29,6 +29,8 @@ def rules(request):
 def history(request):
     return render(request, "history.html")
 
+def constitution_change(request):
+    return render(request, "constitution_change.html")
 
 def puzzles(request):
     puzzles = Puzzle.objects.filter(date__lte=datetime.now().date()).order_by("-date")[
@@ -81,3 +83,5 @@ def simul_interest(request):
 def simul_entrants(request):
     entrants = simul.objects.all().order_by("created_at")
     return render(request, "simul_entrants.html", {"entrants": entrants})
+
+
