@@ -9,6 +9,7 @@ from .views import (
     simul_entrants,
     rules,
     history,
+    constitution_change
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r"^puzzles$", puzzles, name="puzzles"),
     url(r"^simul$", simul_interest, name="simul_interest"),
     url(r"^simul_entrants$", simul_entrants, name="simul_entrants"),
+    url(r"^constitution_change$", constitution_change, name="constitution_change"),
 ]
