@@ -159,6 +159,8 @@ COMMITTEE_POSITIONS = (
     (8, _("Publicity Officer")),
     (9, _("Promotions Officer")),
     (10, _("Other")),
+    (11, _("Publicity Agent")),
+    (12, _("Officer Without Portfolio")),
 )
 
 from tinymce.widgets import TinyMCE
