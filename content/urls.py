@@ -9,7 +9,8 @@ from .views import (
     simul_entrants,
     rules,
     history,
-    constitution_change
+    constitution_change,
+    seasons
 )
 
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
     url(r"^details$", details, name="details"),
     url(r"^rules$", rules, name="rules"),
     url(r"^history$", history, name="history"),
+    url(r"^seasons$", seasons, name="seasons"),
     url(r"^album/(?P<album>[-\w]+)$", photoalbum, name="album"),
     url(r"^content/news$", latest, name="news_old"),
     url(r"^content/details$", details, name="details_old"),

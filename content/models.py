@@ -10,7 +10,7 @@ STATUS_CHOICES = (
     ("w", "Withdrawn"),
 )
 
-OBJECT_CHOICES = ((0, "notification"), (1, "about us"))
+OBJECT_CHOICES = ((0, "notification"), (1, "about us"), (2, "page"))
 
 
 class htmlobject(models.Model):

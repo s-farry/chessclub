@@ -4,11 +4,9 @@ from .views import (
     StandingsFull,
     ScheduleFull,
     game,
-    index,
     player,
     fixtures,
     season,
-    leagues,
     members,
     export_league_pdf,
     export_crosstable_pdf,
@@ -19,9 +17,6 @@ from .views import (
 )
 
 urlpatterns = [
-    url(r"^tournaments$", leagues, name="tournaments"),
-    url(r"^tournament$", leagues, name="tournament"),
-    url(r"^tournaments/(?P<season_slug>[-\w]+)$", leagues, name="tournaments"),
     url(r"^season$", season, name="season"),
     url(r"^trophycabinet$", trophycabinet, name="trophycabinet"),
     url(r"^season/(?P<season_slug>[-\w]+)$", season, name="season"),

@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from .models import news, Puzzle, album, image, simul
+from .models import news, Puzzle, album, image, simul, htmlobject
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -27,7 +27,29 @@ def rules(request):
     return render(request, "rules.html")
 
 def history(request):
-    return render(request, "history.html")
+    contents = htmlobject.objects.filter(title='History')
+    if len(contents) == 0:
+        return render(request, "500.html")
+    return render(
+        request,
+        "history.html",
+        {
+            "content" : contents[0]
+        }
+    )
+
+
+def seasons(request):
+    contents = htmlobject.objects.filter(title='Seasons')
+    if len(contents) == 0:
+        return render(request, "500.html")
+    return render(
+        request,
+        "seasons.html",
+        {
+            "content" : contents[0]
+        }
+    )
 
 def constitution_change(request):
     return render(request, "constitution_change.html")

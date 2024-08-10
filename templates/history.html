@@ -8,6 +8,9 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
+
+{{content.body|safe}}
+<!--
 <h1 class="mt-4">Wallasey Chess Club - An Uncertain History</h1>
 <p>
 Chess in Wallasey has a long and distinguished history dating back to the 19th century, however the exact starting date of the club remains uncertain. In June 1977, having believed that the club was established in 1877,  Wallasey Chess Club held their centenary celebration. They staged an exhibition of chess playing in Liscard centre shopping area. Numerous members attended and it was deemed a success.
@@ -34,5 +37,5 @@ And so a new era of chess begins, the club retains a steady membership, averagin
 <div class = "news-footer">
     Graham Heath, October 2021
 </div>
-
+-->
 {% endblock %}

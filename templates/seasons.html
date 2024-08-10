@@ -4,6 +4,9 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
+
+{{content.body|safe}}
+<!--
 <div class="text-center">
 <h1 class="mt-4">Tournaments</h1> 
 </div>
@@ -55,5 +58,5 @@
 </nav>
 
 </div>
-
+-->
 {% endblock %}
