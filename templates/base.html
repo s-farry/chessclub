@@ -47,19 +47,19 @@
                 <ul class="navbar-nav navbar-menu">
                     {% for menu, dropdownitems in menuitems.items %}
                     {% if dropdownitems|length > 0 %}
-                    <li class = "dropdown"><a class="nav-link reserve-space" id="{{ menu.text }}DropDown", href="{{ menu.url }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH {{ menu.text }} DD"><div class="sb-nav-link-icon">{% if menu.icon %}{{ menu.icon|safe }} {% endif %} <span class="dropdown-toggle">&nbsp;{{ menu.text }}</span></div>
+                    <li class = "dropdown"><a class="nav-link reserve-space" id="{{ menu.text }}DropDown" {% if menu.url %} href="{{ menu.url }}" {% else %} href="#" {% endif %} role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" reserve="CH {{ menu.text }} DD"><div class="sb-nav-link-icon">{% if menu.icon %}{{ menu.icon|safe }} {% endif %} <span class="dropdown-toggle">&nbsp;{{ menu.text }}</span></div>
                         <div class="dropdown-menu bg-black" aria-labelledby="{{ menu.text }}Dropdown">
                     {% for d in dropdownitems %}
                     {% if d.subitem %}
-                        <a class="dropdown-subitem reserve-space" href="{{ d.url }}" title="{{ d.text }}">&nbsp;&nbsp;&nbsp;{{ d.text }}</a>
+                        <a class="dropdown-subitem reserve-space" {% if d.url %} href="{{ d.url }}" {% else %} href="#" {% endif %} title="{{ d.text }}">&nbsp;&nbsp;&nbsp;{{ d.text }}</a>
                     {% else %}
-                        <a class="dropdown-item reserve-space" href="{{ d.url }}" title="{{ d.text }}">{{ d.text }}</a>
+                        <a class="dropdown-item reserve-space" {% if d.url %} href="{{ d.url }}" {% else %} href="#" {% endif %} title="{{ d.text }}">{{ d.text }}</a>
                     {% endif %}
                     {% endfor %}
                         </div>
                     </a></li>
                     {% else %}
-                    <li><a class="nav-link reserve-space" href="{{ menu.url }}" reserve = "CH {{menu.text}}">{% if menu.icon %}<div class="sb-nav-link-icon">{{ menu.icon|safe }} {% endif %} &nbsp;{{menu.text}}</div></a></li>
+                    <li><a class="nav-link reserve-space" {% if menu.url %}  href="{{ menu.url }}" {% else %} href="#" {% endif %} reserve = "CH {{menu.text}}">{% if menu.icon %}<div class="sb-nav-link-icon">{{ menu.icon|safe }} {% endif %} &nbsp;{{menu.text}}</div></a></li>
                     {% endif %}
                     {% endfor %}
                 </ul>
