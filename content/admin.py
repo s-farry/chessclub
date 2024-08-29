@@ -282,7 +282,7 @@ class DocumentAdmin(admin.ModelAdmin):
 
     def detail_url(self, instance):
         url = instance.specifications.url    
-        return mark_safe(f'<a href="{url} target="_blank" rel="nofollow"">{url}</a>')
+        return mark_safe(f'<a href="{url}" target="_blank" rel="nofollow"">{url}</a>')
 
 admin.site.register(htmlobject, HtmlObjectAdmin)
 admin.site.register(news, NewsAdmin)
