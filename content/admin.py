@@ -9,6 +9,7 @@ from .models import (
     dropdownitem,
     menuitem,
     Puzzle,
+    Document
 )
 from tinymce.widgets import TinyMCE
 from django import forms
@@ -273,6 +274,15 @@ class MenuItemAdmin(ReverseModelAdmin):
         DropDownItemInline,
     ]
 
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+
+class DocumentAdmin(admin.ModelAdmin):
+    list_display=('detail_url',)
+
+    def detail_url(self, instance):
+        url = instance.specifications.url    
+        return mark_safe(f'<a href="{url} target="_blank" rel="nofollow"">{url}</a>')
 
 admin.site.register(htmlobject, HtmlObjectAdmin)
 admin.site.register(news, NewsAdmin)
@@ -281,3 +291,5 @@ admin.site.register(album, AlbumAdmin)
 admin.site.register(simul)
 admin.site.register(Puzzle)
 admin.site.register(menuitem, MenuItemAdmin)
+
+admin.site.register(Document, DocumentAdmin)

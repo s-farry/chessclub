@@ -1,5 +1,7 @@
 from django.conf.urls import url
 
+from .models import htmlobject
+
 from .views import (
     latest,
     details,
@@ -8,23 +10,22 @@ from .views import (
     simul_interest,
     simul_entrants,
     rules,
-    history,
     constitution_change,
-    seasons
+    seasons,
+    plain_page
 )
 
 urlpatterns = [
     url(r"^news$", latest, name="news"),
     url(r"^news/(?P<article>[-\w]+)$", latest, name="news"),
-    url(r"^details$", details, name="details"),
-    url(r"^rules$", rules, name="rules"),
-    url(r"^history$", history, name="history"),
-    url(r"^seasons$", seasons, name="seasons"),
     url(r"^album/(?P<album>[-\w]+)$", photoalbum, name="album"),
-    url(r"^content/news$", latest, name="news_old"),
-    url(r"^content/details$", details, name="details_old"),
     url(r"^puzzles$", puzzles, name="puzzles"),
     url(r"^simul$", simul_interest, name="simul_interest"),
     url(r"^simul_entrants$", simul_entrants, name="simul_entrants"),
     url(r"^constitution_change$", constitution_change, name="constitution_change"),
+]
+
+urlpatterns += [
+    url(r"^{}".format(h.title), plain_page, name=h.title)
+    for h in htmlobject.objects.all().filter(type=2, active=True)
 ]

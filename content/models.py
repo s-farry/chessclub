@@ -186,3 +186,7 @@ class simul(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.name
+
+
+class Document(models.Model):
+    specifications = models.FileField(upload_to='docs')

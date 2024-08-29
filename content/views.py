@@ -9,6 +9,8 @@ from datetime import datetime
 from .forms import SimulForm
 from django.core.mail import send_mail
 
+from django.urls import resolve
+
 
 def latest(request, **kwargs):
     if "article" in kwargs.keys():
@@ -26,13 +28,14 @@ def details(request):
 def rules(request):
     return render(request, "rules.html")
 
-def history(request):
-    contents = htmlobject.objects.filter(title='History')
+def plain_page(request):
+    current_url = resolve(request.path_info).url_name
+    contents = htmlobject.objects.filter(title=current_url)
     if len(contents) == 0:
         return render(request, "500.html")
     return render(
         request,
-        "history.html",
+        "plain_page.html",
         {
             "content" : contents[0]
         }
