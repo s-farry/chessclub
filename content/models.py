@@ -4,6 +4,10 @@ from django.utils import timezone
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 
+
+from pathlib import Path
+
+
 STATUS_CHOICES = (
     ("d", "Draft"),
     ("p", "Published"),
@@ -28,6 +32,12 @@ class htmlobject(models.Model):
 
     def __str__(self):
         return "%s" % (self.title)
+
+    def save(self, *args, **kwargs):
+        """On save, touch the tmp restart to load up a new page"""
+        super(htmlobject, self).save(*args, **kwargs)
+        f = Path('/home/themovie/chessclub/tmp/restart.txt')
+        if f.exists(): f.touch()    
 
 
 class menuitem(models.Model):
