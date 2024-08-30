@@ -9,7 +9,8 @@ from .models import (
     dropdownitem,
     menuitem,
     Puzzle,
-    Document
+    Document,
+    image
 )
 from tinymce.widgets import TinyMCE
 from django import forms
@@ -43,6 +44,11 @@ class HtmlObjectAdminForm(forms.ModelForm):
                 "content_style": "color:#FFFF00",
                 "body_class": "review",
                 "body_id": "review",
+            },
+            mce_attrs = {
+                'image_list' : [
+                    { 'title' : i.description if i.description else i.image.url, 'value' : i.image.url} for i in image.objects.all()
+                ]
             }
         ),
         label="News",
@@ -283,6 +289,14 @@ class DocumentAdmin(admin.ModelAdmin):
     def detail_url(self, instance):
         url = instance.specifications.url    
         return mark_safe(f'<a href="{url}" target="_blank" rel="nofollow"">{url}</a>')
+    
+
+class ImageAdmin(admin.ModelAdmin):
+    list_display=('detail_url',)
+
+    def detail_url(self, instance):
+        url = instance.image.url    
+        return mark_safe(f'<a href="{url}" target="_blank" rel="nofollow"">{url}</a>')
 
 admin.site.register(htmlobject, HtmlObjectAdmin)
 admin.site.register(news, NewsAdmin)
@@ -293,3 +307,4 @@ admin.site.register(Puzzle)
 admin.site.register(menuitem, MenuItemAdmin)
 
 admin.site.register(Document, DocumentAdmin)
+admin.site.register(image, ImageAdmin)

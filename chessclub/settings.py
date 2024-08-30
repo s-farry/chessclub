@@ -140,10 +140,12 @@ if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     #STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+
 #only want this on server
 if 'DJANGO_DEBUG' not in os.environ:
     SESSION_COOKIE_DOMAIN = 'wallaseychessclub.uk'
     SESSION_ENGINE='django.contrib.sessions.backends.db'
+
 TINYMCE_SPELLCHECKER = True
 TINYMCE_DEFAULT_CONFIG = {
     'height': 360,
@@ -159,7 +161,13 @@ TINYMCE_DEFAULT_CONFIG = {
     'body_id' : 'tinymce',
     'content_style' : "div {margin: 10px; border: 5px solid red; padding: 3px}",
     'style_formats': '{title: "test, selector: "div", classes: "review"}',
-    'plugins' : 'wordcount,spellchecker,link',
+    'plugins' : "dvlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
+    "fullscreen insertdatetime media table paste code help wordcount spellchecker",
+    "toolbar": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
+    "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
+    "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
+    "fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
+    "a11ycheck ltr rtl | showcomments addcomment code wordcount spellchecker link,image",
     #'theme_advanced_buttons2': "spellchecker",
     'browser_spellcheck' : True,
     'gecko_spellcheck'   : True,
