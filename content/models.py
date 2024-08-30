@@ -23,7 +23,7 @@ class htmlobject(models.Model):
         verbose_name = "HTML Object"
 
     title = models.CharField(max_length=200)
-    body = models.TextField(max_length=100000)
+    body = models.TextField(max_length=1000000)
     active = models.BooleanField(default=True)
     type = models.IntegerField(choices=OBJECT_CHOICES, default=0)
 
