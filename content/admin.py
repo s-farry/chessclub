@@ -39,7 +39,7 @@ class HtmlObjectAdminForm(forms.ModelForm):
         max_length=10000,
         widget=TinyMCE(
             attrs={
-                "rows": "30",
+                "rows": "100",
                 "cols": "100",
                 "content_style": "color:#FFFF00",
                 "body_class": "review",
@@ -48,10 +48,12 @@ class HtmlObjectAdminForm(forms.ModelForm):
             mce_attrs = {
                 'image_list' : [
                     { 'title' : i.description if i.description else i.image.url, 'value' : i.image.url} for i in image.objects.all()
-                ]
+                ],
+                'width': '100%',
+                'height' : 1000
             }
         ),
-        label="News",
+        label="Content",
     )
 
     class Meta:
