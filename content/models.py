@@ -88,6 +88,8 @@ class dropdownitem(models.Model):
     def url(self):
         if not self.link:
             return ""
+        if self.link.startswith('http') or self.link.startswith('www'):
+            return self.link
         split_link = self.link.split()
         if len(split_link) == 0:
             return reverse(split_link)
