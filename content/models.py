@@ -23,7 +23,7 @@ class htmlobject(models.Model):
         verbose_name = "HTML Object"
 
     title = models.CharField(max_length=200)
-    body = models.TextField(max_length=10000)
+    body = models.TextField(max_length=100000)
     active = models.BooleanField(default=True)
     type = models.IntegerField(choices=OBJECT_CHOICES, default=0)
 
@@ -55,6 +55,8 @@ class menuitem(models.Model):
 
     def url(self):
         if not self.link:
+            return self.link
+        if self.link.startswith('http') or self.link.startswith('www'):
             return self.link
         split_link = self.link.split()
         if len(split_link) == 0:
