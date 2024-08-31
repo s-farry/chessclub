@@ -10,7 +10,8 @@ from .models import (
     menuitem,
     Puzzle,
     Document,
-    image
+    image,
+    snippet
 )
 from tinymce.widgets import TinyMCE
 from django import forms
@@ -66,6 +67,41 @@ class PageAdmin(admin.ModelAdmin):
     search_fields = ["title"]
     form = PageAdminForm
 
+
+
+
+class SnippetAdminForm(forms.ModelForm):
+    title = forms.CharField(max_length=50)
+    body = forms.CharField(
+        max_length=10000,
+        widget=TinyMCE(
+            attrs={
+                "rows": "100",
+                "cols": "100",
+                "content_style": "color:#FFFF00",
+                "body_class": "review",
+                "body_id": "review",
+            },
+            mce_attrs = {
+                'image_list' : [
+                    { 'title' : i.description if i.description else i.image.url, 'value' : i.image.url} for i in image.objects.all()
+                ],
+                'width': '100%',
+                'height' : 1000
+            }
+        ),
+        label="Content",
+    )
+
+    class Meta:
+        fields = ("title", "body", "active")
+        model = snippet
+
+
+class SnippetAdmin(admin.ModelAdmin):
+    list_display = ["title", "body", "active"]
+    search_fields = ["title"]
+    form = PageAdminForm
 
 class ImageInline(admin.TabularInline):
     model = image
@@ -301,6 +337,7 @@ class ImageAdmin(admin.ModelAdmin):
         return mark_safe(f'<a href="{url}" target="_blank" rel="nofollow"">{url}</a>')
 
 admin.site.register(page, PageAdmin)
+admin.site.register(snippet, SnippetAdmin)
 admin.site.register(news, NewsAdmin)
 admin.site.register(event, EventAdmin)
 admin.site.register(album, AlbumAdmin)

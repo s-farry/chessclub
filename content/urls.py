@@ -23,9 +23,9 @@ urlpatterns = [
     url(r"^simul_entrants$", simul_entrants, name="simul_entrants"),
     url(r"^constitution_change$", constitution_change, name="constitution_change"),
 ]
-'''
+
 urlpatterns += [
     url(r"^{}".format(h.title), plain_page, name=h.title)
     for h in page.objects.all().filter(active=True)
 ]
-'''
+

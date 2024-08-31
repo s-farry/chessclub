@@ -19,8 +19,8 @@ OBJECT_CHOICES = ((0, "notification"), (1, "about us"), (2, "page"))
 
 class snippet(models.Model):
     class Meta:
-        verbose_name_plural = "HTML Objects"
-        verbose_name = "HTML Object"
+        verbose_name_plural = "Snippets"
+        verbose_name = "Snippet"
 
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=1000000)
