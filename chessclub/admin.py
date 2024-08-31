@@ -6,7 +6,6 @@ from django.contrib.auth.admin import UserAdmin, GroupAdmin
 
 from django.conf.urls import url, include
 
-from content.models import htmlobject
 
 from .views import preview
 

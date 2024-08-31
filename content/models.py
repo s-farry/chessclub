@@ -17,7 +17,7 @@ STATUS_CHOICES = (
 OBJECT_CHOICES = ((0, "notification"), (1, "about us"), (2, "page"))
 
 
-class htmlobject(models.Model):
+class snippet(models.Model):
     class Meta:
         verbose_name_plural = "HTML Objects"
         verbose_name = "HTML Object"
@@ -33,12 +33,28 @@ class htmlobject(models.Model):
     def __str__(self):
         return "%s" % (self.title)
 
+
+
+class page(models.Model):
+    class Meta:
+        verbose_name_plural = "Plain Pages"
+        verbose_name = "Plain Page"
+
+    title = models.CharField(max_length=200)
+    body = models.TextField(max_length=1000000)
+    active = models.BooleanField(default=True)
+    
+    def name(self):
+        return "%s" % (self.title)
+
+    def __str__(self):
+        return "%s" % (self.title)
+
     def save(self, *args, **kwargs):
         """On save, touch the tmp restart to load up a new page"""
-        super(htmlobject, self).save(*args, **kwargs)
+        super(page, self).save(*args, **kwargs)
         f = Path('/home/themovie/chessclub/tmp/restart.txt')
-        if f.exists(): f.touch()    
-
+        if f.exists(): f.touch()
 
 class menuitem(models.Model):
     class Meta:

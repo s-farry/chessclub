@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .models import htmlobject
+from .models import page
 
 from .views import (
     latest,
@@ -11,7 +11,6 @@ from .views import (
     simul_entrants,
     rules,
     constitution_change,
-    seasons,
     plain_page
 )
 
@@ -24,8 +23,9 @@ urlpatterns = [
     url(r"^simul_entrants$", simul_entrants, name="simul_entrants"),
     url(r"^constitution_change$", constitution_change, name="constitution_change"),
 ]
-
+'''
 urlpatterns += [
     url(r"^{}".format(h.title), plain_page, name=h.title)
-    for h in htmlobject.objects.all().filter(type=2, active=True)
+    for h in page.objects.all().filter(active=True)
 ]
+'''

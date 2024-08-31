@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from .models import news, Puzzle, album, image, simul, htmlobject
+from .models import news, Puzzle, album, image, simul, page
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -30,7 +30,7 @@ def rules(request):
 
 def plain_page(request):
     current_url = resolve(request.path_info).url_name
-    contents = htmlobject.objects.filter(title=current_url)
+    contents = page.objects.filter(title=current_url)
     if len(contents) == 0:
         return render(request, "500.html")
     return render(
@@ -41,18 +41,6 @@ def plain_page(request):
         }
     )
 
-
-def seasons(request):
-    contents = htmlobject.objects.filter(title='Seasons')
-    if len(contents) == 0:
-        return render(request, "500.html")
-    return render(
-        request,
-        "seasons.html",
-        {
-            "content" : contents[0]
-        }
-    )
 
 def constitution_change(request):
     return render(request, "constitution_change.html")

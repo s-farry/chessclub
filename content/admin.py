@@ -5,7 +5,7 @@ from .models import (
     album,
     image,
     simul,
-    htmlobject,
+    page,
     dropdownitem,
     menuitem,
     Puzzle,
@@ -33,7 +33,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 
 
-class HtmlObjectAdminForm(forms.ModelForm):
+class PageAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
     body = forms.CharField(
         max_length=10000,
@@ -57,14 +57,14 @@ class HtmlObjectAdminForm(forms.ModelForm):
     )
 
     class Meta:
-        fields = ("title", "body", "type", "active")
-        model = htmlobject
+        fields = ("title", "body", "active")
+        model = page
 
 
-class HtmlObjectAdmin(admin.ModelAdmin):
+class PageAdmin(admin.ModelAdmin):
     list_display = ["title", "body", "active"]
     search_fields = ["title"]
-    form = HtmlObjectAdminForm
+    form = PageAdminForm
 
 
 class ImageInline(admin.TabularInline):
@@ -300,7 +300,7 @@ class ImageAdmin(admin.ModelAdmin):
         url = instance.image.url    
         return mark_safe(f'<a href="{url}" target="_blank" rel="nofollow"">{url}</a>')
 
-admin.site.register(htmlobject, HtmlObjectAdmin)
+admin.site.register(page, PageAdmin)
 admin.site.register(news, NewsAdmin)
 admin.site.register(event, EventAdmin)
 admin.site.register(album, AlbumAdmin)
