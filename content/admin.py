@@ -24,6 +24,7 @@ from django.core.mail import send_mail
 from django.contrib.auth import get_permission_codename
 from django_reverse_admin import ReverseModelAdmin
 
+from bs4 import BeautifulSoup
 
 # Register your models here.
 
@@ -37,7 +38,7 @@ from django.contrib.auth.models import User
 class PageAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
     body = forms.CharField(
-        max_length=10000,
+        max_length=100000,
         widget=TinyMCE(
             attrs={
                 "rows": "100",
@@ -63,7 +64,15 @@ class PageAdminForm(forms.ModelForm):
 
 
 class PageAdmin(admin.ModelAdmin):
-    list_display = ["title", "body", "active"]
+
+    def plain_text(self, instance):
+        body = instance.body    
+        soup = BeautifulSoup(body, 'html.parser')
+        text = soup.find_all(text=True)
+
+        return "\n".join(text)
+    
+    list_display = ["title", "plain_text", "active"]
     search_fields = ["title"]
     form = PageAdminForm
 
