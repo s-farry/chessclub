@@ -796,10 +796,7 @@ def export_games_view(request, admin_site):
     opts = Schedule._meta
     season = Season.objects.all().order_by('end').last()
     leagues = League.objects.filter(season=season)
-    initial_leagues = leagues.filter(
-        Q(name="Championship") | Q(name="Premiership")
-    )
-    form = ExportGamesForm(initial={"leagues": initial_leagues})
+    form = ExportGamesForm(initial={"leagues": leagues})
 
     if not admin_site.has_change_permission(request, Schedule):
         raise PermissionDenied
