@@ -4,7 +4,7 @@ django.setup()
 
 from league.models import Player, Season, League, Schedule, Standings
 from content.models import page, snippet
-'''
+
 for h in snippet.objects.all():
     if h.type==2:
         
@@ -14,7 +14,7 @@ for h in snippet.objects.all():
             active=h.active
         )
         p.save()
-'''
+
 
 
 for h in snippet.objects.all():
