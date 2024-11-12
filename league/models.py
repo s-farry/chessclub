@@ -103,6 +103,7 @@ POINTS = (
     (4, 3),
 )
 TEAM_SCORES = (
+    (-1, 0)
     (0, 0),
     (1, 0.5),
     (2, 1),
@@ -528,6 +529,8 @@ class TeamFixture(models.Model):
     def print_result(self, plain=False):
         if not self.home_score or not self.away_score:
             return "v"
+        elif self.home_score == -1 or self.away_score == -1
+            return 'P - P'
         else:
             home_score = self.home_score / 2.0
             away_score = self.away_score / 2.0
