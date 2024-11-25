@@ -527,7 +527,7 @@ class TeamFixture(models.Model):
             return "%s v %s" % (self.opponent, self.team.name)
 
     def print_result(self, plain=False):
-        if not self.home_score or not self.away_score:
+        if self.home_score is None or self.away_score is None:
             return "v"
         elif self.home_score == -1 or self.away_score == -1:
             return 'P - P'
