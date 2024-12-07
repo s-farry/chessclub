@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import re_path
 from .models import (
     news,
     event,
@@ -129,7 +130,6 @@ class EventAdmin(admin.ModelAdmin):
         return []
 
     def get_urls(self):
-        from django.conf.urls import url
 
         def wrap(view):
             def wrapper(*args, **kwargs):
@@ -140,7 +140,7 @@ class EventAdmin(admin.ModelAdmin):
         info = self.model._meta.app_label, self.model._meta.model_name
 
         urls = [
-            url(r"^lichess/$", wrap(self.lichess_view), name="%s_%s_lichess" % info)
+            re_path(r"^lichess/$", wrap(self.lichess_view), name="%s_%s_lichess" % info)
         ]
         super_urls = super(EventAdmin, self).get_urls()
 

@@ -14,8 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url, include
+from django.urls import path, re_path
+from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 import os
@@ -32,17 +32,17 @@ admin.autodiscover()
 
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
-    url(r"^$", views.index, name="index"),
+    re_path(r"^$", views.index, name="index"),
     # path('league/', league.urls),
-    url(r"^", include("league.urls")),
-    url(r"^", include("content.urls")),
-    url(r"^chaining/", include("smart_selects.urls")),
-    url(r"^tinymce/", include("tinymce.urls")),
+    re_path(r"^", include("league.urls")),
+    re_path(r"^", include("content.urls")),
+    re_path(r"^chaining/", include("smart_selects.urls")),
+    re_path(r"^tinymce/", include("tinymce.urls")),
 ]
 if "DJANGO_DEBUG" in os.environ and os.environ["DJANGO_DEBUG"] == "1":
     urlpatterns += [
-        url(r"^404/$", views.page_not_found),
-        url(r"^500/$", views.server_error),
+        re_path(r"^404/$", views.page_not_found),
+        re_path(r"^500/$", views.server_error),
     ]
 
 

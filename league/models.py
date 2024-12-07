@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from smart_selects.db_fields import (
     ChainedManyToManyField,
     ChainedForeignKey,
@@ -12,13 +11,13 @@ import re
 import math
 
 STANDINGS_ORDER_HUMAN = (
-    (0, _("Points, Wins, Lost")),
-    (1, _("Points, Tiebreak, Wins, Lost, Rating")),
-    (2, _("Points, Score")),
-    (3, _("FIDE Swiss Tiebreak System")),
-    (4, _("Win Percentage")),
-    (5, _("Matches Played")),
-    (6, _("Points, Head-to-Head, Wins, Wins With Black, NBS")),
+    (0, "Points, Wins, Lost"),
+    (1, "Points, Tiebreak, Wins, Lost, Rating"),
+    (2, "Points, Score"),
+    (3, "FIDE Swiss Tiebreak System"),
+    (4, "Win Percentage"),
+    (5, "Matches Played"),
+    (6, "Points, Head-to-Head, Wins, Wins With Black, NBS"),
 )
 STANDINGS_ORDER = (
     (0, ("-points", "-win", "lost", "matches", "-rating", "player__surename")),
@@ -149,19 +148,19 @@ KNOCKOUT_ROUNDS = (
 
 
 COMMITTEE_POSITIONS = (
-    (0, _("President")),
-    (1, _("Secretary")),
-    (2, _("Assistant Secretary")),
-    (3, _("Tournament Secretary")),
-    (4, _("Club Steward")),
-    (5, _("Auditor")),
-    (6, _("Treasurer")),
-    (7, _("Club Captain")),
-    (8, _("Publicity Officer")),
-    (9, _("Promotions Officer")),
-    (10, _("Other")),
-    (11, _("Publicity Agent")),
-    (12, _("Officer Without Portfolio")),
+    (0, ("President")),
+    (1, ("Secretary")),
+    (2, ("Assistant Secretary")),
+    (3, ("Tournament Secretary")),
+    (4, ("Club Steward")),
+    (5, ("Auditor")),
+    (6, ("Treasurer")),
+    (7, ("Club Captain")),
+    (8, ("Publicity Officer")),
+    (9, ("Promotions Officer")),
+    (10, ("Other")),
+    (11, ("Publicity Agent")),
+    (12, ("Officer Without Portfolio")),
 )
 
 from tinymce.widgets import TinyMCE
@@ -176,49 +175,49 @@ class MyMCEField(models.CharField):
 
 
 class Player(models.Model):
-    name = models.CharField(max_length=200, null=True, verbose_name=_("First name"))
+    name = models.CharField(max_length=200, null=True, verbose_name=("First name"))
     surename = models.CharField(
-        max_length=200, null=True, blank=True, verbose_name=_("Last name")
+        max_length=200, null=True, blank=True, verbose_name=("Last name")
     )
-    ecf_name = models.CharField(max_length=200, null=True, blank=True, verbose_name=_("Name for ECF"))
+    ecf_name = models.CharField(max_length=200, null=True, blank=True, verbose_name=("Name for ECF"))
     address = models.CharField(
-        max_length=200, null=True, blank=True, verbose_name=_("Address")
+        max_length=200, null=True, blank=True, verbose_name=("Address")
     )
     birth_date = models.DateField(
-        null=True, blank=True, verbose_name=_("Date of birth")
+        null=True, blank=True, verbose_name=("Date of birth")
     )
     image = models.ImageField(
         upload_to="uploads/teams/%Y/%m/%d/players/",
         null=True,
         blank=True,
-        verbose_name=_("Player photo"),
+        verbose_name=("Player photo"),
     )
     lichess = models.CharField(
-        max_length=200, null=True, blank=True, verbose_name=_("Lichess ID")
+        max_length=200, null=True, blank=True, verbose_name=("Lichess ID")
     )
     chesscom = models.CharField(
-        max_length=200, null=True, blank=True, verbose_name=_("Chess.com ID")
+        max_length=200, null=True, blank=True, verbose_name=("Chess.com ID")
     )
     ecf = models.CharField(
-        max_length=7, null=True, blank=True, verbose_name=_("ECF Grading Ref")
+        max_length=7, null=True, blank=True, verbose_name=("ECF Grading Ref")
     )
     fide = models.CharField(
-        max_length=7, null=True, blank=True, verbose_name=_("FIDE ID")
+        max_length=7, null=True, blank=True, verbose_name=("FIDE ID")
     )
     email = models.CharField(
-        max_length=100, null=True, blank=True, verbose_name=_("email")
+        max_length=100, null=True, blank=True, verbose_name=("email")
     )
     phone = models.CharField(
-        max_length=20, null=True, blank=True, verbose_name=_("phone")
+        max_length=20, null=True, blank=True, verbose_name=("phone")
     )
-    rating = models.IntegerField(null=True, blank=True, verbose_name=_("ECF Rating"))
-    fide_rating = models.IntegerField(null=True, blank=True, verbose_name=_("Fide Rating"))
+    rating = models.IntegerField(null=True, blank=True, verbose_name=("ECF Rating"))
+    fide_rating = models.IntegerField(null=True, blank=True, verbose_name=("Fide Rating"))
 
     joined_date = models.DateField(blank=True, null=True)
 
     class Meta:
-        verbose_name = _("Player")
-        verbose_name_plural = _("Players")
+        verbose_name = ("Player")
+        verbose_name_plural = ("Players")
 
     def __str__(self):
         if self.surename:
@@ -250,14 +249,14 @@ class PlayerCustomFields(models.Model):
 
 
 class Season(models.Model):
-    name = models.CharField(max_length=200, null=False, verbose_name=_("Name"))
+    name = models.CharField(max_length=200, null=False, verbose_name=("Name"))
     players = models.ManyToManyField(
-        Player, blank=True, related_name="seasons", verbose_name=_("Players")
+        Player, blank=True, related_name="seasons", verbose_name=("Players")
     )
     extra_players = models.ManyToManyField(
-        Player, blank=True, related_name="seasons_extras", verbose_name=_("Extra Players")
+        Player, blank=True, related_name="seasons_extras", verbose_name=("Extra Players")
     )
-    slug = models.SlugField(unique=True, null=True, verbose_name=_("Slug"))
+    slug = models.SlugField(unique=True, null=True, verbose_name=("Slug"))
     results_officer = models.CharField(max_length=200, null=True, blank=True)
     results_officer_address = models.CharField(max_length=200, null=True, blank=True)
     treasurer = models.CharField(max_length=200, null=True, blank=True)
@@ -273,7 +272,7 @@ class Season(models.Model):
 
 
 class League(models.Model):
-    name = models.CharField(max_length=200, null=False, verbose_name=_("Name"))
+    name = models.CharField(max_length=200, null=False, verbose_name=("Name"))
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
     description = models.CharField(max_length=10000, blank=True, null=True)
 
@@ -281,40 +280,40 @@ class League(models.Model):
     playoffs  = models.IntegerField(blank=True, null=True)
     relegation = models.IntegerField(blank=True, null=True)
 
-    slug = models.SlugField(unique=True, null=True, verbose_name=_("Slug"))
+    slug = models.SlugField(unique=True, null=True, verbose_name=("Slug"))
     players = models.ManyToManyField(
-        Player, blank=True, related_name="players", verbose_name=_("Players")
+        Player, blank=True, related_name="players", verbose_name=("Players")
     )
     updated_date = models.DateTimeField(blank=True, null=True)
     standings_order = models.IntegerField(
-        verbose_name=_("Standings order"), choices=(STANDINGS_ORDER_HUMAN), default=0
+        verbose_name=("Standings order"), choices=(STANDINGS_ORDER_HUMAN), default=0
     )
     win_points = models.IntegerField(
         null=True,
         blank=False,
         default=2,
-        verbose_name=_("Points for win"),
+        verbose_name=("Points for win"),
         choices=(POINTS),
     )
     lost_points = models.IntegerField(
         null=True,
         blank=False,
         default=0,
-        verbose_name=_("Points for loss"),
+        verbose_name=("Points for loss"),
         choices=(POINTS),
     )
     draw_points = models.IntegerField(
         null=True,
         blank=False,
         default=1,
-        verbose_name=_("Points for draw"),
+        verbose_name=("Points for draw"),
         choices=(POINTS),
     )
     format = models.IntegerField(default=0, choices=(TOURNAMENT_FORMATS))
 
     class Meta:
-        verbose_name = _("League")
-        verbose_name_plural = _("Leagues")
+        verbose_name = ("League")
+        verbose_name_plural = ("Leagues")
 
     def __str__(self):
         return "{0} {1}".format(self.name, self.season)
@@ -347,23 +346,23 @@ class Schedule(models.Model):
     league = models.ForeignKey(
         League,
         on_delete=models.CASCADE,
-        verbose_name=_("League"),
+        verbose_name=("League"),
         blank=True,
         null=True,
     )
-    round = models.IntegerField(null=True, blank=True, verbose_name=_("Round"))
-    board = models.IntegerField(null=True, blank=True, verbose_name=_("Board"))
-    date = models.DateTimeField(verbose_name=_("Date"), blank=True, null=True)
+    round = models.IntegerField(null=True, blank=True, verbose_name=("Round"))
+    board = models.IntegerField(null=True, blank=True, verbose_name=("Board"))
+    date = models.DateTimeField(verbose_name=("Date"), blank=True, null=True)
     white = models.ForeignKey(
         Player,
         related_name="white",
         on_delete=models.CASCADE,
-        verbose_name=_("White"),
+        verbose_name=("White"),
         null=True,
         blank=True,
     )
     black = models.ForeignKey(
-        Player, on_delete=models.CASCADE, verbose_name=_("Black"), null=True, blank=True
+        Player, on_delete=models.CASCADE, verbose_name=("Black"), null=True, blank=True
     )
     white_rating = models.IntegerField(
         null=True, blank=True, verbose_name=("White Rating")
@@ -372,17 +371,17 @@ class Schedule(models.Model):
         null=True, blank=True, verbose_name=("Black Rating")
     )
 
-    result = models.IntegerField(verbose_name=_("result"), choices=(RESULTS), default=3)
+    result = models.IntegerField(verbose_name=("result"), choices=(RESULTS), default=3)
     lichess = models.CharField(
-        max_length=200, null=True, verbose_name=_("Lichess ID"), blank=True
+        max_length=200, null=True, verbose_name=("Lichess ID"), blank=True
     )
     comment = models.CharField(
-        max_length=200, null=True, verbose_name=_("Comment"), blank=True
+        max_length=200, null=True, verbose_name=("Comment"), blank=True
     )
 
     class Meta:
-        verbose_name = _("Game")
-        verbose_name_plural = _("Games")
+        verbose_name = ("Game")
+        verbose_name_plural = ("Games")
 
     def print_result(self, plain=False):
         for a, b in RESULTS:
@@ -481,7 +480,7 @@ class Schedule(models.Model):
 class PGN(models.Model):
     body = models.TextField()
     game = models.ForeignKey(
-        Schedule, on_delete=models.CASCADE, verbose_name=_("Game"), related_name="pgn"
+        Schedule, on_delete=models.CASCADE, verbose_name=("Game"), related_name="pgn"
     )
 
     def __str__(self):
@@ -489,16 +488,16 @@ class PGN(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=200, null=True, verbose_name=_("Team Name"))
+    name = models.CharField(max_length=200, null=True, verbose_name=("Team Name"))
     captain = models.ForeignKey(
         Player,
         on_delete=models.CASCADE,
-        verbose_name=_("Team Captain"),
+        verbose_name=("Team Captain"),
         related_name="captain",
         null=True,
         blank=True,
     )
-    league = models.CharField(max_length=200, null=True, verbose_name=_("League"))
+    league = models.CharField(max_length=200, null=True, verbose_name=("League"))
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
     description = models.CharField(max_length=10000, blank=True, null=True)
 
@@ -507,18 +506,18 @@ class Team(models.Model):
 
 
 class TeamFixture(models.Model):
-    date = models.DateTimeField(verbose_name=_("Date"), blank=True, null=True)
+    date = models.DateTimeField(verbose_name=("Date"), blank=True, null=True)
     team = models.ForeignKey(
-        Team, on_delete=models.CASCADE, verbose_name=_("Team"), null=True, blank=True
+        Team, on_delete=models.CASCADE, verbose_name=("Team"), null=True, blank=True
     )
-    opponent = models.CharField(max_length=200, null=True, verbose_name=_("Opponent"))
+    opponent = models.CharField(max_length=200, null=True, verbose_name=("Opponent"))
     home_score = models.IntegerField(null=True, blank=True, choices=TEAM_SCORES)
     away_score = models.IntegerField(null=True, blank=True, choices=TEAM_SCORES)
     home = models.BooleanField()
 
     class Meta:
-        verbose_name = _("Team Fixture")
-        verbose_name_plural = _("Team Fixtures")
+        verbose_name = ("Team Fixture")
+        verbose_name_plural = ("Team Fixtures")
 
     def __str__(self):
         if self.home:
@@ -551,9 +550,9 @@ class TeamFixture(models.Model):
 
 
 class TeamPlayer(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=_("Team"))
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name=("Team"))
     player = models.ForeignKey(
-        Player, on_delete=models.CASCADE, verbose_name=_("Team Player")
+        Player, on_delete=models.CASCADE, verbose_name=("Team Player")
     )
     listed = models.BooleanField(default=False)
     played = models.IntegerField(default=0, null=True, blank=True)
@@ -562,30 +561,30 @@ class TeamPlayer(models.Model):
     lost = models.IntegerField(default=0, null=True, blank=True)
 
     class Meta:
-        verbose_name = _("Team Player")
-        verbose_name_plural = _("Team Players")
+        verbose_name = ("Team Player")
+        verbose_name_plural = ("Team Players")
 
     def __str__(self):
         return "%s - %s" % (self.player, self.team.name)
 
 
 class CommitteeMember(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=_("Season"))
+    season = models.ForeignKey(Season, on_delete=models.CASCADE, verbose_name=("Season"))
     member = models.ForeignKey(
-        Player, on_delete=models.CASCADE, verbose_name=_("Committee Member")
+        Player, on_delete=models.CASCADE, verbose_name=("Committee Member")
     )
     position = models.IntegerField(
-        verbose_name=_("Committe Position"), choices=(COMMITTEE_POSITIONS), null=True, blank=True
+        verbose_name=("Committe Position"), choices=(COMMITTEE_POSITIONS), null=True, blank=True
     )
     start_date = models.DateField(
-        null=True, blank=True, verbose_name=_("Start Date")
+        null=True, blank=True, verbose_name=("Start Date")
     )
     end_date = models.DateField(
-        null=True, blank=True, verbose_name=_("End Date")
+        null=True, blank=True, verbose_name=("End Date")
     )
     class Meta:
-        verbose_name = _("Committee Member")
-        verbose_name_plural = _("Committee Members")
+        verbose_name = ("Committee Member")
+        verbose_name_plural = ("Committee Members")
 
     def __str__(self):
         return "%s - %s" % (self.position, self.member)
@@ -593,30 +592,30 @@ class CommitteeMember(models.Model):
 
 class Standings(models.Model):
     league = models.ForeignKey(
-        League, on_delete=models.CASCADE, verbose_name=_("League")
+        League, on_delete=models.CASCADE, verbose_name=("League")
     )
     player = ChainedForeignKey(
         Player,
         chained_field="season",
         chained_model_field="teams",
         related_name="team",
-        verbose_name=_("Team"),
+        verbose_name=("Team"),
     )
     position = models.IntegerField(
-        null=True, blank=True, verbose_name=_("Position")
+        null=True, blank=True, verbose_name=("Position")
     )
     matches = models.IntegerField(
-        null=True, blank=True, default=0, verbose_name=_("Matches")
+        null=True, blank=True, default=0, verbose_name=("Matches")
     )
-    win = models.IntegerField(null=True, blank=False, default=0, verbose_name=_("Won"))
+    win = models.IntegerField(null=True, blank=False, default=0, verbose_name=("Won"))
     lost = models.IntegerField(
-        null=True, blank=False, default=0, verbose_name=_("Lost")
+        null=True, blank=False, default=0, verbose_name=("Lost")
     )
     draws = models.IntegerField(
-        null=True, blank=False, default=0, verbose_name=_("Draw")
+        null=True, blank=False, default=0, verbose_name=("Draw")
     )
     points = models.FloatField(
-        null=True, blank=False, default=0, verbose_name=_("Points")
+        null=True, blank=False, default=0, verbose_name=("Points")
     )
     form = models.CharField(max_length=50, null=True)
     rating = models.IntegerField(null=True, blank=True, verbose_name=("Rating"))
@@ -638,19 +637,19 @@ class Standings(models.Model):
         null=True, blank=True, verbose_name=("Average Rating of Opponent less 1")
     )
     win1 = models.IntegerField(
-        null=True, blank=False, default=0, verbose_name=_("Won With Black")
+        null=True, blank=False, default=0, verbose_name=("Won With Black")
     )
     matches1 = models.IntegerField(
-        null=True, blank=True, default=0, verbose_name=_("Matches With Black")
+        null=True, blank=True, default=0, verbose_name=("Matches With Black")
     )
     performance = models.FloatField(
-        null=True, blank=True, default=0, verbose_name=_("Performance Rating")
+        null=True, blank=True, default=0, verbose_name=("Performance Rating")
     )
     winpercent = models.FloatField(
-        null=True, blank=True, default=0, verbose_name=_("Win Percentage")
+        null=True, blank=True, default=0, verbose_name=("Win Percentage")
     )
     h2h = models.IntegerField(
-        null=True, blank=True, default=0, verbose_name=_("Head to Head Record")
+        null=True, blank=True, default=0, verbose_name=("Head to Head Record")
     )
 
     def __str__(self):
@@ -675,8 +674,8 @@ class Standings(models.Model):
     class Meta:
         ordering = STANDINGS_ORDER[0][1]
         unique_together = ("league", "player")
-        verbose_name = _("Table")
-        verbose_name_plural = _("Tables")
+        verbose_name = ("Table")
+        verbose_name_plural = ("Tables")
 
 
 # Create your models here.
