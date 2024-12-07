@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
 from .models import news, Puzzle, album, image, simul, page
 from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
 from datetime import datetime
 from .forms import SimulForm

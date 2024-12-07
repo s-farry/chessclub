@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from django.conf.urls import url
+from django.urls import re_path
 from django.db.models import Q
 from django.db.models.signals import m2m_changed
 from django.forms import TextInput, Textarea, IntegerField, CharField
@@ -345,14 +345,14 @@ class LeagueAdmin(ModelAdmin):
 
         info = self.model._meta.app_label, self.model._meta.model_name
 
-        urls = [url(r'^(.+)/manage/$', wrap(manage_league_view),name='%s_%s_manage' % info)]
-        urls += [url(r'^(.+)/create_round/$', wrap(create_round_view),
+        urls = [re_path(r'^(.+)/manage/$', wrap(manage_league_view),name='%s_%s_manage' % info)]
+        urls += [re_path(r'^(.+)/create_round/$', wrap(create_round_view),
         name='%s_%s_create_round' % info)]
-        urls += [url(r'^(.+)/create_round_robin/$', wrap(create_round_robin_view),
+        urls += [re_path(r'^(.+)/create_round_robin/$', wrap(create_round_robin_view),
         name='%s_%s_create_round_robin' % info)]
-        urls += [url(r'^(.+)/download_pdf/$', wrap(export_league_pdf),
+        urls += [re_path(r'^(.+)/download_pdf/$', wrap(export_league_pdf),
         name='%s_%s_download_pdf' % info)]
-        urls += [url(r'^(.+)/download_crosstable/$', wrap(export_crosstable_pdf),
+        urls += [re_path(r'^(.+)/download_crosstable/$', wrap(export_crosstable_pdf),
         name='%s_%s_download_crosstable' % info)]
 
         
@@ -450,14 +450,13 @@ class PlayerAdmin(admin.ModelAdmin):
 
 
     def get_urls(self):
-        from django.conf.urls import url
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, self, **kwargs)
             return update_wrapper(wrapper, view)
 
         info = self.model._meta.app_label, self.model._meta.model_name
-        urls = [url(r'^sendemail/', wrap(send_email_view),name='%s_%s_sendemail'% info)]
+        urls = [re_path(r'^sendemail/', wrap(send_email_view),name='%s_%s_sendemail'% info)]
 
         super_urls = super(PlayerAdmin, self).get_urls()
         return urls + super_urls
@@ -578,16 +577,15 @@ class ScheduleAdmin(ReverseModelAdmin):
         PgnInline,
     ]
     def get_urls(self):
-        from django.conf.urls import url
         def wrap(view):
             def wrapper(*args, **kwargs):
                 return self.admin_site.admin_view(view)(*args, self, **kwargs)
             return update_wrapper(wrapper, view)
 
         info = self.model._meta.app_label, self.model._meta.model_name
-        urls = [url(r'^addclubnight/', wrap(add_club_night_view), name='%s_%s_addclubnight' 
+        urls = [re_path(r'^addclubnight/', wrap(add_club_night_view), name='%s_%s_addclubnight' 
         % info)]
-        urls += [url(r'^exportgames/', wrap(export_games_view),name='%s_%s_exportgames' 
+        urls += [re_path(r'^exportgames/', wrap(export_games_view),name='%s_%s_exportgames' 
         % info)]
 
         super_urls = super(ScheduleAdmin, self).get_urls()
