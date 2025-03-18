@@ -33,6 +33,7 @@ admin.autodiscover()
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     re_path(r"^$", views.index, name="index"),
+    path("new/", views.index_test, name="index_test"),
     # path('league/', league.urls),
     re_path(r"^", include("league.urls")),
     re_path(r"^", include("content.urls")),

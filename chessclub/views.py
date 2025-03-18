@@ -35,6 +35,34 @@ def index(request):
         },
     )
 
+
+def index_test(request):
+    news_objects = news.objects.order_by("-published_date")[:9]
+    events_objects = event.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+        :5
+    ]
+    team_fixtures = TeamFixture.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+        :5
+    ]
+
+    team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
+    puzzles = Puzzle.objects.filter(date=datetime.now().date())
+
+    about = snippet.objects.filter(title='About Us')[0]
+
+    return render(
+        request,
+        "index2.html",
+        {
+            "leagues": League.objects.all(),
+            "news": news_objects,
+            "events": events_objects,
+            "puzzles": puzzles,
+            "fixtures" : team_fixtures,
+            "about" : about
+        },
+    )
+
 def preview(request):
     news_objects = news.objects.order_by("-created_date")[:9]
     events_objects = event.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
