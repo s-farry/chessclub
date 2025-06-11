@@ -271,14 +271,14 @@ def standings_update(admin_site, request, instance):
 
             if match.black == player:
                 matcheswblack += 1
-                if match.result == 2:
+                if match.result in (2,5):
                     if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                         form = "W" + form
                     wins += 1
                     winswblack += 1
                     points += instance.get_win_points_display()
                     wins_against += [match.white]
-                elif match.result == 1:
+                elif match.result in (1,4):
                     if (instance.get_format_display() == "Swiss" and i < 20) or i < 5:
                         form = "L" + form
                     lost += 1
