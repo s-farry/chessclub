@@ -671,6 +671,34 @@ class Standings(models.Model):
         else:
             return "%.2f" % (self.points)
 
+    def in_relegation_zone(self):
+        if not self.league.relegation:
+            return False
+        league = self.league
+        if len(league.players.all()) - league.relegation < self.position:
+            return True
+        else:
+            return False
+        
+    def first_relegation_place(self):
+        if not self.league.relegation:
+            return False
+        league = self.league
+        if len(league.players.all()) - league.relegation == (self.position-1):
+            return True
+        else:
+            return False
+        
+        
+    def in_playoffs(self):
+        if not self.league.playoffs:
+            return False
+        league = self.league
+        if self.position < league.playoffs:
+            return True
+        else:
+            return False
+
     class Meta:
         ordering = STANDINGS_ORDER[0][1]
         unique_together = ("league", "player")

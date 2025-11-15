@@ -3,7 +3,7 @@ from django.urls import re_path
 from .models import page
 
 from .views import (
-    latest,
+    news_articles,
     details,
     puzzles,
     photoalbum,
@@ -15,8 +15,8 @@ from .views import (
 )
 
 urlpatterns = [
-    re_path(r"^news$", latest, name="news"),
-    re_path(r"^news/(?P<article>[-\w]+)$", latest, name="news"),
+    re_path(r"^news$", news_articles, name="news"),
+    re_path(r"^news/(?P<article>[-\w]+)$", news_articles, name="news"),
     re_path(r"^album/(?P<album>[-\w]+)$", photoalbum, name="album"),
     re_path(r"^puzzles$", puzzles, name="puzzles"),
     re_path(r"^simul$", simul_interest, name="simul_interest"),

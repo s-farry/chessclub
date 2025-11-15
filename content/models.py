@@ -16,6 +16,41 @@ STATUS_CHOICES = (
 
 OBJECT_CHOICES = ((0, "notification"), (1, "about us"), (2, "page"))
 
+# processors.py
+from imagekit import ImageSpec, register
+from imagekit.processors import ResizeToFill, Adjust
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill, SmartResize
+
+from PIL import Image, ImageOps
+
+class SmartCrop:
+    """
+    Intelligently crop images focusing on the most interesting area
+    """
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def process(self, image):
+        # Calculate target aspect ratio
+        target_ratio = self.width / self.height
+        img_ratio = image.width / image.height
+        
+        if img_ratio > target_ratio:
+            # Image is wider - crop sides
+            new_width = int(image.height * target_ratio)
+            left = (image.width - new_width) // 2
+            image = image.crop((left, 0, left + new_width, image.height))
+        elif img_ratio < target_ratio:
+            # Image is taller - crop top/bottom with bias toward top
+            new_height = int(image.width / target_ratio)
+            # Crop more from bottom (70/30 split) for better composition
+            top = int(new_height * 0.3)
+            image = image.crop((0, top, image.width, top + new_height))
+        
+        # Resize to exact dimensions
+        return image.resize((self.width, self.height), Image.Resampling.LANCZOS)
 
 class snippet(models.Model):
     class Meta:
@@ -139,6 +174,33 @@ class news(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="d")
     published_date = models.DateTimeField(null=True, blank=True)
     image = models.ImageField(blank=True, upload_to="images")
+
+
+    # Home page thumbnail - fixed aspect ratio for consistency
+    image_thumbnail = ImageSpecField(
+        source='image',
+        processors=[SmartCrop(400, 300)],  # 4:3 aspect ratio
+        format='JPEG',
+        options={'quality': 85}
+    )
+    
+    # Article page header - flexible height, intelligent crop
+    image_header = ImageSpecField(
+        source='image',
+        processors=[SmartCrop(1200, 600)],  # Max 1200w x 600h, maintains aspect
+        format='JPEG',
+        options={'quality': 90}
+    )
+    
+    # Optional: Different sizes for different uses
+    image_card = ImageSpecField(
+        source='image',
+        processors=[SmartCrop(350, 250)],
+        format='JPEG',
+        options={'quality': 85}
+    )
+
+
     author = models.ForeignKey(
         User,
         related_name="author",

@@ -1,17 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% block title %}{{ page_name }}{% endblock %}
 
 {% load i18n %}
 {% load league_tags %}
+
+{% block page_header %}
+<h1>{{league.name}} {{league.season.name}}</h1>
+        <p>Last updated on {{ league.updated_date.date }}</p>
+        {% endblock %}
+
+
 {% block content %}
-<div class="text-center">
-<h1 class="mt-4">{{league.name}}</h1> <h2>{{league.season.name}}</h2>
-
-</div>
-
-<div class = 'text-center m-3 small'>
-  Last updated on {{ league.updated_date.date }}
-</div>
 <div class='tab'>
   {% if league.format != 3 %} <button class="tablinks" onclick="openTab(event, 'table')" id="button-table"><i class="fas fa-table"></i> Table</button>{% endif %}
   {% if latest %}             <button class="tablinks" onclick="openTab(event, 'fixtures')" id="button-fixtures"><i class="fas fa-list"></i> Fixtures</button>{% endif %}
@@ -19,13 +18,13 @@
   {% if league.format != 3 %} <a class="text-decoration-none reserve-space float-right" title="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" reserve="aa"><i class="fas fa-file-pdf"></i></a>{% endif %}
 </div>
   
-<div class = "ml-auto mr-auto d-none tabcontent mt-2" id="tab-fixtures">
+<div class = "d-none tabcontent" id="tab-fixtures">
 {% if games %}
   {% include 'content/fixtures_list.html' with games=games useRounds=useRounds %}
 {% endif %} 
 </div>
 
-<div class = "ml-auto mr-auto d-none large tabcontent mt-2" id = "tab-table">
+<div class = "d-none tabcontent" id = "tab-table">
   {% if standings %}
       {% if league.format == 1 %}
         {% include 'content/swiss_table.html' with standings=standings rounds=league.get_rounds league=league %}
@@ -35,12 +34,11 @@
   {% endif %} 
 </div>
 
-<div class = "col-md-8 ml-auto mr-auto d-none tabcontent mt-3" id = "tab-details">
+<div class = "d-none tabcontent" id = "tab-details">
   {% if league.description %}
   {{league.description|safe}}
   {% endif %} 
 </div>
-
 {% endblock %}
 
 {% block scripts %}

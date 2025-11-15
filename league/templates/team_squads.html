@@ -1,17 +1,98 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% block title %}{{ page_name }}{% endblock %}
 
 {% load i18n %}
 {% load league_tags %}
+
+
+
+{% block page_header %}
+<h1><i class="fas fa-newspaper"></i> Team Squads</h1>
+<p>{{season.name}}</p>
+{% endblock %}
+
 {% block content %}
-<div class="text-center">
-<h1 class="mt-4">Team Squads</h1> <h2>{{season.name}}</h2>
-</div>
-
-
-
 <div class = "ml-auto mr-auto mt-2" id="tab-teams">
+ <!-- Team 3 -->
 
+        <div class="content-card">
+            <div class="season-selector">
+                <label for="seasonSelect"><strong>Select Season:</strong></label>
+                <select id="seasonSelect" class="form-select" style="width: auto; display: inline-block; margin-left: 1rem;">
+                    <option selected>2024-2025</option>
+                    <option>2023-2024</option>
+                    <option>2022-2023</option>
+                </select>
+            </div>
+        </div>
+  {% for team,players in teams.items %}
+        <div class="team-card">
+            <div class="team-header">
+                <h2 class="team-title">{{ team.name }}</h2>
+                <span class="team-badge"> {{ team.league }}</span>
+            </div>
+            <!--
+            <div class="team-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Played</span>
+                    <span class="stat-value">7</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Won</span>
+                    <span class="stat-value">3</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Drawn</span>
+                    <span class="stat-value">2</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Lost</span>
+                    <span class="stat-value">2</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Position</span>
+                    <span class="stat-value">5th</span>
+                </div>
+            </div>
+          -->
+
+            <table class="squad-table">
+                <thead>
+                    <tr>
+                        <th>Board</th>
+                        <th>Player</th>
+                        <th>Rating</th>
+                        <!--<th>Record (W-D-L)</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for player in players %}
+                    <tr>
+                        <td class="squad-board-number">{{forloop.counter}}</td>
+                        <td class="player-cell">
+                            <a href="{% url 'player' player.player.id %}">{{ player.player }}</a>
+                            {% if team.captain == player.player %}<span class="captain-badge">Captain</span>{% endif %}
+                        </td>
+                        <td class="rating-cell">{{ player.player.rating }}</td>
+                        <!--<td class="record-cell">3-2-2</td>-->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <!--
+            <div class="team-info">
+                <h4>Team Information</h4>
+                <p><span class="info-label">League:</span> Merseyside League Division 3</p>
+                <p><span class="info-label">Match Night:</span> Thursday, 7:30 PM</p>
+                <p><span class="info-label">Team Captain:</span> Amanda Taylor</p>
+                <p><span class="info-label">Next Match:</span> vs. Wirral C - 17 October 2025</p>
+            </div>
+          -->
+        </div>
+        {% endfor %}
+
+
+  <!--
   {% for team,players in teams.items %}
   <div id = "team-{{forloop.counter0}}">
     <table class="teams-table ml-auto mr-auto table-striped table-bordered table-hover align-items-center league-table">
@@ -42,7 +123,7 @@
         </table>
           </div>
   {% endfor %}
-  
+        -->
 
 
 </div>

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% load static %}
 {% load user_agents %}
 {% block title %}{{ game }}{% endblock %}
@@ -11,6 +11,12 @@
 {% endblock %}
 {% load i18n %}
 {% load league_tags %}
+
+{% block page_header %}
+<h1><i class="fas fa-newspaper"></i> News Archive</h1>
+<p>Browse all club news and announcements</p>
+{% endblock %}
+
 {% block content %}
 
 {% if news|length == 1 %}
@@ -43,44 +49,52 @@
   </div>
   
 
+          <h2 class="section-title">Recent News</h2>
+          {% for n in page_obj %}
+          <div class="news-item">
+              <div class="news-image-container">
+                {% if n.image %}                                    
+                <img src="{{ n.image.url }}" alt="Tournament">
+                {% else %}
+                <i class="fas fa-trophy news-image-placeholder"></i>
+                {% endif %}
+              </div>
+              <div class="news-content">
+                  <div class="news-meta">
+                      <span><i class="far fa-calendar"></i> {{n.published_date}}</span>
+                      <span class="news-category">Tournaments</span>
+                  </div>
+                  <h3 class="news-title">
+                      <a href="{% url 'news' n.id %}">{{n.title}}</a>
+                  </h3>
+                  <p class="news-excerpt">
+                                {{ n.text|safe |truncatewords:"100"}}...
+                  </p>
+                  <a href="{% url 'news' n.id %}" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+              </div>
+          </div>
+          {% endfor %}
+          <nav aria-label="Page navigation">
+                <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&category={{ selected_category }}&year={{ selected_year }}">Previous</a>
+            </li>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}&category={{ selected_category }}&year={{ selected_year }}">{{ num }}</a>
+            </li>
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&category={{ selected_category }}&year={{ selected_year }}">Next</a>
+            </li>
+        {% endif %}
+                </ul>
+            </nav>
 </div>
-
-{% if news.0.puzzle %}
-<script>
-  window.addEventListener("load", function() {
-  var board = document.getElementById('board-{{ news.0.puzzle.id }}');
-  var width = board.parentElement.offsetWidth;
-  console.log(board.parentElement);
-  console.log('width', width);
-  var pgn=`{{news.0.puzzle.pgn|safe}}`
-  var cfg = {pgn: pgn, showCoords: false, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: true, notation: 'short', 'width' : width.toString()+'px' };
-  PGNV.pgnTactic('board-{{ news.0.puzzle.id }}', cfg);
-  }
-  )
-</script> 
-{% endif %}
-
-
-{% else %}
-
-
-<h1 class="mt-4">News</h1>
-<hr>
-{% for n in news %}
-
-
-<div class="d-flex" id="{{n.id}}">
-      <h2 class="fst-italic"><a href="{% url 'news' n.id %}">{{n.title}}</a></h2>
-      <span class="ml-auto">{{ n.published_date.date }}</span>
-
-</div>
-
-
-
-{% endfor %}
-{% endif %}
-
-
-
 
 {% endblock %}
