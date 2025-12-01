@@ -16,6 +16,7 @@ from league.models import (
     PGN,
     CommitteeMember,
     STANDINGS_ORDER,
+    LMSTeamFixture
 )
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
@@ -170,37 +171,15 @@ def player(request, player_id, **kwargs):
     player = get_object_or_404(Player, id=player_id)
     active_seasons = [ s for s in Season.objects.order_by("end") if is_active_season(player_id, s.id)  ]
     
-    games = {}
-    if "league" in kwargs:
-        league = get_object_or_404(League, slug=kwargs["league"])
-        games[league.season] = {}
-        games[league.season][league] = Schedule.objects.filter(
-            (Q(white=player_id) | Q(black=player_id)) & Q(league=league)
-        ).order_by("date")
+    if "season" in kwargs:
+        season = get_object_or_404(Season, slug=kwargs["season"])
     else:
-        if "season" in kwargs:
-            season = get_object_or_404(Season, slug=kwargs["season"])
-        else:
-            season = Season.objects.order_by("end").last()
-
-        games[season] = {}
-        for league in season.league_set.all():
-            league_pk = league.pk
-            season_league_standings = Standings.objects.filter(player=player_id, league=league_pk)
-            if league.get_format_display() == "Knockout":
-                season_league_games = Schedule.objects.filter(
-                   Q(white=player_id) | Q(black=player_id), league=league_pk
-                )
-                season_league_games = sorted(season_league_games, key = lambda g : g.round if g.round!=0 else 100, reverse=True)
+        season = Season.objects.order_by("end").last()
 
 
-            else:
-                season_league_games = Schedule.objects.filter(
-                    Q(white=player_id) | Q(black=player_id), league=league_pk
-                ).order_by("date")
-
-            if len(season_league_games) > 0:
-                games[season][league] = ( season_league_games, season_league_standings )
+    games = Schedule.objects.filter(
+                (Q(white=player_id) | Q(black=player_id)) & Q(league__in=season.league_set.all())
+    )
 
     return render(request, "games.html", {"player": player, "games": games, "active_seasons" : active_seasons, "selected_season" : season })
 
@@ -260,18 +239,26 @@ def members(request, **kwargs):
     )
 
 def team_fixtures(request, **kwargs):
-    if "season_slug" in kwargs:
-        f = get_object_or_404(Season, slug=kwargs["season_slug"])
-    else:
-        f = Season.objects.order_by("end").last()
-    teams = Team.objects.filter(season=f)
-    fixtures = TeamFixture.objects.filter(team__in=teams).order_by('date')
-    fixtures = [ f for f in fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
-    team_fixtures = {t: TeamFixture.objects.filter(team=t).order_by("date") for t in teams}
+    team = request.GET.get('team', 'all')
+    fixtures = LMSTeamFixture.objects.all()
+    out = {}
+
+    out['teams'] = list(set(
+        [a.home_team for a in fixtures if 'wallasey' in a.home_team.lower()]
+        +[a.away_team for a in fixtures if 'allasey' in a.away_team.lower()]
+    ))
+
+    # Apply filters
+    if team and team != 'all':
+        fixtures = fixtures.filter(Q(home_team=team)|(Q(away_team=team)))
+        out['selected_team'] = team
+
+    out['fixtures'] = fixtures
+
     return render(
         request,
         "team_fixtures.html",
-        {"season": f, "fixtures": fixtures, "fixtures_by_team" : team_fixtures },
+        out,
     )
 
 def team_squads(request, **kwargs):

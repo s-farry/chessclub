@@ -505,6 +505,41 @@ class Team(models.Model):
         return "%s (%s)" % (self.name, self.season)
 
 
+class LMSTeamFixture(models.Model):
+    date = models.DateTimeField(verbose_name=("Date"), blank=True, null=True)
+    home_team = models.CharField(max_length=200, null=True, verbose_name=("Home Team"))
+    away_team = models.CharField(max_length=200, null=True, verbose_name=("Away Team"))
+    organisation = models.CharField(max_length=200, null=True, verbose_name=("Organisation"))
+    status = models.CharField(max_length=5, null=True, verbose_name=("status"))
+    
+    event = models.CharField(max_length=200, null=True, verbose_name=("Event"))
+    home_score = models.IntegerField(null=True, blank=True, choices=TEAM_SCORES)
+    away_score = models.IntegerField(null=True, blank=True, choices=TEAM_SCORES)
+    
+    class Meta:
+        verbose_name = ("LMS Team Fixture")
+        verbose_name_plural = ("LMS Team Fixtures")
+
+    def __str__(self):
+        return "%s v %s" % (self.home_team, self.away_team)
+
+    def print_result(self):
+        if self.home_score == 0.5:
+            home_display_score = "&#189;"
+        elif self.home_score % 1 == 0.5:
+            home_display_score = "%i&#189;" % (math.floor(self.home_score))
+        else:
+            home_display_score = "%i" % (math.floor(self.home_score))
+        if self.away_score == 0.5:
+            away_display_score = "&#189;"
+        elif self.away_score % 1 == 0.5:
+            away_display_score = "%i&#189;" % (math.floor(self.away_score))
+        else:
+            away_display_score = "%i" % (math.floor(self.away_score))
+
+        return "%s - %s" % (home_display_score, away_display_score)
+
+
 class TeamFixture(models.Model):
     date = models.DateTimeField(verbose_name=("Date"), blank=True, null=True)
     team = models.ForeignKey(

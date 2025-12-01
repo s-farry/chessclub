@@ -107,28 +107,29 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 
         <div class="content-card">
             <h2 class="section-title">Past Results</h2>
-            
+            {% for game in games %}
             <div class="fixture-card win">
                 <div class="fixture-header">
-                    <div class="fixture-date">8 October 2025</div>
+                    <div class="fixture-date">{{ game.date }}</div>
                     <span class="result-badge win">Win</span>
                 </div>
                 <div class="fixture-matchup">
                     <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
+                        <div class="name">{{ game.white }}</div>
+                        <div class="rating">{{ game.white_rating }}</div>
                     </div>
                     <div class="score-display">1 - 0</div>
                     <div class="player-side">
-                        <div class="name">Kevin Brown</div>
-                        <div class="rating">1698</div>
+                        <div class="name">{{ game.black }}</div>
+                        <div class="rating">{{ game.black_rating }}</div>
                     </div>
                 </div>
                 <div class="fixture-details">
                     <div class="detail-item">
                         <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 8
+                        {{ game.league }}
                     </div>
+                    <!--
                     <div class="detail-item">
                         <i class="fas fa-clock"></i>
                         42 moves
@@ -137,8 +138,12 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                         <i class="fas fa-chess-pawn"></i>
                         Sicilian Defense
                     </div>
+                -->
                 </div>
             </div>
+            {% endfor %}
+
+
 
             <div class="fixture-card draw">
                 <div class="fixture-header">
@@ -381,7 +386,7 @@ ECF Equivalent: {{player.ecf_grade}}</p>
               <label>Filter by:</label>
             <select name="season" class="form-select" onchange="location.href='{% url 'player' player_id=player.id season=s.slug %}'">
                 {% for active_season in active_seasons %}
-                    <option value="{{ active_season }}" {% if selected_season = active_season.id %}selected{% endif %}>{{ active_season }}</option>
+                    <option value="{{ active_season }}" {% if selected_season == active_season.id %}selected{% endif %}>{{ active_season }}</option>
                 {% endfor %}
             </select>
             </form>
@@ -408,8 +413,6 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 
 
 <hr>
-
-
 
 
 {% endfor %}

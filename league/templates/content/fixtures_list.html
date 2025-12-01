@@ -57,13 +57,14 @@
             <div class="results-group">
                 <div class="round-header">
                     <h3 class="round-title">{{date}}</h3>
-                    <span class="round-date">8 October 2025</span>
+                    <span class="round-date"></span>
                 </div>
                 {% for fixture in fixtures %}
                 <div class="result-card">
                     <div class="match-header">
-                        {% if fixture.board %}<span class="board-number">Board 1</span>{% endif %}
-                        <span class="match-status completed">Completed</span>
+                        {% if fixture.board %}<span class="board-number">Board {{fixture.board}}</span>{% endif %}
+                        <!--<span class="match-status completed">Completed</span>-->
+                        {% if fixture.league.format != 0 and fixture.date %}<span class="game-date"><i class="fas fa-calendar-alt"></i> {{fixture.date.date}}</span>{% endif %}
                     </div>
                     <div class="match-players">
                         <div class="player-info white">

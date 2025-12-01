@@ -7,14 +7,11 @@
 {% endblock %}
 {% load i18n %}
 {% load league_tags %}
-{% block content %}
-
-    <div class="page-header">
-        <div class="container">
+    {% block page_header %}
             <h1><i class="fas fa-users-cog"></i> Club Committee</h1>
             <p>Meet the team running Wallasey Chess Club</p>
-        </div>
-    </div>
+    {% endblock %}
+{% block content %}
 
     <div class="container mb-4">
         <div class="content-card">
@@ -27,91 +24,34 @@
             <h2 class="section-title">Executive Committee</h2>
 
             <div class="committee-grid">
+
+
+                {% for member in members %}
                 <div class="committee-card">
                     <div class="committee-photo">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div class="committee-role">President</div>
-                    <h3 class="committee-name">John Henderson</h3>
+
+                    <div class="committee-role">{{ member.get_position_display }}</div>
+                    <h3 class="committee-name">{{member.member}}</h3>
+                    {% if member.bio %}
                     <p class="committee-bio">
-                        John has been a member since 2005 and has served as president for the past 5 years. 
-                        A former county champion, he brings strategic vision and passion to the role.
+                        {{ member.bio }}
                     </p>
+                    {% endif %}
                     <div class="committee-contact">
+                        {% if member.email %}
                         <a href="mailto:president@wallaseychess.com" class="contact-item">
-                            <i class="fas fa-envelope"></i> president@wallaseychess.com
+                            <i class="fas fa-envelope"></i> {{ member.email }}
                         </a>
-                    </div>
+                        {% endif %}
+                        </div>
                 </div>
+                {% endfor %}       
 
-                <div class="committee-card">
-                    <div class="committee-photo">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="committee-role">Vice President</div>
-                    <h3 class="committee-name">Margaret Williams</h3>
-                    <p class="committee-bio">
-                        Margaret supports the president and chairs meetings in his absence. She has been instrumental 
-                        in developing our junior program and community outreach initiatives.
-                    </p>
-                    <div class="committee-contact">
-                        <a href="mailto:vp@wallaseychess.com" class="contact-item">
-                            <i class="fas fa-envelope"></i> vp@wallaseychess.com
-                        </a>
-                    </div>
-                </div>
 
-                <div class="committee-card">
-                    <div class="committee-photo">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="committee-role">Treasurer</div>
-                    <h3 class="committee-name">Michael Chen</h3>
-                    <p class="committee-bio">
-                        Michael manages the club's finances, membership fees, and tournament budgets. His professional 
-                        accounting background ensures our finances are in excellent hands.
-                    </p>
-                    <div class="committee-contact">
-                        <a href="mailto:treasurer@wallaseychess.com" class="contact-item">
-                            <i class="fas fa-envelope"></i> treasurer@wallaseychess.com
-                        </a>
-                    </div>
-                </div>
-
-                <div class="committee-card">
-                    <div class="committee-photo">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="committee-role">Secretary</div>
-                    <h3 class="committee-name">Sarah Johnson</h3>
-                    <p class="committee-bio">
-                        Sarah handles all club correspondence, meeting minutes, and administrative duties. She ensures 
-                        smooth communication between the committee and members.
-                    </p>
-                    <div class="committee-contact">
-                        <a href="mailto:secretary@wallaseychess.com" class="contact-item">
-                            <i class="fas fa-envelope"></i> secretary@wallaseychess.com
-                        </a>
-                    </div>
-                </div>
             </div>
             </div>
     </div>
-
-<h1 class="mt-4">Committee ({{ season }})</h1>
-<hr>
-    <table class="ml-auto mr-auto table-bordered table-hover">
-    <thead>
-      </thead>
-      <tbody>
-        {% for member in members %}
-        <tr>
-            <td>{{ member.get_position_display }}</td>
-            <td>{{ member.member }}</td>
-        </tr>
-        {% endfor %}        
-        </tbody>
-        </table>
-    
 
 {% endblock %}

@@ -37,7 +37,9 @@
                       <span><i class="far fa-calendar"></i> {{n.published_date.date}}</span>
                       <span class="news-category">Tournaments</span>
                   </div>
-                            <h3 class="news-title">{{ n.title }}</h3>
+                  <h3 class="news-title">
+                      <a href="{% url 'news' n.id %}">{{n.title}}</a>
+                  </h3>
                             <p class="news-excerpt">
                                 {{ n.text|safe |truncatewords:"100"}}...
                             </p>

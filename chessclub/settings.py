@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_user_agents',
     'tinymce',
+    'imagekit'
 ]
 
 MIDDLEWARE = [

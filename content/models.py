@@ -24,33 +24,83 @@ from imagekit.processors import ResizeToFill, SmartResize
 
 from PIL import Image, ImageOps
 
+import cv2
+import numpy as np
+from PIL import Image
+
 class SmartCrop:
     """
-    Intelligently crop images focusing on the most interesting area
+    Intelligently crop images focusing on faces or the most interesting area
     """
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        # Don't store the cascade classifier - load it in process() instead
+    
+    def detect_faces(self, image):
+        """Detect faces in the image"""
+        # Load cascade classifier here (not in __init__)
+        face_cascade = cv2.CascadeClassifier(
+            cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        )
+        
+        # Convert PIL to OpenCV format
+        cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+        gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+        
+        # Detect faces
+        faces = face_cascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30)
+        )
+        
+        return faces
     
     def process(self, image):
         # Calculate target aspect ratio
         target_ratio = self.width / self.height
         img_ratio = image.width / image.height
         
+        # Detect faces
+        faces = self.detect_faces(image)
+        
         if img_ratio > target_ratio:
             # Image is wider - crop sides
             new_width = int(image.height * target_ratio)
-            left = (image.width - new_width) // 2
+            
+            if len(faces) > 0:
+                # Calculate center of all faces
+                face_center_x = int(np.mean([x + w/2 for x, y, w, h in faces]))
+                # Center crop around faces
+                left = max(0, min(face_center_x - new_width // 2, 
+                                 image.width - new_width))
+            else:
+                # No faces - center crop
+                left = (image.width - new_width) // 2
+            
             image = image.crop((left, 0, left + new_width, image.height))
+            
         elif img_ratio < target_ratio:
-            # Image is taller - crop top/bottom with bias toward top
+            # Image is taller - crop top/bottom
             new_height = int(image.width / target_ratio)
-            # Crop more from bottom (70/30 split) for better composition
-            top = int(new_height * 0.3)
+            
+            if len(faces) > 0:
+                # Calculate center of all faces
+                face_center_y = int(np.mean([y + h/2 for x, y, w, h in faces]))
+                # Center crop around faces, but don't crop too high
+                top = max(0, min(face_center_y - new_height // 2, 
+                                image.height - new_height))
+            else:
+                # No faces - bias toward top (70/30 split)
+                top = int((image.height - new_height) * 0.3)
+            
             image = image.crop((0, top, image.width, top + new_height))
         
         # Resize to exact dimensions
         return image.resize((self.width, self.height), Image.Resampling.LANCZOS)
+    
 
 class snippet(models.Model):
     class Meta:
@@ -187,7 +237,7 @@ class news(models.Model):
     # Article page header - flexible height, intelligent crop
     image_header = ImageSpecField(
         source='image',
-        processors=[SmartCrop(1200, 600)],  # Max 1200w x 600h, maintains aspect
+        processors=[SmartCrop(1200, 400)],  # Max 1200w x 600h, maintains aspect
         format='JPEG',
         options={'quality': 90}
     )

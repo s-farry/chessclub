@@ -50,7 +50,7 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-8">
+            {% if article.related_news %}<div class="col-lg-8">{% else %}<div class="col-lg-12">{% endif %}
                 <div class="article-content">
                     {{ article.text|safe }}
                     <!--
@@ -170,6 +170,7 @@
                 </div>
 
                 <div class="article-footer">
+                    {% if article.tags %}
                     <div class="article-tags">
                         <strong style="margin-right: 0.5rem;">Tags:</strong>
                         <a href="#" class="tag">Championship</a>
@@ -177,6 +178,8 @@
                         <a href="#" class="tag">Competition</a>
                         <a href="#" class="tag">November 2025</a>
                     </div>
+                    {% endif %}
+                    <!--
                     <div class="share-buttons">
                         <strong style="margin-right: 0.5rem; display: flex; align-items: center;">Share:</strong>
                         <a href="#" class="share-button facebook">
@@ -189,10 +192,11 @@
                             <i class="fas fa-envelope"></i> Email
                         </a>
                     </div>
+                    -->
                 </div>
             
             </div>
-
+            {% if article.related_news %}
             <div class="col-lg-4">
                 <div class="related-news">
                     <h3>Related News</h3>
@@ -228,6 +232,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
 
 {% endblock %}
