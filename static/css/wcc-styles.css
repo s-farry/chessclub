@@ -1,0 +1,943 @@
+/* ========================================
+   WALLASEY CHESS CLUB - MASTER STYLESHEET
+   ======================================== */
+
+/* -------------------- ROOT VARIABLES -------------------- */
+:root {
+    --primary-color: #000000;
+    --secondary-color: #1a1a1a;
+    --accent-color: #f39c12;
+    --accent-dark: #e67e22;
+    --light-bg: #f5f5f5;
+    --white: #ffffff;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+}
+
+/* -------------------- BASE STYLES -------------------- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+}
+
+/* -------------------- NAVIGATION -------------------- */
+.navbar {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white !important;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.logo-placeholder {
+    height: 50px;
+    width: auto;
+    background-color: transparent;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.logo-placeholder img {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255,255,255,0.85) !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-nav .nav-link i {
+    display: inline-flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-link:hover {
+    color: white !important;
+}
+
+.dropdown-menu {
+    background-color: var(--secondary-color);
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.dropdown-item {
+    color: white;
+    padding: 0.6rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-item i {
+    display: inline-flex;
+    align-items: center;
+}
+
+.dropdown-item:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* -------------------- BANNER / HERO SECTION -------------------- */
+.banner-section {
+    position: relative;
+    height: 350px;
+    border-radius: 0;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+.banner-overlay h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.banner-overlay .lead {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+/* -------------------- PAGE HEADER -------------------- */
+.page-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    opacity: 0.9;
+}
+
+/* -------------------- CONTENT SECTIONS -------------------- */
+.about-section {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.about-section h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.about-section p {
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.content-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    height: 100%;
+}
+
+.section-header,
+.section-title {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+}
+
+/* -------------------- NEWS ITEMS -------------------- */
+.news-item {
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.news-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.news-image-container {
+    flex-shrink: 0;
+    width: 180px;
+    height: 120px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--light-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.news-image-placeholder {
+    color: var(--text-muted);
+    font-size: 2.5rem;
+}
+
+.news-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-content {
+    flex: 1;
+}
+
+.news-date {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.news-title {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.news-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.news-title a:hover {
+    color: var(--accent-color);
+}
+
+.news-excerpt {
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.news-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.news-meta i {
+    color: var(--accent-color);
+    margin-right: 0.3rem;
+}
+
+/* -------------------- CALENDAR EVENTS -------------------- */
+.calendar-event {
+    background: var(--light-bg);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.calendar-event:last-child {
+    margin-bottom: 0;
+}
+
+.event-date {
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.event-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.event-details {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* -------------------- BUTTONS -------------------- */
+.btn {
+    border-radius: 6px;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+}
+
+.btn-outline-primary {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary.active {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+/* -------------------- BADGES -------------------- */
+.member-type-badge,
+.result-badge {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-junior {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+.badge-senior {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.badge-win {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-draw {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.badge-loss {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.result-badge.win {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.result-badge.draw {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+.result-badge.loss {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.result-badge.upcoming {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* -------------------- STATS & PERFORMANCE -------------------- */
+.stats-summary,
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-box {
+    background: var(--light-bg);
+    padding: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.performance-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.performance-card {
+    background: var(--light-bg);
+    padding: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.performance-card i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.performance-card.wins i {
+    color: var(--success-color);
+}
+
+.performance-card.draws i {
+    color: var(--warning-color);
+}
+
+.performance-card.losses i {
+    color: var(--danger-color);
+}
+
+.performance-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.performance-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* -------------------- TABLES -------------------- */
+.members-table,
+.league-table,
+.squad-table {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.members-table thead,
+.league-table thead,
+.squad-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.members-table thead th,
+.league-table thead th,
+.squad-table thead th {
+    border: none;
+    padding: 1rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.members-table tbody td,
+.league-table tbody td,
+.squad-table tbody td {
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.members-table tbody tr:last-child td,
+.league-table tbody tr:last-child td,
+.squad-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.members-table tbody tr:hover,
+.league-table tbody tr:hover {
+    background-color: rgba(243, 156, 18, 0.05);
+}
+
+/* -------------------- PLAYER / MEMBER STYLES -------------------- */
+.member-name,
+.player-name {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.member-name a,
+.player-name a {
+    color: var(--text-dark);
+    text-decoration: none;
+}
+
+.member-name a:hover,
+.player-name a:hover {
+    color: var(--accent-color);
+}
+
+.member-avatar,
+.player-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.player-profile .player-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+}
+
+.captain-badge {
+    background: var(--accent-color);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+/* -------------------- FIXTURES & MATCHES -------------------- */
+.fixture-card {
+    background: var(--light-bg);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid;
+}
+
+.fixture-card.win {
+    border-left-color: var(--success-color);
+}
+
+.fixture-card.draw {
+    border-left-color: var(--warning-color);
+}
+
+.fixture-card.loss {
+    border-left-color: var(--danger-color);
+}
+
+.fixture-card.upcoming {
+    border-left-color: var(--accent-color);
+    background: white;
+}
+
+.fixture-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.fixture-date {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.fixture-matchup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.player-side {
+    flex: 1;
+    text-align: center;
+}
+
+.player-side.current {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.player-side .name {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.player-side .rating {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.vs-separator {
+    font-weight: 700;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+}
+
+.score-display {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.fixture-details {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.detail-item {
+    color: var(--text-muted);
+}
+
+.detail-item i {
+    color: var(--accent-color);
+    margin-right: 0.5rem;
+}
+
+/* -------------------- FILTERS -------------------- */
+.filter-section,
+.search-filter-section,
+.round-filter {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* -------------------- INFO BOXES -------------------- */
+.info-box {
+    background: var(--light-bg);
+    border-left: 4px solid var(--accent-color);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin: 2rem 0;
+}
+
+.info-box h4 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.info-box.warning {
+    background-color: #fff3cd;
+    border-left-color: var(--warning-color);
+}
+
+/* -------------------- COMMITTEE / TEAM CARDS -------------------- */
+.committee-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.committee-card {
+    background: var(--light-bg);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    border-top: 4px solid var(--accent-color);
+}
+
+.committee-photo {
+    width: 120px;
+    height: 120px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+}
+
+.committee-role {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.committee-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.committee-bio {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+/* -------------------- CONTACT ELEMENTS -------------------- */
+.contact-link,
+.contact-item {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.contact-link:hover,
+.contact-item:hover {
+    text-decoration: underline;
+    color: var(--accent-dark);
+}
+
+/* -------------------- BREADCRUMBS -------------------- */
+.breadcrumb {
+    background: transparent;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: var(--text-muted);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* -------------------- FOOTER -------------------- */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+footer p {
+    margin-bottom: 0.3rem;
+}
+
+/* -------------------- RESPONSIVE STYLES -------------------- */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .logo-placeholder {
+        height: 40px;
+    }
+
+    .logo-placeholder img {
+        height: 35px;
+    }
+
+    .banner-overlay h1 {
+        font-size: 2rem;
+    }
+
+    .banner-overlay .lead {
+        font-size: 1rem;
+    }
+
+    .banner-section {
+        height: 250px;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .news-item {
+        flex-direction: column;
+    }
+
+    .news-image-container {
+        width: 100%;
+        height: 150px;
+    }
+
+    .fixture-matchup {
+        flex-direction: column;
+    }
+
+    .score-display {
+        font-size: 1.5rem;
+    }
+
+    .stats-summary,
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .committee-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -------------------- UTILITY CLASSES -------------------- */
+.text-center {
+    text-align: center;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.winner {
+    color: var(--success-color);
+}
+
+.float-right {
+    margin-left: auto;
+}
+
+/* -------------------- PRINT STYLES -------------------- */
+@media print {
+    .navbar,
+    footer,
+    .btn,
+    .filter-section {
+        display: none;
+    }
+    
+    body {
+        background: white;
+    }
+    
+    .content-card {
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
+}
