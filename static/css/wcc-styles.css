@@ -831,58 +831,305 @@ footer p {
 
 /* -------------------- RESPONSIVE STYLES -------------------- */
 @media (max-width: 768px) {
+    /* Base text sizing */
+    body {
+        font-size: 14px;
+    }
+
+    /* Navigation */
     .navbar-brand {
-        font-size: 1.2rem;
-    }
-
-    .logo-placeholder {
-        height: 40px;
-    }
-
-    .logo-placeholder img {
-        height: 35px;
-    }
-
-    .banner-overlay h1 {
-        font-size: 2rem;
-    }
-
-    .banner-overlay .lead {
         font-size: 1rem;
     }
 
+    .logo-placeholder {
+        height: 35px;
+    }
+
+    .logo-placeholder img {
+        height: 30px;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem !important;
+    }
+
+    /* Banner */
+    .banner-overlay h1 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+
+    .banner-overlay .lead {
+        font-size: 0.9rem;
+    }
+
     .banner-section {
-        height: 250px;
+        height: 200px;
+    }
+
+    /* Page Headers */
+    .page-header {
+        padding: 1.5rem 0;
     }
 
     .page-header h1 {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
+        line-height: 1.3;
     }
 
+    .page-header p {
+        font-size: 0.9rem;
+    }
+
+    /* Content Cards */
+    .content-card {
+        padding: 1.25rem;
+    }
+
+    .about-section {
+        padding: 1.5rem;
+    }
+
+    /* Section Titles */
+    .section-header,
+    .section-title,
+    .about-section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Text Content */
+    .intro-text,
+    .about-section p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .news-excerpt,
+    p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    /* News Items */
     .news-item {
         flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
     }
 
     .news-image-container {
         width: 100%;
-        height: 150px;
+        height: 140px;
+    }
+
+    .news-title {
+        font-size: 1.1rem;
+    }
+
+    .news-date,
+    .news-meta {
+        font-size: 0.8rem;
+    }
+
+    /* Calendar Events */
+    .calendar-event {
+        padding: 0.75rem;
+    }
+
+    .event-title {
+        font-size: 0.95rem;
+    }
+
+    .event-date,
+    .event-details {
+        font-size: 0.8rem;
+    }
+
+    /* Stats */
+    .stats-summary,
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .stat-box {
+        padding: 1rem;
+    }
+
+    .stat-icon {
+        font-size: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.4rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    /* Performance Cards */
+    .performance-card {
+        padding: 1rem;
+    }
+
+    .performance-card i {
+        font-size: 1.5rem;
+    }
+
+    .performance-value {
+        font-size: 1.5rem;
+    }
+
+    .performance-label {
+        font-size: 0.75rem;
+    }
+
+    /* Tables */
+    .members-table thead th,
+    .league-table thead th,
+    .squad-table thead th {
+        padding: 0.6rem 0.4rem;
+        font-size: 0.75rem;
+    }
+
+    .members-table tbody td,
+    .league-table tbody td,
+    .squad-table tbody td {
+        padding: 0.6rem 0.4rem;
+        font-size: 0.85rem;
+    }
+
+    .member-avatar,
+    .player-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+
+    /* Fixtures */
+    .fixture-card {
+        padding: 1rem;
     }
 
     .fixture-matchup {
         flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .player-side .name {
+        font-size: 0.95rem;
+    }
+
+    .player-side .rating {
+        font-size: 0.8rem;
     }
 
     .score-display {
+        font-size: 1.3rem;
+    }
+
+    .fixture-details {
+        font-size: 0.8rem;
+        gap: 1rem;
+    }
+
+    /* Badges */
+    .member-type-badge,
+    .result-badge,
+    .captain-badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+    /* Committee Cards */
+    .committee-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .committee-card {
+        padding: 1.5rem;
+    }
+
+    .committee-photo {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .committee-name {
+        font-size: 1.2rem;
+    }
+
+    .committee-role {
+        font-size: 0.8rem;
+    }
+
+    .committee-bio {
+        font-size: 0.9rem;
+    }
+
+    /* Info Boxes */
+    .info-box {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .info-box h4 {
+        font-size: 1rem;
+    }
+
+    /* Filter Sections */
+    .filter-section,
+    .search-filter-section,
+    .round-filter {
+        gap: 0.4rem;
+    }
+
+    .filter-section .btn,
+    .round-filter .btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.7rem;
+    }
+
+    /* Footer */
+    footer {
+        padding: 1.5rem;
+        font-size: 0.85rem;
+    }
+
+    /* Spacing adjustments */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    h1 {
         font-size: 1.5rem;
     }
 
-    .stats-summary,
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+    h2 {
+        font-size: 1.3rem;
     }
 
-    .committee-grid {
-        grid-template-columns: 1fr;
+    h3 {
+        font-size: 1.15rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+    }
+
+    h5 {
+        font-size: 0.95rem;
     }
 }
 
