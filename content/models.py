@@ -104,7 +104,7 @@ class dropdownitem(models.Model):
     def url(self):
         if not self.link:
             return ""
-        if self.link.startswith('http') or self.link.startswith('www'):
+        if self.link.startswith('http') or self.link.startswith('www') or self.link.startswith('/'):
             return self.link
         split_link = self.link.split()
         if len(split_link) == 0:
@@ -130,7 +130,7 @@ class news(models.Model):
         ]
 
     title = models.CharField(max_length=200, default="Feature")
-    text = models.CharField(max_length=10000)
+    text = models.CharField(max_length=20000)
     caption = models.CharField(max_length=500, blank=True, null=True)
     synopsis = models.CharField(max_length=1000, default="", null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)

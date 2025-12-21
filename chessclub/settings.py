@@ -20,7 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['CHESSCLUB_SECRET_KEY']
+#SECRET_KEY = os.environ['CHESSCLUB_SECRET_KEY']
+
+SECRET_KEY='q4ao$(g7-(mwxbg%eal45#rn%bx%n0rsbnt*v9ch#lsb^$w^(*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -116,8 +118,11 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 EMAIL_HOST = 'mail.wallaseychessclub.uk'
 EMAIL_PORT = 2525
 EMAIL_USE_TLS = False    
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+#EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+#EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_USER='contact@wallaseychessclub.uk'
+EMAIL_HOST_PASSWORD='wsy-checkm8'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -166,7 +171,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'content_style' : "div {margin: 10px; border: 5px solid red; padding: 3px}",
     'style_formats': '{title: "test, selector: "div", classes: "review"}',
     'plugins' : "dvlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
-    "fullscreen insertdatetime media table paste code help wordcount spellchecker",
+    "fullscreen insertdatetime media table code help wordcount",
     "toolbar": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
     "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
     "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "

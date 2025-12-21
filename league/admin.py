@@ -468,14 +468,17 @@ class PlayerAdmin(admin.ModelAdmin):
             if p.ecf == None:
                 self.message_user(request, '%s has no ECF code currently'%(p))
                 continue
-            url = 'https://www.ecfrating.org.uk/v2/new/api.php?v2/ratings/Standard/%s/%s'%(p.ecf, datetime.today().date())
+            url = 'https://rating.englishchess.org.uk/v2/new/api.php?v2/ratings/Standard/%s/%s'%(p.ecf, datetime.today().date())
             grade = requests.get(url)
             if grade:
                 grade = grade.json()
-                curr_rating = p.rating if p.rating else 0
-                self.message_user(request, '%s rating updated from %i to %i'%(p, curr_rating, grade['revised_rating']))
-                p.rating = grade['revised_rating']
-                p.save()
+                if 'revised_rating' in grade.keys():
+                    curr_rating = p.rating if p.rating else 0
+                    self.message_user(request, '%s rating updated from %i to %i'%(p, curr_rating, grade['revised_rating']))
+                    p.rating = grade['revised_rating']
+                    p.save()
+                else:
+                    self.message_user(request, 'revised rating not found for %s'%(p,))
             print('Rating not found for %s for ecf code %s'%(p,p.ecf))
 
     def send_email(self, request, queryset):
