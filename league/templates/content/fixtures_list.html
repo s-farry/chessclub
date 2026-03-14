@@ -70,19 +70,19 @@
                         <div class="player-info white">
                             <span class="piece-icon white">♔</span>
                             <div class="player-details">
-                                <div class="player-name winner">{{fixture.white}}</div>
+                                <div class="player-name {% if fixture.result == 1 %}winner{% endif %}">{{fixture.white}}</div>
                                 <div class="player-rating">{{fixture.white_rating}}</div>
                             </div>
                         </div>
                         <div class="match-score">
-                            <span class="winner">{{fixture.get_result.0|safe}}</span>
+                            <span {% if fixture.result == 1 %}class="winner"{% endif %}>{{fixture.get_result.0|safe}}</span>
                             <span class="score-separator">-</span>
-                            <span>{{fixture.get_result.1|safe}}</span>
+                            <span {% if fixture.result == 2 %}class="winner"{% endif %}>{{fixture.get_result.1|safe}}</span>
                         </div>
                         <div class="player-info black">
                             <span class="piece-icon black">♚</span>
                             <div class="player-details">
-                                <div class="player-name">{{fixture.black}}</div>
+                                <div class="player-name {% if fixture.result == 2 %}winner{% endif %}">{{fixture.black}}</div>
                                 <div class="player-rating">{{fixture.black_rating}}</div>
                             </div>
                         </div>

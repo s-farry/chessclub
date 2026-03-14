@@ -13,7 +13,8 @@ from .views import (
     trophycabinet,
     team_fixtures,
     team_squads,
-    committee
+    committee,
+    enter_result
 )
 
 urlpatterns = [
@@ -44,4 +45,5 @@ urlpatterns = [
         export_crosstable_pdf,
         name="export_crosstable_pdf",
     ),
+    re_path(r"^enter-result$", enter_result, name="enter_result"),
 ]

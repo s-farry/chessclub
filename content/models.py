@@ -26,7 +26,10 @@ from PIL import Image, ImageOps
 
 import cv2
 import numpy as np
+import os
 from PIL import Image
+
+_YUNET_MODEL_PATH = os.path.join(os.path.dirname(__file__), 'face_detection_yunet_2023mar.onnx')
 
 class SmartCrop:
     """
@@ -35,70 +38,104 @@ class SmartCrop:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        # Don't store the cascade classifier - load it in process() instead
-    
+
     def detect_faces(self, image):
-        """Detect faces in the image"""
-        # Load cascade classifier here (not in __init__)
-        face_cascade = cv2.CascadeClassifier(
-            cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        """Detect faces using OpenCV YuNet — much better than Haar or MediaPipe"""
+        orig_w, orig_h = image.width, image.height
+
+        # YuNet works best up to ~1600px; downscale larger images
+        max_dim = 1600
+        if max(orig_w, orig_h) > max_dim:
+            scale = max_dim / max(orig_w, orig_h)
+            detect_img = image.resize(
+                (int(orig_w * scale), int(orig_h * scale)), Image.Resampling.LANCZOS
+            )
+        else:
+            scale = 1.0
+            detect_img = image
+
+        bgr = cv2.cvtColor(np.array(detect_img.convert('RGB')), cv2.COLOR_RGB2BGR)
+        h, w = bgr.shape[:2]
+
+        detector = cv2.FaceDetectorYN.create(
+            _YUNET_MODEL_PATH, '', (w, h),
+            score_threshold=0.6,
+            nms_threshold=0.3,
+            top_k=100,
         )
-        
-        # Convert PIL to OpenCV format
-        cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-        gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
-        
-        # Detect faces
-        faces = face_cascade.detectMultiScale(
-            gray,
-            scaleFactor=1.1,
-            minNeighbors=5,
-            minSize=(30, 30)
-        )
-        
+        _, detections = detector.detect(bgr)
+
+        if detections is None:
+            return []
+
+        faces = []
+        for d in detections:
+            x, y, fw, fh = int(d[0]), int(d[1]), int(d[2]), int(d[3])
+            # Scale back to original image coords
+            x  = max(0, int(x  / scale))
+            y  = max(0, int(y  / scale))
+            fw = min(int(fw / scale), orig_w - x)
+            fh = min(int(fh / scale), orig_h - y)
+            faces.append((x, y, fw, fh))
+
         return faces
-    
+
+    def _face_bounding_box(self, faces, padding_ratio=0.25):
+        """Return (min_x, min_y, max_x, max_y, weighted_cx, weighted_cy).
+        Extents cover all faces; the weighted centroid is pulled toward larger faces."""
+        min_x = min(f[0] for f in faces)
+        max_x = max(f[0] + f[2] for f in faces)
+
+        # Quadratic area-weighted centroid — closer (larger) faces count much more
+        areas = [(f[2] * f[3]) ** 2 for f in faces]
+        total = sum(areas)
+        cx = int(sum((f[0] + f[2] / 2) * a for f, a in zip(faces, areas)) / total)
+        cy = int(sum((f[1] + f[3] / 2) * a for f, a in zip(faces, areas)) / total)
+
+        pad_x = int((max_x - min_x) * padding_ratio)
+
+        return (min_x - pad_x, max_x + pad_x, cx, cy)
+
     def process(self, image):
-        # Calculate target aspect ratio
         target_ratio = self.width / self.height
         img_ratio = image.width / image.height
-        
-        # Detect faces
+
         faces = self.detect_faces(image)
-        
+
+        crop_left, crop_top = 0, 0
+
         if img_ratio > target_ratio:
             # Image is wider - crop sides
             new_width = int(image.height * target_ratio)
-            
+
             if len(faces) > 0:
-                # Calculate center of all faces
-                face_center_x = int(np.mean([x + w/2 for x, y, w, h in faces]))
-                # Center crop around faces
-                left = max(0, min(face_center_x - new_width // 2, 
-                                 image.width - new_width))
+                fx1, fx2, wcx, wcy = self._face_bounding_box(faces)
+                faces_width = fx2 - fx1
+                if faces_width < new_width:
+                    crop_left = max(0, min(wcx - new_width // 2,
+                                          image.width - new_width))
+                else:
+                    crop_left = max(0, min(fx1, image.width - new_width))
             else:
-                # No faces - center crop
-                left = (image.width - new_width) // 2
-            
-            image = image.crop((left, 0, left + new_width, image.height))
-            
+                crop_left = (image.width - new_width) // 2
+
+            image = image.crop((crop_left, 0, crop_left + new_width, image.height))
+
         elif img_ratio < target_ratio:
             # Image is taller - crop top/bottom
             new_height = int(image.width / target_ratio)
-            
+
             if len(faces) > 0:
-                # Calculate center of all faces
-                face_center_y = int(np.mean([y + h/2 for x, y, w, h in faces]))
-                # Center crop around faces, but don't crop too high
-                top = max(0, min(face_center_y - new_height // 2, 
-                                image.height - new_height))
+                fx1, fx2, wcx, wcy = self._face_bounding_box(faces)
+                # Bias upward slightly so foreheads aren't cropped
+                wcy = max(0, wcy - int(new_height * 0.05))
+                crop_top = max(0, min(wcy - new_height // 2,
+                                      image.height - new_height))
             else:
-                # No faces - bias toward top (70/30 split)
-                top = int((image.height - new_height) * 0.3)
-            
-            image = image.crop((0, top, image.width, top + new_height))
-        
-        # Resize to exact dimensions
+                crop_top = int((image.height - new_height) * 0.3)
+
+            image = image.crop((0, crop_top, image.width, crop_top + new_height))
+
         return image.resize((self.width, self.height), Image.Resampling.LANCZOS)
     
 
@@ -237,7 +274,7 @@ class news(models.Model):
     # Article page header - flexible height, intelligent crop
     image_header = ImageSpecField(
         source='image',
-        processors=[SmartCrop(1200, 400)],  # Max 1200w x 600h, maintains aspect
+        processors=[SmartCrop(1200, 550)],  # wider crop with more height for faces
         format='JPEG',
         options={'quality': 90}
     )

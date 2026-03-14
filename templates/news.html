@@ -13,8 +13,12 @@
 {% load league_tags %}
 
 {% block page_header %}
-<h1><i class="fas fa-newspaper"></i> News Archive</h1>
-<p>Browse all club news and announcements</p>
+<div class="page-header">
+    <div class="container">
+        <h1><i class="fas fa-newspaper"></i> News Archive</h1>
+        <p>Browse all club news and announcements</p>
+    </div>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -53,8 +57,8 @@
           {% for n in page_obj %}
           <div class="news-item">
               <div class="news-image-container">
-                {% if n.image %}                                    
-                <img src="{{ n.image.url }}" alt="Tournament">
+                {% if n.image %}
+                <img src="{{ n.image_thumbnail.url }}" alt="Tournament">
                 {% else %}
                 <i class="fas fa-trophy news-image-placeholder"></i>
                 {% endif %}

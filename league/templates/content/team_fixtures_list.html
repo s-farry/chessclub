@@ -20,9 +20,9 @@
                             </div>
                         </div>
                         <div class="match-score">
-                            <span class="winner">{{fixture.home_score}}</span>
-                            <span class="score-separator">-</span>
-                            <span>{{fixture.away_score}}</span>
+                            <span class="winner">{{fixture.get_home_score_display}}</span>
+                            <span class="score-separator">{% if fixture.home_score is not None and fixture.away_score is not None %}-{% else %}v{% endif %}</span>
+                            <span>{{fixture.get_away_score_display}}</span>
                         </div>
                         <div class="player-info black">
                             <span class="piece-icon black">♚</span>

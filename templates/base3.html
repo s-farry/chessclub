@@ -99,17 +99,15 @@
         </div>
     </nav>
 
-    <div class="page-header">
+    {% block page_header %}
+    {% endblock %}
+
+    <main class="main-content">
         <div class="container">
-            {% block page_header %}
+            {% block content %}
             {% endblock %}
         </div>
-    </div>
-
-    <div class = "container mb-4">
-    {% block content %}
-    {% endblock %}
-    </div>
+    </main>
 
     <footer>
         <p>&copy; 2021-2025 Wallasey Chess Club. All rights reserved.</p>

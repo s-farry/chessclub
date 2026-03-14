@@ -38,90 +38,47 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 <hr>
 
 <div class="content-card">
-            <h2 class="section-title">Upcoming Fixtures</h2>
-            
-            <div class="fixture-card upcoming">
-                <div class="fixture-header">
-                    <div class="fixture-date">15 October 2025 - 7:00 PM</div>
-                    <span class="result-badge upcoming">Upcoming</span>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="section-title mb-0">All Games</h2>
+                {% if active_seasons|length > 1 %}
+                <div class="filter-section">
+                    <select name="season" class="form-select" onchange="location.href=this.value">
+                        {% for active_season in active_seasons %}
+                            <option value="{% url 'player' player_id=player.id season=active_season.slug %}" {% if selected_season == active_season %}selected{% endif %}>{{ active_season }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                <div class="fixture-matchup">
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                    <div class="vs-separator">VS</div>
-                    <div class="player-side">
-                        <div class="name">Thomas Anderson</div>
-                        <div class="rating">1854</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 9
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Community Center
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-board"></i>
-                        Board 1
-                    </div>
-                </div>
+                {% endif %}
             </div>
-
-            <div class="fixture-card upcoming">
-                <div class="fixture-header">
-                    <div class="fixture-date">22 October 2025 - 7:00 PM</div>
-                    <span class="result-badge upcoming">Upcoming</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side">
-                        <div class="name">Michael Chen</div>
-                        <div class="rating">1998</div>
-                    </div>
-                    <div class="vs-separator">VS</div>
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 10
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Main Hall
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-board"></i>
-                        Board 2
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="content-card">
-            <h2 class="section-title">Past Results</h2>
             {% for game in games %}
-            <div class="fixture-card win">
+            {% comment %}Determine result from player's perspective{% endcomment %}
+
+            <div class="fixture-card {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
                 <div class="fixture-header">
-                    <div class="fixture-date">{{ game.date }}</div>
-                    <span class="result-badge win">Win</span>
+                    <div class="fixture-date">{% if game.date %}{{ game.date.date }}{% else %}TBC{% endif %}</div>
+                    <span class="result-badge {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
+                        {% if game.white == player %}
+                            {% if game.result == 1 %}Win{% elif game.result == 2 %}Loss{% elif game.result == 0 %}Draw{% else %}Upcoming{% endif %}
+                        {% elif game.black == player %}
+                            {% if game.result == 2 %}Win{% elif game.result == 1 %}Loss{% elif game.result == 0 %}Draw{% else %}Upcoming{% endif %}
+                        {% else %}
+                            Bye
+                        {% endif %}
+                    </span>
                 </div>
                 <div class="fixture-matchup">
-                    <div class="player-side current">
+                    <div class="player-side {% if game.white == player %}current{% endif %}">
                         <div class="name">{{ game.white }}</div>
-                        <div class="rating">{{ game.white_rating }}</div>
+                        <div class="rating">{% if game.white_rating %}{{ game.white_rating }}{% else %}-{% endif %}</div>
                     </div>
-                    <div class="score-display">1 - 0</div>
-                    <div class="player-side">
+                    {% if game.result == 3 %}
+                    <div class="vs-separator">VS</div>
+                    {% else %}
+                    <div class="score-display">{{ game.get_result.0|safe }} - {{ game.get_result.1|safe }}</div>
+                    {% endif %}
+                    <div class="player-side {% if game.black == player %}current{% endif %}">
                         <div class="name">{{ game.black }}</div>
-                        <div class="rating">{{ game.black_rating }}</div>
+                        <div class="rating">{% if game.black_rating %}{{ game.black_rating }}{% else %}-{% endif %}</div>
                     </div>
                 </div>
                 <div class="fixture-details">
@@ -129,249 +86,16 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                         <i class="fas fa-trophy"></i>
                         {{ game.league }}
                     </div>
-                    <!--
+                    {% if game.board %}
                     <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        42 moves
+                        <i class="fas fa-chess-board"></i>
+                        Board {{ game.board }}
                     </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        Sicilian Defense
-                    </div>
-                -->
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
-
-
-
-            <div class="fixture-card draw">
-                <div class="fixture-header">
-                    <div class="fixture-date">1 October 2025</div>
-                    <span class="result-badge draw">Draw</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side">
-                        <div class="name">James Morrison</div>
-                        <div class="rating">2145</div>
-                    </div>
-                    <div class="score-display">½ - ½</div>
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 7
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        67 moves
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        Queen's Gambit
-                    </div>
-                </div>
-            </div>
-
-            <div class="fixture-card win">
-                <div class="fixture-header">
-                    <div class="fixture-date">24 September 2025</div>
-                    <span class="result-badge win">Win</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                    <div class="score-display">1 - 0</div>
-                    <div class="player-side">
-                        <div class="name">Lisa Thompson</div>
-                        <div class="rating">1812</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 6
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        38 moves
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        French Defense
-                    </div>
-                </div>
-            </div>
-
-            <div class="fixture-card win">
-                <div class="fixture-header">
-                    <div class="fixture-date">17 September 2025</div>
-                    <span class="result-badge win">Win</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side">
-                        <div class="name">Patricia Wilson</div>
-                        <div class="rating">1756</div>
-                    </div>
-                    <div class="score-display">0 - 1</div>
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 5
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        51 moves
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        King's Indian Defense
-                    </div>
-                </div>
-            </div>
-
-            <div class="fixture-card win">
-                <div class="fixture-header">
-                    <div class="fixture-date">10 September 2025</div>
-                    <span class="result-badge win">Win</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                    <div class="score-display">1 - 0</div>
-                    <div class="player-side">
-                        <div class="name">Robert Davies</div>
-                        <div class="rating">1789</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 4
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        45 moves
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        Ruy Lopez
-                    </div>
-                </div>
-            </div>
-
-            <div class="fixture-card draw">
-                <div class="fixture-header">
-                    <div class="fixture-date">3 September 2025</div>
-                    <span class="result-badge draw">Draw</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side">
-                        <div class="name">David Williams</div>
-                        <div class="rating">1923</div>
-                    </div>
-                    <div class="score-display">½ - ½</div>
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 3
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        73 moves
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        English Opening
-                    </div>
-                </div>
-            </div>
-
-            <div class="fixture-card win">
-                <div class="fixture-header">
-                    <div class="fixture-date">27 August 2025</div>
-                    <span class="result-badge win">Win</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                    <div class="score-display">1 - 0</div>
-                    <div class="player-side">
-                        <div class="name">Emma Roberts</div>
-                        <div class="rating">1876</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 2
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        36 moves
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        Caro-Kann Defense
-                    </div>
-                </div>
-            </div>
-
-            <div class="fixture-card win">
-                <div class="fixture-header">
-                    <div class="fixture-date">20 August 2025</div>
-                    <span class="result-badge win">Win</span>
-                </div>
-                <div class="fixture-matchup">
-                    <div class="player-side">
-                        <div class="name">Christopher Lee</div>
-                        <div class="rating">1612</div>
-                    </div>
-                    <div class="score-display">0 - 1</div>
-                    <div class="player-side current">
-                        <div class="name">Sarah Johnson</div>
-                        <div class="rating">2087</div>
-                    </div>
-                </div>
-                <div class="fixture-details">
-                    <div class="detail-item">
-                        <i class="fas fa-trophy"></i>
-                        Autumn Championship - Round 1
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        29 moves
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-chess-pawn"></i>
-                        Italian Game
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+</div>
 
 {% for s,l in games.items %}
 

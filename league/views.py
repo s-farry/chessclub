@@ -179,9 +179,29 @@ def player(request, player_id, **kwargs):
 
     games = Schedule.objects.filter(
                 (Q(white=player_id) | Q(black=player_id)) & Q(league__in=season.league_set.all())
+    ).extra(select={
+        'date_is_null': 'date IS NULL',
+    },
+    order_by=['-date_is_null', '-date'],
     )
 
-    return render(request, "games.html", {"player": player, "games": games, "active_seasons" : active_seasons, "selected_season" : season })
+
+    performance = {
+        'wins' : len(
+            [ g for g in games if g.white==player and g.result in (1, 4) ] + 
+            [ g for g in games if g.black==player and g.result in (2, 5) ]
+        ),
+        'draws' : len(
+            [ g for g in games if g.result in (0,) ]
+        ),
+        'losses' : len(
+            [ g for g in games if g.white== player and g.result in (2,5) ] + 
+            [ g for g in games if g.black== player and g.result in (1,4) ]
+        ),
+
+    }
+
+    return render(request, "games.html", {"player": player, "games": games, "active_seasons" : active_seasons, "selected_season" : season, 'performance' : performance })
 
 
 def game(request, game_id):
@@ -240,7 +260,7 @@ def members(request, **kwargs):
 
 def team_fixtures(request, **kwargs):
     team = request.GET.get('team', 'all')
-    fixtures = LMSTeamFixture.objects.all()
+    fixtures = LMSTeamFixture.objects.order_by('date').all()
     out = {}
 
     out['teams'] = list(set(
@@ -998,9 +1018,179 @@ def send_email(request, admin_site, template='send_email.html', context=None):
         )
         if attachment:
             email_message.attach()
-        
+
         email_message.send(fail_silently=False)
 
     return render(request, template, context)
+
+
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse
+from league.models import RESULTS
+
+@staff_member_required
+def enter_result(request):
+    """Simple game result entry page for tablet use"""
+    season = Season.objects.order_by("end").last()
+    leagues = League.objects.filter(season=season)
+    players = season.players.all().union(season.extra_players.all())
+    players = players.order_by("surename", "name")
+
+    # Results for the form (excluding unplayed '-')
+    results = [(k, v) for k, v in RESULTS if k != 3]
+
+    context = {
+        'leagues': leagues,
+        'players': players,
+        'results': results,
+        'step': 'entry',  # entry, confirm, or success
+        'today': datetime.date.today().isoformat(),
+    }
+
+    if request.method == 'POST':
+        if 'confirm' in request.POST:
+            # Final submission - save the game
+            league_id = request.POST.get('league')
+            white_id = request.POST.get('white')
+            black_id = request.POST.get('black')
+            result = request.POST.get('result')
+            game_date = request.POST.get('game_date')
+            new_white_name = request.POST.get('new_white_name', '').strip()
+            new_black_name = request.POST.get('new_black_name', '').strip()
+
+            league = League.objects.get(id=league_id)
+
+            # Handle new player creation for white
+            if white_id == 'new' and new_white_name:
+                # Check if player already exists
+                name_parts = new_white_name.split(' ', 1)
+                first_name = name_parts[0]
+                surname = name_parts[1] if len(name_parts) > 1 else ''
+                existing_player = Player.objects.filter(name=first_name, surename=surname).first()
+                if existing_player:
+                    white = existing_player
+                else:
+                    white = Player(name=first_name, surename=surname)
+                    white.save()
+                    # Add to season's extra players
+                    season.extra_players.add(white)
+            else:
+                white = Player.objects.get(id=white_id)
+
+            # Handle new player creation for black
+            if black_id == 'new' and new_black_name:
+                # Check if player already exists
+                name_parts = new_black_name.split(' ', 1)
+                first_name = name_parts[0]
+                surname = name_parts[1] if len(name_parts) > 1 else ''
+                existing_player = Player.objects.filter(name=first_name, surename=surname).first()
+                if existing_player:
+                    black = existing_player
+                else:
+                    black = Player(name=first_name, surename=surname)
+                    black.save()
+                    # Add to season's extra players
+                    season.extra_players.add(black)
+            else:
+                black = Player.objects.get(id=black_id)
+
+            # Parse game date
+            if game_date:
+                game_datetime = datetime.datetime.strptime(game_date, '%Y-%m-%d')
+            else:
+                game_datetime = datetime.datetime.now()
+
+            # Check if game already exists (unplayed)
+            existing = Schedule.objects.filter(
+                Q(white=white) & Q(black=black) & Q(league=league) & Q(result=3)
+            ).first()
+
+            if existing:
+                existing.result = int(result)
+                existing.date = game_datetime
+                existing.save()
+                game = existing
+            else:
+                game = Schedule(
+                    league=league,
+                    white=white,
+                    black=black,
+                    white_rating=white.rating,
+                    black_rating=black.rating,
+                    result=int(result),
+                    date=game_datetime
+                )
+                game.save()
+
+            # Update standings
+            from .utils import standings_save, standings_update
+            standings_save(league)
+            standings_update(league)
+
+            context['step'] = 'success'
+            context['game'] = game
+
+        elif 'submit' in request.POST:
+            # Show confirmation
+            league_id = request.POST.get('league')
+            white_id = request.POST.get('white')
+            black_id = request.POST.get('black')
+            result = request.POST.get('result')
+            game_date = request.POST.get('game_date')
+            new_white_name = request.POST.get('new_white_name', '').strip()
+            new_black_name = request.POST.get('new_black_name', '').strip()
+
+            league = League.objects.get(id=league_id)
+
+            # Handle display for new players
+            if white_id == 'new':
+                white = None
+                white_display = new_white_name + ' (NEW)'
+            else:
+                white = Player.objects.get(id=white_id)
+                white_display = str(white)
+
+            if black_id == 'new':
+                black = None
+                black_display = new_black_name + ' (NEW)'
+            else:
+                black = Player.objects.get(id=black_id)
+                black_display = str(black)
+
+            result_display = dict(RESULTS).get(int(result), '-')
+
+            # Check for warnings
+            warnings = []
+
+            # Warning 1: Player not in league
+            if white and white not in league.players.all():
+                warnings.append(f'{white} is not in {league.name}')
+            if black and black not in league.players.all():
+                warnings.append(f'{black} is not in {league.name}')
+
+            # Warning 2: Game already exists this season (played)
+            if white and black:
+                existing_game = Schedule.objects.filter(
+                    Q(white=white) & Q(black=black) & Q(league=league)
+                ).exclude(result=3).first()
+                if existing_game:
+                    warnings.append(f'A game between {white} and {black} in {league.name} already exists (played on {existing_game.date.date() if existing_game.date else "unknown date"})')
+
+            context['step'] = 'confirm'
+            context['league'] = league
+            context['white'] = white
+            context['black'] = black
+            context['white_id'] = white_id
+            context['black_id'] = black_id
+            context['white_display'] = white_display
+            context['black_display'] = black_display
+            context['new_white_name'] = new_white_name
+            context['new_black_name'] = new_black_name
+            context['result'] = result
+            context['result_display'] = result_display
+            context['game_date'] = game_date
+            context['warnings'] = warnings
+
+    return render(request, 'enter_result.html', context)
 
 

@@ -13,8 +13,8 @@
                 <th>Member</th>
                 <th>Rating</th>
                 <th>Member Since</th>
-                <th>Type</th>
-                <th>Email</th>
+                <!--<th>Type</th>
+                <th>Email</th>-->
             </tr>
         </thead>
         <tbody>
@@ -25,14 +25,14 @@
         <td>{{ forloop.counter }}</td>
           <td>
               <div class="member-name">
-                  <div class="member-avatar">JM</div>
+                  <!--<div class="member-avatar">JM</div>-->
                   <span><a href="{% url 'player' player.id %}">{{player.name}} {{player.surename}}</a></span>
               </div>
           </td>
           <td><strong>{% if player.rating %}{{player.rating}} {% else %} - {% endif %}</strong></td>
-          <td>2018</td>
-          <td><span class="member-type-badge badge-active">Active</span></td>
-          <td><a href="mailto:j.morrison@email.com" class="contact-link">j.morrison@email.com</a></td>
+          <td>{{player.joined_date.year}}</td>
+          <!--<td><span class="member-type-badge badge-active">Active</span></td>
+          <td><a href="mailto:j.morrison@email.com" class="contact-link">j.morrison@email.com</a></td>-->
       </tr>
         {% endfor %}
     </tbody>
