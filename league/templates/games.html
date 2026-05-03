@@ -68,7 +68,9 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                 </div>
                 <div class="fixture-matchup">
                     <div class="player-side {% if game.white == player %}current{% endif %}">
-                        <div class="name">{{ game.white }}</div>
+                        <div class="name">
+                            {% if game.white == player %}{{ game.white }}{% else %}<a href="{% url 'player' game.white.id %}">{{ game.white }}</a>{% endif %}
+                        </div>
                         <div class="rating">{% if game.white_rating %}{{ game.white_rating }}{% else %}-{% endif %}</div>
                     </div>
                     {% if game.result == 3 %}
@@ -77,7 +79,9 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                     <div class="score-display">{{ game.get_result.0|safe }} - {{ game.get_result.1|safe }}</div>
                     {% endif %}
                     <div class="player-side {% if game.black == player %}current{% endif %}">
-                        <div class="name">{{ game.black }}</div>
+                        <div class="name">
+                            {% if game.black == player %}{{ game.black }}{% else %}<a href="{% url 'player' game.black.id %}">{{ game.black }}</a>{% endif %}
+                        </div>
                         <div class="rating">{% if game.black_rating %}{{ game.black_rating }}{% else %}-{% endif %}</div>
                     </div>
                 </div>
@@ -90,6 +94,11 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                     <div class="detail-item">
                         <i class="fas fa-chess-board"></i>
                         Board {{ game.board }}
+                    </div>
+                    {% endif %}
+                    {% if game.pgn.exists %}
+                    <div class="detail-item">
+                        <a href="{% url 'game' game.id %}"><i class="fas fa-chess"></i> View game</a>
                     </div>
                     {% endif %}
                 </div>

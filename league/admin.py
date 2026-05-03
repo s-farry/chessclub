@@ -655,6 +655,18 @@ class SeasonAdmin(admin.ModelAdmin):
         defaults.update(kwargs)
         return super().get_form(request, obj, **defaults)
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'featured_league':
+            # Resolve the season being edited from the URL
+            from django.urls import resolve
+            resolved = resolve(request.path_info)
+            season_id = resolved.kwargs.get('object_id')
+            if season_id:
+                kwargs['queryset'] = League.objects.filter(season_id=season_id)
+            else:
+                kwargs['queryset'] = League.objects.none()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     
 
 class TeamAdmin(admin.ModelAdmin):

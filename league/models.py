@@ -267,6 +267,13 @@ class Season(models.Model):
     end = models.DateField(null=True, blank=True)
     ecf_code = models.CharField(max_length=20, null=True, blank=True)
     event_name = models.CharField(max_length=200, null=True, blank=True)
+    featured_league = models.ForeignKey(
+        'League',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='featured_in_season',
+        verbose_name=("Featured league (homepage standings)"),
+    )
 
     def __str__(self):
         return "{}".format(self.name)

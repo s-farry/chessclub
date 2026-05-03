@@ -322,6 +322,9 @@ class DropDownItemInline(admin.TabularInline):
 
 class MenuItemAdmin(ReverseModelAdmin):
     inline_reverse = ["dropdownitem"]
+    list_display = ["order", "category", "text", "link"]
+    list_display_links = ["text"]
+    list_editable = ["order", "category"]
 
     inlines = [
         DropDownItemInline,

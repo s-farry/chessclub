@@ -70,7 +70,9 @@
                         <div class="player-info white">
                             <span class="piece-icon white">♔</span>
                             <div class="player-details">
-                                <div class="player-name {% if fixture.result == 1 %}winner{% endif %}">{{fixture.white}}</div>
+                                <div class="player-name {% if fixture.result == 1 %}winner{% endif %}">
+                                    {% if fixture.white %}<a href="{% url 'player' fixture.white.id %}">{{fixture.white}}</a>{% endif %}
+                                </div>
                                 <div class="player-rating">{{fixture.white_rating}}</div>
                             </div>
                         </div>
@@ -82,25 +84,23 @@
                         <div class="player-info black">
                             <span class="piece-icon black">♚</span>
                             <div class="player-details">
-                                <div class="player-name {% if fixture.result == 2 %}winner{% endif %}">{{fixture.black}}</div>
+                                <div class="player-name {% if fixture.result == 2 %}winner{% endif %}">
+                                    {% if fixture.black %}<a href="{% url 'player' fixture.black.id %}">{{fixture.black}}</a>{% endif %}
+                                </div>
                                 <div class="player-rating">{{fixture.black_rating}}</div>
                             </div>
                         </div>
                     </div>
-                      {% if match.comment %}
+                    {% if fixture.comment or fixture.pgn.exists %}
                     <div class="match-details">
-                      {{match.comment}}
-                        <!--<div class="detail-item">
-                            <i class="fas fa-clock"></i>
-                            54 moves
-                        </div>
+                        {% if fixture.comment %}{{fixture.comment}}{% endif %}
+                        {% if fixture.pgn.exists %}
                         <div class="detail-item">
-                            <i class="fas fa-chess-pawn"></i>
-                            Queen's Gambit Declined
+                            <a href="{% url 'game' fixture.id %}"><i class="fas fa-chess"></i> View game</a>
                         </div>
-                      -->
+                        {% endif %}
                     </div>
-                      {% endif %}
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>

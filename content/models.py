@@ -182,8 +182,10 @@ class menuitem(models.Model):
     class Meta:
         verbose_name_plural = "Menu Items"
         verbose_name = "Menu Item"
+        ordering = ['order']
 
     order = models.IntegerField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True, help_text="Sidebar section label, e.g. 'Main', 'League', 'Club'")
     icon = models.CharField(max_length=200, blank=True, null=True)
     text = models.CharField(max_length=200)
     link = models.CharField(max_length=200, blank=True, null=True)

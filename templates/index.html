@@ -1,71 +1,202 @@
-<!DOCTYPE html>
+{% extends 'base3.html' %}
+{% load static %}
+{% load i18n %}
+{% load league_tags %}
+{% load user_agents %}
 
-    {% extends 'base3.html' %}
-    {% load static %}
-    {% block title %}{{ game }}{% endblock %}
-    {% block header %} 
-    <script src="{% static 'js/pgnv.js' %}" type="text/javascript"></script>
-    <!-- CSS used -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'css/pgnvjs.css' %}">
-    {% endblock %}
-    {% load i18n %}
-    {% load league_tags %}
-    {% load user_agents %}
-    {% block content %}
-        <div class="about-section">
-            <h2>About Our Club</h2>
-            {{about.body|safe}}
+{% block hero %}
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">
+            <i class="fas fa-chess-king"></i> Season 2024–25
         </div>
+        <h1>Where <em>every move</em><br>tells a story.</h1>
+        <p class="hero-lead">{{ about.body|striptags|truncatewords:40 }}</p>
+        <div class="hero-actions">
+            <a href="/committee/" class="btn-gold"><i class="fas fa-user-plus"></i> Join the Club</a>
+            <a href="/fixtures/" class="btn-ghost"><i class="fas fa-chess-board"></i> View Fixtures</a>
+        </div>
+    </div>
+</section>
 
-        <div class="row g-3">
-            <div class="col-lg-8">
-                <div class="content-card">
-                    <h2 class="section-header">Latest News</h2>
-                    {% for n in news %}
-                    <div class="news-item">
-                        <div class="news-image-container">
-                            {% if n.image %}                                    
-                            <img src="{{ n.image.url }}" alt="Tournament">
-                            {% else %}
-                            <i class="fas fa-trophy news-image-placeholder"></i>
-                            {% endif %}
-                        </div>
-                        <div class="news-content">
-                  <div class="news-meta">
-                      <span><i class="far fa-calendar"></i> {{n.published_date.date}}</span>
-                      <span class="news-category">Tournaments</span>
-                  </div>
-                  <h3 class="news-title">
-                      <a href="{% url 'news' n.id %}">{{n.title}}</a>
-                  </h3>
-                            <p class="news-excerpt">
-                                {{ n.text|safe |truncatewords:"100"}}...
-                            </p>
-                        <a href="{% url 'news' n.id %}" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
+<div class="stats-strip">
+    <div class="stat-pill">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div>
+            <div class="stat-val">{{ member_count }}</div>
+            <div class="stat-lbl">Members</div>
+        </div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+        <div>
+            <div class="stat-val">{{ league_count }}</div>
+            <div class="stat-lbl">Active Leagues</div>
+        </div>
+    </div>
+    <div class="stat-pill">
+        <div class="stat-icon"><i class="fas fa-chess-king"></i></div>
+        <div>
+            <div class="stat-val">150+</div>
+            <div class="stat-lbl">Years of Chess</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-                    {% endfor %}
-                    
+{% block content %}
+<div class="index-grid">
+
+    {# ── Left: News + Featured standings ── #}
+    <div>
+
+        {# News #}
+        <div class="content-card">
+            <div class="card-header-row">
+                <h2 class="section-header" style="margin-bottom:0">Latest News</h2>
+                <a href="{% url 'news' %}" class="card-header-link">All news →</a>
+            </div>
+            <div class="news-list">
+            {% for n in news %}
+            <div class="news-row">
+                <div class="news-thumb">
+                    {% if n.image %}
+                    <img src="{{ n.image.url }}" alt="{{ n.title }}">
+                    {% else %}
+                    <i class="fas fa-chess-rook"></i>
+                    {% endif %}
+                </div>
+                <div class="news-row-body">
+                    <div class="news-tag">News</div>
+                    <h3 class="news-row-title"><a href="{% url 'news' n.id %}">{{ n.title }}</a></h3>
+                    <div class="news-date"><i class="far fa-calendar"></i> {{ n.published_date.date }}</div>
                 </div>
             </div>
-
-            <div class="col-lg-4">
-                <div class="content-card">
-                    <h2 class="section-header">Upcoming Events</h2>
-                    
-
-                    {% for event in events %}
-                    <div class="calendar-event">
-                        <div class="event-date">{{event.date|date:'D d M'}}</div>
-                        <div class="event-title">{{event.title}}</div>
-                        <div class="event-details">{{event.date|date:'H:i'}} {% if event.location %} - {{event.location}}{% endif %}</div>
-                    </div>
-
-                    {% endfor %}
-
-                </div>
+            {% endfor %}
             </div>
         </div>
+
+        {# Featured league standings #}
+        {% if featured_standings %}
+        <div class="content-card standings-card">
+            <div class="standings-card-head">
+                <h2 class="section-header" style="margin-bottom:0">{{ featured_league.name }} — Top {{ featured_standings|length }}</h2>
+                <a href="{% url 'league' featured_league.slug %}" class="standings-full-link">Full table →</a>
+            </div>
+            <table class="mini-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Player</th>
+                        <th>P</th>
+                        <th>W</th>
+                        <th>D</th>
+                        <th>L</th>
+                        <th>Pts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in featured_standings %}
+                    <tr>
+                        <td><span class="pos-badge{% if forloop.counter <= 2 %} top{% endif %}">{{ forloop.counter }}</span></td>
+                        <td><span class="player-name">{{ s.player }}</span></td>
+                        <td>{{ s.matches }}</td>
+                        <td><span class="score-w">{{ s.win }}</span></td>
+                        <td><span class="score-d">{{ s.draws }}</span></td>
+                        <td><span class="score-l">{{ s.lost }}</span></td>
+                        <td><strong>{{ s.total_points }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+    </div>
+
+    {# ── Right: Next fixture + Upcoming events ── #}
+    <div>
+
+        {# Next fixture — prefer LMS, fall back to TeamFixture #}
+        {% if next_lms_fixture %}
+        <div class="next-fixture-card">
+            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next ECF Fixture</div>
+            <div class="next-fixture-event">{{ next_lms_fixture.event }}</div>
+            <div class="next-fixture-teams">
+                <div class="nf-team">
+                    <div class="nf-team-name">{{ next_lms_fixture.home_team }}</div>
+                    <div class="nf-team-sub">Home</div>
+                </div>
+                <div class="nf-vs">vs</div>
+                <div class="nf-team nf-team-right">
+                    <div class="nf-team-name">{{ next_lms_fixture.away_team }}</div>
+                    <div class="nf-team-sub">Away</div>
+                </div>
+            </div>
+            {% if next_lms_fixture.date %}
+            <div class="next-fixture-meta">
+                <span><i class="far fa-calendar"></i> {{ next_lms_fixture.date|date:'D j M Y' }}</span>
+                <span><i class="far fa-clock"></i> {{ next_lms_fixture.date|date:'H:i' }}</span>
+            </div>
+            {% endif %}
+        </div>
+        {% elif next_fixture %}
+        <div class="next-fixture-card">
+            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next Fixture</div>
+            <div class="next-fixture-event">{{ next_fixture.team.league }}</div>
+            <div class="next-fixture-teams">
+                {% if next_fixture.home %}
+                <div class="nf-team">
+                    <div class="nf-team-name">{{ next_fixture.team.name }}</div>
+                    <div class="nf-team-sub">Home</div>
+                </div>
+                <div class="nf-vs">vs</div>
+                <div class="nf-team nf-team-right">
+                    <div class="nf-team-name">{{ next_fixture.opponent }}</div>
+                    <div class="nf-team-sub">Away</div>
+                </div>
+                {% else %}
+                <div class="nf-team">
+                    <div class="nf-team-name">{{ next_fixture.opponent }}</div>
+                    <div class="nf-team-sub">Home</div>
+                </div>
+                <div class="nf-vs">vs</div>
+                <div class="nf-team nf-team-right">
+                    <div class="nf-team-name">{{ next_fixture.team.name }}</div>
+                    <div class="nf-team-sub">Away</div>
+                </div>
+                {% endif %}
+            </div>
+            {% if next_fixture.date %}
+            <div class="next-fixture-meta">
+                <span><i class="far fa-calendar"></i> {{ next_fixture.date|date:'D j M Y' }}</span>
+                <span><i class="far fa-clock"></i> {{ next_fixture.date|date:'H:i' }}</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {# Upcoming events #}
+        <div class="content-card">
+            <h2 class="section-header">Upcoming Events</h2>
+            {% for event in events %}
+            <div class="calendar-event">
+                <div class="event-date">
+                    <span class="eday">{{ event.date|date:'j' }}</span>
+                    <span class="emon">{{ event.date|date:'M' }}</span>
+                </div>
+                <div>
+                    <div class="event-title">{{ event.title }}</div>
+                    <div class="event-details">
+                        <i class="far fa-clock"></i>{{ event.date|date:'H:i' }}{% if event.location %} · {{ event.location }}{% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-state"><i class="far fa-calendar"></i><br>No upcoming events.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
 {% endblock %}

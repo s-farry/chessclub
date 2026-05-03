@@ -34,6 +34,7 @@ urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     re_path(r"^$", views.index, name="index"),
     path("new/", views.index_test, name="index_test"),
+    path("test/", views.design_test, name="design_test"),
     path("new2/", views.index_test2, name="index_test2"),
     # path('league/', league.urls),
     re_path(r"^", include("league.urls")),
