@@ -7,6 +7,7 @@ import os
 import chess.pgn
 import datetime
 from pytz import timezone
+from django.utils.timezone import now as tz_now
 
 import argparse
 import requests
@@ -181,7 +182,7 @@ def get_performance_score(player, tournament):
 # for updating standings
 def standings_save(admin_site, request, instance):
     league = League.objects.get(pk=instance.pk)
-    league.updated_date = datetime.datetime.now()
+    league.updated_date = tz_now()
     league.save()
     for player in league.players.all():
         obj, created = Standings.objects.get_or_create(league=league, player=player)

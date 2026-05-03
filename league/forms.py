@@ -34,36 +34,58 @@ class ClubNightForm(forms.Form):
     datetime = forms.DateTimeField(label='Date of Club Night', widget = widgets.AdminSplitDateTime, initial = last)
 
 class ExportGamesForm(forms.Form):
-    now = datetime.today()
-    year     = now.year
-    month   = now.month
-    if now.day < 5:
-        if month == 1:
-            year = year - 1
-            month = 12
-        else:
-            month = month - 1
+    start    = forms.DateTimeField(label='Start', widget=widgets.AdminSplitDateTime)
+    end      = forms.DateTimeField(label='End', widget=widgets.AdminSplitDateTime)
+    leagues  = forms.ModelMultipleChoiceField(required=True, label='Leagues', queryset=League.objects.none(), widget=FilteredSelectMultiple('Leagues', False))
+    games    = forms.ModelMultipleChoiceField(required=False, label='Extra Games', queryset=Schedule.objects.none())
+    players_exclude       = forms.ModelMultipleChoiceField(required=False, label='Players to exclude', queryset=Player.objects.none())
+    ecf_code              = forms.CharField(required=False)
+    event_name            = forms.CharField(required=False)
+    results_officer       = forms.CharField(required=False)
+    results_officer_address = forms.CharField(required=False)
+    treasurer             = forms.CharField(required=False)
+    treasurer_address     = forms.CharField(required=False)
+    minutes               = forms.IntegerField(initial=90)
+    start_date            = forms.DateField()
+    end_date              = forms.DateField()
+    submission_index      = forms.IntegerField(initial=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
 
-    season = Season.objects.order_by('end').last()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    month_days = monthrange(year, month)
-    start = forms.DateTimeField(label='Start', widget = widgets.AdminSplitDateTime, initial = datetime.combine(season.start, datetime.min.time()))
-    end   = forms.DateTimeField(label='End', widget = widgets.AdminSplitDateTime, initial = datetime(year=year, month = month, day = month_days[1], hour=23, minute=59))
-    
-    leagues    = forms.ModelMultipleChoiceField( required = True, label = 'Leagues', queryset = League.objects.filter(season=season),  widget = FilteredSelectMultiple('Leagues',False,))
+        season = Season.objects.order_by('end').last()
+        if not season:
+            return
 
-    games      = forms.ModelMultipleChoiceField( required = False, label = "Extra Games", queryset=Schedule.objects.filter(Q(league__season=season) | (Q(date__isnull=False) & Q(date__gte=season.start) & Q(date__lte=season.end))).order_by('date'))
-    players_exclude      = forms.ModelMultipleChoiceField( required = False, label = "Players to exclude", queryset = season.players.order_by('surename', 'name'))
-    ecf_code          = forms.CharField(initial = season.ecf_code)
-    event_name        = forms.CharField(initial = season.event_name)
-    results_officer   = forms.CharField(initial = season.results_officer )
-    results_officer_address   = forms.CharField(initial = season.results_officer_address )
-    treasurer         = forms.CharField(initial = season.treasurer)
-    treasurer_address = forms.CharField(initial = season.treasurer_address )
-    minutes           = forms.IntegerField(initial=90)
-    start_date       = forms.DateField(initial = season.start)
-    end_date      = forms.DateField(initial = season.end )
-    submission_index  = forms.IntegerField(initial=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+        now = datetime.today()
+        year, month = now.year, now.month
+        if now.day < 5:
+            if month == 1:
+                year, month = year - 1, 12
+            else:
+                month -= 1
+
+        month_days = monthrange(year, month)
+
+        self.fields['start'].initial = datetime.combine(season.start, datetime.min.time())
+        self.fields['end'].initial   = datetime(year=year, month=month, day=month_days[1], hour=23, minute=59)
+        self.fields['leagues'].queryset       = League.objects.filter(season=season)
+        self.fields['games'].queryset         = Schedule.objects.filter(
+            Q(league__season=season) | (
+                Q(date__isnull=False) &
+                Q(date__date__gte=season.start) &
+                Q(date__date__lte=season.end)
+            )
+        ).order_by('date')
+        self.fields['players_exclude'].queryset = season.players.order_by('surename', 'name')
+        self.fields['ecf_code'].initial              = season.ecf_code
+        self.fields['event_name'].initial            = season.event_name
+        self.fields['results_officer'].initial       = season.results_officer
+        self.fields['results_officer_address'].initial = season.results_officer_address
+        self.fields['treasurer'].initial             = season.treasurer
+        self.fields['treasurer_address'].initial     = season.treasurer_address
+        self.fields['start_date'].initial            = season.start
+        self.fields['end_date'].initial              = season.end
     
 
 

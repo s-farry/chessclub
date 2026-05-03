@@ -5,7 +5,7 @@ from .models import news, Puzzle, album, image, simul, page
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
-from datetime import datetime
+from django.utils import timezone
 from .forms import SimulForm
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
@@ -80,7 +80,7 @@ def constitution_change(request):
     return render(request, "constitution_change.html")
 
 def puzzles(request):
-    puzzles = Puzzle.objects.filter(date__lte=datetime.now().date()).order_by("-date")[
+    puzzles = Puzzle.objects.filter(date__lte=timezone.localdate()).order_by("-date")[
         :7
     ]
     return render(request, "puzzles.html", {"puzzles": puzzles})

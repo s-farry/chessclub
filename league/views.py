@@ -22,6 +22,7 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
 import datetime
+from django.utils import timezone as dj_timezone
 from openpyxl import Workbook, load_workbook
 
 from django.conf import settings
@@ -1098,7 +1099,7 @@ def enter_result(request):
             if game_date:
                 game_datetime = datetime.datetime.strptime(game_date, '%Y-%m-%d')
             else:
-                game_datetime = datetime.datetime.now()
+                game_datetime = dj_timezone.now()
 
             # Check if game already exists (unplayed)
             existing = Schedule.objects.filter(

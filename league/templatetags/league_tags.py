@@ -2,6 +2,7 @@ from django import template
 from datetime import date, timedelta
 from league.models import Schedule, League, Standings
 import datetime
+from django.utils import timezone
 from django.db.models import Q
 
 
@@ -29,7 +30,7 @@ def player_age(birth_date):
 
 @register.inclusion_tag('content/matches_widget.html')
 def matches_widget(player, league = None, past_num=5, future_num=1):
-    now = datetime.datetime.now()
+    now = timezone.now()
     player_pk = Player.objects.get(slug=team).pk
     past = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), date__lt=now).order_by('date')
     future = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), date__gte=now).order_by('date')      
