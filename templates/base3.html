@@ -25,15 +25,6 @@
             <span></span><span></span><span></span><span></span>
         </div>
 
-        <!-- Brand -->
-        <div class="sidebar-brand">
-            <img src="https://wallaseychessclub.uk/static/img/wcc_logo.png" alt="WCC" class="sidebar-logo">
-            <div class="sidebar-brand-text">
-                <strong>Wallasey Chess</strong>
-                <span>Est. 1953</span>
-            </div>
-        </div>
-
         <ul class="sidebar-nav">
             {% for menu, dropdownitems in menuitems.items %}
             {% ifchanged menu.category %}{% if menu.category %}<li class="sidebar-section-label">{{ menu.category }}</li>{% endif %}{% endifchanged %}

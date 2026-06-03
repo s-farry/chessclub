@@ -40,7 +40,8 @@ class SmartCrop:
         self.height = height
 
     def detect_faces(self, image):
-        """Detect faces using OpenCV YuNet — much better than Haar or MediaPipe"""
+        if not os.path.exists(_YUNET_MODEL_PATH):
+            return []
         orig_w, orig_h = image.width, image.height
 
         # YuNet works best up to ~1600px; downscale larger images
