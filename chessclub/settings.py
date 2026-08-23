@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['CHESSCLUB_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
     DEBUG = True
 
@@ -145,9 +145,9 @@ STATIC_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/static/
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.environ["HOME"], "public_html/media/")
 
-#if DEBUG:
-#    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-#    #STATIC_ROOT = os.path.join(BASE_DIR, "static")
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    #STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 #only want this on server
