@@ -143,7 +143,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/static/")
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.environ["HOME"], "public_html/media/")
+MEDIA_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/media/")
 
 if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
