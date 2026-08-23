@@ -11,9 +11,6 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator
 
 
-from django.urls import resolve
-
-
 def news_articles(request, **kwargs):
     if "article" in kwargs.keys():
         article = get_object_or_404(news, id=kwargs["article"])
@@ -62,18 +59,9 @@ def details(request):
 def rules(request):
     return render(request, "rules.html")
 
-def plain_page(request):
-    current_url = resolve(request.path_info).url_name
-    contents = page.objects.filter(title=current_url)
-    if len(contents) == 0:
-        return render(request, "500.html")
-    return render(
-        request,
-        "plain_page.html",
-        {
-            "content" : contents[0]
-        }
-    )
+def plain_page(request, slug):
+    content = get_object_or_404(page, slug=slug, active=True)
+    return render(request, "plain_page.html", {"content": content})
 
 
 def constitution_change(request):

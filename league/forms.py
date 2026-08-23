@@ -101,7 +101,7 @@ ScheduleModelFormset = modelformset_factory(
     #}
 )
 
-from tinymce.widgets import TinyMCE
+from django_summernote.widgets import SummernoteWidget
 class LeagueAdminForm(forms.ModelForm):
 
     class Meta:
@@ -110,7 +110,7 @@ class LeagueAdminForm(forms.ModelForm):
         exclude = ['players','updated_date']
 
         widgets = {
-            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
+            'description': SummernoteWidget(),
         }
 
 
@@ -121,7 +121,7 @@ class LeagueAdminChangeForm(forms.ModelForm):
         exclude = []
 
         widgets = {
-            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
+            'description': SummernoteWidget(),
         }
 
     def __init__(self, *args,**kwargs):
@@ -140,7 +140,7 @@ class LeagueAdminKnockoutForm(forms.ModelForm):
         exclude = []
 
         widgets = {
-            'description': TinyMCE(attrs = {'rows' : '30', 'cols' : '100', 'content_style' : "color:#FFFF00", 'body_class': 'review', 'body_id': 'review',}),
+            'description': SummernoteWidget(),
         }
 
     def __init__(self, *args,**kwargs):

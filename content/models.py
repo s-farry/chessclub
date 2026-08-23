@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.template.defaultfilters import slugify
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 
 
 from pathlib import Path
@@ -15,6 +15,8 @@ STATUS_CHOICES = (
 )
 
 OBJECT_CHOICES = ((0, "notification"), (1, "about us"), (2, "page"))
+
+CATEGORY_CHOICES = ((0, 'MAIN'), (1, 'SEASON'), (2, 'CLUB'))
 
 # processors.py
 from imagekit import ImageSpec, register
@@ -166,6 +168,7 @@ class page(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=1000000)
     active = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
     
     def name(self):
         return "%s" % (self.title)
@@ -175,6 +178,8 @@ class page(models.Model):
 
     def save(self, *args, **kwargs):
         """On save, touch the tmp restart to load up a new page"""
+        if not self.id or not self.slug:
+            self.slug = slugify("{}".format(self.title))
         super(page, self).save(*args, **kwargs)
         f = Path('/home/themovie/chessclub/tmp/restart.txt')
         if f.exists(): f.touch()
@@ -186,7 +191,8 @@ class menuitem(models.Model):
         ordering = ['order']
 
     order = models.IntegerField(blank=True, null=True)
-    category = models.CharField(max_length=100, blank=True, null=True, help_text="Sidebar section label, e.g. 'Main', 'League', 'Club'")
+
+    category = models.IntegerField(choices=CATEGORY_CHOICES, default=0, help_text="Sidebar section label, e.g. 'Main', 'League', 'Club'")
     icon = models.CharField(max_length=200, blank=True, null=True)
     text = models.CharField(max_length=200)
     link = models.CharField(max_length=200, blank=True, null=True)
@@ -200,12 +206,12 @@ class menuitem(models.Model):
         if self.link.startswith('http') or self.link.startswith('www'):
             return self.link
         split_link = self.link.split()
-        if len(split_link) == 0:
-            return reverse(split_link)
-        elif len(split_link) > 0:
+        if not split_link:
+            return ''
+        try:
             return reverse(split_link[0], args=split_link[1:])
-        else:
-            return self.link
+        except NoReverseMatch:
+            return reverse('plain_page', kwargs={'slug': split_link[0]})
 
 
 class dropdownitem(models.Model):
@@ -230,15 +236,14 @@ class dropdownitem(models.Model):
         if not self.link:
             return ""
         if self.link.startswith('http') or self.link.startswith('www') or self.link.startswith('/'):
-        
             return self.link
         split_link = self.link.split()
-        if len(split_link) == 0:
-            return reverse(split_link)
-        elif len(split_link) > 0:
+        if not split_link:
+            return ''
+        try:
             return reverse(split_link[0], args=split_link[1:])
-        else:
-            return self.link
+        except NoReverseMatch:
+            return reverse('plain_page', kwargs={'slug': split_link[0]})
 
 
 class Puzzle(models.Model):

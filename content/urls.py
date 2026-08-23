@@ -1,7 +1,5 @@
 from django.urls import re_path
 
-from .models import page
-
 from .views import (
     news_articles,
     details,
@@ -22,11 +20,7 @@ urlpatterns = [
     re_path(r"^simul$", simul_interest, name="simul_interest"),
     re_path(r"^simul_entrants$", simul_entrants, name="simul_entrants"),
     re_path(r"^constitution_change$", constitution_change, name="constitution_change"),
-]
-
-urlpatterns += [
-    re_path(r"^{}".format(h.title), plain_page, name=h.title)
-    for h in page.objects.all().filter(active=True)
+    re_path(r"^(?P<slug>[-\w]+)$", plain_page, name="plain_page"),
 ]
 
 

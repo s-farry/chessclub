@@ -164,15 +164,13 @@ COMMITTEE_POSITIONS = (
     (12, ("Officer Without Portfolio")),
 )
 
-from tinymce.widgets import TinyMCE
+from django_summernote.widgets import SummernoteWidget
 
 
 class MyMCEField(models.CharField):
     def __init__(self, *args, **kwargs):
         super(models.CharField, self).__init__(*args, **kwargs)
-        self.widget = TinyMCE(
-            attrs={"rows": "30", "cols": "100", "content_style": "color:#FFFF00"}
-        )
+        self.widget = SummernoteWidget()
 
 
 class Player(models.Model):

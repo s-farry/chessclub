@@ -6,16 +6,12 @@
 
 {% block hero %}
 <section class="hero">
+    <div class="hero-image-wrap">
+        <img src="{% static 'img/banner-chess.jpg' %}" alt="" class="hero-bg-img">
+        <div class="hero-image-fade"></div>
+    </div>
     <div class="hero-inner">
-        <div class="hero-eyebrow">
-            <i class="fas fa-chess-king"></i> Season 2024–25
-        </div>
-        <h1>Where <em>every move</em><br>tells a story.</h1>
-        <p class="hero-lead">{{ about.body|striptags|truncatewords:40 }}</p>
-        <div class="hero-actions">
-            <a href="/committee/" class="btn-gold"><i class="fas fa-user-plus"></i> Join the Club</a>
-            <a href="/fixtures/" class="btn-ghost"><i class="fas fa-chess-board"></i> View Fixtures</a>
-        </div>
+        <p class="hero-lead">{{ about.body|striptags|truncatewords:100 }}</p>
     </div>
 </section>
 
@@ -117,62 +113,68 @@
     {# ── Right: Next fixture + Upcoming events ── #}
     <div>
 
-        {# Next fixture — prefer LMS, fall back to TeamFixture #}
-        {% if next_lms_fixture %}
+        {# Next fixture(s) — prefer LMS, fall back to TeamFixture #}
+        {% if next_lms_fixtures %}
         <div class="next-fixture-card">
-            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next ECF Fixture</div>
-            <div class="next-fixture-event">{{ next_lms_fixture.event }}</div>
+            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next ECF Fixture{{ next_lms_fixtures|length|pluralize }}</div>
+            {% for fixture in next_lms_fixtures %}
+            {% if not forloop.first %}<div class="fixture-divider"></div>{% endif %}
+            <div class="next-fixture-event">{{ fixture.event }}</div>
             <div class="next-fixture-teams">
                 <div class="nf-team">
-                    <div class="nf-team-name">{{ next_lms_fixture.home_team }}</div>
+                    <div class="nf-team-name">{{ fixture.home_team }}</div>
                     <div class="nf-team-sub">Home</div>
                 </div>
                 <div class="nf-vs">vs</div>
                 <div class="nf-team nf-team-right">
-                    <div class="nf-team-name">{{ next_lms_fixture.away_team }}</div>
+                    <div class="nf-team-name">{{ fixture.away_team }}</div>
                     <div class="nf-team-sub">Away</div>
                 </div>
             </div>
-            {% if next_lms_fixture.date %}
+            {% if fixture.date %}
             <div class="next-fixture-meta">
-                <span><i class="far fa-calendar"></i> {{ next_lms_fixture.date|date:'D j M Y' }}</span>
-                <span><i class="far fa-clock"></i> {{ next_lms_fixture.date|date:'H:i' }}</span>
+                <span><i class="far fa-calendar"></i> {{ fixture.date|date:'D j M Y' }}</span>
+                <span><i class="far fa-clock"></i> {{ fixture.date|date:'H:i' }}</span>
             </div>
             {% endif %}
+            {% endfor %}
         </div>
-        {% elif next_fixture %}
+        {% elif next_fixtures %}
         <div class="next-fixture-card">
-            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next Fixture</div>
-            <div class="next-fixture-event">{{ next_fixture.team.league }}</div>
+            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next Fixture{{ next_fixtures|length|pluralize }}</div>
+            {% for fixture in next_fixtures %}
+            {% if not forloop.first %}<div class="fixture-divider"></div>{% endif %}
+            <div class="next-fixture-event">{{ fixture.team.league }}</div>
             <div class="next-fixture-teams">
-                {% if next_fixture.home %}
+                {% if fixture.home %}
                 <div class="nf-team">
-                    <div class="nf-team-name">{{ next_fixture.team.name }}</div>
+                    <div class="nf-team-name">{{ fixture.team.name }}</div>
                     <div class="nf-team-sub">Home</div>
                 </div>
                 <div class="nf-vs">vs</div>
                 <div class="nf-team nf-team-right">
-                    <div class="nf-team-name">{{ next_fixture.opponent }}</div>
+                    <div class="nf-team-name">{{ fixture.opponent }}</div>
                     <div class="nf-team-sub">Away</div>
                 </div>
                 {% else %}
                 <div class="nf-team">
-                    <div class="nf-team-name">{{ next_fixture.opponent }}</div>
+                    <div class="nf-team-name">{{ fixture.opponent }}</div>
                     <div class="nf-team-sub">Home</div>
                 </div>
                 <div class="nf-vs">vs</div>
                 <div class="nf-team nf-team-right">
-                    <div class="nf-team-name">{{ next_fixture.team.name }}</div>
+                    <div class="nf-team-name">{{ fixture.team.name }}</div>
                     <div class="nf-team-sub">Away</div>
                 </div>
                 {% endif %}
             </div>
-            {% if next_fixture.date %}
+            {% if fixture.date %}
             <div class="next-fixture-meta">
-                <span><i class="far fa-calendar"></i> {{ next_fixture.date|date:'D j M Y' }}</span>
-                <span><i class="far fa-clock"></i> {{ next_fixture.date|date:'H:i' }}</span>
+                <span><i class="far fa-calendar"></i> {{ fixture.date|date:'D j M Y' }}</span>
+                <span><i class="far fa-clock"></i> {{ fixture.date|date:'H:i' }}</span>
             </div>
             {% endif %}
+            {% endfor %}
         </div>
         {% endif %}
 

@@ -40,7 +40,7 @@ urlpatterns = [
     re_path(r"^", include("league.urls")),
     re_path(r"^", include("content.urls")),
     re_path(r"^chaining/", include("smart_selects.urls")),
-    re_path(r"^tinymce/", include("tinymce.urls")),
+    path("summernote/", include("django_summernote.urls")),
 ]
 if "DJANGO_DEBUG" in os.environ and os.environ["DJANGO_DEBUG"] == "1":
     urlpatterns += [

@@ -14,7 +14,7 @@ from .models import (
     image,
     snippet
 )
-from tinymce.widgets import TinyMCE
+from django_summernote.widgets import SummernoteWidget
 from django import forms
 from functools import update_wrapper
 from .forms import LichessEventForm
@@ -40,23 +40,8 @@ class PageAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
     body = forms.CharField(
         max_length=100000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "100",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            },
-            mce_attrs = {
-                'image_list' : [
-                    { 'title' : i.description if i.description else i.image.url, 'value' : i.image.url} for i in image.objects.all()
-                ],
-                'width': '100%',
-                'height' : 1000
-            }
-        ),
-        label="Content",
+        widget=SummernoteWidget(attrs={'summernote': {'width': '100%'}}),
+        label="Content"
     )
 
     class Meta:
@@ -84,22 +69,7 @@ class SnippetAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
     body = forms.CharField(
         max_length=10000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "100",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            },
-            mce_attrs = {
-                'image_list' : [
-                    { 'title' : i.description if i.description else i.image.url, 'value' : i.image.url} for i in image.objects.all()
-                ],
-                'width': '100%',
-                'height' : 1000
-            }
-        ),
+        widget=SummernoteWidget(),
         label="Content",
     )
 
@@ -202,18 +172,9 @@ class NewsAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=200)
     text = forms.CharField(
         max_length=10000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "30",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            }
-        ),
+        widget=SummernoteWidget(),
         label="News",
     )
-    # synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
         fields = ("title", "text", "image", "caption", "puzzle")
@@ -224,15 +185,7 @@ class NewsChangeAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=200)
     text = forms.CharField(
         max_length=10000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "30",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            }
-        ),
+        widget=SummernoteWidget(),
         label="News",
     )
     author = forms.ModelChoiceField(queryset=User.objects.all())

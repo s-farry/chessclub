@@ -26,14 +26,19 @@ def index(request):
     member_count = current_season.players.count() if current_season else 0
     league_count = League.objects.filter(season=current_season).count() if current_season else 0
 
-    next_lms_fixture = LMSTeamFixture.objects.filter(
+    _next_lms = LMSTeamFixture.objects.filter(
         Q(date__gte=timezone.now()),
         Q(home_team__icontains='wallasey') | Q(away_team__icontains='wallasey')
     ).order_by('date').first()
+    next_lms_fixtures = list(LMSTeamFixture.objects.filter(
+        Q(home_team__icontains='wallasey') | Q(away_team__icontains='wallasey'),
+        date__date=_next_lms.date.date()
+    ).order_by('date')) if _next_lms else []
 
-    next_fixture = TeamFixture.objects.filter(
-        Q(date__gte=timezone.now())
-    ).order_by('date').first()
+    _next_fix = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by('date').first()
+    next_fixtures = list(TeamFixture.objects.filter(
+        date__date=_next_fix.date.date()
+    ).order_by('date')) if _next_fix else []
 
     # Featured league standings (top 6)
     featured_league = current_season.featured_league if current_season else None
@@ -54,8 +59,8 @@ def index(request):
             "puzzles": puzzles,
             "fixtures": team_fixtures,
             "about": about,
-            "next_lms_fixture": next_lms_fixture,
-            "next_fixture": next_fixture,
+            "next_lms_fixtures": next_lms_fixtures,
+            "next_fixtures": next_fixtures,
             "member_count": member_count,
             "league_count": league_count,
             "featured_league": featured_league,

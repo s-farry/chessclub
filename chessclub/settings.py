@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_user_agents',
-    'tinymce',
+    'django_summernote',
     'imagekit'
 ]
 
@@ -151,32 +151,23 @@ if 'DJANGO_DEBUG' not in os.environ:
     SESSION_COOKIE_DOMAIN = 'wallaseychessclub.uk'
     SESSION_ENGINE='django.contrib.sessions.backends.db'
 
-TINYMCE_SPELLCHECKER = True
-TINYMCE_DEFAULT_CONFIG = {
-    'height': 360,
-    'width': 800,
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 20,
-    'selector': 'textarea',
-    'contextmenu': 'formats | link image',
-    'menubar': True,
-    'statusbar': True,
-    'content_css' : '/static/styles/layout.css',
-    'body_class' : 'tinymce',
-    'body_id' : 'tinymce',
-    'content_style' : "div {margin: 10px; border: 5px solid red; padding: 3px}",
-    'style_formats': '{title: "test, selector: "div", classes: "review"}',
-    'plugins' : "dvlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
-    "fullscreen insertdatetime media table paste code help wordcount spellchecker",
-    "toolbar": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
-    "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
-    "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
-    "fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
-    "a11ycheck ltr rtl | showcomments addcomment code wordcount spellchecker link,image",
-    #'theme_advanced_buttons2': "spellchecker",
-    'browser_spellcheck' : True,
-    'gecko_spellcheck'   : True,
-    }
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'width': '100%',
+        'height': '480px',
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'hr']],
+            ['view', ['fullscreen', 'codeview']],
+        ],
+        'spellCheck': True,
+    },
+}
 
 APPEND_SLASH = True
 

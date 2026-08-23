@@ -20,12 +20,23 @@
     <nav class="sidebar" id="sidebar">
 
         <!-- Chess-board accent stripe -->
+         <!--
         <div class="sidebar-chess-stripe">
             <span></span><span></span><span></span><span></span>
             <span></span><span></span><span></span><span></span>
         </div>
+        -->
+        <div class="sidebar-brand">
+            <img src="{% static 'img/wallaseychessclub_outline.png' %}" alt="WCC" width="80%">
+            <!--<div class="sidebar-brand-text">
+                <strong>Wallasey Chess</strong>
+                <span>Est. 1953</span>
+            </div>-->
+        </div>
 
         <ul class="sidebar-nav">
+            {% for cat, menuitems in menu.items %}
+            <div class="sidebar-section-label">{{cat}}</div>
             {% for menu, dropdownitems in menuitems.items %}
             {% ifchanged menu.category %}{% if menu.category %}<li class="sidebar-section-label">{{ menu.category }}</li>{% endif %}{% endifchanged %}
             {% if dropdownitems|length > 0 %}
@@ -60,13 +71,14 @@
             </li>
             {% endif %}
             {% endfor %}
+            {% endfor %}
         </ul>
 
+        
         <div class="sidebar-footer">
-            <a href="/test/" style="display:block; margin-bottom:0.6rem; color:rgba(255,255,255,0.3); text-decoration:none; font-size:0.75rem;">
+            <!--<a href="/test/" style="display:block; margin-bottom:0.6rem; color:rgba(255,255,255,0.3); text-decoration:none; font-size:0.75rem;">
                 <i class="fas fa-flask" style="margin-right:0.4rem;"></i>Design Test
-            </a>
-            <p>&copy; 2021–2025 Wallasey Chess Club</p>
+            </a>-->
         </div>
     </nav>
 
@@ -75,12 +87,15 @@
 
         <!-- Site header -->
         <header class="site-header">
+            <button class="hamburger-btn" id="menuToggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
             <img src="https://wallaseychessclub.uk/static/img/wcc_logo.png" alt="Wallasey Chess Club" class="site-header-logo">
-            <div class="site-header-right">
+            <!--<div class="site-header-right">
                 <span class="topbar-badge">
                     <i class="fas fa-circle topbar-live-dot"></i> Club nights: Mon &amp; Thu 7:30pm
                 </span>
-            </div>
+            </div>-->
         </header>
 
         <main class="main-content">
@@ -93,11 +108,30 @@
 
         <footer class="site-footer">
             <p>&copy; 2021–2025 Wallasey Chess Club. All rights reserved.</p>
-            <p>contact@wallaseychessclub.com</p>
         </footer>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    (function () {
+        var toggle = document.getElementById('menuToggle');
+        var sidebar = document.getElementById('sidebar');
+        if (!toggle || !sidebar) return;
+        function close() {
+            sidebar.classList.remove('mobile-open');
+            toggle.querySelector('i').className = 'fas fa-bars';
+        }
+        toggle.addEventListener('click', function () {
+            var open = sidebar.classList.toggle('mobile-open');
+            toggle.querySelector('i').className = open ? 'fas fa-times' : 'fas fa-bars';
+        });
+        sidebar.querySelectorAll('a:not([data-bs-toggle])').forEach(function (a) {
+            a.addEventListener('click', close);
+        });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+    </script>
 
     {% block scripts %}
     {% endblock %}
