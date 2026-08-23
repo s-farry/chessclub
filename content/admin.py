@@ -45,11 +45,12 @@ class PageAdminForm(forms.ModelForm):
     )
 
     class Meta:
-        fields = ("title", "body", "active")
+        fields = ("title", "slug", "body", "active")
         model = page
 
 
 class PageAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("title",)}
 
     def plain_text(self, instance):
         body = instance.body    
@@ -58,7 +59,7 @@ class PageAdmin(admin.ModelAdmin):
 
         return "\n".join(text)
     
-    list_display = ["title", "plain_text", "active"]
+    list_display = ["title", "slug", "plain_text", "active"]
     search_fields = ["title"]
     form = PageAdminForm
 
