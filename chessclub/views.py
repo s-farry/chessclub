@@ -1,11 +1,119 @@
-from django.shortcuts import render
+import io
+import logging
+
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, View, ListView, DetailView
+from django.http import JsonResponse, HttpResponse
+from django.core.files.base import ContentFile
+from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from django.db.models import Q
+
 from league.models import Schedule, Standings, League, Player, STANDINGS_ORDER, TeamFixture, LMSTeamFixture, Season
 from content.models import news, event, Puzzle, page, snippet
-from django.db.models import Q
-from django.utils.translation import gettext_lazy as _
-from django.shortcuts import get_object_or_404, render
-from django.utils import timezone
+
+log = logging.getLogger(__name__)
+
+# ---- Summernote image-compression upload override ----
+
+_IMG_THRESHOLD = 1 * 1024 * 1024   # compress images larger than 1 MB
+_IMG_MAX_DIM   = 2048               # max width or height after resize
+_IMG_QUALITY   = 82                 # initial JPEG quality
+
+
+def _compress_image(f):
+    """Return (file, was_compressed). Falls back to the original on any error."""
+    try:
+        from PIL import Image
+        f.seek(0)
+        img = Image.open(f)
+        img.load()
+        if img.mode in ('RGBA', 'LA', 'P'):
+            img = img.convert('RGB')
+        w, h = img.size
+        if w > _IMG_MAX_DIM or h > _IMG_MAX_DIM:
+            if w >= h:
+                h = round(h * _IMG_MAX_DIM / w); w = _IMG_MAX_DIM
+            else:
+                w = round(w * _IMG_MAX_DIM / h); h = _IMG_MAX_DIM
+            img = img.resize((w, h), Image.LANCZOS)
+        quality = _IMG_QUALITY
+        buf = io.BytesIO()
+        img.save(buf, 'JPEG', quality=quality, optimize=True)
+        while buf.tell() > _IMG_THRESHOLD and quality > 40:
+            quality -= 10
+            buf = io.BytesIO()
+            img.save(buf, 'JPEG', quality=quality, optimize=True)
+        buf.seek(0)
+        stem = f.name.rsplit('.', 1)[0] if '.' in f.name else f.name
+        return ContentFile(buf.read(), name=stem + '.jpg'), True
+    except Exception:
+        try:
+            f.seek(0)
+        except Exception:
+            pass
+        return f, False
+
+
+class CompressedSummernoteUpload(View):
+    """
+    Replaces django-summernote's SummernoteUploadAttachment.
+    Images over 1 MB are compressed via Pillow before saving;
+    otherwise behaviour is identical to the original view.
+    """
+
+    def post(self, request, *args, **kwargs):
+        from django_summernote.utils import get_config, get_attachment_model
+
+        config = get_config()
+
+        if config['disable_attachment']:
+            return JsonResponse(
+                {'status': 'false', 'message': _('Attachment module is disabled')}, status=403)
+        if config['attachment_require_authentication'] and not request.user.is_authenticated:
+            return JsonResponse(
+                {'status': 'false', 'message': _('Only authenticated users are allowed')}, status=403)
+
+        files = request.FILES.getlist('files')
+        if not files:
+            return JsonResponse(
+                {'status': 'false', 'message': _('No files were requested')}, status=400)
+
+        post_kwargs = request.POST.copy()
+        post_kwargs.pop('csrfmiddlewaretoken', None)
+
+        try:
+            attachments = []
+            for f in files:
+                is_image = f.content_type and f.content_type.startswith('image/')
+                if is_image and f.size > _IMG_THRESHOLD:
+                    f, compressed = _compress_image(f)
+                    if compressed:
+                        log.info('Compressed uploaded image to %d bytes', len(f))
+                elif not is_image and f.size > config['attachment_filesize_limit']:
+                    return JsonResponse(
+                        {'status': 'false',
+                         'message': _('File size exceeds the limit allowed and cannot be saved')},
+                        status=400)
+
+                klass = get_attachment_model()
+                att = klass()
+                att.file = f
+                att.save(**post_kwargs)
+                att.url = att.file.url
+                if config['attachment_absolute_uri']:
+                    att.url = request.build_absolute_uri(att.url)
+                attachments.append(att)
+
+            return HttpResponse(
+                render_to_string('django_summernote/upload_attachment.json',
+                                 {'attachments': attachments}),
+                content_type='application/json',
+            )
+        except IOError:
+            return JsonResponse(
+                {'status': 'false', 'message': _('Failed to save attachment')}, status=500)
 
 
 def index(request):

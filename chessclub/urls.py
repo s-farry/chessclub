@@ -40,6 +40,7 @@ urlpatterns = [
     re_path(r"^", include("league.urls")),
     re_path(r"^", include("content.urls")),
     re_path(r"^chaining/", include("smart_selects.urls")),
+    path("summernote/upload_attachment/", views.CompressedSummernoteUpload.as_view()),
     path("summernote/", include("django_summernote.urls")),
 ]
 if "DJANGO_DEBUG" in os.environ and os.environ["DJANGO_DEBUG"] == "1":

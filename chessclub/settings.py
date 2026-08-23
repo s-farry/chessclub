@@ -156,8 +156,6 @@ if 'DJANGO_DEBUG' not in os.environ:
     SESSION_ENGINE='django.contrib.sessions.backends.db'
 
 SUMMERNOTE_CONFIG = {
-    'js': ('/static/js/summernote-imgcompress.js',),
-    'attachment_filesize_limit': 3 * 1024 * 1024,  # 3 MB server-side backstop
     'summernote': {
         'width': '100%',
         'height': '480px',
