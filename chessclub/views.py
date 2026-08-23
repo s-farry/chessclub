@@ -8,6 +8,8 @@ from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.db.models import Q
 
 from league.models import Schedule, Standings, League, Player, STANDINGS_ORDER, TeamFixture, LMSTeamFixture, Season
@@ -62,6 +64,10 @@ class CompressedSummernoteUpload(View):
     Images over 1 MB are compressed via Pillow before saving;
     otherwise behaviour is identical to the original view.
     """
+
+    @method_decorator(xframe_options_sameorigin)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         from django_summernote.utils import get_config, get_attachment_model
