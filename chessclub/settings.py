@@ -153,6 +153,7 @@ if DEBUG:
 #only want this on server
 if 'DJANGO_DEBUG' not in os.environ:
     SESSION_COOKIE_DOMAIN = '.wallaseychessclub.uk'
+    CSRF_COOKIE_DOMAIN = '.wallaseychessclub.uk'
     SESSION_ENGINE='django.contrib.sessions.backends.db'
 
 SUMMERNOTE_CONFIG = {
