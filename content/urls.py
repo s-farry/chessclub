@@ -20,7 +20,8 @@ urlpatterns = [
     re_path(r"^simul$", simul_interest, name="simul_interest"),
     re_path(r"^simul_entrants$", simul_entrants, name="simul_entrants"),
     re_path(r"^constitution_change$", constitution_change, name="constitution_change"),
-    re_path(r"^(?P<slug>[-\w]+)$", plain_page, name="plain_page"),
+    re_path(r"^(?!admin$|summernote$)(?P<slug>[-\w]+)$", plain_page, name="plain_page"),
+    
 ]
 
 

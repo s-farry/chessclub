@@ -27,7 +27,7 @@ DEBUG = False
 if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
     DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '192.168.0.100', '192.168.1.120','192.168.1.107','192.168.1.123','wallaseychessclub.uk','www.wallaseychessclub.uk']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '192.168.0.100', '192.168.1.120','192.168.1.107','192.168.1.123','wallaseychessclub.uk','www.wallaseychessclub.uk','dev.wallaseychessclub.uk']
 
 
 # Application definition
@@ -148,7 +148,7 @@ if DEBUG:
 
 #only want this on server
 if 'DJANGO_DEBUG' not in os.environ:
-    SESSION_COOKIE_DOMAIN = 'wallaseychessclub.uk'
+    SESSION_COOKIE_DOMAIN = '.wallaseychessclub.uk'
     SESSION_ENGINE='django.contrib.sessions.backends.db'
 
 SUMMERNOTE_CONFIG = {
