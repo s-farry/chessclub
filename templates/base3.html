@@ -38,7 +38,6 @@
             {% for cat, menuitems in menu.items %}
             <div class="sidebar-section-label">{{cat}}</div>
             {% for menu, dropdownitems in menuitems.items %}
-            {% ifchanged menu.category %}{% if menu.category %}<li class="sidebar-section-label">{{ menu.category }}</li>{% endif %}{% endifchanged %}
             {% if dropdownitems|length > 0 %}
             <li class="sidebar-nav-item">
                 <a class="sidebar-nav-link sidebar-nav-toggle collapsed"
