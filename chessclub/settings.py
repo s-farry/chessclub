@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
+
+# load .env file
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -137,13 +141,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(os.environ["HOME"], "public_html/static/")
+STATIC_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/static/")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.environ["HOME"], "public_html/media/")
 
-if DEBUG:
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-    #STATIC_ROOT = os.path.join(BASE_DIR, "static")
+#if DEBUG:
+#    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+#    #STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 #only want this on server
