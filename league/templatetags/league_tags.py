@@ -2,13 +2,36 @@ from django import template
 from datetime import date, timedelta
 from league.models import Schedule, League, Standings
 import datetime
+import html as html_lib
 from django.utils import timezone
+from django.utils.html import strip_tags
+from django.utils.text import Truncator
 from django.db.models import Q
 
 
 
 
 register = template.Library()
+
+
+def _plain_text(value):
+    if not value:
+        return ''
+    text = html_lib.unescape(strip_tags(value))
+    return ' '.join(text.split())
+
+
+@register.filter
+def excerpt(value, words=25):
+    """Strip HTML tags/entities from rich-text content and truncate to a
+    plain-text excerpt (handles Summernote's stray &nbsp; paragraphs)."""
+    return Truncator(_plain_text(value)).words(words, truncate=' …')
+
+
+@register.filter
+def is_truncated(value, words=25):
+    """True if excerpt:words would actually cut this value short."""
+    return len(_plain_text(value).split()) > words
 
 @register.simple_tag
 def pct(won, matches):

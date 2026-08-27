@@ -68,6 +68,10 @@
                     <div class="news-tag">News</div>
                     <h3 class="news-row-title"><a href="{% url 'news' n.id %}">{{ n.title }}</a></h3>
                     <div class="news-date"><i class="far fa-calendar"></i> {{ n.published_date.date }}</div>
+                    <p class="news-row-excerpt">{{ n.text|excerpt:50 }}</p>
+                    {% if n.text|is_truncated:50 %}
+                    <a href="{% url 'news' n.id %}" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -81,7 +85,7 @@
             <h2 class="section-header" style="margin-bottom:0">
                 <i class="fas fa-chess-board"></i> Latest Club Night Results
             </h2>
-            <span class="card-header-meta">{{ latest_club_night_date|date:"D j M Y" }}</span>
+            <span class="card-header-meta"><i class="far fa-calendar"></i> {{ latest_club_night_date|date:"D j M Y" }}</span>
         </div>
         <div class="club-night-grid">
         {% regroup latest_club_night_games by league as league_groups %}
