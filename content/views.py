@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView, DetailView
-from .models import news, Puzzle, album, image, simul, page
+from .models import news, Puzzle, album, image, simul, page, NewsCategory
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -24,25 +24,28 @@ def news_articles(request, **kwargs):
 
         # Apply filters
         if category and category != 'all':
-            news_list = news_list.filter(category=category)
-        
+            news_list = news_list.filter(categories__slug=category)
+
         if year:
             news_list = news_list.filter(published_date__year=year)
 
 
         # Get available years for filter dropdown
         years = news.objects.dates('published_date', 'year', order='DESC')
-        
+
         # This returns datetime objects, so extract just the year:
         years = [date.year for date in years]
 
-        paginator = Paginator(news_list, 6)  # Show 6 news items per page
+        categories = NewsCategory.objects.all()
+
+        paginator = Paginator(news_list.distinct(), 6)  # Show 6 news items per page
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-    
+
         context = {
-            'page_obj': page_obj, 
+            'page_obj': page_obj,
             'years': years,
+            'categories': categories,
             'selected_category': category,
             'selected_year': year
         }

@@ -252,6 +252,24 @@ class Puzzle(models.Model):
     fen = models.CharField(max_length=50, null=True, blank=True)
 
 
+class NewsCategory(models.Model):
+    class Meta:
+        verbose_name_plural = "News Categories"
+        verbose_name = "News Category"
+        ordering = ['name']
+
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(NewsCategory, self).save(*args, **kwargs)
+
+
 # Create your models here.
 class news(models.Model):
     class Meta:
@@ -261,7 +279,7 @@ class news(models.Model):
         ]
 
     title = models.CharField(max_length=200, default="Feature")
-    text = models.CharField(max_length=10000)
+    text = models.CharField(max_length=20000)
     caption = models.CharField(max_length=500, blank=True, null=True)
     synopsis = models.CharField(max_length=1000, default="", null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -269,6 +287,9 @@ class news(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="d")
     published_date = models.DateTimeField(null=True, blank=True)
     image = models.ImageField(blank=True, upload_to="images")
+    categories = models.ManyToManyField(
+        NewsCategory, related_name="news_items", blank=True
+    )
 
 
     # Home page thumbnail - fixed aspect ratio for consistency
@@ -322,17 +343,21 @@ class news(models.Model):
 
 class event(models.Model):
     title = models.CharField(max_length=200, default="Event")
-    date = models.DateTimeField()
+    date = models.DateField()
+    time = models.TimeField(null=True, blank=True)
     link = models.CharField(max_length=200, blank=True, null=True)
     location = models.CharField(max_length=200, blank=True, null=True)
     # image = models.ImageField(blank=True, upload_to = 'images')
     # text = models.CharField(max_length = 10000)
 
-    def name(self):  # __unicode__ on Python 2
-        return "%s - %s" % (self.title)
+    def name(self):
+        return "%s" % self.title
 
-    def __str__(self):  # __unicode__ on Python 2
-        return "%s - %s, %s" % (self.title, self.date.date(), self.date.time())
+    def __str__(self):
+        s = "%s – %s" % (self.title, self.date)
+        if self.time:
+            s += ", %s" % self.time.strftime('%H:%M')
+        return s
 
 
 class album(models.Model):

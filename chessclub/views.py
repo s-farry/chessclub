@@ -124,7 +124,7 @@ class CompressedSummernoteUpload(View):
 
 def index(request):
     news_objects = news.objects.order_by("-published_date")[:3]
-    events_objects = event.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
         :5
     ]
     team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
@@ -140,28 +140,59 @@ def index(request):
     member_count = current_season.players.count() if current_season else 0
     league_count = League.objects.filter(season=current_season).count() if current_season else 0
 
-    _next_lms = LMSTeamFixture.objects.filter(
+    # ECF fixtures — up to 3 upcoming dates, all games per date
+    from itertools import groupby as _groupby
+    _lms_upcoming = LMSTeamFixture.objects.filter(
         Q(date__gte=timezone.now()),
         Q(home_team__icontains='wallasey') | Q(away_team__icontains='wallasey')
-    ).order_by('date').first()
-    next_lms_fixtures = list(LMSTeamFixture.objects.filter(
-        Q(home_team__icontains='wallasey') | Q(away_team__icontains='wallasey'),
-        date__date=_next_lms.date.date()
-    ).order_by('date')) if _next_lms else []
+    ).order_by('date')
+    upcoming_lms_groups = []
+    for _d, _games in _groupby(_lms_upcoming, key=lambda f: f.date.date()):
+        upcoming_lms_groups.append({'date': _d, 'fixtures': list(_games)})
+        if len(upcoming_lms_groups) >= 3:
+            break
 
-    _next_fix = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by('date').first()
-    next_fixtures = list(TeamFixture.objects.filter(
-        date__date=_next_fix.date.date()
-    ).order_by('date')) if _next_fix else []
+    # Internal fixtures — up to 3 upcoming dates, all games per date
+    _fix_upcoming = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by('date')
+    upcoming_fix_groups = []
+    for _d, _games in _groupby(_fix_upcoming, key=lambda f: f.date.date()):
+        upcoming_fix_groups.append({'date': _d, 'fixtures': list(_games)})
+        if len(upcoming_fix_groups) >= 3:
+            break
 
-    # Featured league standings (top 6)
-    featured_league = current_season.featured_league if current_season else None
-    featured_standings = []
-    if featured_league:
-        order = STANDINGS_ORDER[featured_league.standings_order][1]
-        featured_standings = list(
-            Standings.objects.filter(league=featured_league).order_by(*order)[:6]
-        )
+    # Featured league standings (up to 4 leagues, top 6 each)
+    featured_leagues = []
+    if current_season:
+        for fl in [
+            current_season.featured_league,
+            current_season.featured_league_2,
+            current_season.featured_league_3,
+            current_season.featured_league_4,
+        ]:
+            if fl:
+                order = STANDINGS_ORDER[fl.standings_order][1]
+                standings = list(Standings.objects.filter(league=fl).order_by(*order)[:6])
+                if standings:
+                    featured_leagues.append((fl, standings))
+
+    # Latest club night — most recent date with completed games in this season
+    latest_club_night_date = None
+    latest_club_night_games = []
+    if current_season:
+        from league.models import Schedule
+        latest_game = Schedule.objects.filter(
+            league__season=current_season,
+            result__in=[0, 1, 2],
+        ).order_by('-date').first()
+        if latest_game:
+            latest_club_night_date = latest_game.date.date()
+            latest_club_night_games = list(
+                Schedule.objects.filter(
+                    league__season=current_season,
+                    date__date=latest_club_night_date,
+                    result__in=[0, 1, 2],
+                ).select_related('white', 'black', 'league').order_by('league__name', 'board')
+            )
 
     return render(
         request,
@@ -173,19 +204,20 @@ def index(request):
             "puzzles": puzzles,
             "fixtures": team_fixtures,
             "about": about,
-            "next_lms_fixtures": next_lms_fixtures,
-            "next_fixtures": next_fixtures,
+            "upcoming_lms_groups": upcoming_lms_groups,
+            "upcoming_fix_groups": upcoming_fix_groups,
             "member_count": member_count,
             "league_count": league_count,
-            "featured_league": featured_league,
-            "featured_standings": featured_standings,
+            "featured_leagues": featured_leagues,
+            "latest_club_night_date": latest_club_night_date,
+            "latest_club_night_games": latest_club_night_games,
         },
     )
 
 
 def index_test(request):
     news_objects = news.objects.order_by("-published_date")[:9]
-    events_objects = event.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
         :5
     ]
     team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
@@ -212,7 +244,7 @@ def index_test(request):
 
 def index_test2(request):
     news_objects = news.objects.order_by("-published_date")[:9]
-    events_objects = event.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
         :5
     ]
     team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
@@ -239,7 +271,7 @@ def index_test2(request):
 
 def preview(request):
     news_objects = news.objects.order_by("-created_date")[:9]
-    events_objects = event.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
         :5
     ]
     team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[

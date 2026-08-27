@@ -12,7 +12,8 @@ from .models import (
     Puzzle,
     Document,
     image,
-    snippet
+    snippet,
+    NewsCategory,
 )
 from django_summernote.widgets import SummernoteWidget
 from django import forms
@@ -135,7 +136,8 @@ class EventAdmin(admin.ModelAdmin):
             )
             lichess_event = event(
                 title=tournament["fullName"],
-                date=tournament_datetime,
+                date=tournament_datetime.date(),
+                time=tournament_datetime.time(),
                 link="https://lichess.org/tournament/" + tournament["id"],
                 location="Lichess Online",
             )
@@ -178,7 +180,7 @@ class NewsAdminForm(forms.ModelForm):
     )
 
     class Meta:
-        fields = ("title", "text", "image", "caption", "puzzle")
+        fields = ("title", "text", "image", "caption", "puzzle", "categories")
         model = news
 
 
@@ -193,14 +195,15 @@ class NewsChangeAdminForm(forms.ModelForm):
     # synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ("title", "text", "image", "caption", "puzzle")
+        fields = ("title", "text", "image", "caption", "puzzle", "categories")
         model = news
 
 
 class NewsAdmin(admin.ModelAdmin):
     list_display = ["title", "status", "author"]
-    list_filter = ["status"]
+    list_filter = ["status", "categories"]
     search_fields = ["title"]
+    filter_horizontal = ["categories"]
 
     actions = ["make_published"]
 
@@ -302,6 +305,11 @@ class ImageAdmin(admin.ModelAdmin):
         url = instance.image.url    
         return mark_safe(f'<a href="{url}" target="_blank" rel="nofollow"">{url}</a>')
 
+class NewsCategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ["name", "slug"]
+
+
 admin.site.register(page, PageAdmin)
 admin.site.register(snippet, SnippetAdmin)
 admin.site.register(news, NewsAdmin)
@@ -310,6 +318,7 @@ admin.site.register(album, AlbumAdmin)
 admin.site.register(simul)
 admin.site.register(Puzzle)
 admin.site.register(menuitem, MenuItemAdmin)
+admin.site.register(NewsCategory, NewsCategoryAdmin)
 
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(image, ImageAdmin)

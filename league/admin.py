@@ -656,8 +656,7 @@ class SeasonAdmin(admin.ModelAdmin):
         return super().get_form(request, obj, **defaults)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'featured_league':
-            # Resolve the season being edited from the URL
+        if db_field.name in ('featured_league', 'featured_league_2', 'featured_league_3', 'featured_league_4'):
             from django.urls import resolve
             resolved = resolve(request.path_info)
             season_id = resolved.kwargs.get('object_id')

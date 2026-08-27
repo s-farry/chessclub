@@ -15,7 +15,7 @@ import pytz
 from league.models import LMSTeamFixture, TEAM_SCORES
 
 # Create a mapping from float score to integer key
-SCORE_TO_KEY = {float(score): key for key, score in TEAM_SCORES if key is not None and key >= 0}
+SCORE_TO_KEY = {float(score.replace("½",".5")): key for key, score in TEAM_SCORES if key is not None and key >= 0}
 
 
 server = "https://lms.englishchess.org.uk/lms/lmsrest/league"
@@ -62,7 +62,7 @@ for l in lms_fixtures:
     time = l[4]
     dt = datetime.strptime(f'{date} {time}', '%a %d %b %y %H:%M')
     # Make timezone-aware to match Django database datetime
-    dt = pytz.UTC.localize(dt)
+    dt = pytz.timezone('Europe/London').localize(dt)
     event = l[5]
     organisation=l[6]
     status=l[7]

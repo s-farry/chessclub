@@ -116,7 +116,7 @@ def fixtures(request, league, **kwargs):
 
 
         # if there is a preliminary round, put it at the back
-        if rounds[0] == 0:
+        if len(rounds) > 0 and rounds[0] == 0:
             rounds.remove(0)
             rounds.append(0)
     else:
@@ -288,11 +288,12 @@ def team_squads(request, **kwargs):
     else:
         f = Season.objects.order_by("end").last()
     teams = Team.objects.filter(season=f)
-    team_squads = {t: TeamPlayer.objects.filter(team=t).order_by("-player__rating") for t in teams}
+    squad_map = {t: TeamPlayer.objects.filter(team=t).order_by("-player__rating") for t in teams}
+    all_seasons = Season.objects.order_by("-end")
     return render(
         request,
         "team_squads.html",
-        {"season": f, "teams": team_squads },
+        {"season": f, "teams": squad_map, "all_seasons": all_seasons},
     )
 
 

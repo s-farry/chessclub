@@ -104,27 +104,7 @@ POINTS = (
 TEAM_SCORES = (
     (None, ''),
     (-1, 'P'),
-    (0, 0),
-    (1, 0.5),
-    (2, 1),
-    (3, 1.5),
-    (4, 2),
-    (5, 2.5),
-    (6, 3),
-    (7, 3.5),
-    (8, 4),
-    (9, 4.5),
-    (10, 5),
-    (11, 5.5),
-    (12, 6),
-    (13, 6.5),
-    (14, 7),
-    (15, 7.5),
-    (16, 8),
-    (17, 8.5),
-    (18, 9),
-    (19, 9.5),
-    (20, 10),
+    *[(i,f'{int(i/2)}' if i%2==0 else f'{int(i/2)}½') for i in range(61)]
 )
 KNOCKOUT_ROUNDS = (
     (0, 'Preliminary'),
@@ -271,6 +251,27 @@ class Season(models.Model):
         on_delete=models.SET_NULL,
         related_name='featured_in_season',
         verbose_name=("Featured league (homepage standings)"),
+    )
+    featured_league_2 = models.ForeignKey(
+        'League',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='featured_in_season_2',
+        verbose_name=("Featured league 2"),
+    )
+    featured_league_3 = models.ForeignKey(
+        'League',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='featured_in_season_3',
+        verbose_name=("Featured league 3"),
+    )
+    featured_league_4 = models.ForeignKey(
+        'League',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='featured_in_season_4',
+        verbose_name=("Featured league 4"),
     )
 
     def __str__(self):

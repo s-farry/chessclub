@@ -41,6 +41,8 @@
 {% endblock %}
 
 {% block content %}
+
+
 <div class="index-grid">
 
     {# ── Left: News + Featured standings ── #}
@@ -72,12 +74,39 @@
             </div>
         </div>
 
-        {# Featured league standings #}
-        {% if featured_standings %}
+    {# ── Latest club night results ── #}
+    {% if latest_club_night_games %}
+    <div class="content-card club-night-card">
+        <div class="card-header-row">
+            <h2 class="section-header" style="margin-bottom:0">
+                <i class="fas fa-chess-board"></i> Latest Club Night Results
+            </h2>
+            <span class="card-header-meta">{{ latest_club_night_date|date:"D j M Y" }}</span>
+        </div>
+        <div class="club-night-grid">
+        {% regroup latest_club_night_games by league as league_groups %}
+        {% for group in league_groups %}
+        <div class="club-night-league">
+            <div class="club-night-league-name">{{ group.grouper.name }}</div>
+            {% for g in group.list %}
+            <div class="cn-game">
+                <span class="cn-player cn-white {% if g.result == 1 %}cn-win{% elif g.result == 2 %}cn-loss{% elif g.result == 0 %}cn-draw{% endif %}">{{ g.white }}</span>
+                <span class="cn-score">{{ g.get_result.0|safe }}&ndash;{{ g.get_result.1|safe }}</span>
+                <span class="cn-player cn-black {% if g.result == 2 %}cn-win{% elif g.result == 1 %}cn-loss{% elif g.result == 0 %}cn-draw{% endif %}">{{ g.black }}</span>
+                {% if g.board %}<span class="cn-board">B{{ g.board }}</span>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+        {# Featured league standings (up to 4) #}
+        {% for fl, standings in featured_leagues %}
         <div class="content-card standings-card">
             <div class="standings-card-head">
-                <h2 class="section-header" style="margin-bottom:0">{{ featured_league.name }} — Top {{ featured_standings|length }}</h2>
-                <a href="{% url 'league' featured_league.slug %}" class="standings-full-link">Full table →</a>
+                <h2 class="section-header" style="margin-bottom:0">{{ fl.name }} — Top {{ standings|length }}</h2>
+                <a href="{% url 'league' fl.slug %}" class="standings-full-link">Full table →</a>
             </div>
             <table class="mini-table">
                 <thead>
@@ -92,7 +121,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for s in featured_standings %}
+                    {% for s in standings %}
                     <tr>
                         <td><span class="pos-badge{% if forloop.counter <= 2 %} top{% endif %}">{{ forloop.counter }}</span></td>
                         <td><span class="player-name">{{ s.player }}</span></td>
@@ -106,19 +135,21 @@
                 </tbody>
             </table>
         </div>
-        {% endif %}
+        {% endfor %}
 
     </div>
 
     {# ── Right: Next fixture + Upcoming events ── #}
     <div>
 
-        {# Next fixture(s) — prefer LMS, fall back to TeamFixture #}
-        {% if next_lms_fixtures %}
+        {# Next fixtures — prefer ECF/LMS, fall back to internal. Up to 3 dates, all games per date. #}
+        {% if upcoming_lms_groups %}
         <div class="next-fixture-card">
-            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next ECF Fixture{{ next_lms_fixtures|length|pluralize }}</div>
-            {% for fixture in next_lms_fixtures %}
+            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Upcoming ECF Fixtures</div>
+            {% for group in upcoming_lms_groups %}
             {% if not forloop.first %}<div class="fixture-divider"></div>{% endif %}
+            <div class="next-fixture-date-header">{{ group.date|date:'D j M Y' }}</div>
+            {% for fixture in group.fixtures %}
             <div class="next-fixture-event">{{ fixture.event }}</div>
             <div class="next-fixture-teams">
                 <div class="nf-team">
@@ -133,17 +164,20 @@
             </div>
             {% if fixture.date %}
             <div class="next-fixture-meta">
-                <span><i class="far fa-calendar"></i> {{ fixture.date|date:'D j M Y' }}</span>
                 <span><i class="far fa-clock"></i> {{ fixture.date|date:'H:i' }}</span>
+                {% if fixture.location %}<span><i class="fas fa-map-marker-alt"></i> {{ fixture.location }}</span>{% endif %}
             </div>
             {% endif %}
             {% endfor %}
+            {% endfor %}
         </div>
-        {% elif next_fixtures %}
+        {% elif upcoming_fix_groups %}
         <div class="next-fixture-card">
-            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Next Fixture{{ next_fixtures|length|pluralize }}</div>
-            {% for fixture in next_fixtures %}
+            <div class="next-fixture-label"><i class="fas fa-chess-clock"></i> Upcoming Fixtures</div>
+            {% for group in upcoming_fix_groups %}
             {% if not forloop.first %}<div class="fixture-divider"></div>{% endif %}
+            <div class="next-fixture-date-header">{{ group.date|date:'D j M Y' }}</div>
+            {% for fixture in group.fixtures %}
             <div class="next-fixture-event">{{ fixture.team.league }}</div>
             <div class="next-fixture-teams">
                 {% if fixture.home %}
@@ -170,10 +204,10 @@
             </div>
             {% if fixture.date %}
             <div class="next-fixture-meta">
-                <span><i class="far fa-calendar"></i> {{ fixture.date|date:'D j M Y' }}</span>
                 <span><i class="far fa-clock"></i> {{ fixture.date|date:'H:i' }}</span>
             </div>
             {% endif %}
+            {% endfor %}
             {% endfor %}
         </div>
         {% endif %}
@@ -190,7 +224,7 @@
                 <div>
                     <div class="event-title">{{ event.title }}</div>
                     <div class="event-details">
-                        <i class="far fa-clock"></i>{{ event.date|date:'H:i' }}{% if event.location %} · {{ event.location }}{% endif %}
+                        {% if event.time %}<i class="far fa-clock"></i>{{ event.time|time:'H:i' }}{% if event.location %} · {% endif %}{% endif %}{% if event.location %}{{ event.location }}{% endif %}
                     </div>
                 </div>
             </div>

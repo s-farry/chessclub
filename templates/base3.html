@@ -42,17 +42,17 @@
             <li class="sidebar-nav-item">
                 <a class="sidebar-nav-link sidebar-nav-toggle collapsed"
                    data-bs-toggle="collapse"
-                   href="#submenu-{{ forloop.counter }}"
+                   href="#submenu-{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
                    role="button"
                    aria-expanded="false">
                     {% if menu.icon %}{{ menu.icon|safe }}{% endif %}
                     <span>{{ menu.text }}</span>
                     <i class="fas fa-chevron-down sidebar-chevron ms-auto"></i>
                 </a>
-                <ul class="collapse sidebar-submenu" id="submenu-{{ forloop.counter }}">
+                <ul class="collapse sidebar-submenu" id="submenu-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
                     {% for d in dropdownitems %}
                     <li>
-                        <a class="sidebar-sublink{% if d.subitem %} sidebar-sublink-indent{% endif %}"
+                        <a class="sidebar-sublink{% if d.subitem %} sidebar-sublink-indent{% endif %}{% if d.url and request.path == d.url %} active{% endif %}"
                            {% if d.url %}href="{{ d.url }}"{% else %}href="#"{% endif %}>
                             {{ d.text }}
                         </a>
@@ -62,7 +62,7 @@
             </li>
             {% else %}
             <li class="sidebar-nav-item">
-                <a class="sidebar-nav-link"
+                <a class="sidebar-nav-link{% if menu.url and request.path == menu.url %} active{% endif %}"
                    {% if menu.url %}href="{{ menu.url }}"{% else %}href="#"{% endif %}>
                     {% if menu.icon %}{{ menu.icon|safe }}{% endif %}
                     <span>{{ menu.text }}</span>
@@ -98,6 +98,15 @@
         </header>
 
         <main class="main-content">
+
+            {% for notification in notifications %}
+                <div class="site-notification">
+                    <div class="site-notification-body">{{ notification.body|safe }}</div>
+                    <button class="site-notification-close" aria-label="Dismiss">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
             {% block hero %}{% endblock %}
             <div class="content-container">
                 {% block content %}
@@ -111,6 +120,14 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    document.querySelectorAll('.site-notification-close').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            btn.closest('.site-notification').style.display = 'none';
+        });
+    });
+    </script>
 
     <script>
     (function () {
@@ -129,6 +146,25 @@
             a.addEventListener('click', close);
         });
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+    </script>
+
+    <script>
+    (function () {
+        // Expand the submenu containing the active sublink (server-rendered .active class)
+        var activeSublink = document.querySelector('.sidebar-sublink.active');
+        if (activeSublink) {
+            var submenu = activeSublink.closest('.sidebar-submenu');
+            if (submenu) {
+                submenu.classList.add('show');
+                var toggle = document.querySelector('[href="#' + submenu.id + '"]');
+                if (toggle) {
+                    toggle.classList.remove('collapsed');
+                    toggle.classList.add('active');
+                    toggle.setAttribute('aria-expanded', 'true');
+                }
+            }
+        }
     })();
     </script>
 
