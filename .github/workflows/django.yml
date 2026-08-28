@@ -26,5 +26,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      env:
+        CHESSCLUB_SECRET_KEY: ci-test-secret-key-not-used-in-production
+        EMAIL_HOST_USER: ci@example.com
+        EMAIL_HOST_PASSWORD: unused-in-ci
+        DJANGO_DEBUG: "1"
       run: |
         python manage.py test
