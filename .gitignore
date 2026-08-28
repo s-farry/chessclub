@@ -1,4 +1,3 @@
-=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -128,4 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
->>>>>>> 5c3f958ce5ca5fec25169c3161960654d8af88ae
+
+# Project-specific
+venv_old/
+media/
+db.sqlite3-*
+db.sqlite3.bak*
+db.slite3
+db.slite32
+credentials.json
+token.json
+__pycache__/

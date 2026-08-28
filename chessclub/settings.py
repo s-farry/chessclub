@@ -24,9 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = os.environ['CHESSCLUB_SECRET_KEY']
-
-SECRET_KEY='q4ao$(g7-(mwxbg%eal45#rn%bx%n0rsbnt*v9ch#lsb^$w^(*'
+SECRET_KEY = os.environ['CHESSCLUB_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -122,11 +120,9 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 # email details
 EMAIL_HOST = 'mail.wallaseychessclub.uk'
 EMAIL_PORT = 2525
-EMAIL_USE_TLS = False    
-#EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-#EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_HOST_USER='contact@wallaseychessclub.uk'
-EMAIL_HOST_PASSWORD='wsy-checkm8'
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 
 
 # Internationalization
