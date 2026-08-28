@@ -15,16 +15,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='event',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(default='Event', max_length=200)),
-                ('date', models.DateTimeField()),
-                ('link', models.CharField(blank=True, max_length=200, null=True)),
-                ('location', models.CharField(blank=True, max_length=200, null=True)),
-            ],
-        ),
-        migrations.CreateModel(
             name='news',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -35,20 +25,10 @@ class Migration(migrations.Migration):
                 ('updated_date', models.DateTimeField(auto_now=True)),
                 ('status', models.CharField(choices=[('d', 'Draft'), ('p', 'Published'), ('w', 'Withdrawn')], default='d', max_length=1)),
                 ('published_date', models.DateTimeField(auto_now=True, null=True)),
-                ('image', models.ImageField(blank=True, upload_to='images')),
                 ('author', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='author', to=settings.AUTH_USER_MODEL, verbose_name='Author')),
             ],
             options={
                 'verbose_name_plural': 'News',
             },
-        ),
-        migrations.CreateModel(
-            name='Puzzle',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('pgn', models.TextField(blank=True, null=True)),
-                ('date', models.DateField(blank=True, null=True)),
-                ('fen', models.CharField(blank=True, max_length=50, null=True)),
-            ],
         ),
     ]
