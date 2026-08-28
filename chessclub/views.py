@@ -1,30 +1,264 @@
-from django.shortcuts import render
+import io
+import logging
+
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, View, ListView, DetailView
-from league.models import Schedule, Standings, League, Player, STANDINGS_ORDER, TeamFixture
-from content.models import news, event, Puzzle, page, snippet
+from django.http import JsonResponse, HttpResponse
+from django.core.files.base import ContentFile
+from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import get_object_or_404, render
-from datetime import datetime
+
+from league.models import Schedule, Standings, League, Player, STANDINGS_ORDER, TeamFixture, LMSTeamFixture, Season
+from content.models import news, event, Puzzle, page, snippet
+
+log = logging.getLogger(__name__)
+
+# ---- Summernote image-compression upload override ----
+
+_IMG_THRESHOLD = 1 * 1024 * 1024   # compress images larger than 1 MB
+_IMG_MAX_DIM   = 2048               # max width or height after resize
+_IMG_QUALITY   = 82                 # initial JPEG quality
+
+
+def _compress_image(f):
+    """Return (file, was_compressed). Falls back to the original on any error."""
+    try:
+        from PIL import Image
+        f.seek(0)
+        img = Image.open(f)
+        img.load()
+        if img.mode in ('RGBA', 'LA', 'P'):
+            img = img.convert('RGB')
+        w, h = img.size
+        if w > _IMG_MAX_DIM or h > _IMG_MAX_DIM:
+            if w >= h:
+                h = round(h * _IMG_MAX_DIM / w); w = _IMG_MAX_DIM
+            else:
+                w = round(w * _IMG_MAX_DIM / h); h = _IMG_MAX_DIM
+            img = img.resize((w, h), Image.LANCZOS)
+        quality = _IMG_QUALITY
+        buf = io.BytesIO()
+        img.save(buf, 'JPEG', quality=quality, optimize=True)
+        while buf.tell() > _IMG_THRESHOLD and quality > 40:
+            quality -= 10
+            buf = io.BytesIO()
+            img.save(buf, 'JPEG', quality=quality, optimize=True)
+        buf.seek(0)
+        stem = f.name.rsplit('.', 1)[0] if '.' in f.name else f.name
+        return ContentFile(buf.read(), name=stem + '.jpg'), True
+    except Exception:
+        try:
+            f.seek(0)
+        except Exception:
+            pass
+        return f, False
+
+
+class CompressedSummernoteUpload(View):
+    """
+    Replaces django-summernote's SummernoteUploadAttachment.
+    Images over 1 MB are compressed via Pillow before saving;
+    otherwise behaviour is identical to the original view.
+    """
+
+    @method_decorator(xframe_options_sameorigin)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        from django_summernote.utils import get_config, get_attachment_model
+
+        config = get_config()
+
+        if config['disable_attachment']:
+            return JsonResponse(
+                {'status': 'false', 'message': _('Attachment module is disabled')}, status=403)
+        if config['attachment_require_authentication'] and not request.user.is_authenticated:
+            return JsonResponse(
+                {'status': 'false', 'message': _('Only authenticated users are allowed')}, status=403)
+
+        files = request.FILES.getlist('files')
+        if not files:
+            return JsonResponse(
+                {'status': 'false', 'message': _('No files were requested')}, status=400)
+
+        post_kwargs = request.POST.copy()
+        post_kwargs.pop('csrfmiddlewaretoken', None)
+
+        try:
+            attachments = []
+            for f in files:
+                is_image = f.content_type and f.content_type.startswith('image/')
+                if is_image and f.size > _IMG_THRESHOLD:
+                    f, compressed = _compress_image(f)
+                    if compressed:
+                        log.info('Compressed uploaded image to %d bytes', len(f))
+                elif not is_image and f.size > config['attachment_filesize_limit']:
+                    return JsonResponse(
+                        {'status': 'false',
+                         'message': _('File size exceeds the limit allowed and cannot be saved')},
+                        status=400)
+
+                klass = get_attachment_model()
+                att = klass()
+                att.file = f
+                att.save(**post_kwargs)
+                att.url = att.file.url
+                if config['attachment_absolute_uri']:
+                    att.url = request.build_absolute_uri(att.url)
+                attachments.append(att)
+
+            return HttpResponse(
+                render_to_string('django_summernote/upload_attachment.json',
+                                 {'attachments': attachments}),
+                content_type='application/json',
+            )
+        except IOError:
+            return JsonResponse(
+                {'status': 'false', 'message': _('Failed to save attachment')}, status=500)
 
 
 def index(request):
-    news_objects = news.objects.order_by("-published_date")[:9]
-    events_objects = event.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+    news_objects = news.objects.order_by("-published_date")[:3]
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
         :5
     ]
-    team_fixtures = TeamFixture.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+    team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
         :5
     ]
 
     team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
-    puzzles = Puzzle.objects.filter(date=datetime.now().date())
+    puzzles = Puzzle.objects.filter(date=timezone.localdate())
+
+    about = snippet.objects.filter(title='About Us')[0]
+
+    current_season = Season.objects.order_by('end').last()
+    member_count = current_season.players.count() if current_season else 0
+    league_count = League.objects.filter(season=current_season).count() if current_season else 0
+
+    # ECF fixtures — up to 3 upcoming dates, all games per date
+    from itertools import groupby as _groupby
+    _lms_upcoming = LMSTeamFixture.objects.filter(
+        Q(date__gte=timezone.now()),
+        Q(home_team__icontains='wallasey') | Q(away_team__icontains='wallasey')
+    ).order_by('date')
+    upcoming_lms_groups = []
+    for _d, _games in _groupby(_lms_upcoming, key=lambda f: f.date.date()):
+        upcoming_lms_groups.append({'date': _d, 'fixtures': list(_games)})
+        if len(upcoming_lms_groups) >= 3:
+            break
+
+    # Internal fixtures — up to 3 upcoming dates, all games per date
+    _fix_upcoming = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by('date')
+    upcoming_fix_groups = []
+    for _d, _games in _groupby(_fix_upcoming, key=lambda f: f.date.date()):
+        upcoming_fix_groups.append({'date': _d, 'fixtures': list(_games)})
+        if len(upcoming_fix_groups) >= 3:
+            break
+
+    # Featured league standings (up to 4 leagues, top 6 each)
+    featured_leagues = []
+    if current_season:
+        for fl in [
+            current_season.featured_league,
+            current_season.featured_league_2,
+            current_season.featured_league_3,
+            current_season.featured_league_4,
+        ]:
+            if fl:
+                order = STANDINGS_ORDER[fl.standings_order][1]
+                standings = list(Standings.objects.filter(league=fl).order_by(*order)[:6])
+                if standings:
+                    featured_leagues.append((fl, standings))
+
+    # Latest club night — most recent date with completed games in this season
+    latest_club_night_date = None
+    latest_club_night_games = []
+    if current_season:
+        from league.models import Schedule
+        latest_game = Schedule.objects.filter(
+            league__season=current_season,
+            result__in=[0, 1, 2],
+        ).order_by('-date').first()
+        if latest_game:
+            latest_club_night_date = latest_game.date.date()
+            latest_club_night_games = list(
+                Schedule.objects.filter(
+                    league__season=current_season,
+                    date__date=latest_club_night_date,
+                    result__in=[0, 1, 2],
+                ).select_related('white', 'black', 'league').order_by('league__name', 'board')
+            )
+
+    return render(
+        request,
+        "index.html",
+        {
+            "leagues": League.objects.all(),
+            "news": news_objects,
+            "events": events_objects,
+            "puzzles": puzzles,
+            "fixtures": team_fixtures,
+            "about": about,
+            "upcoming_lms_groups": upcoming_lms_groups,
+            "upcoming_fix_groups": upcoming_fix_groups,
+            "member_count": member_count,
+            "league_count": league_count,
+            "featured_leagues": featured_leagues,
+            "latest_club_night_date": latest_club_night_date,
+            "latest_club_night_games": latest_club_night_games,
+        },
+    )
+
+
+def index_test(request):
+    news_objects = news.objects.order_by("-published_date")[:9]
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
+        :5
+    ]
+    team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
+        :5
+    ]
+
+    team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
+    puzzles = Puzzle.objects.filter(date=timezone.localdate())
 
     about = snippet.objects.filter(title='About Us')[0]
 
     return render(
         request,
-        "index.html",
+        "index2.html",
+        {
+            "leagues": League.objects.all(),
+            "news": news_objects,
+            "events": events_objects,
+            "puzzles": puzzles,
+            "fixtures" : team_fixtures,
+            "about" : about
+        },
+    )
+
+def index_test2(request):
+    news_objects = news.objects.order_by("-published_date")[:9]
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
+        :5
+    ]
+    team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
+        :5
+    ]
+
+    team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
+    puzzles = Puzzle.objects.filter(date=timezone.localdate())
+
+    about = snippet.objects.filter(title='About Us')[0]
+
+    return render(
+        request,
+        "index3.html",
         {
             "leagues": League.objects.all(),
             "news": news_objects,
@@ -37,15 +271,15 @@ def index(request):
 
 def preview(request):
     news_objects = news.objects.order_by("-created_date")[:9]
-    events_objects = event.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+    events_objects = event.objects.filter(Q(date__gte=timezone.localdate())).order_by("date")[
         :5
     ]
-    team_fixtures = TeamFixture.objects.filter(Q(date__gte=datetime.now())).order_by("date")[
+    team_fixtures = TeamFixture.objects.filter(Q(date__gte=timezone.now())).order_by("date")[
         :5
     ]
 
     team_fixtures = [ f for f in team_fixtures if not (f.home and 'wallasey' in f.opponent.lower())]
-    puzzles = Puzzle.objects.filter(date=datetime.now().date())
+    puzzles = Puzzle.objects.filter(date=timezone.localdate())
     return render(
         request,
         "index.html",
@@ -57,6 +291,9 @@ def preview(request):
             "fixtures" : team_fixtures,
         },
     )
+
+def design_test(request):
+    return render(request, "design_test.html")
 
 def page_not_found(request, *args, **kwargs):
     return render(request, "404.html", *args, **kwargs)

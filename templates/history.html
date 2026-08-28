@@ -1,14 +1,192 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% load static %}
-{% block title %}{{ game }}{% endblock %}
-{% block header %} 
-<!-- CSS used -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-{% endblock %}
-{% load i18n %}
-{% load league_tags %}
+{% block title %}Club History{% endblock %}
+
 {% block content %}
+<h1 class="page-title"><i class="fas fa-history"></i> Club History</h1>
+    <div class="content-card">
+        <h2 class="section-title">Our Story</h2>
+        <p class="intro-text">
+            {{content.body|safe}}
+        </p>
 
-{{content.body|safe}}
+        <div class="achievement-grid">
+            <div class="achievement-card">
+                <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
+                <div class="achievement-number">27</div>
+                <div class="achievement-label">League Titles</div>
+            </div>
+            <div class="achievement-card">
+                <div class="achievement-icon"><i class="fas fa-medal"></i></div>
+                <div class="achievement-number">15</div>
+                <div class="achievement-label">Cup Winners</div>
+            </div>
+            <div class="achievement-card">
+                <div class="achievement-icon"><i class="fas fa-users"></i></div>
+                <div class="achievement-number">500+</div>
+                <div class="achievement-label">Members (All-Time)</div>
+            </div>
+            <div class="achievement-card">
+                <div class="achievement-icon"><i class="fas fa-calendar"></i></div>
+                <div class="achievement-number">50+</div>
+                <div class="achievement-label">Years of History</div>
+            </div>
+        </div>
+    </div>
 
+    <div class="content-card">
+        <h2 class="section-title">Timeline</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1972</div>
+                <div class="timeline-content">
+                    <h3>Club Foundation</h3>
+                    <p>
+                        Wallasey Chess Club was officially founded by founding members John Smith, Margaret
+                        Davies, and Robert Wilson. Our first meeting took place at the Wallasey Central Library
+                        with just 8 members. The club was established with the mission to promote chess in the
+                        local community and provide a friendly environment for players of all abilities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">1978</div>
+                <div class="timeline-content">
+                    <h3>First League Championship</h3>
+                    <p>
+                        After years of steady growth and development, Wallasey Chess Club won its first
+                        Merseyside League Division 2 championship. This historic victory marked the beginning
+                        of the club's competitive success and promoted us to Division 1 for the first time.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">1985</div>
+                <div class="timeline-content">
+                    <h3>New Permanent Home</h3>
+                    <p>
+                        The club secured a permanent home at the Wallasey Community Center. This move allowed
+                        us to expand our activities, host larger tournaments, and provide better facilities
+                        for our growing membership, which had reached 45 active members.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">1992</div>
+                <div class="timeline-content">
+                    <h3>Junior Section Established</h3>
+                    <p>
+                        Recognizing the importance of developing young talent, we launched our dedicated junior
+                        section with qualified coaches. This initiative has since produced numerous county-level
+                        players and sparked a lifelong love of chess in hundreds of young people.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">2003</div>
+                <div class="timeline-content">
+                    <h3>Division 1 Champions</h3>
+                    <p>
+                        A landmark achievement as we won the Merseyside League Division 1 title for the first
+                        time in our history. Led by captain Thomas Henderson, our team went undefeated throughout
+                        the season, a record that still stands today.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">2012</div>
+                <div class="timeline-content">
+                    <h3>40th Anniversary Celebration</h3>
+                    <p>
+                        We celebrated four decades of chess excellence with a special anniversary tournament
+                        featuring guest grandmaster appearances and exhibitions. The event attracted over 100
+                        participants and was covered by local media, raising the profile of chess in Wallasey.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">2018</div>
+                <div class="timeline-content">
+                    <h3>Online Platform Launch</h3>
+                    <p>
+                        Embracing modern technology, we launched our online platform and digital membership
+                        system. This allowed members to play online matches, access coaching resources, and
+                        stay connected between in-person meetings.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-content">
+                    <h3>50th Anniversary</h3>
+                    <p>
+                        We marked half a century of chess with a grand celebration including a special tournament,
+                        exhibition matches, and a reunion of past and present members. The club now boasts 48
+                        active members and continues to thrive as a cornerstone of the local chess community.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-card">
+        <h2 class="section-title">Notable Members</h2>
+        <div class="notable-members">
+            <div class="member-card">
+                <div class="member-photo"><i class="fas fa-user"></i></div>
+                <div class="member-info">
+                    <h4>John Smith (1972-2005)</h4>
+                    <p>
+                        Founding member and first club president. John's vision and dedication laid the
+                        foundation for what Wallasey Chess Club has become today. He served as president
+                        for 15 years and was instrumental in securing our permanent home.
+                    </p>
+                </div>
+            </div>
+
+            <div class="member-card">
+                <div class="member-photo"><i class="fas fa-user"></i></div>
+                <div class="member-info">
+                    <h4>Margaret Davies (1972-2018)</h4>
+                    <p>
+                        Founding member and long-serving treasurer. Margaret's organizational skills and
+                        financial acumen ensured the club's stability through both challenging and prosperous
+                        times. She was awarded honorary life membership in 2010.
+                    </p>
+                </div>
+            </div>
+
+            <div class="member-card">
+                <div class="member-photo"><i class="fas fa-user"></i></div>
+                <div class="member-info">
+                    <h4>Thomas Henderson (1995-Present)</h4>
+                    <p>
+                        Our highest-rated player and multiple-time club champion. Thomas has represented
+                        the club in national competitions and served as team captain during our historic
+                        2003 Division 1 championship win. Peak rating: 2287.
+                    </p>
+                </div>
+            </div>
+
+            <div class="member-card">
+                <div class="member-photo"><i class="fas fa-user"></i></div>
+                <div class="member-info">
+                    <h4>Emily Richardson (2008-Present)</h4>
+                    <p>
+                        Started as a junior member at age 10 and has become one of our strongest players.
+                        Emily now coaches our junior section and has inspired a new generation of young
+                        chess players. She holds the Women's FIDE Master title.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

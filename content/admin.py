@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import re_path
 from .models import (
     news,
     event,
@@ -11,9 +12,10 @@ from .models import (
     Puzzle,
     Document,
     image,
-    snippet
+    snippet,
+    NewsCategory,
 )
-from tinymce.widgets import TinyMCE
+from django_summernote.widgets import SummernoteWidget
 from django import forms
 from functools import update_wrapper
 from .forms import LichessEventForm
@@ -39,31 +41,17 @@ class PageAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
     body = forms.CharField(
         max_length=100000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "100",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            },
-            mce_attrs = {
-                'image_list' : [
-                    { 'title' : i.description if i.description else i.image.url, 'value' : i.image.url} for i in image.objects.all()
-                ],
-                'width': '100%',
-                'height' : 1000
-            }
-        ),
-        label="Content",
+        widget=SummernoteWidget(attrs={'summernote': {'width': '100%'}}),
+        label="Content"
     )
 
     class Meta:
-        fields = ("title", "body", "active")
+        fields = ("title", "slug", "body", "active")
         model = page
 
 
 class PageAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("title",)}
 
     def plain_text(self, instance):
         body = instance.body    
@@ -72,7 +60,7 @@ class PageAdmin(admin.ModelAdmin):
 
         return "\n".join(text)
     
-    list_display = ["title", "plain_text", "active"]
+    list_display = ["title", "slug", "plain_text", "active"]
     search_fields = ["title"]
     form = PageAdminForm
 
@@ -83,22 +71,7 @@ class SnippetAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
     body = forms.CharField(
         max_length=10000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "100",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            },
-            mce_attrs = {
-                'image_list' : [
-                    { 'title' : i.description if i.description else i.image.url, 'value' : i.image.url} for i in image.objects.all()
-                ],
-                'width': '100%',
-                'height' : 1000
-            }
-        ),
+        widget=SummernoteWidget(),
         label="Content",
     )
 
@@ -129,7 +102,6 @@ class EventAdmin(admin.ModelAdmin):
         return []
 
     def get_urls(self):
-        from django.conf.urls import url
 
         def wrap(view):
             def wrapper(*args, **kwargs):
@@ -140,7 +112,7 @@ class EventAdmin(admin.ModelAdmin):
         info = self.model._meta.app_label, self.model._meta.model_name
 
         urls = [
-            url(r"^lichess/$", wrap(self.lichess_view), name="%s_%s_lichess" % info)
+            re_path(r"^lichess/$", wrap(self.lichess_view), name="%s_%s_lichess" % info)
         ]
         super_urls = super(EventAdmin, self).get_urls()
 
@@ -164,7 +136,8 @@ class EventAdmin(admin.ModelAdmin):
             )
             lichess_event = event(
                 title=tournament["fullName"],
-                date=tournament_datetime,
+                date=tournament_datetime.date(),
+                time=tournament_datetime.time(),
                 link="https://lichess.org/tournament/" + tournament["id"],
                 location="Lichess Online",
             )
@@ -202,21 +175,12 @@ class NewsAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=200)
     text = forms.CharField(
         max_length=10000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "30",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            }
-        ),
+        widget=SummernoteWidget(),
         label="News",
     )
-    # synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ("title", "text", "image", "caption", "puzzle")
+        fields = ("title", "text", "image", "caption", "puzzle", "categories")
         model = news
 
 
@@ -224,29 +188,22 @@ class NewsChangeAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=200)
     text = forms.CharField(
         max_length=10000,
-        widget=TinyMCE(
-            attrs={
-                "rows": "30",
-                "cols": "100",
-                "content_style": "color:#FFFF00",
-                "body_class": "review",
-                "body_id": "review",
-            }
-        ),
+        widget=SummernoteWidget(),
         label="News",
     )
     author = forms.ModelChoiceField(queryset=User.objects.all())
     # synopsis = forms.CharField(max_length= 1000, widget = forms.Textarea(attrs = {'rows' : '1', 'cols' : '90'}))
 
     class Meta:
-        fields = ("title", "text", "image", "caption", "puzzle")
+        fields = ("title", "text", "image", "caption", "puzzle", "categories")
         model = news
 
 
 class NewsAdmin(admin.ModelAdmin):
     list_display = ["title", "status", "author"]
-    list_filter = ["status"]
+    list_filter = ["status", "categories"]
     search_fields = ["title"]
+    filter_horizontal = ["categories"]
 
     actions = ["make_published"]
 
@@ -322,6 +279,9 @@ class DropDownItemInline(admin.TabularInline):
 
 class MenuItemAdmin(ReverseModelAdmin):
     inline_reverse = ["dropdownitem"]
+    list_display = ["order", "category", "text", "link"]
+    list_display_links = ["text"]
+    list_editable = ["order", "category"]
 
     inlines = [
         DropDownItemInline,
@@ -345,6 +305,11 @@ class ImageAdmin(admin.ModelAdmin):
         url = instance.image.url    
         return mark_safe(f'<a href="{url}" target="_blank" rel="nofollow"">{url}</a>')
 
+class NewsCategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ["name", "slug"]
+
+
 admin.site.register(page, PageAdmin)
 admin.site.register(snippet, SnippetAdmin)
 admin.site.register(news, NewsAdmin)
@@ -353,6 +318,7 @@ admin.site.register(album, AlbumAdmin)
 admin.site.register(simul)
 admin.site.register(Puzzle)
 admin.site.register(menuitem, MenuItemAdmin)
+admin.site.register(NewsCategory, NewsCategoryAdmin)
 
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(image, ImageAdmin)

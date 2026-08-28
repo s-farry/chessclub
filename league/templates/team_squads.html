@@ -1,49 +1,61 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% block title %}{{ page_name }}{% endblock %}
 
 {% load i18n %}
 {% load league_tags %}
+
+
+
 {% block content %}
-<div class="text-center">
-<h1 class="mt-4">Team Squads</h1> <h2>{{season.name}}</h2>
+<h1 class="page-title"><i class="fas fa-users"></i> Team Squads</h1>
+
+<div class="content-card" style="margin-bottom:1.25rem;">
+    <div class="card-header-row">
+        <label for="seasonSelect" style="font-size:0.9rem;font-weight:600;margin:0;">Season</label>
+        <select id="seasonSelect" class="form-select form-select-sm" style="width:auto;"
+                onchange="location.href=this.value">
+            {% for s in all_seasons %}
+            <option value="{% url 'team_squads' season_slug=s.slug %}"
+                    {% if s.slug == season.slug %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 </div>
 
+{% for team, players in teams.items %}
+<div class="team-card">
+    <div class="team-header">
+        <div class="team-header-main">
+            <h2 class="team-title">{{ team.name }}</h2>
+            {% if team.description %}
+            <p class="team-description">{{ team.description }}</p>
+            {% endif %}
+        </div>
+        <span class="team-badge">{{ team.league }}</span>
+    </div>
 
-
-<div class = "ml-auto mr-auto mt-2" id="tab-teams">
-
-  {% for team,players in teams.items %}
-  <div id = "team-{{forloop.counter0}}">
-    <table class="teams-table ml-auto mr-auto table-striped table-bordered table-hover align-items-center league-table">
-      <thead>
-        <th colspan="3" class="text-center">
-          {{team.name}} ({{team.league}})</th>
-        </thead>
-          <thead>
-          {% if team.description %}
-          <th colspan="3" class="text-center">
-            {{team.description}}</th>
-        </thead>
-        {% endif %}
-          <th></th>
-        <th class="text-center w-60">{% trans "Player" %}</th>
-        <th class="text-center w-20">Rating</th>
-        </tr>
+    <table class="squad-table">
+        <thead>
+            <tr>
+                <th>Board</th>
+                <th>Player</th>
+                <th>Rating</th>
+            </tr>
         </thead>
         <tbody>
-          {% for player in players %}
-              <tr>
-                <td>{{forloop.counter}}</td>           
-                <td class="text-center"><a href="{% url 'player' player.player.id %}" class="reserve-space" reserve="{{player.player}}">{{player.player}}{% if team.captain == player.player %}(c){% endif %}{% if player.listed %}[L]{% endif %}</a></td>
-                <td class="text-center">{{player.player.rating}}</td>
-              </tr>
-              {% endfor %}
+            {% for player in players %}
+            <tr>
+                <td class="squad-board-number">{{ forloop.counter }}</td>
+                <td class="player-cell">
+                    <a href="{% url 'player' player.player.id %}">{{ player.player }}</a>{% if player.listed %}<span class="listed-mark" title="Listed">L</span>{% endif %}
+                    {% if team.captain == player.player %}<span class="captain-badge">C</span>{% endif %}
+                </td>
+                <td class="rating-cell">{{ player.player.rating }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
-        </table>
-          </div>
-  {% endfor %}
-  
-
-
+    </table>
 </div>
+{% endfor %}
+
 {% endblock %}

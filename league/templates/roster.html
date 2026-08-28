@@ -1,18 +1,50 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% block title %}{{ page_name }} {{ team.short_name }}{% endblock %}
 {% load i18n %}
 {% load league_tags %}
+
 {% block content %}
+    <div class="content-card">
+            <!-- <div class="stats-summary">
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-value">48</div>
+                    <div class="stat-label">Total Members</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="fas fa-child"></i></div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Juniors</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="fas fa-chess-king"></i></div>
+                    <div class="stat-value">1842</div>
+                    <div class="stat-label">Avg Rating</div>
+                </div>
+            </div>
+        -->
 
-<div class="text-center">
-    <h1 class="mt-4">Club Members</h1> <h2>{{season.name}}</h2>
-    </div>    
-    <hr />
-        {% if season %}
-        <div>
+            <h2 class="section-title">Members List</h2>
+
+            <!--<div class="search-filter-section">
+                <div class="search-box">
+                    <input type="text" placeholder="Search members..." class="form-control">
+                </div>
+                <div class="filter-buttons">
+                    <button class="btn btn-outline-primary active">All Members</button>
+                    <button class="btn btn-outline-primary">Active</button>
+                    <button class="btn btn-outline-primary">Juniors</button>
+                    <button class="btn btn-outline-primary">Seniors</button>
+                </div>
+            
+            </div>-->
+            {% if season %}
             {% include 'content/team_roster.html' with roster=members %}
-        </div>
         {% endif %}
-
-<hr />
+    </div>
 {% endblock %}

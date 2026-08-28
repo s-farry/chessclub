@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% block title %}{{ page_name }}{% endblock %}
 {% load static %}
 
@@ -37,6 +37,75 @@ ECF Equivalent: {{player.ecf_grade}}</p>
  
 <hr>
 
+<div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="section-title mb-0">All Games</h2>
+                {% if active_seasons|length > 1 %}
+                <div class="filter-section">
+                    <select name="season" class="form-select" onchange="location.href=this.value">
+                        {% for active_season in active_seasons %}
+                            <option value="{% url 'player' player_id=player.id season=active_season.slug %}" {% if selected_season == active_season %}selected{% endif %}>{{ active_season }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+            </div>
+            {% for game in games %}
+            {% comment %}Determine result from player's perspective{% endcomment %}
+
+            <div class="fixture-card {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
+                <div class="fixture-header">
+                    <div class="fixture-date">{% if game.date %}{{ game.date.date }}{% else %}TBC{% endif %}</div>
+                    <span class="result-badge {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
+                        {% if game.white == player %}
+                            {% if game.result == 1 %}Win{% elif game.result == 2 %}Loss{% elif game.result == 0 %}Draw{% else %}Upcoming{% endif %}
+                        {% elif game.black == player %}
+                            {% if game.result == 2 %}Win{% elif game.result == 1 %}Loss{% elif game.result == 0 %}Draw{% else %}Upcoming{% endif %}
+                        {% else %}
+                            Bye
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="fixture-matchup">
+                    <div class="player-side {% if game.white == player %}current{% endif %}">
+                        <div class="name">
+                            {% if game.white == player %}{{ game.white }}{% else %}<a href="{% url 'player' game.white.id %}">{{ game.white }}</a>{% endif %}
+                        </div>
+                        <div class="rating">{% if game.white_rating %}{{ game.white_rating }}{% else %}-{% endif %}</div>
+                    </div>
+                    {% if game.result == 3 %}
+                    <div class="vs-separator">VS</div>
+                    {% else %}
+                    <div class="score-display">{{ game.get_result.0|safe }} - {{ game.get_result.1|safe }}</div>
+                    {% endif %}
+                    <div class="player-side {% if game.black == player %}current{% endif %}">
+                        <div class="name">
+                            {% if game.black == player %}{{ game.black }}{% else %}<a href="{% url 'player' game.black.id %}">{{ game.black }}</a>{% endif %}
+                        </div>
+                        <div class="rating">{% if game.black_rating %}{{ game.black_rating }}{% else %}-{% endif %}</div>
+                    </div>
+                </div>
+                <div class="fixture-details">
+                    <div class="detail-item">
+                        <i class="fas fa-trophy"></i>
+                        {{ game.league }}
+                    </div>
+                    {% if game.board %}
+                    <div class="detail-item">
+                        <i class="fas fa-chess-board"></i>
+                        Board {{ game.board }}
+                    </div>
+                    {% endif %}
+                    {% if game.pgn.exists %}
+                    <div class="detail-item">
+                        <a href="{% url 'game' game.id %}"><i class="fas fa-chess"></i> View game</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+</div>
+
 {% for s,l in games.items %}
 
 
@@ -45,15 +114,16 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 
 
 <div class="justify-content-center d-flex">
-
-  {% for s in active_seasons %}
-  
-  {% if selected_season.id == s.id %}
-  <button class="tablink bg-black"><a class="reserve-space nav-link" reserve = "  {{ s }}  ">{{ s }} </a></button>
-  {% else %}
-  <button class="tablink" onclick="location.href='{% url 'player' player_id=player.id season=s.slug %}'">{{ s }}</button>
-  {% endif %}
-  {% endfor %}
+    <div class="filter-section">
+            <form>
+              <label>Filter by:</label>
+            <select name="season" class="form-select" onchange="location.href='{% url 'player' player_id=player.id season=s.slug %}'">
+                {% for active_season in active_seasons %}
+                    <option value="{{ active_season }}" {% if selected_season == active_season.id %}selected{% endif %}>{{ active_season }}</option>
+                {% endfor %}
+            </select>
+            </form>
+          </div>
   </div>
 {% endif %}
 
@@ -76,8 +146,6 @@ ECF Equivalent: {{player.ecf_grade}}</p>
 
 
 <hr>
-
-
 
 
 {% endfor %}

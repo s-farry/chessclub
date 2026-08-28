@@ -2,12 +2,36 @@ from django import template
 from datetime import date, timedelta
 from league.models import Schedule, League, Standings
 import datetime
+import html as html_lib
+from django.utils import timezone
+from django.utils.html import strip_tags
+from django.utils.text import Truncator
 from django.db.models import Q
 
 
 
 
 register = template.Library()
+
+
+def _plain_text(value):
+    if not value:
+        return ''
+    text = html_lib.unescape(strip_tags(value))
+    return ' '.join(text.split())
+
+
+@register.filter
+def excerpt(value, words=25):
+    """Strip HTML tags/entities from rich-text content and truncate to a
+    plain-text excerpt (handles Summernote's stray &nbsp; paragraphs)."""
+    return Truncator(_plain_text(value)).words(words, truncate=' …')
+
+
+@register.filter
+def is_truncated(value, words=25):
+    """True if excerpt:words would actually cut this value short."""
+    return len(_plain_text(value).split()) > words
 
 @register.simple_tag
 def pct(won, matches):
@@ -29,7 +53,7 @@ def player_age(birth_date):
 
 @register.inclusion_tag('content/matches_widget.html')
 def matches_widget(player, league = None, past_num=5, future_num=1):
-    now = datetime.datetime.now()
+    now = timezone.now()
     player_pk = Player.objects.get(slug=team).pk
     past = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), date__lt=now).order_by('date')
     future = Schedule.objects.filter(Q(white=player_pk) | Q(black=player_pk), date__gte=now).order_by('date')      

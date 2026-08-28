@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
+
+# load .env file
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,7 +33,7 @@ DEBUG = False
 if 'DJANGO_DEBUG' in os.environ and os.environ['DJANGO_DEBUG'] == "1":
     DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '192.168.0.100', '192.168.1.120','192.168.1.107','192.168.1.123','wallaseychessclub.uk','www.wallaseychessclub.uk']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '192.168.0.100', '192.168.1.120','192.168.1.107','192.168.1.123','wallaseychessclub.uk','www.wallaseychessclub.uk','dev.wallaseychessclub.uk']
 
 
 # Application definition
@@ -45,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_user_agents',
-    'tinymce',
+    'django_summernote',
+    'imagekit'
 ]
 
 MIDDLEWARE = [
@@ -141,9 +146,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(os.environ["HOME"], "public_html/static/")
+STATIC_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/static/")
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.environ["HOME"], "public_html/media/")
+MEDIA_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/media/")
 
 if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -152,34 +157,30 @@ if DEBUG:
 
 #only want this on server
 if 'DJANGO_DEBUG' not in os.environ:
-    SESSION_COOKIE_DOMAIN = 'wallaseychessclub.uk'
+    SESSION_COOKIE_DOMAIN = '.wallaseychessclub.uk'
+    CSRF_COOKIE_DOMAIN = '.wallaseychessclub.uk'
     SESSION_ENGINE='django.contrib.sessions.backends.db'
 
-TINYMCE_SPELLCHECKER = True
-TINYMCE_DEFAULT_CONFIG = {
-    'height': 360,
-    'width': 800,
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 20,
-    'selector': 'textarea',
-    'contextmenu': 'formats | link image',
-    'menubar': True,
-    'statusbar': True,
-    'content_css' : '/static/styles/layout.css',
-    'body_class' : 'tinymce',
-    'body_id' : 'tinymce',
-    'content_style' : "div {margin: 10px; border: 5px solid red; padding: 3px}",
-    'style_formats': '{title: "test, selector: "div", classes: "review"}',
-    'plugins' : "dvlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
-    "fullscreen insertdatetime media table code help wordcount",
-    "toolbar": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
-    "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
-    "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
-    "fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
-    "a11ycheck ltr rtl | showcomments addcomment code wordcount spellchecker link,image",
-    #'theme_advanced_buttons2': "spellchecker",
-    'browser_spellcheck' : True,
-    'gecko_spellcheck'   : True,
-    }
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'width': '100%',
+        'height': '480px',
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'hr']],
+            ['view', ['fullscreen', 'codeview']],
+        ],
+        'spellCheck': True,
+    },
+}
 
 APPEND_SLASH = True
+
+
+IMAGEKIT_CACHEFILE_DIR = ""
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.Optimistic'

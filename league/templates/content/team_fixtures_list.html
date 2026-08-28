@@ -1,0 +1,53 @@
+{% load i18n %}
+{% load league_tags %}
+{% load user_agents %}
+    <div class="container mb-4">
+        <div class="content-card">
+            <h2 class="section-title">All Teams</h2>
+                {% for fixture in fixtures %}
+                <div class="result-card">
+                    <div class="match-header">
+                        {% if fixture.board %}<span class="board-number">Board {{fixture.board}}</span>{% endif %}
+                        <!--<span class="match-status completed">Completed</span>-->
+                        <span class="game-date"><i class="fas fa-calendar-alt"></i> {{fixture.date}}</span>
+                    </div>
+                    <div class="match-players">
+                        <div class="player-info white">
+                            <span class="piece-icon white">♔</span>
+                            <div class="player-details">
+                                <div class="player-name winner">{{fixture.home_team}}</div>
+                                <!--<div class="player-rating">{{fixture.white_rating}}</div>-->
+                            </div>
+                        </div>
+                        <div class="match-score">
+                            <span class="winner">{{fixture.get_home_score_display}}</span>
+                            <span class="score-separator">{% if fixture.home_score is not None and fixture.away_score is not None %}-{% else %}v{% endif %}</span>
+                            <span>{{fixture.get_away_score_display}}</span>
+                        </div>
+                        <div class="player-info black">
+                            <span class="piece-icon black">♚</span>
+                            <div class="player-details">
+                                <div class="player-name">{{fixture.away_team}}</div>
+                                <!--<div class="player-rating">{{fixture.black_rating}}</div>-->
+                            </div>
+                        </div>
+                    </div>
+                      {% if match.comment %}
+                    <div class="match-details">
+                      {{match.comment}}
+                        <!--<div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            54 moves
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-chess-pawn"></i>
+                            Queen's Gambit Declined
+                        </div>
+                      -->
+                    </div>
+                      {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>

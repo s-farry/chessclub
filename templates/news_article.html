@@ -1,0 +1,228 @@
+{% extends 'base3.html' %}
+{% load static %}
+{% load user_agents %}
+{% load i18n %}
+{% load league_tags %}
+
+{% block content %}
+<h1 class="page-title"><i class="fas fa-newspaper"></i> {{ article.title }}</h1>
+
+<nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'news' %}">News</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+            </ol>
+        </nav>
+
+        <a href="{% url 'news' %}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to News Archive
+        </a>
+
+        <div class="article-header">
+            {% for cat in article.categories.all %}
+            <span class="article-category">{{ cat.name }}</span>
+            {% endfor %}
+            <h1 class="article-title">{{article.title}}</h1>
+            <div class="article-meta">
+                <span><i class="far fa-calendar"></i> {{ article.published_date.date }}</span>
+                <span><i class="far fa-user"></i> {{ article.author.first_name  }} {{ article.author.last_name }}</span>
+                <!-- <span><i class="far fa-clock"></i> 3 min read</span> -->
+            </div>
+        </div>
+
+        <div class="article-featured-image">
+            <!-- <img src="championship-trophy.jpg" alt="Championship Trophy"> -->
+            {% if article.image_header %} <img src="{{ article.image_header.url }}">
+            {% elif article.image %} <img src="{{ article.image.url }}">
+            {% else %}<i class="fas fa-trophy image-placeholder"></i>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            {% if article.related_news %}<div class="col-lg-8">{% else %}<div class="col-lg-12">{% endif %}
+                <div class="article-content">
+                    {{ article.text|safe }}
+                    <!--
+                    <p>
+                        We are thrilled to announce that our prestigious Annual Championship Tournament will take 
+                        place on Sunday, November 15th, 2025. This highly anticipated event is the highlight of 
+                        our competitive calendar and promises to showcase the very best chess talent within our club.
+                    </p>
+
+                    <p>
+                        Registration is now open to all current members of Wallasey Chess Club. Whether you're a 
+                        seasoned tournament player or looking to test your skills in competitive play for the first 
+                        time, this championship offers an excellent opportunity to challenge yourself and represent 
+                        our club with pride.
+                    </p>
+
+                    <h2>Tournament Details</h2>
+
+                    <p>
+                        The championship will follow a Swiss system format over 5 rounds, ensuring that every 
+                        participant plays a full day of competitive chess against opponents of similar strength. 
+                        The time control will be 90 minutes per player, plus a 30-second increment per move, 
+                        allowing for strategic depth while keeping games moving at a reasonable pace.
+                    </p>
+
+                    <div class="info-box">
+                        <h4><i class="fas fa-info-circle"></i> Key Information</h4>
+                        <ul>
+                            <li><strong>Date:</strong> Sunday, 15 November 2025</li>
+                            <li><strong>Venue:</strong> Wallasey Community Center, Main Hall</li>
+                            <li><strong>Registration Deadline:</strong> 8 November 2025</li>
+                            <li><strong>Entry Fee:</strong> £10 (£5 for juniors)</li>
+                            <li><strong>Time Control:</strong> 90 minutes + 30 seconds increment</li>
+                            <li><strong>Format:</strong> 5-round Swiss System</li>
+                        </ul>
+                    </div>
+
+                    <h2>Prizes and Recognition</h2>
+
+                    <p>
+                        This year's championship comes with enhanced prize support thanks to our generous sponsors. 
+                        The prize fund has been increased to £500, with trophies awarded to the top three finishers:
+                    </p>
+
+                    <ul>
+                        <li><strong>1st Place:</strong> £200, Championship Trophy, and title defense privileges for 2026</li>
+                        <li><strong>2nd Place:</strong> £150 and Silver Medal</li>
+                        <li><strong>3rd Place:</strong> £100 and Bronze Medal</li>
+                        <li><strong>Best Junior Player:</strong> £50 and Special Trophy</li>
+                    </ul>
+
+                    <p>
+                        In addition to the prize money, all participants will receive a commemorative certificate, 
+                        and the tournament will be FIDE-rated for players with FIDE IDs, offering a chance to 
+                        improve your international rating.
+                    </p>
+
+                    <h2>How to Register</h2>
+
+                    <p>
+                        Registration is simple and can be completed in several ways. Members can register in person 
+                        at our regular club nights, through our website's online registration form, or by contacting 
+                        our tournament director, David Williams, directly via email at tournaments@wallaseychess.com.
+                    </p>
+
+                    <p>
+                        Please note that spaces are limited to 32 players to ensure optimal playing conditions and 
+                        timely completion of rounds. Registration will be on a first-come, first-served basis, so 
+                        we encourage early sign-up to avoid disappointment.
+                    </p>
+
+                    <h3>What to Bring</h3>
+
+                    <p>
+                        Players should bring their own chess sets and clocks if possible, though the club will have 
+                        equipment available for those who need it. We recommend bringing water, snacks, and any 
+                        chess materials you find helpful for preparation between rounds.
+                    </p>
+
+                    <h2>Schedule for the Day</h2>
+
+                    <ul>
+                        <li><strong>9:00 AM:</strong> Registration and check-in opens</li>
+                        <li><strong>9:45 AM:</strong> Opening ceremony and player briefing</li>
+                        <li><strong>10:00 AM:</strong> Round 1 begins</li>
+                        <li><strong>12:30 PM:</strong> Lunch break (refreshments provided)</li>
+                        <li><strong>1:30 PM:</strong> Rounds 2-4 (with short breaks between)</li>
+                        <li><strong>6:00 PM:</strong> Final round</li>
+                        <li><strong>8:00 PM:</strong> Prize ceremony and closing</li>
+                    </ul>
+
+                    <p>
+                        Light refreshments will be provided throughout the day, and there are several cafes and 
+                        restaurants within walking distance for those who prefer to venture out during the lunch break.
+                    </p>
+
+                    <h2>Spectators Welcome</h2>
+
+                    <p>
+                        We warmly welcome family, friends, and fellow club members to come and watch the tournament. 
+                        Spectator seating will be available with a clear view of the playing area. We ask that all 
+                        spectators maintain chess tournament etiquette by keeping noise to a minimum and ensuring 
+                        mobile devices are silenced.
+                    </p>
+
+                    <p>
+                        This year's championship promises to be our most exciting yet. With several strong new 
+                        members having joined the club recently, the competition for the title is expected to be 
+                        fierce. Don't miss your chance to be part of this thrilling event – register today!
+                    </p>
+
+                    <p>
+                        For any questions about the tournament, please contact our tournament director or speak 
+                        to any committee member at our weekly club nights.
+                    </p>
+                -->
+                </div>
+
+                <div class="article-footer">
+                    {% if article.tags %}
+                    <div class="article-tags">
+                        <strong style="margin-right: 0.5rem;">Tags:</strong>
+                        <a href="#" class="tag">Championship</a>
+                        <a href="#" class="tag">Tournament</a>
+                        <a href="#" class="tag">Competition</a>
+                        <a href="#" class="tag">November 2025</a>
+                    </div>
+                    {% endif %}
+                    <!--
+                    <div class="share-buttons">
+                        <strong style="margin-right: 0.5rem; display: flex; align-items: center;">Share:</strong>
+                        <a href="#" class="share-button facebook">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </a>
+                        <a href="#" class="share-button twitter">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                        <a href="#" class="share-button email">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                    </div>
+                    -->
+                </div>
+            
+            </div>
+            {% if article.related_news %}
+            <div class="col-lg-4">
+                <div class="related-news">
+                    <h3>Related News</h3>
+                    
+                    <div class="related-item">
+                        <div class="related-image">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="related-content">
+                            <h4><a href="#">New Beginner Classes Starting</a></h4>
+                            <p class="related-date">3 October 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="related-item">
+                        <div class="related-image">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div class="related-content">
+                            <h4><a href="#">Club Members Excel at Regional Tournament</a></h4>
+                            <p class="related-date">28 September 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="related-item">
+                        <div class="related-image">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="related-content">
+                            <h4><a href="#">New Committee Members Elected</a></h4>
+                            <p class="related-date">15 September 2025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+{% endblock %}

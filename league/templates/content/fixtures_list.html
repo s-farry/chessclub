@@ -1,6 +1,114 @@
 {% load i18n %}
 {% load league_tags %}
 {% load user_agents %}
+  <!--
+  <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-chess-board"></i> Tournament Results</h1>
+            <p>Autumn Championship 2025</p>
+        </div>
+    </div>
+  
+  -->
+    <div class="container mb-4">
+        <div class="content-card">
+          <!--
+            <div class="tournament-info">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <h6>Tournament</h6>
+                        <p>Autumn Championship 2025</p>
+                    </div>
+                    <div class="info-item">
+                        <h6>Format</h6>
+                        <p>Round Robin</p>
+                    </div>
+                    <div class="info-item">
+                        <h6>Time Control</h6>
+                        <p>90 min + 30 sec</p>
+                    </div>
+                    <div class="info-item">
+                        <h6>Rounds</h6>
+                        <p>8 of 10 completed</p>
+                    </div>
+                </div>
+            </div>
+          -->
+            <h2 class="section-title">Round Results</h2>
+
+              <!--
+            <div class="round-filter">
+                <button class="btn btn-outline-primary active">All Rounds</button>
+                <button class="btn btn-outline-primary">Round 8</button>
+                <button class="btn btn-outline-primary">Round 7</button>
+                <button class="btn btn-outline-primary">Round 6</button>
+                <button class="btn btn-outline-primary">Round 5</button>
+                <button class="btn btn-outline-primary">Round 4</button>
+                <button class="btn btn-outline-primary">Round 3</button>
+                <button class="btn btn-outline-primary">Round 2</button>
+                <button class="btn btn-outline-primary">Round 1</button>
+            </div>
+          -->
+
+            <!-- Round 8 -->
+
+
+          {% for date,fixtures in games.items %}
+            <div class="results-group">
+                <div class="round-header">
+                    <h3 class="round-title">{{date}}</h3>
+                    <span class="round-date"></span>
+                </div>
+                {% for fixture in fixtures %}
+                <div class="result-card">
+                    <div class="match-header">
+                        {% if fixture.board %}<span class="board-number">Board {{fixture.board}}</span>{% endif %}
+                        <!--<span class="match-status completed">Completed</span>-->
+                        {% if fixture.league.format != 0 and fixture.date %}<span class="game-date"><i class="fas fa-calendar-alt"></i> {{fixture.date.date}}</span>{% endif %}
+                    </div>
+                    <div class="match-players">
+                        <div class="player-info white">
+                            <span class="piece-icon white">♔</span>
+                            <div class="player-details">
+                                <div class="player-name {% if fixture.result == 1 %}winner{% endif %}">
+                                    {% if fixture.white %}<a href="{% url 'player' fixture.white.id %}">{{fixture.white}}</a>{% endif %}
+                                </div>
+                                <div class="player-rating">{{fixture.white_rating}}</div>
+                            </div>
+                        </div>
+                        <div class="match-score">
+                            <span {% if fixture.result == 1 %}class="winner"{% endif %}>{{fixture.get_result.0|safe}}</span>
+                            <span class="score-separator">-</span>
+                            <span {% if fixture.result == 2 %}class="winner"{% endif %}>{{fixture.get_result.1|safe}}</span>
+                        </div>
+                        <div class="player-info black">
+                            <span class="piece-icon black">♚</span>
+                            <div class="player-details">
+                                <div class="player-name {% if fixture.result == 2 %}winner{% endif %}">
+                                    {% if fixture.black %}<a href="{% url 'player' fixture.black.id %}">{{fixture.black}}</a>{% endif %}
+                                </div>
+                                <div class="player-rating">{{fixture.black_rating}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if fixture.comment or fixture.pgn.exists %}
+                    <div class="match-details">
+                        {% if fixture.comment %}{{fixture.comment}}{% endif %}
+                        {% if fixture.pgn.exists %}
+                        <div class="detail-item">
+                            <a href="{% url 'game' fixture.id %}"><i class="fas fa-chess"></i> View game</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<!--
 <div>
     <table class="fixtures-table ml-auto mr-auto table-striped table-bordered table-hover">
       <thead>
@@ -72,3 +180,4 @@
         </tbody>        
     </table>
 </div>
+-->

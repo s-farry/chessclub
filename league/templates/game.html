@@ -1,39 +1,50 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% load static %}
 {% block title %}{{ game }}{% endblock %}
-{% block header %} 
+{% block scripts %}
+{% if pgn %}
 <script src="{% static 'js/pgnv.js' %}?v=1.1" type="text/javascript"></script>
-<!-- CSS used -->
 <link rel="stylesheet" href="{% static 'css/pgnvjs.css' %}?v=1.1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+{% endif %}
 {% endblock %}
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<article id="league-{{ slug }}-{{team.slug}}" class="news mt-3">
-    <h1><a href="{% url 'player' game.white.id %}">{{ game.white }} {% if game.white_rating %}({{game.white_rating}}) {% endif %}</a>{{game.print_result|safe}} <a href="{% url 'player' game.white.id %}">{{ game.black }} {% if game.black_rating %}({{game.black_rating}}) {% endif %}</a></h1>
-    {%if game.league %}<h2><a href="{% url 'tournament' game.league.slug %}">{{game.league}}</a></h2>{% endif %}
-    <h2>{{game.date.date}}</h2>
-    {%if game.lichess %}<a href = "https://lichess.org/{{game.lichess}}">lichess.org/{{game.lichess}}</a>{% endif %}
-    <hr />
-</article>
-{% if pgn %}
-<div class = "game-board ml-auto mr-auto">
-<div id="board" class='merida zeit' tabindex="0"></div>
+
+<div class="mb-4">
+    <h1 class="mb-1">
+        <a href="{% url 'player' game.white.id %}">{{ game.white }}</a>
+        {% if game.white_rating %}<small class="text-muted fs-5">({{ game.white_rating }})</small>{% endif %}
+        <span class="mx-2">vs</span>
+        <a href="{% url 'player' game.black.id %}">{{ game.black }}</a>
+        {% if game.black_rating %}<small class="text-muted fs-5">({{ game.black_rating }})</small>{% endif %}
+    </h1>
+    <div class="d-flex flex-wrap gap-3 align-items-center mt-2">
+        {% if game.result != 3 %}
+        <span class="result-badge draw fs-6">{{ game.print_result|safe }}</span>
+        {% endif %}
+        {% if game.date %}<span class="text-muted"><i class="fas fa-calendar-alt me-1"></i>{{ game.date.date }}</span>{% endif %}
+        {% if game.league %}<span><i class="fas fa-trophy me-1"></i><a href="{% url 'tournament' game.league.slug %}">{{ game.league }}</a></span>{% endif %}
+        {% if game.board %}<span class="text-muted"><i class="fas fa-chess-board me-1"></i>Board {{ game.board }}</span>{% endif %}
+        {% if game.lichess %}<span><i class="fas fa-external-link-alt me-1"></i><a href="https://lichess.org/{{ game.lichess }}">lichess.org/{{ game.lichess }}</a></span>{% endif %}
+    </div>
 </div>
-<hr />
+
+{% if pgn %}
+<div class="content-card">
+    <div class="game-board mx-auto">
+        <div id="board" class='merida zeit' tabindex="0"></div>
+    </div>
+</div>
 <script>
     window.addEventListener("load", function() {
-    var board = document.getElementById('board');
-    var width = board.parentElement.offsetWidth;
-    /*var cfg = {pgn: pgn};*/
-    var pgn = `{{ pgn|safe}}`;
-
-    var cfg = {pgn: pgn, showCoords: true, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: false, notation: 'short', 'width' : width.toString()+'px', orientation: 'white', movable: {free : true } };
-
-    PGNV.pgnEdit('board', cfg);
-}
-    )
-</script> 
+        var board = document.getElementById('board');
+        var width = board.parentElement.offsetWidth;
+        var pgn = `{{ pgn|safe }}`;
+        var cfg = {pgn: pgn, showCoords: true, theme: 'default', pieceStyle: 'wikipedia', locale: 'en', timerTime: '', layout: 'top', showFen: false, coordsInner: false, headers: false, coordsFactor: '1.0', colorMarker: '', startPlay: '', hideMovesBefore: true, hideMovesAfter: false, notation: 'short', 'width': width.toString() + 'px', orientation: 'white', movable: {free: true}};
+        PGNV.pgnEdit('board', cfg);
+    });
+</script>
 {% endif %}
+
 {% endblock %}

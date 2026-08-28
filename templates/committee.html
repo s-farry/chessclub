@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base3.html' %}
 {% load static %}
 {% block title %}{{ game }}{% endblock %}
 {% block header %} 
@@ -8,20 +8,43 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<h1 class="mt-4">Committee ({{ season }})</h1>
-<hr>
-    <table class="ml-auto mr-auto table-bordered table-hover">
-    <thead>
-      </thead>
-      <tbody>
-        {% for member in members %}
-        <tr>
-            <td>{{ member.get_position_display }}</td>
-            <td>{{ member.member }}</td>
-        </tr>
-        {% endfor %}        
-        </tbody>
-        </table>
-    
+<h1 class="page-title"><i class="fas fa-users-cog"></i> Club Committee</h1>
+    <div class="content-card">
+            <p class="intro-text">
+                Our committee is made up of dedicated volunteers who work tirelessly to ensure the smooth running 
+                of the club and to provide the best possible experience for all our members. Elected annually at 
+                our AGM, they bring a wealth of chess knowledge and organizational expertise to their roles.
+            </p>
 
+            <h2 class="section-title">Executive Committee</h2>
+
+            <div class="committee-grid">
+
+
+                {% for member in members %}
+                <div class="committee-card">
+                    <div class="committee-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="committee-role">{{ member.get_position_display }}</div>
+                    <h3 class="committee-name">{{member.member}}</h3>
+                    {% if member.bio %}
+                    <p class="committee-bio">
+                        {{ member.bio }}
+                    </p>
+                    {% endif %}
+                    <div class="committee-contact">
+                        {% if member.email %}
+                        <a href="mailto:president@wallaseychess.com" class="contact-item">
+                            <i class="fas fa-envelope"></i> {{ member.email }}
+                        </a>
+                        {% endif %}
+                        </div>
+                </div>
+                {% endfor %}       
+
+
+        </div>
+    </div>
 {% endblock %}
