@@ -42,6 +42,7 @@ seaborn==0.13.2
 six==1.16.0
 soupsieve==2.6
 sqlparse==0.5.2
+swissdutch @ git+https://github.com/s-farry/swissdutch.git@sfarry-updates
 typing_extensions==4.12.2
 tzdata==2024.2
 ua-parser==0.18.0
