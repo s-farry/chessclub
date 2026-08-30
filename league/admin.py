@@ -278,8 +278,10 @@ class LeagueAdmin(ModelAdmin):
                 if p.ecf == None:
                     self.message_user(request, '%s has no ECF code currently'%(p))
                     continue
-                url = 'https://www.ecfrating.org.uk/v2/new/api.php?v2/ratings/Standard/%s/%s'%(p.ecf, ratings_date)
-                grade = requests.get(url)
+
+                url = 'https://rating.englishchess.org.uk/api/ratings?player_no=%s&domain=S&date=%s'%(p.ecf, ratings_date)
+
+                                grade = requests.get(url)
                 if grade:
                     grade = grade.json()
                     curr_rating = s.rating if s.rating else 0
@@ -462,23 +464,39 @@ class PlayerAdmin(admin.ModelAdmin):
         return urls + super_urls
 
 
+
     def update_ratings(self, request, queryset):
         for p in queryset:
             if p.ecf == None:
                 self.message_user(request, '%s has no ECF code currently'%(p))
                 continue
-            url = 'https://rating.englishchess.org.uk/v2/new/api.php?v2/ratings/Standard/%s/%s'%(p.ecf, datetime.today().date())
+
+            # Remove the trailing check letter                                                                                                                                                                                                                                      
+            code = p.ecf[:-1]
+            # Step 1: Get player_no
+            response = requests.get(
+                f"https://rating.englishchess.org.uk/api/players/rating-code",
+                params={"code": code}
+            )
+            response.raise_for_status()
+            player = response.json()
+            #player_no = player["member_no"]                                                                                                                                                                                                                                        
+
+            url = 'https://rating.englishchess.org.uk/api/ratings?player_no=%s&domain=S&date=%s'%(code, datetime.today().date())
+            print(url)
+
             grade = requests.get(url)
             if grade:
-                grade = grade.json()
+                grade = grade.json()['data']
                 if 'revised_rating' in grade.keys():
-                    curr_rating = p.rating if p.rating else 0
-                    self.message_user(request, '%s rating updated from %i to %i'%(p, curr_rating, grade['revised_rating']))
-                    p.rating = grade['revised_rating']
-                    p.save()
+                        curr_rating = p.rating if p.rating else 0
+                        self.message_user(request, '%s rating updated from %i to %i'%(p, curr_rating, grade['revised_rating']))
+                        p.rating = grade['revised_rating']
+                        p.save()
                 else:
                     self.message_user(request, 'revised rating not found for %s'%(p,))
-            print('Rating not found for %s for ecf code %s'%(p,p.ecf))
+                print('Rating not found for %s for ecf code %s'%(p,p.ecf))
+
 
     def send_email(self, request, queryset):
         emails = ';'.join([obj.email for obj in queryset if obj.email ])

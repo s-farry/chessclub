@@ -174,7 +174,7 @@ class EventAdmin(admin.ModelAdmin):
 class NewsAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=200)
     text = forms.CharField(
-        max_length=10000,
+        max_length=20000,
         widget=SummernoteWidget(),
         label="News",
     )
@@ -187,7 +187,7 @@ class NewsAdminForm(forms.ModelForm):
 class NewsChangeAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=200)
     text = forms.CharField(
-        max_length=10000,
+        max_length=20000,
         widget=SummernoteWidget(),
         label="News",
     )
