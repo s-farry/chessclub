@@ -281,7 +281,7 @@ class LeagueAdmin(ModelAdmin):
 
                 url = 'https://rating.englishchess.org.uk/api/ratings?player_no=%s&domain=S&date=%s'%(p.ecf, ratings_date)
 
-                                grade = requests.get(url)
+                grade = requests.get(url)
                 if grade:
                     grade = grade.json()
                     curr_rating = s.rating if s.rating else 0
