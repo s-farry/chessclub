@@ -83,7 +83,7 @@ class SnippetAdminForm(forms.ModelForm):
 class SnippetAdmin(admin.ModelAdmin):
     list_display = ["title", "body", "active"]
     search_fields = ["title"]
-    form = PageAdminForm
+    form = SnippetAdminForm
 
 class ImageInline(admin.TabularInline):
     model = image
