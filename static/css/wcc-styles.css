@@ -1493,6 +1493,153 @@ body.sidebar-layout {
     background-color: rgba(200,150,44,0.04);
 }
 
+
+
+        .position-col {
+            font-weight: 700;
+            color: var(--primary-color);
+            width: 50px;
+            text-align: center;
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .player-name a {
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .player-name a:hover {
+            color: var(--accent-color);
+        }
+
+        .position-1 .position-col {
+            color: #FFD700;
+        }
+
+        .position-2 .position-col {
+            color: #C0C0C0;
+        }
+
+        .position-3 .position-col {
+            color: #CD7F32;
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0 0.1rem;
+        }
+
+        .badge-win {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge-draw {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-loss {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .points-col {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* Relegation Zone */
+        .relegation-line {
+            border-top: 2px dashed var(--danger-color);
+            position: relative;
+        }
+
+        .relegation-line td:last-child::after {
+            content: 'Relegation';
+            position: absolute;
+            right: 1rem;
+            top: -10px;
+            background: white;
+            color: var(--danger-color);
+            padding: 0 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .relegation-zone {
+            background-color: rgba(231, 76, 60, 0.03);
+        }
+
+        /* Promotion Zone */
+        .promotion-zone {
+            background-color: rgba(45, 122, 78, 0.05);
+        }
+
+        .promotion-line {
+            border-bottom: 2px dashed var(--success-color);
+            position: relative;
+        }
+
+        .promotion-line td:last-child::after {
+            content: 'Automatic Promotion';
+            position: absolute;
+            right: 1rem;
+            bottom: -10px;
+            background: white;
+            color: var(--success-color);
+            padding: 0 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Play-offs */
+        .playoffs-line {
+            border-bottom: 2px dashed var(--accent-color);
+            position: relative;
+        }
+
+        .playoffs-line td:last-child::after {
+            content: 'Play-offs';
+            position: absolute;
+            right: 1rem;
+            bottom: -10px;
+            background: white;
+            color: var(--accent-color);
+            padding: 0 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .playoffs-zone {
+            background-color: rgba(200, 150, 44, 0.05);
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: #fff8e1;
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+        }
+
+        .info-box.warning {
+            background-color: #fff3cd;
+            border-left-color: var(--warning-color);
+        }
+
 /* -------------------- PLAYER / MEMBER STYLES -------------------- */
 .member-name,
 .player-name {

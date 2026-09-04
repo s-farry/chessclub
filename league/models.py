@@ -730,16 +730,28 @@ class Standings(models.Model):
             return True
         else:
             return False
-        
-        
+
+    def in_promotion_zone(self):
+        if not self.league.promotion:
+            return False
+        return self.position <= self.league.promotion
+
     def in_playoffs(self):
         if not self.league.playoffs:
             return False
-        league = self.league
-        if self.position < league.playoffs:
-            return True
-        else:
+        promotion = self.league.promotion or 0
+        return promotion < self.position <= promotion + self.league.playoffs
+
+    def last_promotion_place(self):
+        if not self.league.promotion:
             return False
+        return self.position == self.league.promotion
+
+    def last_playoff_place(self):
+        if not self.league.playoffs:
+            return False
+        promotion = self.league.promotion or 0
+        return self.position == promotion + self.league.playoffs
 
     class Meta:
         ordering = STANDINGS_ORDER[0][1]

@@ -63,7 +63,7 @@
                     <tbody>
 
                     {% for standing in standings %}
-                        <tr class="{% if standing.first_relegation_place %} relegation-line {% endif %}{% if standing.position <= 3 %}position-{{standing.position}}{% elif standing.in_relegation_zone %}relegation-zone {% elif standing.in_playoffs %}playoffs{% endif %}">
+                        <tr class="{% if standing.last_promotion_place %} promotion-line {% endif %}{% if standing.last_playoff_place %} playoffs-line {% endif %}{% if standing.first_relegation_place %} relegation-line {% endif %}{% if standing.position <= 3 %}position-{{standing.position}}{% elif standing.in_promotion_zone %}promotion-zone{% elif standing.in_relegation_zone %}relegation-zone{% elif standing.in_playoffs %}playoffs-zone{% endif %}">
                             <td class="position-col">{{standing.position}}</td>
                             <td class="player-name"><a href="{% url 'player' standing.player.id league.season.slug %}" class="reserve-space" reserve="{{standing.player}}">{{standing.player}} </a></td>
                             <td>{% if standing.rating %} {{standing.rating}} {% else %} - {% endif %}</td>
