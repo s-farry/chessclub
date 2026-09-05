@@ -1445,12 +1445,93 @@ body.sidebar-layout {
 }
 
 /* -------------------- TABLES -------------------- */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .members-table,
 .league-table,
 .squad-table {
     margin-bottom: 0;
     width: 100%;
     font-size: 0.9rem;
+}
+
+.league-table {
+    min-width: 560px;
+}
+
+.league-table th,
+.league-table td {
+    white-space: nowrap;
+}
+
+.league-table .player-name {
+    white-space: normal;
+}
+
+.league-table .short-label {
+    display: none;
+}
+
+/* Freeze Pos + Player so they stay on screen while the rest of the
+   table scrolls horizontally underneath them */
+.league-table th:first-child,
+.league-table td.position-col {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: var(--white);
+}
+
+.league-table th:nth-child(2),
+.league-table td.player-name {
+    position: sticky;
+    left: 50px;
+    z-index: 2;
+    background-color: var(--white);
+    box-shadow: 2px 0 4px rgba(0,0,0,0.06);
+}
+
+@media (max-width: 576px) {
+    .league-table {
+        font-size: 0.75rem;
+    }
+
+    .league-table th,
+    .league-table td {
+        padding: 0.4rem 0.35rem;
+    }
+
+    .league-table th:first-child,
+    .league-table .position-col {
+        width: 42px;
+    }
+
+    .league-table th:first-child {
+        padding-left: 0.35rem;
+        padding-right: 0.1rem;
+    }
+
+    .league-table th:nth-child(2),
+    .league-table td.player-name {
+        left: 42px;
+    }
+
+    .league-table .result-badge {
+        padding: 0.15rem 0.3rem;
+        font-size: 0.7rem;
+        margin: 0 0.05rem;
+    }
+
+    .league-table .full-label {
+        display: none;
+    }
+
+    .league-table .short-label {
+        display: inline;
+    }
 }
 
 .members-table thead,
@@ -2465,22 +2546,72 @@ footer p {
     }
 
     .match-players {
-        flex-direction: column;
+        gap: 0.2rem !important;
     }
 
     .player-info.white,
     .player-info.black {
-        width: 100%;
-        justify-content: flex-start !important;
-        flex-direction: row !important;
+        gap: 0.25rem !important;
+        min-width: 0 !important;
     }
 
-    .player-info.black .player-details {
-        text-align: left !important;
+    .player-details {
+        min-width: 0 !important;
+    }
+
+    .match-players .player-name {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .match-players .player-rating {
+        display: none;
+    }
+
+    .match-players .piece-icon {
+        display: none !important;
     }
 
     .match-score {
-        font-size: 1.5rem !important;
+        font-size: 1.2rem !important;
+        gap: 0.3rem !important;
+    }
+
+    .content-card {
+        padding: 1.1rem;
+        margin-bottom: 1.1rem;
+    }
+
+    .results-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .round-header {
+        padding: 0.6rem 0.85rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .round-title {
+        font-size: 1.1rem;
+    }
+
+    .result-card {
+        padding: 0.5rem 0.6rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .match-header {
+        margin-bottom: 0.4rem;
+        gap: 0.35rem;
+    }
+
+    .board-number,
+    .game-date,
+    .match-status {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.75rem;
     }
 
     .team-header {
