@@ -142,7 +142,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/static/")
+STATIC_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/static/")
 
 STORAGES = {
     "default": {
@@ -153,7 +153,7 @@ STORAGES = {
     },
 }
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.environ["HOME"], "dev.wallaseychessclub.uk/media/")
+MEDIA_ROOT = os.path.join(os.environ["HOME"], "wallaseychessclub.uk/media/")
 
 if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
