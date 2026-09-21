@@ -400,9 +400,9 @@ class Schedule(models.Model):
                 elif b == "-":
                     return "v"
                 elif b == "--+":
-                    return "&#65293;&#65291;"
+                    return "&#65123;&#65122;"
                 elif b == "+--":
-                    return "&#65291;&#65293;"
+                    return "&#65122;&#65123;"
                 else:
                     return b
 
@@ -425,9 +425,9 @@ class Schedule(models.Model):
                         "v",
                     )
                 elif b == "--+":
-                    return ("&#65293;", "&#65291;")
+                    return ("&#65123;", "&#65122;")
                 elif b == "+--":
-                    return ("&#65291;", "&#65293;")
+                    return ("&#65122;", "&#65123;")
                 else:
                     return (b,)
 
@@ -714,16 +714,16 @@ class Standings(models.Model):
             return "%.2f" % (self.points)
 
     def in_relegation_zone(self):
-        if not self.league.relegation:
+        if not self.league.relegation or self.position is None:
             return False
         league = self.league
         if len(league.players.all()) - league.relegation < self.position:
             return True
         else:
             return False
-        
+
     def first_relegation_place(self):
-        if not self.league.relegation:
+        if not self.league.relegation or self.position is None:
             return False
         league = self.league
         if len(league.players.all()) - league.relegation == (self.position-1):
@@ -732,12 +732,12 @@ class Standings(models.Model):
             return False
 
     def in_promotion_zone(self):
-        if not self.league.promotion:
+        if not self.league.promotion or self.position is None:
             return False
         return self.position <= self.league.promotion
 
     def in_playoffs(self):
-        if not self.league.playoffs:
+        if not self.league.playoffs or self.position is None:
             return False
         promotion = self.league.promotion or 0
         return promotion < self.position <= promotion + self.league.playoffs

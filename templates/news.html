@@ -7,6 +7,7 @@
 {% block content %}
 <h1 class="page-title"><i class="fas fa-newspaper"></i> News Archive</h1>
 
+<div class="content-card">
 {% if news|length == 1 %}
 
 <h1 class="display-5 fst-italic mt-4">{{news.0.title}}</h1>
@@ -58,7 +59,7 @@
                       <a href="{% url 'news' n.id %}">{{n.title}}</a>
                   </h3>
                   <p class="news-excerpt">
-                                {{ n.text|safe |truncatewords:"100"}}...
+                                {{ n.text|truncatewords_html:"100"|safe }}
                   </p>
                   <a href="{% url 'news' n.id %}" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
               </div>

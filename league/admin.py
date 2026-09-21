@@ -105,7 +105,7 @@ class ScheduleInline(admin.TabularInline):
                         players += [ g.white.pk ]
                     if g.black and g.black.pk not in players:
                         players += [ g.black.pk]
-                kwargs["queryset"] = Player.objects.filter(pk__in = players)
+                kwargs["queryset"] = Player.objects.filter(pk__in = players).order_by('surename')
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_related(self, request, form, formset, change):
@@ -126,6 +126,17 @@ class TeamFixtureInline(admin.TabularInline):
 
 class TeamPlayerInline(admin.TabularInline):
     model = TeamPlayer
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.related_model == Player:
+            team = Team.objects.get(id=resolve(request.path_info).kwargs['object_id'])
+            if team is not None:
+                # for ease of adding in the django admin, make it so that only
+                # the players in the league are visible
+                players = [p.pk for p in team.season.players.all()]
+                kwargs["queryset"] = Player.objects.filter(pk__in = players).order_by('surename')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class PgnInline(admin.TabularInline):
     model = PGN
@@ -697,12 +708,54 @@ class TeamAdmin(admin.ModelAdmin):
     ]
 
 
+class SeasonTeamPlayerFilter(SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'Season'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'season'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        return [("all", "All")] + [
+            (s.slug, s) for s in Season.objects.all().order_by('-end')
+        ]
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        seasons = Season.objects.all().order_by('-end')
+        if self.value() and self.value() == 'all':
+            return queryset
+        elif self.value():
+            return queryset.filter(team__season__slug=self.value())
+        elif len(seasons) > 0:
+            return queryset.filter(team__season=seasons[0])
+        else:
+            return queryset
+
+
+class TeamPlayerAdmin(admin.ModelAdmin):
+    list_display = ('player', 'team')
+    list_filter = (SeasonTeamPlayerFilter,)
+
 
 admin.site.register(League, LeagueAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(Team, TeamAdmin)
+admin.site.register(TeamPlayer, TeamPlayerAdmin)
 #admin.site.register(Standings)
 
 

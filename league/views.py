@@ -97,7 +97,7 @@ class ScheduleFull(ListView):
 
 
 
-# Create your views here.
+from django.db.models import F
 
 
 def fixtures(request, league, **kwargs):
@@ -130,8 +130,13 @@ def fixtures(request, league, **kwargs):
         pccurrcomplete = 0
         pcprevcomplete = 0
         for r in rounds:
-            # games_round = games.filter(Q(round=r) & ~Q(black=None) & ~Q(white=None)).order_by('date')
-            games_round = games.filter(round=r).order_by("date")
+            print(r)
+            games_round_full = games.filter(Q(round=r) & ~Q(black=None) & ~Q(white=None)).order_by(F('date').desc(nulls_last=True))
+            games_round_byes = games.filter(Q(round=r) & (Q(black=None) | Q(white=None))).order_by('date')
+            
+            #games_round = games.filter(round=r).order_by("date", F('black').desc(nulls_last=True))
+            games_round = list(games_round_full) + list(games_round_byes)
+            
             games_display[l.get_round_display(r)] = games_round
             # now find which round to show, the last complete one
             pcprevcomplete = pccurrcomplete

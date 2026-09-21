@@ -37,6 +37,7 @@ ECF Equivalent: {{player.ecf_grade}}</p>
  
 <hr>
 
+<div class="container mb-4">
 <div class="content-card">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2 class="section-title mb-0">All Games</h2>
@@ -50,12 +51,15 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                 </div>
                 {% endif %}
             </div>
+            <div class="fixture-list">
             {% for game in games %}
             {% comment %}Determine result from player's perspective{% endcomment %}
 
-            <div class="fixture-card {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
-                <div class="fixture-header">
-                    <div class="fixture-date">{% if game.date %}{{ game.date.date }}{% else %}TBC{% endif %}</div>
+            <div class="fixture-row {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
+                <div class="match-header">
+                    {% if game.board %}<span class="board-number">Board {{ game.board }}</span>{% endif %}
+                    {% if not game.white or not game.black %}<span class="match-status bye">Bye</span>{% endif %}
+                    <span class="game-date"><i class="fas fa-calendar-alt"></i> {% if game.date %}{{ game.date.date }}{% else %}TBC{% endif %}</span>
                     <span class="result-badge {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
                         {% if game.white == player %}
                             {% if game.result == 1 %}Win{% elif game.result == 2 %}Loss{% elif game.result == 0 %}Draw{% else %}Upcoming{% endif %}
@@ -66,35 +70,42 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                         {% endif %}
                     </span>
                 </div>
-                <div class="fixture-matchup">
-                    <div class="player-side {% if game.white == player %}current{% endif %}">
-                        <div class="name">
-                            {% if game.white == player %}{{ game.white }}{% else %}<a href="{% url 'player' game.white.id %}">{{ game.white }}</a>{% endif %}
+                <div class="match-players">
+                    <div class="player-info white">
+                        <span class="piece-icon white">♔</span>
+                        <div class="player-details">
+                            <div class="player-name {% if game.result == 1 %}winner{% endif %}">
+                                {% if game.white == player %}{{ game.white }}{% elif game.white %}<a href="{% url 'player' game.white.id %}">{{ game.white }}</a>{% endif %}
+                            </div>
+                            <div class="player-rating">{% if game.white_rating %}{{ game.white_rating }}{% endif %}</div>
                         </div>
-                        <div class="rating">{% if game.white_rating %}{{ game.white_rating }}{% else %}-{% endif %}</div>
                     </div>
                     {% if game.result == 3 %}
-                    <div class="vs-separator">VS</div>
+                    <div class="match-score"><span class="vs-separator">VS</span></div>
                     {% else %}
-                    <div class="score-display">{{ game.get_result.0|safe }} - {{ game.get_result.1|safe }}</div>
+                    <div class="match-score">
+                        <span {% if game.result == 1 %}class="winner"{% endif %}>{{ game.get_result.0|safe }}</span>
+                        <span class="score-separator">-</span>
+                        <span {% if game.result == 2 %}class="winner"{% endif %}>{{ game.get_result.1|safe }}</span>
+                    </div>
                     {% endif %}
-                    <div class="player-side {% if game.black == player %}current{% endif %}">
-                        <div class="name">
-                            {% if game.black == player %}{{ game.black }}{% else %}<a href="{% url 'player' game.black.id %}">{{ game.black }}</a>{% endif %}
+                    <div class="player-info black">
+                        <span class="piece-icon black">♚</span>
+                        <div class="player-details">
+                            <div class="player-name {% if game.result == 2 %}winner{% endif %}">
+                                {% if game.black == player %}{{ game.black }}{% elif game.black %}<a href="{% url 'player' game.black.id %}">{{ game.black }}</a>{% endif %}
+                            </div>
+                            <div class="player-rating">{% if game.black_rating %}{{ game.black_rating }}{% endif %}</div>
                         </div>
-                        <div class="rating">{% if game.black_rating %}{{ game.black_rating }}{% else %}-{% endif %}</div>
                     </div>
                 </div>
-                <div class="fixture-details">
+                <div class="match-details">
                     <div class="detail-item">
                         <i class="fas fa-trophy"></i>
                         {{ game.league }}
                     </div>
-                    {% if game.board %}
-                    <div class="detail-item">
-                        <i class="fas fa-chess-board"></i>
-                        Board {{ game.board }}
-                    </div>
+                    {% if game.comment %}
+                    <div class="detail-item">{{ game.comment }}</div>
                     {% endif %}
                     {% if game.pgn.exists %}
                     <div class="detail-item">
@@ -104,6 +115,8 @@ ECF Equivalent: {{player.ecf_grade}}</p>
                 </div>
             </div>
             {% endfor %}
+            </div>
+</div>
 </div>
 
 {% for s,l in games.items %}

@@ -63,7 +63,7 @@
                 <div class="result-card">
                     <div class="match-header">
                         {% if fixture.board %}<span class="board-number">Board {{fixture.board}}</span>{% endif %}
-                        <!--<span class="match-status completed">Completed</span>-->
+                        {% if not fixture.white or not fixture.black %}<span class="match-status bye">Bye</span>{% endif %}
                         {% if fixture.league.format != 0 and fixture.date %}<span class="game-date"><i class="fas fa-calendar-alt"></i> {{fixture.date.date}}</span>{% endif %}
                     </div>
                     <div class="match-players">
@@ -73,7 +73,7 @@
                                 <div class="player-name {% if fixture.result == 1 %}winner{% endif %}">
                                     {% if fixture.white %}<a href="{% url 'player' fixture.white.id %}">{{fixture.white}}</a>{% endif %}
                                 </div>
-                                <div class="player-rating">{{fixture.white_rating}}</div>
+                                <div class="player-rating">{% if fixture.white_rating %}{{fixture.white_rating}}{% endif %}</div>
                             </div>
                         </div>
                         <div class="match-score">
@@ -87,7 +87,7 @@
                                 <div class="player-name {% if fixture.result == 2 %}winner{% endif %}">
                                     {% if fixture.black %}<a href="{% url 'player' fixture.black.id %}">{{fixture.black}}</a>{% endif %}
                                 </div>
-                                <div class="player-rating">{{fixture.black_rating}}</div>
+                                <div class="player-rating">{% if fixture.black_rating %}{{fixture.black_rating}}{% endif %}</div>
                             </div>
                         </div>
                     </div>

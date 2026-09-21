@@ -248,6 +248,9 @@ body.sidebar-layout {
 
 .content-container {
     padding: 2rem 2.5rem;
+    max-width: 2000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .container-fluid, .container-xl, .container-lg, .container-md, .container-sm {
@@ -964,9 +967,9 @@ body.sidebar-layout {
 .news-item {
     display: flex;
     gap: 1.25rem;
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.75rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 2px solid #d6d2c4;
 }
 
 .news-item:last-child {
@@ -1945,29 +1948,39 @@ body.sidebar-layout {
 }
 
 /* -------------------- FIXTURES & MATCHES -------------------- */
-.fixture-card {
-    background: var(--light-bg);
-    border-radius: 6px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-left: 4px solid;
+.fixture-list {
+    display: flex;
+    flex-direction: column;
 }
 
-.fixture-card.win {
+.fixture-row {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-left: 4px solid transparent;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.fixture-row:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.fixture-row.win {
     border-left-color: var(--success-color);
 }
 
-.fixture-card.draw {
+.fixture-row.draw {
     border-left-color: var(--warning-color);
 }
 
-.fixture-card.loss {
+.fixture-row.loss {
     border-left-color: var(--danger-color);
 }
 
-.fixture-card.upcoming {
+.fixture-row.upcoming {
     border-left-color: var(--accent-color);
-    background: white;
 }
 
 .result-card {
@@ -2058,6 +2071,11 @@ body.sidebar-layout {
 .match-status.scheduled {
     background-color: #cfe2ff;
     color: #084298;
+}
+
+.match-status.bye {
+    background-color: var(--light-bg);
+    color: var(--text-muted);
 }
 
 .match-players {
@@ -2164,68 +2182,14 @@ body.sidebar-layout {
     margin: 0;
 }
 
-.fixture-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.fixture-date {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-}
-
-.fixture-matchup {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.player-side {
-    flex: 1;
-    text-align: center;
-}
-
-.player-side.current {
-    font-weight: 700;
-    color: var(--text-dark);
-}
-
-.player-side .name {
-    font-size: 1.1rem;
-    margin-bottom: 0.25rem;
-}
-
-.player-side .rating {
-    color: var(--text-muted);
-    font-size: 0.9rem;
+.match-header .result-badge {
+    flex-shrink: 0;
 }
 
 .vs-separator {
     font-weight: 700;
     color: var(--accent-color);
     font-size: 1.2rem;
-}
-
-.score-display {
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--text-dark);
-}
-
-.fixture-details {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
 }
 
 .detail-item {
@@ -2511,25 +2475,6 @@ footer p {
         height: 150px;
     }
 
-    .fixture-matchup {
-        flex-direction: column;
-    }
-
-    .player-side.white,
-    .player-side.black {
-        width: 100%;
-        justify-content: flex-start;
-        flex-direction: row;
-    }
-
-    .player-side.black .player-details {
-        text-align: left;
-    }
-
-    .score-display {
-        font-size: 1.5rem;
-    }
-
     .stats-summary,
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -2597,7 +2542,8 @@ footer p {
         font-size: 1.1rem;
     }
 
-    .result-card {
+    .result-card,
+    .fixture-row {
         padding: 0.5rem 0.6rem;
         margin-bottom: 0.5rem;
     }

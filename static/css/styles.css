@@ -1430,6 +1430,10 @@
     margin-left: auto;
   }
 
+  .content-max-width {
+    max-width: 1400px;
+  }
+
   @media (min-width: 576px) {
     .container-sm, .container {
       max-width: 540px;
