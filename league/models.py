@@ -624,6 +624,9 @@ class CommitteeMember(models.Model):
     end_date = models.DateField(
         null=True, blank=True, verbose_name=("End Date")
     )
+    description = models.TextField(
+        null=True, blank=True, verbose_name=("Description")
+    )
     class Meta:
         verbose_name = ("Committee Member")
         verbose_name_plural = ("Committee Members")

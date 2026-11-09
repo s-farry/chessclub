@@ -53,10 +53,10 @@
                         <tr>
                             <th>Pos</th>
                             <th>Player</th>
-                            <th class="text-center"><span class="full-label">Played</span><span class="short-label">PLD</span></th>
-                            <th class="text-center"><span class="full-label">Points</span><span class="short-label">PTS</span></th>
                             <th><span class="full-label">Rating</span><span class="short-label">RTG</span></th>
+                            <th class="text-center"><span class="full-label">Played</span><span class="short-label">PLD</span></th>
                             <th class="text-center">W-D-L</th>
+                            <th class="text-center"><span class="full-label">Points</span><span class="short-label">PTS</span></th>
                             <th class="text-center">R<sub>p</sub></th>
                         </tr>
                     </thead>
@@ -66,14 +66,14 @@
                         <tr class="{% if standing.last_promotion_place %} promotion-line {% endif %}{% if standing.last_playoff_place %} playoffs-line {% endif %}{% if standing.first_relegation_place %} relegation-line {% endif %}{% if standing.position <= 3 %}position-{{standing.position}}{% elif standing.in_promotion_zone %}promotion-zone{% elif standing.in_relegation_zone %}relegation-zone{% elif standing.in_playoffs %}playoffs-zone{% endif %}">
                             <td class="position-col">{{standing.position}}</td>
                             <td class="player-name"><a href="{% url 'player' standing.player.id league.season.slug %}" class="reserve-space" reserve="{{standing.player}}">{{standing.player}} </a></td>
-                            <td class="text-center">{{standing.matches}}</td>
-                            <td class="text-center points-col">{% if not league.includes_half_points %} {{ standing.points|floatformat:0 }} {% else %} {{ standing.swiss_points }} {% endif %} </td>
                             <td>{% if standing.rating %} {{standing.rating}} {% else %} - {% endif %}</td>
+                            <td class="text-center">{{standing.matches}}</td>
                             <td class="text-center">
                                 <span class="result-badge badge-win">{{standing.win}}</span>
                                 <span class="result-badge badge-draw">{{standing.draws}}</span>
                                 <span class="result-badge badge-loss">{{standing.lost}}</span>
                             </td>
+                            <td class="text-center points-col">{% if not league.includes_half_points %} {{ standing.points|floatformat:0 }} {% else %} {{ standing.swiss_points }} {% endif %} </td>
                             <td class="text-center">{{standing.performance|floatformat:0}}</td>
                         </tr>
                     {% endfor %}

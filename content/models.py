@@ -203,7 +203,7 @@ class menuitem(models.Model):
     def url(self):
         if not self.link:
             return self.link
-        if self.link.startswith('http') or self.link.startswith('www'):
+        if self.link.startswith('http') or self.link.startswith('www') or self.link.startswith('/'):
             return self.link
         split_link = self.link.split()
         if not split_link:

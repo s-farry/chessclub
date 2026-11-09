@@ -8,7 +8,7 @@
 {% load i18n %}
 {% load league_tags %}
 {% block content %}
-<h1 class="page-title"><i class="fas fa-users-cog"></i> Club Committee</h1>
+<h1 class="page-title"><i class="fas fa-users-cog"></i> Club Committee{% if season %} ({{ season }}){% endif %}</h1>
     <div class="content-card">
             <p class="intro-text">
                 Our committee is made up of dedicated volunteers who work tirelessly to ensure the smooth running 
@@ -24,14 +24,18 @@
                 {% for member in members %}
                 <div class="committee-card">
                     <div class="committee-photo">
+                        {% if member.member.image %}
+                        <img src="{{ member.member.image.url }}" alt="{{ member.member }}">
+                        {% else %}
                         <i class="fas fa-user"></i>
+                        {% endif %}
                     </div>
 
                     <div class="committee-role">{{ member.get_position_display }}</div>
                     <h3 class="committee-name">{{member.member}}</h3>
-                    {% if member.bio %}
+                    {% if member.description %}
                     <p class="committee-bio">
-                        {{ member.bio }}
+                        {{ member.description }}
                     </p>
                     {% endif %}
                     <div class="committee-contact">

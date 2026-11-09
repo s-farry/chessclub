@@ -11,8 +11,8 @@
 
 <div class="content-card" style="margin-bottom:1.25rem;">
     <div class="card-header-row">
-        <label for="seasonSelect" style="font-size:0.9rem;font-weight:600;margin:0;">Season</label>
-        <select id="seasonSelect" class="form-select form-select-sm" style="width:auto;"
+        <label for="seasonSelect" class="season-select-label">Season</label>
+        <select id="seasonSelect" class="form-select season-select"
                 onchange="location.href=this.value">
             {% for s in all_seasons %}
             <option value="{% url 'team_squads' season_slug=s.slug %}"
@@ -27,11 +27,15 @@
     <div class="team-header">
         <div class="team-header-main">
             <h2 class="team-title">{{ team.name }}</h2>
-            {% if team.description %}
-            <p class="team-description">{{ team.description }}</p>
-            {% endif %}
         </div>
-        <span class="team-badge">{{ team.league }}</span>
+        <div class="team-header-meta">
+            <span class="team-badge">
+                <span class="team-badge-league">{{ team.league }}</span>
+                {% if team.description %}
+                <span class="team-badge-description">{{ team.description }}</span>
+                {% endif %}
+            </span>
+        </div>
     </div>
 
     <table class="squad-table">

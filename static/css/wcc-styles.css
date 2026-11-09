@@ -497,6 +497,29 @@ body.sidebar-layout {
     letter-spacing: 0.05em;
     margin-top: 3px;
 }
+.stats-social {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 0;
+    margin-left: auto;
+}
+.stats-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(200,150,44,0.12);
+    border-radius: 8px;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.stats-social a:hover {
+    background: var(--accent-color);
+    color: var(--white);
+}
 
 /* ---- Index page two-column grid ---- */
 .index-grid {
@@ -1826,13 +1849,19 @@ body.sidebar-layout {
 
 
 .listed-mark {
-    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    color: var(--text-muted);
-    vertical-align: super;
-    margin-left: 2px;
+    color: white;
+    background: var(--text-muted);
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-left: 0.4rem;
     letter-spacing: 0;
-    opacity: 0.75;
 }
 
 /* -------------------- TEAM CARDS -------------------- */
@@ -1867,12 +1896,9 @@ body.sidebar-layout {
     margin: 0;
 }
 
-.team-description {
-    font-size: 0.82rem;
-    color: rgba(255,255,255,0.55);
-    margin: 0;
-    font-family: 'Inter', system-ui, sans-serif;
-    font-weight: 400;
+.team-header-meta {
+    display: flex;
+    align-items: center;
 }
 
 .team-badge {
@@ -1881,6 +1907,17 @@ body.sidebar-layout {
     border-radius: 6px;
     font-weight: 600;
     font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    text-align: right;
+}
+
+.team-badge-description {
+    font-weight: 400;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.85);
 }
 
 .team-stats {
@@ -2353,6 +2390,13 @@ body.sidebar-layout {
     justify-content: center;
     color: white;
     font-size: 3rem;
+    overflow: hidden;
+}
+
+.committee-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .committee-role {
@@ -2909,6 +2953,19 @@ button,
 .form-select:focus {
     border-color: var(--accent-color);
     box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
+}
+
+.season-select-label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.season-select {
+    width: auto;
+    min-width: 180px;
+    font-size: 1rem;
+    padding-right: 2.5rem;
 }
 
 /* -------------------- ARTICLE / NEWS ARTICLE STYLES -------------------- */
