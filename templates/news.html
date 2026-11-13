@@ -58,9 +58,9 @@
                   <h3 class="news-title">
                       <a href="{% url 'news' n.id %}">{{n.title}}</a>
                   </h3>
-                  <p class="news-excerpt">
+                  <div class="news-excerpt">
                                 {{ n.text|truncatewords_html:"100"|safe }}
-                  </p>
+                  </div>
                   <a href="{% url 'news' n.id %}" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
               </div>
           </div>

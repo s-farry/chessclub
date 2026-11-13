@@ -13,7 +13,7 @@
 {% if player.image %}
 <img class="profile" src = "{{ player.image.url }}">
 {% else %}
-<img class="profile" src = "{% static 'img/blank-profile-picture-973460_1280.png' %}" width="10%">
+<img class="profile" src = "{% static 'img/blank-profile-picture-973460_1280.png' %}">
 {% endif %}
 {% if player.rating %}
 <p>Rating: {{player.rating}}

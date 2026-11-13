@@ -521,6 +521,44 @@ body.sidebar-layout {
     color: var(--white);
 }
 
+/* Stats strip sizes itself to its own width (the sidebar eats into it on desktop) */
+.stats-strip { container-type: inline-size; }
+
+@container (max-width: 760px) {
+    /* Stats always share one row; socials drop to their own row beneath */
+    .stat-pill {
+        flex: 1 1 0;
+        min-width: 0;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 0.4rem;
+        margin-right: 0;
+    }
+    .stat-pill:nth-child(3) { border-right: none; }
+    .stats-social {
+        flex-basis: 100%;
+        justify-content: center;
+        margin-left: 0;
+        padding: 0.6rem 0;
+        border-top: 1px solid var(--border-color);
+    }
+}
+
+@container (max-width: 520px) {
+    .stat-pill {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.3rem;
+    }
+    .stats-strip .stat-icon { width: 28px; height: 28px; font-size: 0.75rem; }
+    .stats-strip .stat-val { font-size: 1.05rem; }
+    .stats-strip .stat-lbl {
+        font-size: 0.6rem;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+    }
+}
+
 /* ---- Index page two-column grid ---- */
 .index-grid {
     display: grid;
@@ -781,13 +819,21 @@ body.sidebar-layout {
     .site-header-logo {
         height: 36px;
         width: auto;
-        max-width: calc(100vw - 90px);
+        /* Logo stays centred: reserve hamburger width + breathing room on both sides */
+        max-width: calc(100vw - 2 * (1rem + 44px + 1.25rem));
+        object-fit: contain;
         flex-shrink: 1;
         min-width: 0;
     }
     .topbar-badge { display: none; }
 
+    /* Logo in the dropdown menu: keep it modest */
+    .sidebar-brand { padding: 0.75rem 1rem; }
+    .sidebar-brand img { width: auto; max-width: 180px; max-height: 56px; }
+
     .content-container { padding: 1.25rem 1rem; }
+    .stats-strip { padding: 0 1rem; }
+    .hero { padding: 2rem 1rem; }
 }
 
 /* -------------------- NAVIGATION -------------------- */
@@ -1801,6 +1847,17 @@ body.sidebar-layout {
     flex-wrap: wrap;
 }
 
+img.profile {
+    display: block;
+    width: 120px;
+    height: 120px;
+    margin: 0.5rem auto;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--white);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
 .player-info h2 {
     color: var(--text-dark);
     font-size: 1.8rem;
@@ -2510,13 +2567,45 @@ footer p {
 
 
 
-    .news-item {
+    /* News: stack as title/details → picture → text (homepage + archive) */
+    .news-item,
+    .news-row {
         flex-direction: column;
+        gap: 0;
     }
 
-    .news-image-container {
+    /* Let the body's children join the column so the image can sit between them */
+    .news-content,
+    .news-row-body {
+        display: contents;
+    }
+
+    /* Everything in the body goes after the picture by default (incl. any
+       stray markup from article HTML); only the heading bits go before it */
+    .news-content > *, .news-row-body > *            { order: 2; }
+    .news-image-container, .news-thumb               { order: 1; }
+    .news-content > .news-meta, .news-content > .news-title,
+    .news-row-body > .news-tag, .news-row-body > .news-row-title,
+    .news-row-body > .news-date                      { order: 0; }
+
+    .news-tag,
+    .news-item .read-more,
+    .news-row .read-more {
+        align-self: flex-start;
+    }
+
+    .news-image-container,
+    .news-thumb {
         width: 100%;
-        height: 150px;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        margin: 0.6rem 0 0.25rem;
+    }
+
+    /* No picture → skip the placeholder box rather than show a big empty tile */
+    .news-image-container:not(:has(img)),
+    .news-thumb:not(:has(img)) {
+        display: none;
     }
 
     .stats-summary,
@@ -2842,11 +2931,16 @@ footer p {
     }
 
 
+    /* No top padding: header sits flush on the banner/notification/content,
+       and .content-container already supplies its own spacing */
     .main-content {
-        padding-top: 1.5rem;
+        padding-top: 0;
         padding-bottom: 1.5rem;
     }
 }
+
+/* Hero sits flush under the header — no light gap above it */
+.main-content:has(> .hero) { padding-top: 0; }
 
 /* -------------------- ENHANCED USER-FRIENDLINESS -------------------- */
 /* Better focus states for accessibility */
