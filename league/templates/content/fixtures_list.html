@@ -63,7 +63,7 @@
                 <div class="result-card">
                     <div class="match-header">
                         {% if fixture.board %}<span class="board-number">Board {{fixture.board}}</span>{% endif %}
-                        {% if not fixture.white or not fixture.black %}<span class="match-status bye">Bye</span>{% endif %}
+                        {% if fixture.result != 3 and not fixture.white or fixture.result != 3 and not fixture.black %}<span class="match-status bye">Bye</span>{% endif %}
                         {% if fixture.league.format != 0 and fixture.date %}<span class="game-date"><i class="fas fa-calendar-alt"></i> {{fixture.date.date}}</span>{% endif %}
                     </div>
                     <div class="match-players">

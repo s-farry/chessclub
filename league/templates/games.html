@@ -58,7 +58,7 @@ ECF Equivalent: {{player.ecf_grade}}</p>
             <div class="fixture-row {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
                 <div class="match-header">
                     {% if game.board %}<span class="board-number">Board {{ game.board }}</span>{% endif %}
-                    {% if not game.white or not game.black %}<span class="match-status bye">Bye</span>{% endif %}
+                    {% if game.result != 3 and not game.white or game.result != 3 and not game.black %}<span class="match-status bye">Bye</span>{% endif %}
                     <span class="game-date"><i class="fas fa-calendar-alt"></i> {% if game.date %}{{ game.date.date }}{% else %}TBC{% endif %}</span>
                     <span class="result-badge {% if game.white == player %}{% if game.result == 1 %}win{% elif game.result == 2 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% elif game.black == player %}{% if game.result == 2 %}win{% elif game.result == 1 %}loss{% elif game.result == 0 %}draw{% else %}upcoming{% endif %}{% else %}upcoming{% endif %}">
                         {% if game.white == player %}
