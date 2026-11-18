@@ -10,7 +10,7 @@
   {% if league.format != 3 %} <button class="tablinks" onclick="openTab(event, 'table')" id="button-table"><i class="fas fa-table"></i> Table</button>{% endif %}
   {% if latest %}             <button class="tablinks" onclick="openTab(event, 'fixtures')" id="button-fixtures"><i class="fas fa-list"></i> Fixtures</button>{% endif %}
   {% if league.description %} <button class="tablinks" onclick="openTab(event, 'details')" id="button-details"><i class="fas fa-info-circle"></i> Details </button>{% endif %}
-  {% if league.format != 3 %} <a class="text-decoration-none reserve-space float-right" title="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" reserve="aa"><i class="fas fa-file-pdf"></i></a>{% endif %}
+  {% if league.format != 3 and not league.historical %} <a class="text-decoration-none reserve-space float-right" title="Download PDF", href="{% url 'export_league_pdf' league.slug %}", target = "_blank" reserve="aa"><i class="fas fa-file-pdf"></i></a>{% endif %}
 </div>
   
 <div class = "d-none tabcontent" id="tab-fixtures">

@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.db import models
 from django.urls import re_path
 from django.db.models import Q
@@ -246,7 +246,7 @@ class LeagueAdmin(ModelAdmin):
     create_round_robin_template = 'create_round_robin.html'
     filter_horizontal = ('players',)
 
-    list_filter = (SeasonLeagueFilter,)
+    list_filter = (SeasonLeagueFilter, 'historical')
 
     inlines = [
         StandingsInline, 
@@ -263,9 +263,12 @@ class LeagueAdmin(ModelAdmin):
 
     #prepopulated_fields = {'slug': ('name', 'season_name',), }
     actions=['update_standings', 'make_pdf', 'make_crosstable', 'update_ratings', 'update_historical_ratings']
-    list_display = ('name','link')
+    list_display = ('name', 'season', 'historical', 'link')
     def update_standings(self,request,queryset):
         for obj in queryset:
+            if obj.historical:
+                self.message_user(request, "%s is a historical table; standings were left unchanged"%(obj), level=messages.WARNING)
+                continue
             standings_save(self, request, obj)
             standings_update(self, request, obj)
             self.message_user(request, "Standings for %s updated"%(obj))

@@ -8,6 +8,7 @@ import chess.pgn
 import datetime
 from pytz import timezone
 from django.utils.timezone import now as tz_now
+from django.contrib import messages
 
 import argparse
 import requests
@@ -179,8 +180,24 @@ def get_performance_score(player, tournament):
     return performance
 
 
+def skip_if_historical(admin_site, request, league):
+    """Historical leagues hold hand-entered final tables with no games, so
+    any recalculation would wipe them. Returns True if the caller must stop."""
+    if not getattr(league, "historical", False):
+        return False
+    if admin_site is not None and request is not None:
+        admin_site.message_user(
+            request,
+            "%s is a historical table; standings were left unchanged" % (league),
+            level=messages.WARNING,
+        )
+    return True
+
+
 # for updating standings
 def standings_save(admin_site, request, instance):
+    if skip_if_historical(admin_site, request, instance):
+        return
     league = League.objects.get(pk=instance.pk)
     league.updated_date = tz_now()
     league.save()
@@ -198,6 +215,8 @@ def standings_save(admin_site, request, instance):
 
 
 def standings_position_update(admin_site, request, league):
+    if skip_if_historical(admin_site, request, league):
+        return
     order = STANDINGS_ORDER[league.standings_order][1]
     standings = Standings.objects.filter(league=league.pk).order_by(*order)
     position = 0
@@ -208,6 +227,8 @@ def standings_position_update(admin_site, request, league):
 
 
 def standings_update(admin_site, request, instance):
+    if skip_if_historical(admin_site, request, instance):
+        return
     standings = Standings.objects.filter(league=instance.pk)
     # to calculate NBS and Buchholz score
     player_wins = {}

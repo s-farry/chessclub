@@ -76,12 +76,12 @@ class SnippetAdminForm(forms.ModelForm):
     )
 
     class Meta:
-        fields = ("title", "body", "active")
+        fields = ("title", "body", "active", "type")
         model = snippet
 
 
 class SnippetAdmin(admin.ModelAdmin):
-    list_display = ["title", "body", "active"]
+    list_display = ["title", "body", "active", "type"]
     search_fields = ["title"]
     form = SnippetAdminForm
 

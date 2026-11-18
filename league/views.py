@@ -18,6 +18,9 @@ from league.models import (
     STANDINGS_ORDER,
     LMSTeamFixture
 )
+
+from content.models import snippet
+
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
@@ -158,8 +161,10 @@ def fixtures(request, league, **kwargs):
             prev_dates = [d for d in dates if d < today]
             latest = max(prev_dates) if len(prev_dates) > 0 else dates[0]
 
-    # let's get the standings now
-    standings = Standings.objects.filter(league=l).order_by("position")
+    # let's get the standings now (historical tables can have unranked players)
+    standings = Standings.objects.filter(league=l).order_by(
+        F("position").asc(nulls_last=True), F("points").desc(nulls_last=True)
+    )
     return render(
         request,
         "fixtures.html",
@@ -229,7 +234,8 @@ def committee(request, **kwargs):
     else:
         f = Season.objects.order_by("end").last()
     members = CommitteeMember.objects.filter(season=f)
-    return render(request, "committee.html", {"season": f, "members": members})
+    intro = snippet.objects.filter(title='committee')[0]
+    return render(request, "committee.html", {"season": f, "members": members, 'intro' : intro})
 
 def cabinet(request):
     return render(request, "cabinet.html")

@@ -317,6 +317,14 @@ class League(models.Model):
         choices=(POINTS),
     )
     format = models.IntegerField(default=0, choices=(TOURNAMENT_FORMATS))
+    historical = models.BooleanField(
+        default=False,
+        verbose_name=("Historical table"),
+        help_text=(
+            "Final table entered by hand with no individual games. "
+            "Standings are never recalculated for historical leagues."
+        ),
+    )
 
     class Meta:
         verbose_name = ("League")
@@ -701,6 +709,8 @@ class Standings(models.Model):
         return "{0} {1}".format(self.league, self.player)
 
     def swiss_points(self):
+        if self.points is None:
+            return "-"
         return ("%.1f" % (self.points)).replace(".", ",")
 
     def swiss_nbs(self):
