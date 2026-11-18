@@ -14,7 +14,8 @@ from .views import (
     team_fixtures,
     team_squads,
     committee,
-    enter_result
+    enter_result,
+    league_history,
 )
 
 urlpatterns = [
@@ -46,4 +47,7 @@ urlpatterns = [
         name="export_crosstable_pdf",
     ),
     re_path(r"^enter-result$", enter_result, name="enter_result"),
+    re_path(r"^league-history$", league_history, name="league_history"),
+    re_path(r"^league-history/(?P<division>[-\w]+)$", league_history, name="league_history"),
+    re_path(r"^league-history/(?P<division>[-\w]+)/(?P<season_slug>[-\w]+)$", league_history, name="league_history"),
 ]

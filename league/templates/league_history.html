@@ -1,0 +1,109 @@
+{% extends 'base3.html' %}
+{% block title %}League History - {{ division_name }} {{ league.season.name }}{% endblock %}
+
+{% load i18n %}
+{% load league_tags %}
+
+{% block content %}
+<h1 class="page-title"><i class="fas fa-history"></i> League History</h1>
+
+<div class="content-card history-controls">
+    <nav class="history-divisions" aria-label="Division">
+        {% for slug, name in divisions %}
+        <a href="{% url 'league_history' division=slug %}"
+           class="history-division{% if slug == division %} active{% endif %}"
+           {% if slug == division %}aria-current="page"{% endif %}>{{ name }}</a>
+        {% endfor %}
+    </nav>
+
+    <div class="history-season-nav">
+        {% if older %}
+        <a class="history-step" id="history-older" rel="prev"
+           href="{% url 'league_history' division=division season_slug=older.season.slug %}"
+           title="{{ older.season.name }} (left arrow key)"><i class="fas fa-chevron-left"></i><span class="history-step-label"> {{ older.season.name }}</span></a>
+        {% else %}
+        <span class="history-step disabled" aria-disabled="true"><i class="fas fa-chevron-left"></i></span>
+        {% endif %}
+
+        <label for="historySeason" class="visually-hidden">Season</label>
+        <select id="historySeason" class="form-select season-select" onchange="location.href=this.value">
+            {% for l in leagues %}
+            <option value="{% url 'league_history' division=division season_slug=l.season.slug %}"
+                    {% if l.pk == league.pk %}selected{% endif %}>{{ l.season.name }}</option>
+            {% endfor %}
+        </select>
+
+        {% if newer %}
+        <a class="history-step" id="history-newer" rel="next"
+           href="{% url 'league_history' division=division season_slug=newer.season.slug %}"
+           title="{{ newer.season.name }} (right arrow key)"><span class="history-step-label">{{ newer.season.name }} </span><i class="fas fa-chevron-right"></i></a>
+        {% else %}
+        <span class="history-step disabled" aria-disabled="true"><i class="fas fa-chevron-right"></i></span>
+        {% endif %}
+    </div>
+</div>
+
+<div class="history-table-heading">
+    <h2 class="section-title">{{ division_name }} {{ league.season.name }}</h2>
+    <a class="card-header-link" href="{% url 'tournament' league.slug %}">
+        {% if league.historical %}Details{% else %}Fixtures &amp; details{% endif %} <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+{% if standings %}
+    {% include 'content/full_table.html' with standings=standings league=league %}
+{% else %}
+    <div class="content-card"><p class="mb-0">No table is available for this season.</p></div>
+{% endif %}
+
+{% if league.historical and league.description %}
+<div class="history-source">{{ league.description|safe }}</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<style>
+.history-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.history-divisions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.history-division {
+    padding: 0.35rem 0.9rem; border-radius: 999px; border: 1px solid var(--border-color);
+    color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem;
+}
+/* Prefixed with .content-card.history-controls so these beat the site-wide
+   ".content-card a:not(.btn)" link colour in wcc-styles.css */
+.content-card.history-controls a.history-division,
+.content-card.history-controls a.history-step { color: var(--accent-color); text-decoration: none; }
+.content-card.history-controls a.history-division:hover,
+.content-card.history-controls a.history-step:hover { border-color: var(--accent-color); color: var(--accent-dark); text-decoration: none; }
+.content-card.history-controls a.history-division.active,
+.content-card.history-controls a.history-division.active:hover {
+    background: var(--accent-color); border-color: var(--accent-color); color: #fff; font-weight: 600;
+}
+.history-season-nav { display: flex; align-items: center; gap: 0.5rem; }
+.content-card.history-controls .history-season-nav .season-select { min-width: 140px; color: var(--accent-color); font-weight: 500; }
+.content-card.history-controls .history-season-nav .season-select option { color: var(--text-dark); }
+.history-step {
+    display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.75rem;
+    border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-dark);
+    text-decoration: none; white-space: nowrap; font-size: 0.9rem;
+}
+.history-step:hover { border-color: var(--accent-color); color: var(--accent-dark); }
+.history-step.disabled { opacity: 0.35; pointer-events: none; }
+.history-table-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.history-source { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.75rem; }
+@media (max-width: 576px) {
+    .history-step-label { display: none; }
+    .history-controls { flex-direction: column; align-items: stretch; }
+    .history-season-nav { justify-content: space-between; }
+}
+</style>
+<script>
+// Left/right arrow keys step to the older/newer season (ignored while using the dropdown)
+document.addEventListener("keydown", function (e) {
+    if (e.target.closest("select, input, textarea") || e.altKey || e.ctrlKey || e.metaKey) return;
+    var link = e.key === "ArrowLeft" ? document.getElementById("history-older")
+             : e.key === "ArrowRight" ? document.getElementById("history-newer") : null;
+    if (link) { window.location.href = link.href; }
+});
+</script>
+{% endblock %}

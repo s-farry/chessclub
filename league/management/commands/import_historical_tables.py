@@ -188,17 +188,22 @@ class Command(BaseCommand):
 
         season = self.get_season(season_label, report)
         title = division_title(division)
-        base = title.lower().replace(" (alternative table)", "")
 
-        regular = [
-            l for l in League.objects.filter(season=season, historical=False)
-            if norm(l.name).replace("wallasey ", "") == base
+        # Any league in the season for this division, historical or not. (A league
+        # filled with --fill-existing is historical but keeps its original slug, so
+        # matching on slug alone would import it a second time.)
+        same = [
+            l for l in League.objects.filter(season=season)
+            if norm(l.name).removeprefix("wallasey ") == title.lower()
         ]
-        if regular and "(alternative" not in division and regular[0].slug in self.fill_slugs:
-            self.fill_table(regular[0], tag, players_rows, report)
+        if same and same[0].slug in self.fill_slugs:
+            self.fill_table(same[0], tag, players_rows, report)
             return
-        if regular and "(alternative" not in division:
-            report["skipped_existing"].append(f"{tag}  (already on site as '{regular[0]}')")
+        if any(l.historical for l in same):
+            report["skipped_imported"].append(tag)
+            return
+        if same:
+            report["skipped_existing"].append(f"{tag}  (already on site as '{same[0]}')")
             return
 
         slug = slugify(f"{title}-{season.slug}")

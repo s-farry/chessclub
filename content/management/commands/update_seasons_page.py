@@ -60,7 +60,12 @@ class Command(BaseCommand):
         parser.add_argument("--commit", action="store_true", help="Save the page. Without this nothing is written.")
 
     def build_block(self, seasons):
-        parts = [START, "<div>", INTRO]
+        viewer = reverse("league_history")
+        parts = [
+            START, "<div>",
+            f'<p><a href="{viewer}"><i class="fas fa-history"></i> Browse the league tables season by season</a></p>',
+            INTRO,
+        ]
         for season in seasons:
             leagues = sorted(League.objects.filter(season=season), key=league_sort_key)
             parts.append(f'<h3 class="">{escape(season.name)}</h3>')

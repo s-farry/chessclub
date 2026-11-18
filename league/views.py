@@ -24,6 +24,7 @@ from content.models import snippet
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
+from django.http import Http404
 import datetime
 from django.utils import timezone as dj_timezone
 from openpyxl import Workbook, load_workbook
@@ -227,6 +228,66 @@ def game(request, game_id):
 
 def trophycabinet(request):
     return render(request, "trophycabinet.html")
+
+
+# Divisions shown in the league history viewer: (url slug, display name).
+# A league belongs to a division if its name is the division name, optionally
+# prefixed with "Wallasey " (as in 2021/22). Alternative tables, playoffs etc.
+# are deliberately excluded.
+HISTORY_DIVISIONS = [
+    ("championship", "Championship"),
+    ("premiership", "Premiership"),
+    ("major", "Major"),
+    ("first-class", "First Class"),
+]
+
+
+def division_leagues(division_name):
+    """All round-robin leagues for a division, newest season first."""
+    wanted = division_name.lower()
+    leagues = League.objects.filter(format=0).select_related("season").order_by("-season__end")
+    return [
+        l for l in leagues
+        if l.name.lower().removeprefix("wallasey ").strip() == wanted
+    ]
+
+
+def league_history(request, division=None, season_slug=None):
+    divisions = dict(HISTORY_DIVISIONS)
+    division = division or HISTORY_DIVISIONS[0][0]
+    if division not in divisions:
+        raise Http404("Unknown division")
+
+    leagues = division_leagues(divisions[division])
+    if not leagues:
+        raise Http404("No tables for this division")
+
+    if season_slug:
+        matches = [i for i, l in enumerate(leagues) if l.season.slug == season_slug]
+        if not matches:
+            raise Http404("No table for this division in that season")
+        index = matches[0]
+    else:
+        index = 0
+    league = leagues[index]
+
+    standings = Standings.objects.filter(league=league).select_related("player").order_by(
+        F("position").asc(nulls_last=True), F("points").desc(nulls_last=True)
+    )
+    return render(
+        request,
+        "league_history.html",
+        {
+            "divisions": HISTORY_DIVISIONS,
+            "division": division,
+            "division_name": divisions[division],
+            "leagues": leagues,
+            "league": league,
+            "standings": standings,
+            "older": leagues[index + 1] if index + 1 < len(leagues) else None,
+            "newer": leagues[index - 1] if index > 0 else None,
+        },
+    )
 
 def committee(request, **kwargs):
     if "season_slug" in kwargs:
