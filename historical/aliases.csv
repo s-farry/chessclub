@@ -1,0 +1,41 @@
+spreadsheet_name,target,confidence,note
+# target is either #<player id> for an existing Player, or the canonical spelling to use.
+# Names not listed here are matched exactly, then by nickname ignoring middle initials (only if unique).
+# confidence: sure = confirmed from the 2018-26 seasons already on the site; check = needs a human to confirm
+Ed Taylor,#58,sure,Edward A Taylor - matched in 2021-26 tables
+Edward Taylor,#58,check,assumed same as Ed Taylor; DB also has Edward H Taylor (#59)
+Edward H Taylor,#59,sure,exists in DB
+E Taylor,#58,check,1996/97 only - Edward A (#58) or Edward H (#59)? left as a separate player until decided
+Tony Roberts,#54,sure,Anthony J Roberts
+Anthony Roberts,#54,sure,Anthony J Roberts
+Colin Hughes,#12,sure,Colin Moore-Hughes
+Fergal Wright,#238,sure,Fergal Irvine-Wright
+Dave Barnes,#19,sure,David Barnes
+David Barnes,#19,sure,
+Dave Clark,#26,sure,David N Clark
+Gordon Sommerville,#55,sure,Gordon BR Sommerville
+Jeff Povall,#50,sure,Jeff T Povall
+Joe Butterworth,#107,sure,Joe W Butterworth
+Jon Booth,#119,sure,Jonathan Booth
+Ken Jones,#41,sure,Ken D Jones
+Mike O'Mahony,#48,sure,Mike J O'Mahony
+Mike Williams,#164,sure,Michael I Williams
+Phil Brine,#20,sure,Phil A Brine
+Phil Green,#34,sure,Philip Green
+Sanjoy Banerjee,#111,sure,Sanjoy K Banerjee
+Viv Oldham,#49,sure,Vivian N Oldham
+Vivian Oldham,#49,sure,Vivian N Oldham
+Steve Farry,#1,sure,Stephen Farry
+Dave Williams,#62,check,David Williams - 1999-2000 only
+Bob Borkhill,Bob Corkhill,sure,typo
+Robert Corkhill,Bob Corkhill,check,
+Lenny Block,Leonard Block,check,
+Stefan McLoughlin,Stef McLoughlin,check,
+Andew Platt,Andrew Platt,sure,typo
+Ed Dhenin,Edward Dhenin,check,
+David Battersby,Dave Battersby,check,
+D Brewer,Dave Brewer,check,
+J Casey,James Casey,check,
+Kieron Fattorini,Kieran Fattorini,check,which spelling is right?
+K Jones,#41,sure,
+R Kelly,Richard Kelly,check,

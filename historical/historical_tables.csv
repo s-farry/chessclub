@@ -1,0 +1,1457 @@
+season,division,position,name,played,won,drawn,lost,points,source,table_notes
+2025-26,CHAMPIONSHIP,1,Stephen Pickles,27,26,1,0,79,(taken from the club website),
+2025-26,CHAMPIONSHIP,2,Mike Coffey,29,18,4,7,58,(taken from the club website),
+2025-26,CHAMPIONSHIP,3,Richard Kelly,32,14,10,8,52,(taken from the club website),
+2025-26,CHAMPIONSHIP,4,David Barnes,28,11,13,4,46,(taken from the club website),
+2025-26,CHAMPIONSHIP,5,Robert Thomas,20,14,3,3,45,(taken from the club website),
+2025-26,CHAMPIONSHIP,6,Paul Jesse,33,12,6,15,42,(taken from the club website),
+2025-26,CHAMPIONSHIP,7,Chris Latham,30,6,15,9,33,(taken from the club website),
+2025-26,CHAMPIONSHIP,8,Alan Jackson,30,8,7,15,31,(taken from the club website),
+2025-26,CHAMPIONSHIP,9,Mike O'Mahony,29,5,15,9,30,(taken from the club website),
+2025-26,CHAMPIONSHIP,10,Dave Clark,15,8,5,2,29,(taken from the club website),
+2025-26,CHAMPIONSHIP,11,Phil Owen,25,7,8,10,29,(taken from the club website),
+2025-26,CHAMPIONSHIP,12,Fergal Wright,13,7,3,3,24,(taken from the club website),
+2025-26,CHAMPIONSHIP,13,Ed Taylor,34,5,9,20,24,(taken from the club website),
+2025-26,CHAMPIONSHIP,14,Ken Jones,23,3,13,7,22,(taken from the club website),
+2025-26,CHAMPIONSHIP,15,Joe Butterworth,30,2,15,13,21,(taken from the club website),
+2025-26,CHAMPIONSHIP,16,Steve Clare,27,5,5,17,20,(taken from the club website),
+2025-26,CHAMPIONSHIP,17,Graham Carr,13,5,4,4,19,(taken from the club website),
+2025-26,CHAMPIONSHIP,18,Adam Miller,20,3,6,11,15,(taken from the club website),
+2025-26,CHAMPIONSHIP,19,Komronbek Bakhtiyorov,4,2,1,1,7,(taken from the club website),
+2025-26,CHAMPIONSHIP,20,Nodirabegim Bakhtiyorova,4,2,0,2,6,(taken from the club website),
+2025-26,CHAMPIONSHIP,21,Sanjoy Banerjee,6,1,1,4,4,(taken from the club website),
+2025-26,PREMIERSHIP,1,Thomas Moran,34,26,5,3,83,,
+2025-26,PREMIERSHIP,2,Terrence Jiang,27,22,4,1,70,,
+2025-26,PREMIERSHIP,3,Joe Ledgerton,31,21,6,4,69,,
+2025-26,PREMIERSHIP,4,Brian Wiggett,24,15,5,4,50,,
+2025-26,PREMIERSHIP,5,Chinenye Basil-Nwachuku,25,14,2,9,44,,
+2025-26,PREMIERSHIP,6,Steve Simm,22,12,4,6,40,,
+2025-26,PREMIERSHIP,7,Jeff T Povall,19,10,8,1,38,,
+2025-26,PREMIERSHIP,8,Chris Clemenson,33,11,5,17,38,,
+2025-26,PREMIERSHIP,9,David Simm,28,10,8,10,38,,
+2025-26,PREMIERSHIP,10,Saul Marks,32,9,8,15,35,,
+2025-26,PREMIERSHIP,11,Martin Hargreaves,35,6,13,16,31,,
+2025-26,PREMIERSHIP,12,Ian Stent,35,3,21,11,30,,
+2025-26,PREMIERSHIP,13,Jonathan Booth,31,7,8,16,29,,
+2025-26,PREMIERSHIP,14,Tom Whitby,13,8,4,1,28,,
+2025-26,PREMIERSHIP,15,Gordon BR Sommerville,26,7,6,13,27,,
+2025-26,PREMIERSHIP,16,Trevor Shaw,26,6,9,11,27,,
+2025-26,PREMIERSHIP,17,Alan Kelly,30,6,9,15,27,,
+2025-26,PREMIERSHIP,18,Graham Heath,34,2,12,20,18,,
+2025-26,PREMIERSHIP,19,Ron Champion,34,1,10,23,13,,
+2025-26,PREMIERSHIP,20,Marcello D'Onofrio,9,3,3,3,12,,
+2025-26,MAJOR,1,Sam Bakhshian,49,28,11,10,95,,
+2025-26,MAJOR,2,Lee Whitford-Stark,30,29,0,1,87,,
+2025-26,MAJOR,3,Martin Cockerill,38,23,6,9,75,,
+2025-26,MAJOR,4,Paul Greenway,36,21,6,9,69,,
+2025-26,MAJOR,5,Kingsley Tan,29,19,4,6,61,,
+2025-26,MAJOR,6,Tony Leong,32,16,7,9,55,,
+2025-26,MAJOR,7,Felix Lefeuvre,25,14,2,9,44,,
+2025-26,MAJOR,8,Peter Blair,29,13,2,14,41,,
+2025-26,MAJOR,9,Ben Kelly,25,13,0,12,39,,
+2025-26,MAJOR,10,Graham Johnstone,17,10,2,5,32,,
+2025-26,MAJOR,11,Brian Kinnear,18,9,5,4,32,,
+2025-26,MAJOR,12,Steve Prendergast,20,8,5,7,29,,
+2025-26,MAJOR,13,Stuart Rowe,27,9,0,18,27,,
+2025-26,MAJOR,14,Leo Rogers,17,7,2,8,23,,
+2025-26,MAJOR,15,John Quirk,38,6,3,29,21,,
+2025-26,MAJOR,16,Thomas Wilson,17,6,3,8,21,,
+2025-26,MAJOR,17,Samuel Clark,31,6,3,22,21,,
+2025-26,MAJOR,18,Harry Squire,12,5,4,3,19,,
+2025-26,MAJOR,19,Charlie Ren,19,4,5,10,17,,
+2025-26,MAJOR,20,Luca Sorrentino-Ryan,22,5,2,15,17,,
+2025-26,MAJOR,21,Mike Chadburn,12,5,2,5,17,,
+2025-26,MAJOR,22,Josh Baker,9,3,2,4,11,,
+2025-26,MAJOR,23,Kenny Hampson,14,3,1,10,10,,
+2025-26,MAJOR,24,Caleb Haggerty,8,3,1,4,10,,
+2025-26,MAJOR,25,Kyle Scotton,12,2,3,7,9,,
+2025-26,MAJOR,26,Craig Jones,7,2,3,2,9,,
+2025-26,MAJOR,27,Bruce Biggar,4,2,1,1,7,,
+2025-26,MAJOR,28,Sebastian Palucha,6,2,1,3,7,,
+2025-26,MAJOR,29,Jamie Baker,8,2,0,6,6,,
+2025-26,MAJOR,30,Ceiron Chapman-Trafford,11,2,0,9,6,,
+2025-26,MAJOR,31,Kirsten Rowe,17,2,0,15,6,,
+2025-26,MAJOR,32,Liam Davies,1,0,0,1,0,,
+2025-26,MAJOR,33,Francesco D'Amelio,1,0,0,1,0,,
+2025-26,MAJOR,34,Gwyn Powell-Wilde,3,0,0,3,0,,
+2025-26,FIRST CLASS,1,Seth Marks,18,18,0,0,54,,
+2025-26,FIRST CLASS,2,George Jowett,13,10,1,2,31,,
+2025-26,FIRST CLASS,3,Pranaav Prasanna Venkatesh,16,7,4,5,25,,
+2025-26,FIRST CLASS,4,Freddy Powell,15,7,1,7,22,,
+2025-26,FIRST CLASS,5,Ro Ford,15,5,3,7,18,,
+2025-26,FIRST CLASS,6,Jesse Harris-Day,8,5,0,3,15,,
+2025-26,FIRST CLASS,7,Seb Chesworth,15,5,0,10,15,,
+2025-26,FIRST CLASS,8,Purya Mirilavasani,7,3,1,3,10,,
+2025-26,FIRST CLASS,9,Prasanna Venkatesh Kalyanaraman,8,3,1,4,10,,
+2025-26,FIRST CLASS,10,Dan Ford,7,2,1,4,7,,
+2025-26,FIRST CLASS,11,Katie Lamb,2,2,0,0,6,,
+2025-26,FIRST CLASS,12,Filip Adamski,3,1,0,2,3,,
+2025-26,FIRST CLASS,13,Menai Whitby,9,1,0,8,3,,
+2025-26,FIRST CLASS,14,Christopher Pavloski,3,0,0,3,0,,
+2025-26,FIRST CLASS,15,Matthew Rowe,2,0,0,2,0,,
+2025-26,FIRST CLASS,16,Giuseppe D'Amelio,1,0,0,1,0,,
+2025-26,FIRST CLASS,17,Elsie Woods,5,0,0,5,0,,
+2025-26,FIRST CLASS,18,Benjamin Woods,3,0,0,3,0,,
+2024-25,CHAMPIONSHIP,1,Mike Coffey,31,24,2,5,74,(taken from the club website),
+2024-25,CHAMPIONSHIP,2,Ed Taylor,34,14,12,8,54,(taken from the club website),
+2024-25,CHAMPIONSHIP,3,Chris Latham,30,15,7,8,52,(taken from the club website),
+2024-25,CHAMPIONSHIP,4,Richard Kelly,34,12,11,11,47,(taken from the club website),
+2024-25,CHAMPIONSHIP,5,Titas Vdovycia,26,14,4,8,46,(taken from the club website),
+2024-25,CHAMPIONSHIP,6,Sanjoy Banerjee,29,14,3,12,45,(taken from the club website),
+2024-25,CHAMPIONSHIP,7,Dave Clark,19,10,8,1,38,(taken from the club website),
+2024-25,CHAMPIONSHIP,8,Dave Barnes,26,10,8,8,38,(taken from the club website),
+2024-25,CHAMPIONSHIP,9,Steve Clare,31,11,4,16,37,(taken from the club website),
+2024-25,CHAMPIONSHIP,10,Phil Owen,25,9,8,8,35,(taken from the club website),
+2024-25,CHAMPIONSHIP,11,Mike Williams,27,10,4,13,34,(taken from the club website),
+2024-25,CHAMPIONSHIP,12,Joe Butterworth,29,7,13,9,34,(taken from the club website),
+2024-25,CHAMPIONSHIP,13,Mike O'Mahony,31,6,12,13,30,(taken from the club website),
+2024-25,CHAMPIONSHIP,14,Rick Purcell,21,6,6,9,24,(taken from the club website),
+2024-25,CHAMPIONSHIP,15,Ken Jones,28,3,10,15,19,(taken from the club website),
+2024-25,CHAMPIONSHIP,16,Luke Maher,12,5,3,4,18,(taken from the club website),
+2024-25,CHAMPIONSHIP,17,Graham Carr,20,4,6,10,18,(taken from the club website),
+2024-25,CHAMPIONSHIP,18,Paul Evans,7,4,2,1,14,(taken from the club website),
+2024-25,CHAMPIONSHIP,19,Jon Booth,30,1,9,20,12,(taken from the club website),
+2024-25,PREMIERSHIP,1,Paul Jesse,37,26,3,8,81,,
+2024-25,PREMIERSHIP,2,Alan Jackson,34,17,12,5,63,,
+2024-25,PREMIERSHIP,3,Adam Miller,34,17,11,6,62,,
+2024-25,PREMIERSHIP,4,Jeff Povall,32,13,16,3,55,,
+2024-25,PREMIERSHIP,5,Chinenye Basil-Nwachuku,21,18,0,3,54,,
+2024-25,PREMIERSHIP,6,Brian Wiggett,27,16,6,5,54,,
+2024-25,PREMIERSHIP,7,Gordon Sommerville,35,12,9,14,45,,
+2024-25,PREMIERSHIP,8,Harry McLeod,22,13,5,4,44,,
+2024-25,PREMIERSHIP,9,Steve Simm,24,13,4,7,43,,
+2024-25,PREMIERSHIP,10,Alan Kelly,34,8,16,10,40,,
+2024-25,PREMIERSHIP,11,Chris Clemenson,34,11,6,17,39,,
+2024-25,PREMIERSHIP,12,Saul Marks,38,10,8,20,38,,
+2024-25,PREMIERSHIP,13,Ian Stent,38,7,17,14,38,,
+2024-25,PREMIERSHIP,14,Trevor Shaw,30,8,9,13,33,,
+2024-25,PREMIERSHIP,15,Martin Hargreaves,35,6,15,14,33,,
+2024-25,PREMIERSHIP,16,David Simm,27,8,6,13,30,,
+2024-25,PREMIERSHIP,17,Graham Heath,38,4,17,17,29,,
+2024-25,PREMIERSHIP,18,Ron Champion,39,3,18,18,27,,
+2024-25,PREMIERSHIP,19,Mark Burgess,25,5,11,9,26,,
+2024-25,PREMIERSHIP,20,Neil Maher,16,7,2,7,23,,
+2024-25,PREMIERSHIP,21,Phil Taylor,15,3,8,4,17,,
+2024-25,PREMIERSHIP,22,Leon Wolszczak,17,0,5,12,5,,
+2024-25,PREMIERSHIP,23,Anthony Roberts,1,1,0,0,3,,
+2024-25,PREMIERSHIP,24,Uvindu Adimali,5,0,2,3,2,,
+2024-25,MAJOR,1,Joe Ledgerton,36,26,6,4,84,,
+2024-25,MAJOR,2,Thomas Moran,33,25,3,5,78,,
+2024-25,MAJOR,3,Terrence Jiang,24,19,0,5,57,,
+2024-25,MAJOR,4,Paul Greenway,36,16,6,14,54,,
+2024-25,MAJOR,5,Lee Whitford-Stark,24,16,4,4,52,,
+2024-25,MAJOR,6,Felix Lefeuvre,26,16,2,8,50,,
+2024-25,MAJOR,7,Martin Cockerill,18,8,4,6,28,,
+2024-25,MAJOR,8,Kingsley Tan,26,7,5,14,26,,
+2024-25,MAJOR,9,Tony Leong,26,7,5,14,26,,
+2024-25,MAJOR,10,Ben Kelly,17,8,1,8,25,,
+2024-25,MAJOR,11,Brian Kinnear,21,6,5,10,23,,
+2024-25,MAJOR,12,Phil Green,16,6,1,9,19,,
+2024-25,MAJOR,13,Harry Squire,15,5,3,7,18,,
+2024-25,MAJOR,14,Peter Blair,18,5,2,11,17,,
+2024-25,MAJOR,15,Connor Washington,12,3,3,6,12,,
+2024-25,MAJOR,16,Samuel Clark,24,3,1,20,10,,
+2024-25,MAJOR,17,Viv Oldham,21,1,7,13,10,,
+2024-25,MAJOR,18,Will Madeley,8,2,0,6,6,,
+2024-25,MAJOR,19,Liam Davies,6,2,0,4,6,,
+2024-25,MAJOR,20,Steve Prendergast,9,1,2,6,5,,
+2024-25,MAJOR,21,Amanda Adimali,5,1,1,3,4,,
+2024-25,MAJOR,22,Sebastian Palucha,6,0,1,5,1,,
+2024-25,MAJOR,23,Francesco D'Amelio,1,0,0,1,0,,
+2024-25,FIRST CLASS,1,Kirsten Rowe,69,48,3,18,147,,
+2024-25,FIRST CLASS,2,Lucas Farrell,50,43,2,5,131,,
+2024-25,FIRST CLASS,3,Stuart Rowe,55,33,2,20,101,,
+2024-25,FIRST CLASS,4,Charlie Ren,32,24,2,6,74,,
+2024-25,FIRST CLASS,5,Matthew Rowe,53,17,2,34,53,,
+2024-25,FIRST CLASS,6,Seb Chesworth,46,17,0,29,51,,
+2024-25,FIRST CLASS,7,John Quirk,23,16,0,7,48,,
+2024-25,FIRST CLASS,8,Luca Sorrentino-Ryan,28,15,0,13,45,,
+2024-25,FIRST CLASS,9,Daniel J Sharp,39,13,0,26,39,,
+2024-25,FIRST CLASS,10,Daniel Speight,24,11,0,13,33,,
+2024-25,FIRST CLASS,11,Mike Chadburn,13,10,0,3,30,,
+2024-25,FIRST CLASS,12,Cayden Barker,13,9,0,4,27,,
+2024-25,FIRST CLASS,13,Partha Rajendra-Bompally,7,7,0,0,21,,
+2024-25,FIRST CLASS,14,Ella Rainford,28,6,1,21,19,,
+2024-25,FIRST CLASS,15,Tom Wood,9,6,1,2,19,,
+2024-25,FIRST CLASS,16,Christopher Pavloski,18,6,0,12,18,,
+2024-25,FIRST CLASS,17,George Rainford,37,5,0,32,15,,
+2024-25,FIRST CLASS,18,Adam Alwindi,9,5,0,4,15,,
+2024-25,FIRST CLASS,19,Beverley Tutton,12,1,1,10,4,,
+2024-25,FIRST CLASS,20,Hannah Allen,3,1,1,1,4,,
+2024-25,FIRST CLASS,21,Mark Whiteley,2,1,0,1,3,,
+2024-25,FIRST CLASS,22,Matthew Alexis,5,1,0,4,3,,
+2024-25,FIRST CLASS,23,Henry Allen,10,1,0,9,3,,
+2024-25,FIRST CLASS,24,Katie Lamb,5,1,0,4,3,,
+2024-25,FIRST CLASS,25,Menai Whitby,13,0,1,12,1,,
+2024-25,FIRST CLASS,26,Jayne Speakman,2,0,0,2,0,,
+2024-25,FIRST CLASS,27,Sami Alwindi,2,0,0,2,0,,
+2024-25,FIRST CLASS,28,Giuseppe D'Amelio,3,0,0,3,0,,
+2023-24,CHAMPIONSHIP,1,Dave Clark,32,19,10,3,67,(taken from the club website),
+2023-24,CHAMPIONSHIP,2,Mike O'Mahony,34,19,6,9,63,(taken from the club website),
+2023-24,CHAMPIONSHIP,3,Mike Coffey,30,19,4,7,61,(taken from the club website),
+2023-24,CHAMPIONSHIP,4,Sanjoy Banerjee,32,18,2,12,56,(taken from the club website),
+2023-24,CHAMPIONSHIP,5,Titas Vdovycia,31,17,2,12,53,(taken from the club website),
+2023-24,CHAMPIONSHIP,6,Phil Owen,33,13,11,9,50,(taken from the club website),
+2023-24,CHAMPIONSHIP,7,Paul Evans,22,16,1,5,49,(taken from the club website),
+2023-24,CHAMPIONSHIP,8,Richard Kelly,34,14,6,14,48,(taken from the club website),
+2023-24,CHAMPIONSHIP,9,Rick Purcell,20,11,6,3,39,(taken from the club website),
+2023-24,CHAMPIONSHIP,10,Dave Barnes,29,11,6,12,39,(taken from the club website),
+2023-24,CHAMPIONSHIP,11,Ed Taylor,32,10,7,15,37,(taken from the club website),
+2023-24,CHAMPIONSHIP,12,Chris Latham,29,8,11,10,35,(taken from the club website),
+2023-24,CHAMPIONSHIP,13,Dilhan Manawadu,16,9,4,3,31,(taken from the club website),
+2023-24,CHAMPIONSHIP,14,Joe Butterworth,33,6,11,16,29,(taken from the club website),
+2023-24,CHAMPIONSHIP,15,Jeff Povall,30,6,10,14,28,(taken from the club website),
+2023-24,CHAMPIONSHIP,16,Adam Miller,33,9,1,23,28,(taken from the club website),
+2023-24,CHAMPIONSHIP,17,Alan Jackson,32,3,12,17,21,(taken from the club website),
+2023-24,CHAMPIONSHIP,18,Gordon Sommerville,30,0,6,24,6,(taken from the club website),
+2023-24,PREMIERSHIP,1,Mike Williams,42,34,6,2,108,,
+2023-24,PREMIERSHIP,2,Jon Booth,45,22,13,10,79,,
+2023-24,PREMIERSHIP,3,Mark Burgess,50,17,23,10,74,,
+2023-24,PREMIERSHIP,4,Paul Jesse,29,20,2,7,62,,
+2023-24,PREMIERSHIP,5,Graham Carr,28,16,9,3,57,,
+2023-24,PREMIERSHIP,6,Alan Kelly,34,13,18,3,57,,
+2023-24,PREMIERSHIP,7,Ken Jones,24,18,3,3,57,,
+2023-24,PREMIERSHIP,8,Saul Marks,42,15,11,16,56,,
+2023-24,PREMIERSHIP,9,Brian Wiggett,29,16,6,7,54,,
+2023-24,PREMIERSHIP,10,Ian Stent,38,9,22,7,49,,
+2023-24,PREMIERSHIP,11,Colin Moore-Hughes,17,15,1,1,46,,
+2023-24,PREMIERSHIP,12,Graham Heath,46,8,21,17,45,,
+2023-24,PREMIERSHIP,13,Felix Lefeuvre,34,12,9,13,45,,
+2023-24,PREMIERSHIP,14,Ron Champion,44,6,26,12,44,,
+2023-24,PREMIERSHIP,15,Trevor Shaw,30,8,12,10,36,,
+2023-24,PREMIERSHIP,16,Phil Taylor,24,8,8,8,32,,
+2023-24,PREMIERSHIP,17,Joe Ledgerton,31,7,6,18,27,,
+2023-24,PREMIERSHIP,18,Leon Wolszczak,37,5,11,21,26,,
+2023-24,PREMIERSHIP,19,Martin Hargreaves,19,5,9,5,24,,
+2023-24,PREMIERSHIP,20,Viv Oldham,19,5,7,7,22,,
+2023-24,PREMIERSHIP,21,Lee Whitford-Stark,22,4,7,11,19,,
+2023-24,PREMIERSHIP,22,Phil Green,37,3,10,24,19,,
+2023-24,PREMIERSHIP,23,Brian Kinnear,18,4,5,9,17,,
+2023-24,PREMIERSHIP,24,Martin Cockerill,32,3,7,22,16,,
+2023-24,PREMIERSHIP,25,Steve Prendergast,26,3,6,17,15,,
+2023-24,PREMIERSHIP,26,Liam Davies,9,3,0,6,9,,
+2023-24,PREMIERSHIP,27,Ashwin Khashu,15,0,8,7,8,,
+2023-24,PREMIERSHIP,28,Tyler Alldis,5,2,0,3,6,,
+2023-24,PREMIERSHIP,29,Uvindu Adimali,1,1,0,0,3,,
+2023-24,PREMIERSHIP,30,Callum Reay,1,0,0,1,0,,
+2023-24,MAJOR,1,Harry McLeod,51,36,5,10,113,,
+2023-24,MAJOR,2,Tony Leong,42,26,4,12,82,,
+2023-24,MAJOR,3,Terrence Jiang,35,20,8,7,68,,
+2023-24,MAJOR,4,Steve Simm,32,22,1,9,67,,
+2023-24,MAJOR,5,Craig Jones,38,15,13,10,58,,
+2023-24,MAJOR,6,Samuel Clark,38,18,2,18,56,,
+2023-24,MAJOR,7,Will Madeley,28,14,8,6,50,,
+2023-24,MAJOR,8,Peter Blair,20,14,0,6,42,,
+2023-24,MAJOR,9,Amanda Adimali,23,11,6,6,39,,
+2023-24,MAJOR,10,Owen Roberts,16,10,1,5,31,,
+2023-24,MAJOR,11,Seth Marks,25,9,0,16,27,,
+2023-24,MAJOR,12,Tom Wood,25,8,3,14,27,,
+2023-24,MAJOR,13,Ben Kelly,14,8,1,5,25,,
+2023-24,MAJOR,14,John Quirk,38,8,1,29,25,,
+2023-24,MAJOR,15,Lukas Tutt,16,7,1,8,22,,
+2023-24,MAJOR,16,Charlie Ren,20,7,0,13,21,,
+2023-24,MAJOR,17,Jayne Speakman,18,6,0,12,18,,
+2023-24,MAJOR,18,Theo Barnes,15,5,1,9,16,,
+2023-24,MAJOR,19,Lucas Farrell,24,5,0,19,15,,
+2023-24,MAJOR,20,Neil Maher,6,4,1,1,13,,
+2023-24,MAJOR,21,Cayden Barker,22,4,1,17,13,,
+2023-24,MAJOR,22,Luca Sorrentino-Ryan,20,3,1,16,10,,
+2023-24,MAJOR,23,Nick Ainsworth,5,2,0,3,6,,
+2023-24,MAJOR,24,Gary McDonald,3,2,0,1,6,,
+2023-24,MAJOR,25,Chris Clemenson,1,1,0,0,3,,
+2023-24,MAJOR,26,Mark Whiteley,12,1,0,11,3,,
+2023-24,MAJOR,27,Tony Ince-McWatt,1,0,0,1,0,,
+2023-24,MAJOR,28,Simon Anim-Somuah,1,0,0,1,0,,
+2023-24,MAJOR,29,David Simm,1,0,0,1,0,,
+2022-23,CHAMPIONSHIP,1,Richard Kelly,28,18,6,4,60,(taken from the club website),
+2022-23,CHAMPIONSHIP,2,Rick Purcell,26,17,4,5,55,(taken from the club website),
+2022-23,CHAMPIONSHIP,3,David Barnes,26,13,12,1,51,(taken from the club website),
+2022-23,CHAMPIONSHIP,4,Titas Vdovycia,26,12,5,9,41,(taken from the club website),
+2022-23,CHAMPIONSHIP,5,Ed Taylor,27,11,5,11,38,(taken from the club website),
+2022-23,CHAMPIONSHIP,6,Jeff Povall,25,9,10,6,37,(taken from the club website),
+2022-23,CHAMPIONSHIP,7,Mike O'Mahony,26,8,10,8,34,(taken from the club website),
+2022-23,CHAMPIONSHIP,8,Mike Coffey,17,9,3,5,30,(taken from the club website),
+2022-23,CHAMPIONSHIP,9,Alan Jackson,28,7,9,12,30,(taken from the club website),
+2022-23,CHAMPIONSHIP,10,Adam Miller,21,9,2,10,29,(taken from the club website),
+2022-23,CHAMPIONSHIP,11,Chris Latham,16,5,4,7,19,(taken from the club website),
+2022-23,CHAMPIONSHIP,12,Gordon Sommerville,22,5,3,14,18,(taken from the club website),
+2022-23,CHAMPIONSHIP,13,Tony Roberts,13,3,3,7,12,(taken from the club website),
+2022-23,CHAMPIONSHIP,14,Graham Carr,16,1,6,9,9,(taken from the club website),
+2022-23,CHAMPIONSHIP,15,Leon Wolszczak,25,2,2,21,8,(taken from the club website),
+2022-23,PREMIERSHIP,1,Joe Butterworth,30,21,8,1,71,,
+2022-23,PREMIERSHIP,2,Sanjoy Banerjee,28,18,4,6,58,,
+2022-23,PREMIERSHIP,3,Stephen Farry,31,17,7,7,58,,
+2022-23,PREMIERSHIP,4,Graham Heath,44,14,15,15,57,,
+2022-23,PREMIERSHIP,5,Saul Marks,38,15,5,18,50,,
+2022-23,PREMIERSHIP,6,Felix Lefeuvre,32,15,3,14,48,,
+2022-23,PREMIERSHIP,7,Phil Owen,18,14,4,0,46,,
+2022-23,PREMIERSHIP,8,Ian Stent,35,7,20,8,41,,
+2022-23,PREMIERSHIP,9,Alan Kelly,19,12,4,3,40,,
+2022-23,PREMIERSHIP,10,Lewis Chatten,24,10,8,6,38,,
+2022-23,PREMIERSHIP,11,Trevor Shaw,25,7,13,5,34,,
+2022-23,PREMIERSHIP,12,Philip Green,32,10,2,20,32,,
+2022-23,PREMIERSHIP,13,Ron Champion,30,7,9,14,30,,
+2022-23,PREMIERSHIP,14,Martin Cockerill,26,8,5,13,29,,
+2022-23,PREMIERSHIP,15,Vivian Oldham,25,7,8,10,29,,
+2022-23,PREMIERSHIP,16,Phil Taylor,22,8,4,10,28,,
+2022-23,PREMIERSHIP,17,Craig Jones,24,6,9,9,27,,
+2022-23,PREMIERSHIP,18,Brian Kinnear,21,7,5,9,26,,
+2022-23,PREMIERSHIP,19,Martin Hargreaves,15,7,2,6,23,,
+2022-23,PREMIERSHIP,20,Lee Whitford-Stark,10,4,2,4,14,,
+2022-23,PREMIERSHIP,21,Duncan Rennie,7,4,1,2,13,,
+2022-23,PREMIERSHIP,22,Joe Ledgerton,13,3,0,10,9,,
+2022-23,PREMIERSHIP,23,Joshua Morgan,3,2,1,0,7,,
+2022-23,PREMIERSHIP,24,Rory McConaghey,3,2,1,0,7,,
+2022-23,PREMIERSHIP,25,Ashwin Khashu,11,2,1,8,7,,
+2022-23,PREMIERSHIP,26,Jonathan Booth,3,2,0,1,6,,
+2022-23,PREMIERSHIP,27,Liam Davies,5,2,0,3,6,,
+2022-23,PREMIERSHIP,28,Brian Clarke,3,1,0,2,3,,
+2022-23,PREMIERSHIP,29,Steve Prendergast,11,1,0,10,3,,
+2022-23,PREMIERSHIP,30,Connor Washington,2,0,2,0,2,,
+2022-23,PREMIERSHIP,31,Luke Blundell,4,0,1,3,1,,
+2022-23,PREMIERSHIP,32,Malcolm Povall,3,0,0,3,0,,
+2022-23,PREMIERSHIP,33,John Quirk,4,0,0,4,0,,
+2022-23,PREMIERSHIP,34,David Williams,9,0,0,9,0,,
+2022-23,MAJOR,1,Joe Ledgerton,29,20,2,7,62,,
+2022-23,MAJOR,2,Jonathan Booth,27,19,4,4,61,,
+2022-23,MAJOR,3,Peter Blair,18,12,0,6,36,,
+2022-23,MAJOR,4,Steve Prendergast,9,7,1,1,22,,
+2022-23,MAJOR,5,Rob Bell,14,2,3,9,9,,
+2022-23,MAJOR,6,John Quirk,17,2,2,13,8,,
+2022-23,MAJOR,7,Dan Pearson,11,2,0,9,6,,
+2022-23,MAJOR,8,Connor Washington,4,1,2,1,5,,
+2022-23,MAJOR,9,Tymofiy Bykhovtsov,3,1,1,1,4,,
+2022-23,MAJOR,10,Craig Jones,8,1,1,6,4,,
+2022-23,MAJOR,11,Charlie Ren,4,1,0,3,3,,
+2022-23,MAJOR,12,Ashwin Khashu,6,1,0,5,3,,
+2022-23,MAJOR,13,Danny Devine,1,0,0,1,0,,
+2022-23,MAJOR,14,David Williams,3,0,0,3,0,,
+2021-22,CHAMPIONSHIP,1,Dave Barnes,24,15,6,3,51,(taken from the club website),
+2021-22,CHAMPIONSHIP,2,Richard Kelly,24,14,4,6,46,(taken from the club website),
+2021-22,CHAMPIONSHIP,3,Ed Taylor,22,11,10,1,43,(taken from the club website),
+2021-22,CHAMPIONSHIP,4,Alan Jackson,25,11,5,9,38,(taken from the club website),
+2021-22,CHAMPIONSHIP,5,Mike Coffey,16,11,4,1,37,(taken from the club website),
+2021-22,CHAMPIONSHIP,6,Steve Clare,22,9,4,9,31,(taken from the club website),
+2021-22,CHAMPIONSHIP,7,Jeff Povall,23,6,11,6,29,(taken from the club website),
+2021-22,CHAMPIONSHIP,8,Mike O'Mahony,23,4,14,5,26,(taken from the club website),
+2021-22,CHAMPIONSHIP,9,Graham Carr,22,4,9,9,21,(taken from the club website),
+2021-22,CHAMPIONSHIP,10,Tony Roberts,18,5,5,8,20,(taken from the club website),
+2021-22,CHAMPIONSHIP,11,Gordon Sommerville,22,4,8,10,20,(taken from the club website),
+2021-22,CHAMPIONSHIP,12,Leon Wolszczak,20,3,5,12,14,(taken from the club website),
+2021-22,CHAMPIONSHIP,13,Chris Latham,7,3,3,1,12,(taken from the club website),
+2021-22,CHAMPIONSHIP,14,Graham Heath,24,1,2,21,5,(taken from the club website),
+2021-22,PREMIERSHIP,1,Titas Vdovycia,34,28,3,3,87,,
+2021-22,PREMIERSHIP,2,Ken Jones,36,26,6,4,84,,
+2021-22,PREMIERSHIP,3,Rick Purcell,36,25,9,2,84,,
+2021-22,PREMIERSHIP,4,Stephen Farry,25,12,8,5,44,,
+2021-22,PREMIERSHIP,5,Martin Cockerill,35,13,5,17,44,,
+2021-22,PREMIERSHIP,6,Alan Kelly,30,11,9,10,42,,
+2021-22,PREMIERSHIP,7,Adam Miller,29,11,4,14,37,,
+2021-22,PREMIERSHIP,8,Ian Stent,24,8,10,6,34,,
+2021-22,PREMIERSHIP,9,Philip Green,30,10,4,16,34,,
+2021-22,PREMIERSHIP,10,Ron Champion,32,6,14,12,32,,
+2021-22,PREMIERSHIP,11,Martin Hargreaves,19,7,8,4,29,,
+2021-22,PREMIERSHIP,12,Joshua Morgan,16,7,5,4,26,,
+2021-22,PREMIERSHIP,13,Felix Lefeuvre,21,8,1,12,25,,
+2021-22,PREMIERSHIP,14,Glenn Chalk,11,6,2,3,20,,
+2021-22,PREMIERSHIP,15,Rory McConaghey,18,6,2,10,20,,
+2021-22,PREMIERSHIP,16,Phil Taylor,14,3,3,8,12,,
+2021-22,PREMIERSHIP,17,Lewis Chatten,7,3,0,4,9,,
+2021-22,PREMIERSHIP,18,Liam Davies,12,2,3,7,9,,
+2021-22,PREMIERSHIP,19,Craig Jones,16,1,3,12,6,,
+2021-22,PREMIERSHIP,20,Allan Clarke,7,1,2,4,5,,
+2021-22,PREMIERSHIP,21,Brian Kinnear,16,0,4,12,4,,
+2021-22,PREMIERSHIP,22,Duncan Rennie,2,1,0,1,3,,
+2021-22,PREMIERSHIP,23,Gary McDonald,6,1,0,5,3,,
+2021-22,PREMIERSHIP,24,Brian Clarke,2,0,1,1,1,,
+2021-22,PREMIERSHIP,25,Mike Kiernan,1,0,0,1,0,,
+2021-22,PREMIERSHIP,26,Dom McCarthy,2,0,0,2,0,,
+2021-22,PREMIERSHIP,27,David Williams,17,0,0,17,0,,
+2021-22,MAJOR,1,Saul Marks,15,9,4,2,31,,
+2021-22,MAJOR,2,Joe Ledgerton,18,5,6,7,21,,
+2021-22,MAJOR,3,Connor Washington,11,3,2,6,11,,
+2021-22,MAJOR,4,Peter Blair,6,2,2,2,8,,
+2021-22,MAJOR,5,Ashwin Khashu,6,2,2,2,8,,
+2021-22,MAJOR,6,Philip Green,4,2,1,1,7,,
+2021-22,MAJOR,7,Felix Lefeuvre,5,2,1,2,7,,
+2021-22,MAJOR,8,Phil Taylor,3,1,2,0,5,,
+2021-22,MAJOR,9,Brian Kinnear,2,1,1,0,4,,
+2021-22,MAJOR,10,Martin Cockerill,3,1,1,1,4,,
+2021-22,MAJOR,11,Adam Miller,1,1,0,0,3,,
+2021-22,MAJOR,12,Craig Jones,3,0,1,2,1,,
+2021-22,MAJOR,13,David Williams,3,0,1,2,1,,
+2021-22,MAJOR,14,Stuart Cooper,2,0,0,2,0,,
+2019-20 (aborted due to covid),CHAMPIONSHIP,1,Mike Coffey,9,6,3,0,21,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,2,Jeff Povall,15,3,10,2,19,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,3,Mike O'Mahony,10,5,3,2,18,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,4,Alan Jackson,16,3,9,4,18,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,5,Phil Brine,12,3,6,3,15,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,6,Dave Clark,7,4,2,1,14,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,7,Dave Barnes,12,3,5,4,14,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,8,Graham Carr,13,3,3,7,12,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,9,Chris Latham,9,2,6,1,12,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,10,Leon Wolszczak,12,2,6,4,12,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,11,Tony Roberts,9,2,4,3,10,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,12,Colin Rees,11,2,3,6,9,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,13,Greg Hughes,3,2,0,1,6,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,14,Vivian Oldham,8,1,3,4,6,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,15,Steve Clare,3,1,1,1,4,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),CHAMPIONSHIP,16,Colin Hughes,1,1,0,0,3,(taken from rated games listed on the ECF website),(75 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,1,Gordon Sommerville,20,12,2,6,38,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,2,Alan Kelly,17,10,7,0,37,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,3,Graham Heath,24,9,10,5,37,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,4,Ron Champion,18,9,7,2,34,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,5,John Higgins,17,9,1,7,28,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,6,Martin Hargreaves,11,6,3,2,21,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,7,Richard Kelly,8,6,1,1,19,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,8,Steve Farry,16,5,4,7,19,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,9,Brian Clarke,8,5,2,1,17,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,10,Ian Stent,11,5,2,4,17,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,11,Rick Purcell,8,5,1,2,16,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,12,Martin Cockerill,8,4,2,2,14,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,13,Allan Clarke,8,3,4,1,13,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,14,Roy Evans,12,3,2,7,11,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,15,Adam Miller,9,3,2,4,11,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,16,Colin Dougherty,6,2,4,0,10,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,17,Steve Thomas,9,2,3,4,9,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,18,David Williams,13,2,3,8,9,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,19,Dave Fidler,3,2,0,1,6,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,20,Duncan Rennie,6,1,3,2,6,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,21,Brian Wiggett,4,1,1,2,4,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,22,Greg Hughes,1,1,0,0,3,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,23,Felix Lefeuvre,7,0,2,5,2,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,24,Jim McCabe,6,0,2,4,2,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,25,Tony Roberts,2,0,2,0,2,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,26,Phil Brine,1,0,1,0,1,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,27,Phil Green,9,0,1,8,1,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,28,Chris Latham,1,0,1,0,1,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,29,Dennis Tomlinson,5,0,1,4,1,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,30,Trevor Amos,7,0,0,7,0,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,31,B Deeks,8,0,0,8,0,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),PREMIERSHIP,32,Vivian Oldham,1,0,0,1,0,,(142 rated games played 5 Sep - 12 Dec 2019)
+2019-20 (aborted due to covid),MAJOR,1,John Higgins,2,2,0,0,6,,(9 rated games played 19 Sep - 9 Dec 2019)
+2019-20 (aborted due to covid),MAJOR,2,Phil Green,4,2,0,2,6,,(9 rated games played 19 Sep - 9 Dec 2019)
+2019-20 (aborted due to covid),MAJOR,3,Trevor Amos,3,1,2,0,5,,(9 rated games played 19 Sep - 9 Dec 2019)
+2019-20 (aborted due to covid),MAJOR,4,B Deeks,3,1,0,2,3,,(9 rated games played 19 Sep - 9 Dec 2019)
+2019-20 (aborted due to covid),MAJOR,5,Felix Lefeuvre,1,1,0,0,3,,(9 rated games played 19 Sep - 9 Dec 2019)
+2019-20 (aborted due to covid),MAJOR,6,Barry O'Brien,3,0,1,2,1,,(9 rated games played 19 Sep - 9 Dec 2019)
+2019-20 (aborted due to covid),MAJOR,7,David Williams,2,0,1,1,1,,(9 rated games played 19 Sep - 9 Dec 2019)
+2018-19,CHAMPIONSHIP,1,Phil Brine,27,17,6,4,57,(taken from the club website),
+2018-19,CHAMPIONSHIP,2,Mike Coffey,20,17,2,1,53,(taken from the club website),
+2018-19,CHAMPIONSHIP,3,Alan Jackson,31,12,10,9,46,(taken from the club website),
+2018-19,CHAMPIONSHIP,4,Mike O'Mahony,28,10,14,4,44,(taken from the club website),
+2018-19,CHAMPIONSHIP,5,Leon Wolszczak,29,11,8,9,41,(taken from the club website),
+2018-19,CHAMPIONSHIP,6,Jeff Povall,27,9,13,5,40,(taken from the club website),
+2018-19,CHAMPIONSHIP,7,Greg Hughes,22,10,9,3,39,(taken from the club website),
+2018-19,CHAMPIONSHIP,8,Edward Taylor,23,7,11,5,32,(taken from the club website),
+2018-19,CHAMPIONSHIP,9,Chris Latham,18,9,5,4,32,(taken from the club website),
+2018-19,CHAMPIONSHIP,10,Tony Roberts,23,8,8,7,32,(taken from the club website),
+2018-19,CHAMPIONSHIP,11,Colin Hughes,17,9,3,5,30,(taken from the club website),
+2018-19,CHAMPIONSHIP,12,Dave Clark,12,9,2,1,29,(taken from the club website),
+2018-19,CHAMPIONSHIP,13,Colin Rees,26,4,11,11,23,(taken from the club website),
+2018-19,CHAMPIONSHIP,14,Gordon Sommerville,28,4,9,15,21,(taken from the club website),
+2018-19,CHAMPIONSHIP,15,Graham Heath,31,4,8,19,20,(taken from the club website),
+2018-19,CHAMPIONSHIP,16,Alan Kelly,31,2,9,20,15,(taken from the club website),
+2018-19,CHAMPIONSHIP,17,Ron Champion,27,1,6,20,9,(taken from the club website),
+2018-19,PREMIERSHIP,1,Graham Carr,35,23,6,6,75,,
+2018-19,PREMIERSHIP,2,Vivian Oldham,31,17,8,6,59,,
+2018-19,PREMIERSHIP,3,Steve Farry,32,17,7,8,58,,
+2018-19,PREMIERSHIP,4,Martin Cockerill,29,11,11,7,44,,
+2018-19,PREMIERSHIP,5,John Higgins,29,11,3,15,36,,
+2018-19,PREMIERSHIP,6,Duncan Rennie,18,11,3,4,36,,
+2018-19,PREMIERSHIP,7,Adam Miller,23,11,3,9,36,,
+2018-19,PREMIERSHIP,8,Felix Lefeuvre,29,10,5,14,35,,
+2018-19,PREMIERSHIP,9,Ian Stent,22,7,14,1,35,,
+2018-19,PREMIERSHIP,10,Dave Barnes,17,9,7,1,34,,
+2018-19,PREMIERSHIP,11,Martin Hargreaves,19,9,5,5,32,,
+2018-19,PREMIERSHIP,12,Roy Evans,29,8,1,20,25,,
+2018-19,PREMIERSHIP,13,Trevor Amos,19,6,1,12,19,,
+2018-19,PREMIERSHIP,14,Jim McCabe,20,5,3,12,18,,
+2018-19,PREMIERSHIP,15,David Williams,30,3,2,25,11,,
+2018-19,PREMIERSHIP,16,John Broomhall,7,3,0,4,9,,
+2018-19,PREMIERSHIP,17,Dylan Crofts,3,3,0,0,9,,
+2018-19,PREMIERSHIP,18,Dennis Tomlinson,15,3,0,12,9,,
+2018-19,PREMIERSHIP,19,Dave Fidler,5,2,1,2,7,,
+2018-19,PREMIERSHIP,20,Gary Hall,2,2,0,0,6,,
+2018-19,PREMIERSHIP,21,Rick Purcell,2,2,0,0,6,,
+2018-19,PREMIERSHIP,22,Brian Clarke,6,1,3,2,6,,
+2018-19,PREMIERSHIP,23,Lewis Chatten,6,1,1,4,4,,
+2018-19,PREMIERSHIP,24,Steve Thomas,9,1,1,7,4,,
+2018-19,PREMIERSHIP,25,Colin Dougherty,1,0,1,0,1,,
+2018-19,MAJOR,1,Dennis Tomlinson,2,2,0,0,6,,(but trophy says Felix Lefeuvre won it this year!)
+2018-19,MAJOR,2,John Higgins,3,2,0,1,6,,(but trophy says Felix Lefeuvre won it this year!)
+2018-19,MAJOR,3,Jim McCabe,1,1,0,0,3,,(but trophy says Felix Lefeuvre won it this year!)
+2018-19,MAJOR,4,David Williams,1,0,0,1,0,,(but trophy says Felix Lefeuvre won it this year!)
+2018-19,MAJOR,5,Roy Evans,1,0,0,1,0,,(but trophy says Felix Lefeuvre won it this year!)
+2018-19,MAJOR,6,Trevor Amos,2,0,0,2,0,,(but trophy says Felix Lefeuvre won it this year!)
+2017-18,CHAMPIONSHIP,1,Mike O'Mahony,23,13,10,0,49,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,2,Ed Taylor,21,8,9,4,33,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,3,Jeff Povall,20,7,9,4,30,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,4,Steve Clare,17,8,4,5,28,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,5,Mike Coffey,15,8,4,3,28,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,6,Alan Jackson,19,6,10,3,28,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,7,Chris Latham,14,7,5,2,26,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,8,Tony Roberts,18,6,5,7,23,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,9,Colin Rees,18,4,7,7,19,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,10,Leon Wolszczak,21,4,7,10,19,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,11,Greg Hughes,9,4,3,2,15,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,12,Ron Champion,22,0,8,14,8,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,13,Gary Hall,18,1,3,14,6,(taken from rated games listed on the ECF website),
+2017-18,CHAMPIONSHIP,14,Phil Owen,1,0,0,1,0,(taken from rated games listed on the ECF website),
+2017-18,PREMIERSHIP,1,Gordon Sommerville,27,17,5,5,56,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,2,Graham Heath,30,15,9,6,54,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,3,Alan Kelly,23,12,9,2,45,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,4,Ian Stent,20,11,9,0,42,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,5,Martin Cockerill,22,11,5,6,38,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,6,Graham Carr,10,6,2,2,20,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,7,Jim McCabe,19,6,2,11,20,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,8,Graham Fattorini,9,5,2,2,17,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,9,Felix Lefeuvre,20,5,2,13,17,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,10,Trevor Amos,21,4,4,13,16,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,11,Adam Miller,15,5,0,10,15,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,12,Charles Barnes,9,4,2,3,14,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,13,David Williams,18,4,2,12,14,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,14,John Higgins,18,3,4,11,13,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,15,Dave Fidler,5,2,1,2,7,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,16,Vivian Oldham,4,2,1,1,7,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,17,Dennis Tomlinson,11,1,2,8,5,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,18,Rick Purcell,3,1,0,2,3,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,19,Ron Champion,1,0,1,0,1,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,20,Gary Hall,1,0,1,0,1,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,21,Greg Hughes,1,0,1,0,1,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,22,Alan Jackson,1,0,1,0,1,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,23,Jeff Povall,1,0,1,0,1,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,24,Colin Rees,1,0,1,0,1,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,25,Duncan Rennie,4,0,1,3,1,,(but trophy says Graham Heath won it this year!)
+2017-18,PREMIERSHIP,26,Colin Dougherty,2,0,0,2,0,,(but trophy says Graham Heath won it this year!)
+2017-18,MAJOR,1,Felix Lefeuvre,10,6,1,3,19,,
+2017-18,MAJOR,2,John Higgins,11,6,1,4,19,,
+2017-18,MAJOR,3,David Williams,9,3,3,3,12,,
+2017-18,MAJOR,4,Jim McCabe,7,3,1,3,10,,
+2017-18,MAJOR,5,Trevor Amos,8,3,1,4,10,,
+2017-18,MAJOR,6,Dennis Tomlinson,3,1,2,0,5,,
+2017-18,MAJOR,7,Adam Miller,6,0,1,5,1,,
+2016-17,CHAMPIONSHIP,1,Phil Brine,26,16,4,6,52,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,2,Mike O'Mahony,28,14,8,6,50,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,3,Colin Hughes,22,15,1,6,46,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,3,Mike Coffey,21,15,1,5,46,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,5,Jeff Povall,26,10,11,5,41,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,6,Greg Hughes,26,10,10,6,40,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,7,Ed Taylor,28,9,11,8,38,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,8,Tony Roberts,26,10,3,13,33,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,8,Chris Latham,17,10,3,4,33,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,10,Phil Owen,19,8,4,7,28,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,11,Alan Jackson,26,5,10,11,25,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,12,Dave Clark,9,6,1,2,19,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,13,Leon Wolszczak,27,3,9,15,18,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,14,Graham Heath,28,2,7,19,13,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,15,Ian Stent,22,1,10,11,13,(taken from printed league table provided by Graham Heath),
+2016-17,CHAMPIONSHIP,16,Duncan Rennie,19,1,7,11,10,(taken from printed league table provided by Graham Heath),
+2016-17,PREMIERSHIP,1,Ron Champion,43,15,20,8,65,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,2,Colin Rees,30,18,5,7,59,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,3,Steve Clare,21,18,1,2,55,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,4,Vivian Oldham,21,16,2,3,50,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,5,Alan Kelly,40,12,13,15,49,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,6,Rick Purcell,17,15,0,2,45,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,7,Brian Clarke,30,12,9,9,45,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,8,John Higgins,38,12,5,21,41,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,9,Eddie Love,36,12,4,20,40,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,10,David Welch,17,12,3,2,39,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,11,Felix Lefeuvre,34,10,7,17,37,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,12,David Williams,35,10,5,20,35,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,13,Martin Cockerill,22,9,8,5,35,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,14,Trevor Amos,35,10,4,21,34,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,15,Brian Wiggett,16,10,3,3,33,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,16,Martin Hargreaves,16,8,7,1,31,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,17,Jim McCabe,20,9,3,8,30,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,18,Ewan Herd,11,7,4,0,25,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,19,John Broomhall,16,7,2,7,23,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,20,Colin Dougherty,17,4,7,6,19,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,21,Adam Harkanyi,8,5,1,2,16,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,22,Dennis Tomlinson,19,4,2,13,14,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,23,Dave Fidler,5,4,1,0,13,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,24,Charles Barnes,12,4,0,8,12,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,25,Greg Harkanyi,4,2,2,0,8,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,26,B Deeks,26,2,1,23,7,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,27,Robbie Bloomfield,8,1,1,6,4,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,28,Stuart Rimmer,18,0,1,17,1,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,29,Jose Recarde,2,0,1,1,1,(taken from rated games listed on the ECF website),
+2016-17,PREMIERSHIP,30,Raiden Asamura,1,0,0,1,0,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,1,Ed Taylor,32,13,14,5,53,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,2,Mike Coffey,22,15,4,3,49,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,3,Mike O'Mahony,26,15,4,7,49,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,4,Jeff Povall,29,11,14,4,47,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,5,Alan Jackson,29,10,10,9,40,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,6,Colin Hughes,17,11,2,4,35,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,7,Tony Roberts,28,9,7,12,34,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,8,Leon Wolszczak,27,8,8,11,32,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,9,Gary Hall,29,7,10,12,31,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,10,Greg Hughes,12,9,3,0,30,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,11,Duncan Rennie,23,6,8,9,26,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,12,Phil Owen,16,7,4,5,25,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,13,Chris Latham,19,5,9,5,24,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,14,Mark Spriggs,15,6,3,6,21,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,15,Rick Purcell,20,4,7,9,19,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,16,Colin Rees,28,3,8,17,17,(taken from rated games listed on the ECF website),
+2015-16,CHAMPIONSHIP,17,Ron Champion,28,0,7,21,7,(taken from rated games listed on the ECF website),
+2015-16,PREMIERSHIP,1,Dave Clark,27,27,0,0,81,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,2,Graham Heath,41,22,8,11,74,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,3,Vivian Oldham,28,18,6,4,60,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,4,Jim McCabe,33,14,9,10,51,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,5,John Higgins,33,15,5,13,50,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,6,Eddie Love,34,15,4,15,49,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,7,Alan Kelly,30,12,10,8,46,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,8,Brian Wiggett,18,12,3,3,39,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,9,Ian Stent,16,10,3,3,33,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,10,David Williams,33,9,6,18,33,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,11,Trevor Amos,32,8,9,15,33,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,12,Martin Cockerill,18,8,0,10,24,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,13,Felix Lefeuvre,27,6,2,19,20,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,14,John Broomhall,17,6,1,10,19,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,15,Ewan Herd,9,5,2,2,17,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,16,Steve Clare,9,5,0,4,15,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,17,David Welch,5,5,0,0,15,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,18,Raseed Saeed,14,4,1,9,13,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,19,Dennis Tomlinson,23,3,4,16,13,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,20,Barry O'Brien,4,1,2,1,5,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,21,Dave Fidler,1,1,0,0,3,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,22,Jose Recarde,1,1,0,0,3,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,23,B Deeks,22,0,3,19,3,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,24,Colin Dougherty,1,0,1,0,1,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,25,Martin Hargreaves,1,0,1,0,1,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,26,J Gilmore,1,0,0,1,0,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,27,L Pennington,1,0,0,1,0,(first year when playoffs extended to 8 players),
+2015-16,PREMIERSHIP,28,Stuart Rimmer,15,0,0,15,0,(first year when playoffs extended to 8 players),
+2014-15,CHAMPIONSHIP,1,Jeff Povall,30,12,18,0,54,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,2,Mike Coffey,20,14,4,2,46,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,3,Ed Taylor,32,12,10,10,46,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,4,Colin Hughes,23,14,1,8,43,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,5,Tony Roberts,30,11,9,10,42,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,6,Ken Jones,26,7,15,4,36,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,7,Mike O'Mahony,20,9,7,4,34,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,8,Greg Hughes,17,9,6,2,33,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,9,Phil Brine,19,10,3,6,33,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,10,Leon Wolszczak,29,6,15,8,33,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,11,Chris Latham,21,7,11,3,32,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,12,Alan Jackson,28,5,12,11,27,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,13,Duncan Rennie,30,4,13,13,25,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,14,Gary Hall,32,7,4,21,25,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,15,Mark Spriggs,17,6,5,6,23,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,16,Graham Heath,31,4,6,21,18,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,17,Vivian Oldham,20,1,9,10,12,(taken from printed league table provided by Graham Heath),
+2014-15,CHAMPIONSHIP,18,David Welch,1,1,0,0,3,(taken from printed league table provided by Graham Heath),
+2014-15,PREMIERSHIP,1,Rick Purcell,42,23,8,11,77,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,2,Jim McCabe,42,17,13,12,64,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,3,Eddie Love,42,17,6,19,57,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,4,Ron Champion,39,13,15,11,54,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,5,Colin Rees,19,16,3,0,51,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,6,John Higgins,38,13,7,18,46,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,7,Alan Kelly,35,13,6,16,45,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,8,Roger Trapnell,30,11,11,8,44,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,9,Jose Recarde,21,13,3,5,42,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,10,Martin Hargreaves,19,11,6,2,39,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,11,Raseed Saeed,21,10,3,8,33,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,12,David Williams,28,9,4,15,31,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,13,Ian Stent,18,8,7,3,31,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,14,Trevor Amos,36,9,3,24,30,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,15,Martin Cockerill,20,8,5,7,29,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,16,John Broomhall,18,8,1,9,25,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,17,Dave Clark,9,8,1,0,25,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,18,Anthony Mason,23,7,2,14,23,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,19,Colin Dougherty,14,5,5,4,20,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,20,Steve Clare,8,5,2,1,17,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,21,Dennis Tomlinson,25,3,5,17,14,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,22,Barry O'Brien,9,3,4,2,13,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,23,Dave Fidler,6,3,1,2,10,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,24,Dave Farley,2,0,2,0,2,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,25,Mike Friel,2,0,1,1,1,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,26,Felix Lefeuvre,19,0,0,19,0,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2014-15,PREMIERSHIP,27,Tom McGlynn,5,0,0,5,0,(taken from rated games listed on the ECF website),(This table not correct. Alan beat Ron in playoff final but declined to go up so Ron did)
+2013-14,CHAMPIONSHIP,1,Mike Coffey,23,18,3,2,57,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,2,Chris Latham,24,13,7,4,46,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,3,Ed Taylor,25,11,6,8,39,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,4,Jeff Povall,23,9,11,3,38,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,5,Alan Jackson,24,7,9,8,30,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,6,Leon Wolszczak,25,6,12,7,30,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,7,Tony Roberts,25,6,8,11,26,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,8,Ken Jones,19,4,11,4,23,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,9,Colin Hughes,21,5,7,9,22,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,10,Vivian Oldham,21,5,6,10,21,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,11,Phil Brine,13,5,3,5,18,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,12,Mark Spriggs,17,3,3,11,12,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,13,Frank Reynolds,11,2,6,3,12,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,CHAMPIONSHIP,14,Martin Hargreaves,19,1,8,10,11,(taken from rated games listed on the ECF website),(Greg Hughes must've taken a sabbatical in 2013-14 but should still have been in the Prem when he returned)
+2013-14,PREMIERSHIP,1,Gary Hall,39,22,6,11,72,,
+2013-14,PREMIERSHIP,2,Graham Heath,40,18,14,8,68,,
+2013-14,PREMIERSHIP,3,Ron Champion,41,15,17,9,62,,
+2013-14,PREMIERSHIP,4,Duncan Rennie,26,19,3,4,60,,
+2013-14,PREMIERSHIP,5,Colin Rees,23,15,5,3,50,,
+2013-14,PREMIERSHIP,6,Jim McCabe,31,13,9,9,48,,
+2013-14,PREMIERSHIP,7,John Higgins,30,12,5,13,41,,
+2013-14,PREMIERSHIP,8,John Broomhall,24,12,4,8,40,,
+2013-14,PREMIERSHIP,9,Roger Trapnell,33,9,12,12,39,,
+2013-14,PREMIERSHIP,10,Ian Stent,27,7,12,8,33,,
+2013-14,PREMIERSHIP,11,Martin Cockerill,21,8,8,5,32,,
+2013-14,PREMIERSHIP,12,Eddie Love,35,9,4,22,31,,
+2013-14,PREMIERSHIP,13,Steve Clare,11,9,1,1,28,,
+2013-14,PREMIERSHIP,14,Trevor Amos,37,8,2,27,26,,
+2013-14,PREMIERSHIP,15,Colin Dougherty,13,8,2,3,26,,
+2013-14,PREMIERSHIP,16,Dave Farley,13,6,6,1,24,,
+2013-14,PREMIERSHIP,17,Dave Fidler,11,7,2,2,23,,
+2013-14,PREMIERSHIP,18,David Williams,29,5,7,17,22,,
+2013-14,PREMIERSHIP,19,Tony Blades,7,2,4,1,10,,
+2013-14,PREMIERSHIP,20,Barry O'Brien,15,1,7,7,10,,
+2013-14,PREMIERSHIP,21,Steve Prendergast,6,1,2,3,5,,
+2013-14,PREMIERSHIP,22,Dennis Tomlinson,23,0,4,19,4,,
+2013-14,PREMIERSHIP,23,Lee Breadner,1,0,0,1,0,,
+2013-14,PREMIERSHIP,24,Dave O'Farrell,12,0,0,12,0,,
+2012-13,CHAMPIONSHIP,1,Mike Coffey,24,17,4,3,55,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,2,Phil Brine,28,16,7,5,55,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,3,Ed Taylor,31,14,5,12,47,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,4,Jeff Povall,22,9,12,1,39,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,5,Tony Roberts,28,10,8,10,38,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,6,Mark Spriggs,19,9,6,4,33,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,7,Colin Hughes,23,10,3,10,33,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,8,Leon Wolszczak,26,8,7,11,31,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,9,Chris Latham,20,6,9,5,27,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,10,Vivian Oldham,24,7,5,12,26,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,11,David Welch,15,6,5,4,23,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,12,Martin Hargreaves,30,3,13,14,22,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,13,Duncan Rennie,24,2,13,9,19,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,14,Greg Hughes,10,4,3,3,15,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,15,Graham Heath,27,2,9,16,15,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,16,Stuart Smiley,7,4,1,2,13,(taken from AGM minutes),
+2012-13,CHAMPIONSHIP,17,Steve Clare,12,1,4,7,7,(taken from AGM minutes),
+2012-13,PREMIERSHIP,1,Ken Jones,29,23,6,0,75,,
+2012-13,PREMIERSHIP,2,Alan Jackson,32,19,9,4,66,,
+2012-13,PREMIERSHIP,3,Colin Dougherty,28,16,10,2,58,,
+2012-13,PREMIERSHIP,4,Frank Reynolds,31,15,12,4,57,,
+2012-13,PREMIERSHIP,5,Colin Rees,21,16,3,2,51,,
+2012-13,PREMIERSHIP,6,Jim McCabe,33,13,11,9,50,,
+2012-13,PREMIERSHIP,7,John Higgins,32,13,5,14,44,,
+2012-13,PREMIERSHIP,8,Ron Champion,37,9,14,14,41,,
+2012-13,PREMIERSHIP,9,John Broomhall,30,12,4,14,40,,
+2012-13,PREMIERSHIP,10,Eddie Love,33,11,7,15,40,,
+2012-13,PREMIERSHIP,11,Roger Trapnell,33,7,14,12,35,,
+2012-13,PREMIERSHIP,12,Martin Cockerill,23,9,6,8,33,,
+2012-13,PREMIERSHIP,13,Gary Hall,19,7,6,6,27,,
+2012-13,PREMIERSHIP,14,Tony Blades,11,6,4,1,22,,
+2012-13,PREMIERSHIP,15,Dave Fidler,10,6,1,3,19,,
+2012-13,PREMIERSHIP,16,David Williams,27,5,3,19,18,,
+2012-13,PREMIERSHIP,17,Dave Farley,8,3,4,1,13,,
+2012-13,PREMIERSHIP,18,Dennis Tomlinson,24,3,3,18,12,,
+2012-13,PREMIERSHIP,19,J Burns,25,2,0,23,6,,
+2012-13,PREMIERSHIP,20,J Egan,28,1,0,27,3,,
+2011-12,CHAMPIONSHIP,1,Phil Brine,28,19,4,5,61,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,2,Mike Coffey,25,16,5,4,53,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,3,Leon Wolszczak,26,8,14,4,38,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,4,Tony Roberts,26,11,5,10,38,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,5,Jeff Povall,24,9,11,4,38,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,6,Steve Clare,18,9,3,6,30,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,7,Ed Taylor,22,7,7,8,28,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,8,Mark Spriggs,20,8,4,8,28,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,9,Martin Hargreaves,26,6,8,12,26,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,10,Vivian Oldham,17,6,7,4,25,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,11,David Welch,21,6,7,8,25,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,12,Alan Jackson,27,5,8,14,23,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,13,Colin Hughes,23,6,5,12,23,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,14,Colin Rees,21,6,3,12,21,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,15,Frank Reynolds,27,4,9,14,21,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,CHAMPIONSHIP,16,Ken Jones,5,1,2,2,5,(taken from AGM minutes),(why did Alan go down? Did he & Colin play off & he lost?)
+2011-12,PREMIERSHIP,1,Chris Latham,32,24,6,2,78,,
+2011-12,PREMIERSHIP,2,Graham Heath,35,20,8,7,68,,
+2011-12,PREMIERSHIP,3,Jim McCabe,34,14,6,14,48,,
+2011-12,PREMIERSHIP,4,Duncan Rennie,25,14,6,5,48,,
+2011-12,PREMIERSHIP,5,Eddie Love,40,13,8,19,47,,
+2011-12,PREMIERSHIP,6,Dave Farley,21,12,9,0,45,,
+2011-12,PREMIERSHIP,7,Roger Trapnell,31,12,8,11,44,,
+2011-12,PREMIERSHIP,8,Gary Hall,27,13,4,10,43,,
+2011-12,PREMIERSHIP,9,Ron Champion,36,8,15,13,39,,
+2011-12,PREMIERSHIP,10,Colin Dougherty,23,9,10,4,37,,
+2011-12,PREMIERSHIP,11,David Williams,28,11,3,14,36,,
+2011-12,PREMIERSHIP,12,Dave Fidler,13,8,2,3,26,,
+2011-12,PREMIERSHIP,13,John Higgins,26,6,4,16,22,,
+2011-12,PREMIERSHIP,14,Martin Cockerill,15,7,1,7,22,,
+2011-12,PREMIERSHIP,15,Will Mansell,8,6,2,0,20,,
+2011-12,PREMIERSHIP,16,John Broomhall,21,5,2,14,17,,
+2011-12,PREMIERSHIP,17,Chris Nguyen,10,3,4,3,13,,
+2011-12,PREMIERSHIP,18,S Florkiewicz,11,4,0,7,12,,
+2011-12,PREMIERSHIP,19,Dennis Tomlinson,23,2,1,20,7,,
+2011-12,PREMIERSHIP,20,Robert Hunschok,9,2,0,7,6,,
+2011-12,PREMIERSHIP,21,Wilf Hurst,9,1,1,7,4,,
+2011-12,PREMIERSHIP,22,A Woods,10,0,0,10,0,,
+2010-11,CHAMPIONSHIP,1,Mike Coffey,19,17,1,1,52,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,2,Jeff Povall,17,8,5,4,29,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,3,David Welch,11,8,2,1,26,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,4,Steve Clare,20,7,3,10,24,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,5,Alan Jackson,18,6,6,6,24,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,6,Ed Taylor,16,6,6,4,24,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,7,Leon Wolszczak,22,4,9,9,21,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,8,Vivian Oldham,21,6,2,13,20,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,9,Colin Rees,20,5,4,11,19,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,10,Mark Spriggs,14,5,4,5,19,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,11,Mike O'Mahony,10,5,3,2,18,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,12,Frank Reynolds,18,2,8,8,14,(taken from AGM minutes),
+2010-11,CHAMPIONSHIP,13,John Manson,12,3,3,6,12,(taken from AGM minutes),
+2010-11,PREMIERSHIP,1,Tony Roberts,26,19,3,4,60,,
+2010-11,PREMIERSHIP,2,Colin Hughes,25,18,2,5,56,,
+2010-11,PREMIERSHIP,3,Ken Jones,25,17,3,5,54,,
+2010-11,PREMIERSHIP,4,Graham Heath,32,13,5,14,44,,
+2010-11,PREMIERSHIP,5,Ron Champion,33,12,8,13,44,,
+2010-11,PREMIERSHIP,6,Eddie Love,30,13,3,14,42,,
+2010-11,PREMIERSHIP,7,Jim McCabe,29,12,5,12,41,,
+2010-11,PREMIERSHIP,8,Duncan Rennie,19,10,8,1,38,,
+2010-11,PREMIERSHIP,9,John Broomhall,20,9,0,11,27,,
+2010-11,PREMIERSHIP,10,Will Mansell,15,8,1,6,25,,
+2010-11,PREMIERSHIP,11,Roger Trapnell,23,6,7,10,25,,
+2010-11,PREMIERSHIP,12,Dave Fidler,13,6,1,6,19,,
+2010-11,PREMIERSHIP,13,Chris Latham,5,4,1,0,13,,
+2010-11,PREMIERSHIP,14,John Higgins,20,4,1,15,13,,
+2010-11,PREMIERSHIP,15,David Williams,23,3,3,17,12,,
+2010-11,PREMIERSHIP,16,Martin Cockerill,8,3,1,4,10,,
+2010-11,PREMIERSHIP,17,Dave Farley,3,2,1,0,7,,
+2010-11,PREMIERSHIP,18,Ian Stent,6,1,3,2,6,,
+2010-11,PREMIERSHIP,19,Wilf Hurst,4,0,0,4,0,,
+2010-11,PREMIERSHIP,20,Roger Henry,15,0,0,15,0,,
+2009-10,CHAMPIONSHIP,1,Mike Coffey,27,19,6,2,63,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,2,Ed Taylor,30,13,10,7,49,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,3,Leon Wolszczak,29,13,8,8,47,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,4,Jeff Povall,24,12,8,4,44,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,5,Simon Baldwin,26,10,7,9,37,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,5,Phil Brine,25,10,7,8,37,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,7,Frank Reynolds,28,7,15,6,36,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,7,David Welch,21,11,3,7,36,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,9,Mike O'Mahony,23,8,9,6,33,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,10,Martin Hargreaves,27,6,13,8,31,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,10,Alan Jackson,25,8,7,10,31,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,12,Steve Clare,18,9,0,9,27,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,13,John Manson,26,6,7,13,25,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,14,Duncan Rennie,28,3,11,14,20,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,15,John Morgan,15,4,2,9,14,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,CHAMPIONSHIP,16,Graham Heath,30,2,7,21,13,(taken from AGM minutes),Mike Coffey's 9th win (club record)
+2009-10,PREMIERSHIP,1,Vivian Oldham,21,16,2,3,50,,
+2009-10,PREMIERSHIP,1,Colin Rees,23,16,2,5,50,,
+2009-10,PREMIERSHIP,3,Eddie Love,36,15,3,18,48,,
+2009-10,PREMIERSHIP,4,Mark Spriggs,18,15,1,2,46,,
+2009-10,PREMIERSHIP,5,Jim McCabe,33,13,5,15,44,,
+2009-10,PREMIERSHIP,6,Tony Roberts,18,13,2,3,41,,
+2009-10,PREMIERSHIP,7,James Fidal,16,9,3,4,30,,
+2009-10,PREMIERSHIP,8,John Higgins,23,8,4,11,28,,
+2009-10,PREMIERSHIP,9,Roger Trapnell,23,7,6,10,27,,
+2009-10,PREMIERSHIP,10,Chris Latham,8,8,0,0,24,,
+2009-10,PREMIERSHIP,11,Ron Champion,22,5,8,9,23,,
+2009-10,PREMIERSHIP,12,Dave Fidler,9,7,1,1,22,,
+2009-10,PREMIERSHIP,13,Martin Cockerill,14,6,3,5,21,,
+2009-10,PREMIERSHIP,14,David Williams,21,5,3,13,18,,
+2009-10,PREMIERSHIP,15,David Wells,10,4,0,6,12,,
+2009-10,PREMIERSHIP,16,John Broomhall,13,4,0,9,12,,
+2009-10,PREMIERSHIP,17,Samuel Jackson,8,3,0,5,9,,
+2009-10,PREMIERSHIP,18,Wilf Hurst,15,1,2,12,5,,
+2009-10,PREMIERSHIP,19,Dave Farley,1,1,0,0,3,,
+2009-10,PREMIERSHIP,20,C Hurley (J),1,0,1,0,1,,
+2009-10,PREMIERSHIP,21,J Webster (J),2,0,0,2,0,,
+2009-10,PREMIERSHIP,22,Hiren Taylor,6,0,0,6,0,,
+2009-10,PREMIERSHIP,23,Bennett Appleyard,14,0,0,14,0,,
+2008-09,CHAMPIONSHIP,1,David Welch,28,19,7,2,64,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,2,Jeff Povall,27,16,7,4,55,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,3,Ed Taylor,31,17,2,12,53,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,4,Mike Coffey,29,16,3,10,51,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,5,Leon Wolszczak,26,14,4,8,46,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,6,Frank Reynolds,30,9,13,8,40,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,7,Alan Jackson,26,9,8,9,35,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,8,Graham Heath,28,7,8,13,29,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,9,Phil Brine,14,8,3,3,27,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,10,Martin Hargreaves,23,6,7,10,25,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,11,Duncan Rennie,22,4,9,9,21,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,12,Simon Baldwin,23,4,6,13,18,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,13,Dave Farley,13,4,5,4,17,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,14,Edward H Taylor,6,4,2,0,14,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,15,Tony Blades,15,2,8,5,14,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,16,Mark Spriggs,18,3,5,10,14,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,17,Chris Latham,6,2,2,2,8,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,18,John Higgins,22,1,3,18,6,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,19,Steven Carr,1,1,0,0,3,(taken from AGM minutes),
+2008-09,CHAMPIONSHIP,20,Tony Abel,2,0,0,2,0,(taken from AGM minutes),
+2008-09,PREMIERSHIP,1,John Manson,28,18,7,3,61,,
+2008-09,PREMIERSHIP,2,Steve Clare,21,14,1,6,43,,
+2008-09,PREMIERSHIP,3,Colin Rees,21,13,4,4,43,,
+2008-09,PREMIERSHIP,4,Jim McCabe,24,14,1,9,43,,
+2008-09,PREMIERSHIP,5,John Morgan,16,8,6,2,30,,
+2008-09,PREMIERSHIP,6,Eddie Love,28,9,3,16,30,,
+2008-09,PREMIERSHIP,7,Roger Trapnell,24,6,9,9,27,,
+2008-09,PREMIERSHIP,8,Dave Fidler,13,7,0,6,21,,
+2008-09,PREMIERSHIP,9,Dudley Cook,13,6,1,6,19,,
+2008-09,PREMIERSHIP,10,James Fidal,16,5,3,8,18,,
+2008-09,PREMIERSHIP,11,Mihai-Tiberiu Dima,10,4,0,6,12,,
+2008-09,PREMIERSHIP,12,Samuel Jackson,11,3,3,5,12,,
+2008-09,PREMIERSHIP,13,David Williams,16,2,4,10,10,,
+2008-09,PREMIERSHIP,14,Martin Cockerill,7,2,0,5,6,,
+2008-09,PREMIERSHIP,15,Wilf Hurst,14,2,2,10,8,,
+2008-09,PREMIERSHIP,16,Bennett Appleyard,8,0,0,8,0,,
+2007-08,CHAMPIONSHIP,1,Edward H Taylor,25,18,4,3,58,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,2,Ed Taylor,26,13,5,8,44,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,3,Jeff Povall,22,12,8,2,44,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,4,Leon Wolszczak,23,8,13,2,37,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,5,Mike Coffey,20,8,7,5,31,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,6,Mark Spriggs,20,7,9,4,30,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,7,Martin Hargreaves,25,7,7,11,28,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,8,Graham Heath,25,6,7,12,25,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,8,Duncan Rennie,24,5,10,9,25,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,10,Alan Jackson,18,5,8,5,23,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,11,Chris Latham,11,5,3,3,18,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,12,Mike O'Mahony,6,5,1,0,16,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,13,Wilf Hurst,20,2,6,12,12,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,14,Dudley Cook,15,2,3,10,9,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,15,John Morgan,11,1,0,10,3,(taken from AGM minutes),
+2007-08,CHAMPIONSHIP,16,Russell Fewtrell,2,0,1,1,1,(taken from AGM minutes),
+2007-08,PREMIERSHIP,1,Simon Baldwin,21,17,1,3,52,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,2,John Higgins,27,16,1,10,49,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,3,Tony Abel,15,10,2,3,32,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,4,James Fidal,21,7,8,6,29,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,5,Martin Cockerill,15,8,3,4,27,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,6,Roger Trapnell,18,4,9,5,21,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,7,John Manson,14,6,2,6,20,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,8,Samuel Jackson,10,4,1,5,13,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,8,Dave Fidler,12,4,1,7,13,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,10,David Williams,13,2,2,9,8,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,10,Bennett Appleyard,9,2,2,5,8,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,12,Christopher Unwin,2,0,1,1,1,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,13,Derek Deakin,2,0,0,2,0,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,13,Liam Howse,5,0,0,5,0,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,13,P McMahon,1,0,0,1,0,,(AGM mins note that Colin Rees omitted from table)
+2007-08,PREMIERSHIP,13,Michael Southern,1,0,0,1,0,,(AGM mins note that Colin Rees omitted from table)
+2006-07,CHAMPIONSHIP,1,Jeff Povall,23,13,9,1,48,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,2,Edward H Taylor,18,13,3,2,42,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,2,Ed Taylor,26,12,6,8,42,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,4,Phil Brine,19,12,2,5,38,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,5,Chris Latham,18,9,7,2,34,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,6,Mark Spriggs,21,8,7,6,31,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,7,Leon Wolszczak,22,5,12,5,27,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,8,Duncan Rennie,23,5,11,7,26,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,9,John Morgan,24,4,8,12,20,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,10,Martin Hargreaves,24,5,4,15,19,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,11,Dave Farley,18,2,10,6,16,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,11,Alan Jackson,21,2,10,9,16,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,13,Graham Heath,25,1,9,15,12,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,14,Mike O'Mahony,7,2,3,2,9,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,15,Dave Clark,6,2,2,2,8,(taken from club newsletter),
+2006-07,CHAMPIONSHIP,16,Gary Gray,2,2,0,0,6,(taken from club newsletter),
+2006-07,PREMIERSHIP,1,Russell Fewtrell,30,22,4,4,70,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,2,Dudley Cook,24,17,2,5,53,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,3,James Fidal,23,14,4,5,46,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,4,Dave Fidler,15,12,0,3,36,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,5,Roger Trapnell,21,9,7,5,34,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,6,Wilf Hurst,22,8,3,11,27,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,7,David Williams,17,6,4,7,22,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,8,Jack Davies,8,7,0,1,21,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,8,Gabriel Hobro,19,7,0,12,21,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,10,John Higgins,20,5,5,10,20,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,11,Robbie Carew,16,5,3,8,18,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,12,Bennett Appleyard,19,4,3,12,15,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,13,Colin Rees,6,4,1,1,13,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,14,Samuel Jackson,13,3,1,9,10,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,15,K Warrington,6,3,0,3,9,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,15,A Carter,15,3,0,12,9,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,17,A Oates,7,2,1,4,7,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,18,Martin Cockerill,8,2,0,6,6,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,19,John Smith,2,1,0,1,3,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,19,Andrew Hoyland,9,1,0,8,3,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,21,S Packan,2,0,1,1,1,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,22,J Casey,1,0,0,1,0,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,22,S Craig,9,0,0,9,0,,(also listed on ECF website:)
+2006-07,PREMIERSHIP,,Nigel Hobro,25,20,2,3,62,,(also listed on ECF website:)
+2005-06,CHAMPIONSHIP,1,Ed Taylor,32,17,9,6,60,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,2,Jeff Povall,29,16,10,3,58,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,3,Leon Wolszczak,26,12,10,4,46,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,4,Gary Gray,19,14,3,2,45,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,5,Alan Jackson,19,9,4,6,31,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,6,Mark Spriggs,22,7,8,7,29,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,7,Chris Latham,15,7,5,3,26,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,7,Duncan Rennie,24,5,11,8,26,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,9,Vivian Oldham,15,7,4,4,25,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,10,Ken Jones,21,5,9,7,24,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,11,Mike Wentworth,26,4,11,11,23,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,12,Dave Clark,11,5,6,0,21,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,12,Graham Heath,31,4,9,18,21,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,14,Martin Hargreaves,27,2,11,14,17,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,15,Graham Fattorini,20,4,4,12,16,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,16,Bob Corkhill,5,2,1,2,7,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,CHAMPIONSHIP,17,Dave Fidler,18,2,1,15,7,(taken from AGM minutes & a separate sheet of paper),(Dave & Graham played off for relegation & Dave won but both stayed up!)
+2005-06,PREMIERSHIP,1,Nigel Hobro,32,23,3,6,72,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,2,John Morgan,28,20,3,5,63,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,3,Phil Brine,25,18,2,5,56,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,4,Wilf Hurst,27,13,3,11,42,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,5,Roger Trapnell,23,11,5,7,38,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,6,James Fidal,18,11,1,6,34,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,7,Dave Farley,10,9,1,0,28,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,8,Dudley Cook,19,8,2,9,26,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,9,Benjamin McWilliams,12,8,0,4,24,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,9,James Casey,21,7,3,11,24,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,9,David Williams,19,7,3,9,24,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,12,Joseph McCrave,9,3,1,5,10,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,12,Andrew Hoyland,6,3,1,2,10,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,14,Robbie Carew,14,3,0,11,9,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,14,Gabriel Hobro,26,3,0,23,9,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,16,Keith Small,8,2,2,4,8,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,17,Stefan McLoughlin,3,2,1,0,7,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,18,Andrew Farley,2,2,0,0,6,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,18,Gerry Williams,3,2,0,1,6,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,18,M Kenny,8,2,0,6,6,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,20,Martin Cockerill,7,1,1,5,4,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,20,Matthew Westby,5,1,1,3,4,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,22,L McNeill,5,1,0,4,3,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,22,Peter Tulbore,1,1,0,0,3,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,22,Andrew Jones,4,1,0,3,3,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,22,James Hargreaves,1,1,0,0,3,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,22,Derek Deakin,6,1,0,5,3,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,27,Anthony McGrave,7,0,2,5,2,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,28,Chris Nguyen,2,0,1,1,1,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,29,Shaun Wilbraham,2,0,0,2,0,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,29,John Dodd,2,0,0,2,0,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,29,Ron Platt,5,0,0,5,0,,(why didn't Nigel go up? He definitely won it!)
+2005-06,PREMIERSHIP,29,Matthew Battersby,2,0,0,2,0,,(why didn't Nigel go up? He definitely won it!)
+2004-05,CHAMPIONSHIP,1,Dave Clark,21,14,7,0,49,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,2,Ed Taylor,26,12,4,10,40,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,3,Leon Wolszczak,22,10,8,4,38,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,4,Jeff Povall,24,9,10,5,37,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,5,Chris Latham,24,8,10,6,34,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,6,Alan Jackson,23,8,7,8,31,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,7,Duncan Rennie,26,7,7,12,28,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,8,Mike Wentworth,21,6,9,6,27,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,9,Mark Spriggs,20,5,10,5,25,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,10,Martin Hargreaves,25,3,14,8,23,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,11,Bob Corkhill,15,5,7,3,22,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,12,Graham Heath,26,5,6,15,21,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,13,Dave Farley,17,4,7,6,19,(taken from club newsletter),
+2004-05,CHAMPIONSHIP,14,John Morgan,16,1,4,11,7,(taken from club newsletter),
+2004-05,PREMIERSHIP,1,Ken Jones,28,23,3,2,72,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,2,Graham Fattorini,18,12,3,3,39,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,3,Wilf Hurst,27,9,9,9,36,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,4,Dave Fidler,16,11,2,3,35,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,4,John Higgins,23,11,2,10,35,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,6,David Williams,22,10,2,10,32,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,6,Roger Trapnell,24,9,5,10,32,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,8,John Dodd,16,8,3,5,27,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,9,Dudley Cook,19,6,5,8,23,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,10,Martin Cockerill,14,4,3,7,15,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,11,James Fidal,10,4,1,5,13,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,12,Keith Small,8,3,3,2,12,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,12,Andrew Jacks,12,4,0,8,12,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,14,Andrew Jones,10,3,1,6,10,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,15,Thomas Copestake,3,1,0,2,3,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,15,Derek Deakin,5,1,0,4,3,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,15,Gerry Williams,5,1,0,4,3,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,18,A Bridson,2,0,0,2,0,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,18,Samuel Jackson,2,0,0,2,0,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,18,Andrew Hoyland,4,0,0,4,0,,(also listed on ECF website:)
+2004-05,PREMIERSHIP,,Peter Tulbore,18,1,0,17,3,,(also listed on ECF website:)
+2003-04,CHAMPIONSHIP,1,Dave Clark,21,15,5,1,50,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,2,Jeff Povall,26,12,10,4,46,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,3,Ed Taylor,26,11,8,7,41,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,4,Leon Wolszczak,25,10,9,6,39,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,5,Robert Corkhill,16,8,6,2,30,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,6,Alan Jackson,21,9,3,9,30,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,7,Mark Spriggs,19,8,5,6,29,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,8,John Morgan,22,7,5,10,26,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,9,Dave Farley,22,5,10,7,25,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,10,Mike Wentworth,23,4,10,9,22,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,11,Martin Hargreaves,24,4,9,11,21,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,12,Duncan Rennie,24,3,10,11,19,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,13,Colin Dougherty,20,1,9,10,12,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,CHAMPIONSHIP,14,Chris Latham,11,3,1,7,10,(taken from AGM minutes apart from Prem),(Colin Dougherty must have left for a bit after this season) | (Chris kicked off about being relegated due to lack of getting games in & they kept him up to stop him leaving!)
+2003-04,PREMIERSHIP,1,Vivian Oldham,33,27,0,6,81,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,2,Graham Heath,32,18,6,8,60,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,3,Ciaran Gallagher,22,18,2,2,56,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,4,David Williams,28,18,1,9,55,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,5,Steve Mercer,19,16,1,2,49,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,6,Matthew Battersby,19,14,2,3,44,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,7,Roger Trapnell,20,12,7,1,43,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,8,Stefan McLoughlin,18,12,4,2,40,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,9,Graham Fattorini,22,10,2,10,32,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,10,Martin Cockerill,18,10,2,6,32,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,11,Andrew Jones,18,9,0,9,27,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,12,John Higgins,32,8,2,22,26,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,13,Wilf Hurst,36,8,2,26,26,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,14,Dudley Cook,28,6,6,16,24,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,15,Gerry Williams,20,6,4,10,22,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,16,John Dodd,23,6,0,17,18,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,17,James Fidal,6,4,0,2,12,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,19,Max Norman,10,1,2,7,5,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,PREMIERSHIP,20,Zbigniew Konieczny,8,1,1,6,4,(taken from rated games listed on the ECF website),(Vivian must have had a sabbatical in 2004-05) | (why's 18th place missing?!) | (see below for alternative table!!)
+2003-04,MAJOR,1,David Williams,16,10,1,5,31,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,2,Roger Trapnell,11,7,4,0,25,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,3,Steve Mercer,9,8,0,1,24,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,4,Matthew Battersby,10,7,1,2,22,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,5,Martin Cockerill,9,5,1,3,16,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,6,Andrew Jones,8,4,0,4,12,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,7,Peter Tulbore,13,3,0,10,9,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,8,James Fidal,4,2,0,2,6,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,9,Derek Deakin,9,1,0,8,3,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,10,Tom Battersby,1,0,0,1,0,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,11,Dave Battersby,2,0,0,2,0,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,MAJOR,12,Max Norman,2,0,0,2,0,,"(presumably so few of these 12 were going to return in Sep 2004 that they merged this division with the Prem, hence no third division for a while)"
+2003-04,PREMIERSHIP (alternative 2),1,Vivian Oldham,17,14,0,3,42,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),2,Graham Heath,16,9,3,4,30,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),3,Ciaran Gallagher,11,9,1,1,28,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),4,Stef McLoughlin,9,6,2,1,20,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),5,Graham Fattorini,11,5,1,5,16,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),6,Wilf Hurst,18,4,1,13,13,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),6,John Higgins,16,4,1,11,13,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),8,Dudley Cook,14,3,3,8,12,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),9,Gerry Williams,10,3,2,5,11,(taken from sheet),
+2003-04,PREMIERSHIP (alternative 2),10,John Dodd,11,3,0,8,9,(taken from sheet),
+2002-03,CHAMPIONSHIP,1,Dave Clark,22,15,5,2,50,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,2,Mike Coffey,24,16,1,7,49,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,3,Mark Hawkins,20,15,2,3,47,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,4,Ed Taylor,26,12,6,8,42,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,5,Bob Corkhill,12,6,3,3,21,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,5,Leon Wolszczak,20,4,9,7,21,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,7,Chris Latham,14,5,3,6,18,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,7,Duncan Rennie,19,4,6,9,18,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,9,Alan Jackson,15,4,4,7,16,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,10,Mark Spriggs,19,3,4,12,13,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,10,Mike Wentworth,20,2,7,11,13,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,12,John Battersby,6,2,2,2,8,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,12,Phil Brine,12,2,2,8,8,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,14,Leonard Block,6,1,2,3,5,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,CHAMPIONSHIP,14,Simon Willett,7,1,2,4,5,(taken from club newsletter),(Mike Coffey must've had some seasons off after this)
+2002-03,PREMIERSHIP,1,Colin Dougherty,33,17,13,3,64,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,2,Martin Hargreaves,32,17,10,5,61,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,3,Ciaran Gallagher,27,19,4,4,61,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,4,Tony Abel,28,11,6,11,39,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,5,Graham Heath,29,10,8,11,38,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,6,John Morgan,25,11,4,10,37,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,7,Stefan McLoughlin,15,8,4,3,28,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,8,Graham Fattorini,20,7,6,7,27,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,8,Wilf Hurst,20,7,6,7,27,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,10,John Higgins,28,7,3,18,24,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,11,Vivian Oldham,15,4,6,5,18,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,11,Dudley Cook,18,5,3,10,18,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,13,Nigel Hobro,11,5,1,5,16,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,13,Gerry Williams,16,5,1,10,16,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,15,Zbigniew Konieczny,22,4,3,15,15,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,16,James Battisti,9,3,2,4,11,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,17,Roger Trapnell,15,0,3,12,3,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,,Harrison Stewart,,,,,,,(also listed on ECF website:)
+2002-03,PREMIERSHIP,,M Stephenson,,,,,,,(also listed on ECF website:)
+2002-03,MAJOR,1,John Dodd,31,22,2,7,68,,
+2002-03,MAJOR,2,James Hargreaves,21,18,0,3,54,,
+2002-03,MAJOR,3,Martin Cockerill,14,11,2,1,35,,
+2002-03,MAJOR,4,David Williams,13,7,2,4,23,,
+2002-03,MAJOR,5,Peter Buckley,8,6,2,0,20,,
+2002-03,MAJOR,6,Michael Igoe,21,6,1,14,19,,
+2002-03,MAJOR,7,Matthew Battersby,7,4,1,2,13,,
+2002-03,MAJOR,7,Steve Mercer,7,4,1,2,13,,
+2002-03,MAJOR,9,Edward Dhenin,6,4,0,2,12,,
+2002-03,MAJOR,10,Andrew Jones,14,3,0,11,9,,
+2002-03,MAJOR,11,David Battersby,7,2,0,5,6,,
+2002-03,MAJOR,11,Adam Wilson,7,2,0,5,6,,
+2002-03,MAJOR,13,Andrew Crockford,1,1,0,0,3,,
+2002-03,MAJOR,13,P Collins,6,1,0,5,3,,
+2002-03,MAJOR,13,Kieron Fattorini,12,1,0,11,3,,
+2002-03,MAJOR,16,Derek Deakin,9,0,1,8,1,,
+2002-03,MAJOR,17,Tom Battersby,6,0,0,6,0,,
+2001-02,CHAMPIONSHIP,1,Andrew Farley,26,22,2,2,68,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,2,Mike Coffey,27,20,6,1,66,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,3,Mike Wentworth,27,8,9,10,33,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,4,Gary Gray,14,10,2,2,32,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,5,Bob Corkhill,18,8,6,4,30,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,5,Ed Taylor,30,7,9,14,30,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,7,Duncan Rennie,30,5,14,11,29,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,8,Dave Clark,17,7,7,3,28,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,8,Leon Wolszczak,24,7,7,10,28,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,8,Dave Farley,25,5,13,7,28,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,11,Alan Jackson,25,6,9,10,27,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,12,Ken Jones,26,4,13,9,25,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,12,Mark Spriggs,27,6,7,14,25,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,14,Phil Brine,16,7,3,6,24,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,15,Martin Hargreaves,26,2,11,13,17,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,CHAMPIONSHIP,16,Colin Dougherty,20,2,7,11,13,(taken from club newsletter) (1st season with 3 for a win),"Phil avoided relegation because both Farleys were taking ""unavoidable sabbaticals"" next season Martin had had 7 seasons in the Championship (June 2002 newsletter)"
+2001-02,PREMIERSHIP,1,Leonard Block,21,15,2,4,47,,
+2001-02,PREMIERSHIP,2,Chris Latham,19,15,1,3,46,,
+2001-02,PREMIERSHIP,3,Vivian Oldham,16,11,0,5,33,,
+2001-02,PREMIERSHIP,4,Graham Heath,20,9,4,7,31,,
+2001-02,PREMIERSHIP,5,John Battersby,13,8,2,3,26,,
+2001-02,PREMIERSHIP,6,Dudley Cook,12,7,1,4,22,,
+2001-02,PREMIERSHIP,7,Stef McLoughlin,13,6,3,4,21,,
+2001-02,PREMIERSHIP,8,Andrew Platt,11,6,2,3,20,,
+2001-02,PREMIERSHIP,9,John Morgan,14,6,0,8,18,,
+2001-02,PREMIERSHIP,10,Wilf Hurst,21,5,1,15,16,,
+2001-02,PREMIERSHIP,11,Graham Fattorini,21,4,3,14,15,,
+2001-02,PREMIERSHIP,12,Ciaran Gallagher,12,3,1,8,10,,
+2001-02,PREMIERSHIP,13,Zbigniew Konieczny,23,2,2,19,8,,
+2001-02,PREMIERSHIP,14,Gary Hall,4,2,0,2,6,,
+2001-02,MAJOR,1,Roger Trapnell,30,19,8,3,65,,
+2001-02,MAJOR,2,John Higgins,33,18,1,14,55,,
+2001-02,MAJOR,3,James Battisti,13,12,0,1,36,,
+2001-02,MAJOR,4,Andrew Crockford,21,9,2,10,29,,
+2001-02,MAJOR,5,Peter Buckley,11,8,2,1,26,,
+2001-02,MAJOR,6,Gerry Williams,15,7,3,5,24,,
+2001-02,MAJOR,7,David Williams,15,5,7,3,22,,
+2001-02,MAJOR,7,John Dodd,16,6,4,6,22,,
+2001-02,MAJOR,9,Ed Dhenin,13,6,2,5,20,,
+2001-02,MAJOR,9,Michael Igoe,24,6,2,16,20,,
+2001-02,MAJOR,11,Matthew Battersby,10,5,3,2,18,,
+2001-02,MAJOR,12,Ron Platt,15,4,4,7,16,,
+2001-02,MAJOR,13,Tom Battersby,10,5,0,5,15,,
+2001-02,MAJOR,14,Harrison Stewart,7,3,1,3,10,,
+2001-02,MAJOR,14,James Hargreaves,8,3,1,4,10,,
+2001-02,MAJOR,16,Derek Deakin,16,3,0,13,9,,
+2001-02,MAJOR,17,Ziye Liu,7,2,1,4,7,,
+2001-02,MAJOR,17,Kieron Fattorini,10,2,1,7,7,,
+2001-02,MAJOR,19,Luke Mair,6,1,2,3,5,,
+2001-02,MAJOR,20,David Battersby,3,1,0,2,3,,
+2001-02,MAJOR,20,Martin Cockerill,3,1,0,2,3,,
+2001-02,MAJOR,20,Stuart Smiley,3,1,0,2,3,,
+2001-02,FIRST CLASS,1,Andrew Crockford,19,11,0,8,33,,
+2001-02,FIRST CLASS,2,Kieron Fattorini,14,5,0,9,15,,
+2001-02,FIRST CLASS,3,Tom Battersby,5,4,0,1,12,,
+2001-02,FIRST CLASS,3,James Hargreaves,6,4,0,2,12,,
+2001-02,FIRST CLASS,3,Andrew Jones,9,4,0,5,12,,
+2001-02,FIRST CLASS,6,David Battersby,5,3,0,2,9,,
+2001-02,FIRST CLASS,7,Philip Hearn,4,0,0,4,0,,
+2000-01,CHAMPIONSHIP,1,Mark Hawkins,15,12,3,0,13.5,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,2,Mike Coffey,16,11,2,3,12,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,3,Ed Taylor,24,6,8,10,10,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,4,Dave Farley,19,4,10,5,9,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,4,Mark Spriggs,21,5,8,8,9,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,4,Martin Hargreaves,23,5,8,10,9,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,7,Leon Wolszczak,21,4,9,8,8.5,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,8,Ken Jones,14,4,7,3,7.5,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,9,Alan Jackson,17,3,8,6,7,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,10,Andrew Farley,6,5,1,0,5.5,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,10,Bob Borkhill,11,3,5,3,5.5,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,12,Colin Dougherty,16,2,5,9,4.5,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,13,Dave Bull,2,2,0,0,2,(taken from club newsletter),
+2000-01,CHAMPIONSHIP,13,Vivian Oldham,5,1,2,2,2,(taken from club newsletter),
+2000-01,PREMIERSHIP,1,Dave Clark,32,26,6,0,29,,
+2000-01,PREMIERSHIP,2,Duncan Rennie,36,24,6,6,27,,
+2000-01,PREMIERSHIP,3,Ciaran Gallagher,36,19,7,10,22.5,,
+2000-01,PREMIERSHIP,4,Mike Wentworth,29,18,8,3,22,,
+2000-01,PREMIERSHIP,4,Andrew Platt,31,17,10,4,22,,
+2000-01,PREMIERSHIP,6,Graham Heath,35,18,7,10,21.5,,
+2000-01,PREMIERSHIP,7,Chris Latham,25,21,0,4,21,,
+2000-01,PREMIERSHIP,8,Tristan Daniel,30,15,3,12,16.5,,
+2000-01,PREMIERSHIP,9,John Battersby,25,13,4,8,15,,
+2000-01,PREMIERSHIP,10,John Morgan,30,13,3,14,14.5,,
+2000-01,PREMIERSHIP,10,Dudley Cook,34,12,5,17,14.5,,
+2000-01,PREMIERSHIP,12,Wilf Hurst,31,10,6,15,13,,
+2000-01,PREMIERSHIP,13,Graham Fattorini,26,10,5,11,12.5,,
+2000-01,PREMIERSHIP,14,Zbigniew Konieczny,30,9,5,16,11.5,,
+2000-01,PREMIERSHIP,15,Stef McLoughlin,16,9,3,4,10.5,,
+2000-01,PREMIERSHIP,16,Gary Hall,16,9,2,5,10,,
+2000-01,PREMIERSHIP,17,Roger Trapnell,33,4,10,19,9,,
+2000-01,PREMIERSHIP,18,James Battisti,20,7,3,10,8.5,,
+2000-01,PREMIERSHIP,19,Steve Mercer,18,7,2,9,8,,
+2000-01,PREMIERSHIP,20,Gerry Williams,15,7,0,8,7,,
+2000-01,PREMIERSHIP,21,Peter Buckley,12,3,6,3,6,,
+2000-01,PREMIERSHIP,21,Sergio Ocio,13,3,6,4,6,,
+2000-01,PREMIERSHIP,23,Simon Ostrin,15,4,2,9,5,,
+2000-01,PREMIERSHIP,23,Ron Platt,28,4,2,22,5,,
+2000-01,PREMIERSHIP,25,Michael Igoe,34,3,2,29,4,,
+2000-01,PREMIERSHIP,26,Gary Winders,3,2,0,1,2,,
+2000-01,PREMIERSHIP,27,David Williams,11,1,1,9,1.5,,
+2000-01,PREMIERSHIP,27,Dave Battersby,13,0,3,10,1.5,,
+2000-01,PREMIERSHIP,29,Mike Winders,3,1,0,2,1,,
+2000-01,PREMIERSHIP,29,D Brewer,5,1,0,4,1,,
+2000-01,PREMIERSHIP,31,Jack Davies,1,0,0,1,0,,
+2000-01,PREMIERSHIP,31,Russell Fewtrell,1,0,0,1,0,,
+2000-01,MAJOR,1,Roy Dexter,28,25,3,0,26.5,,
+2000-01,MAJOR,2,Edward Dhenin,37,25,2,10,26,,
+2000-01,MAJOR,3,James Hargreaves,38,21,7,10,24.5,,
+2000-01,MAJOR,4,John Smith,31,18,7,6,21.5,,
+2000-01,MAJOR,5,Tom Battersby,28,17,3,8,18.5,,
+2000-01,MAJOR,6,Andrew Crockford,40,14,1,25,14.5,,
+2000-01,MAJOR,7,Kieran Fattorini,28,8,2,18,9,,
+2000-01,MAJOR,8,Danny Wright,6,4,0,2,4,,
+2000-01,MAJOR,9,Andrew Jones,20,3,1,16,3.5,,
+2000-01,MAJOR,10,G Wilde,2,2,0,0,2,,
+2000-01,MAJOR,10,Luke Mair,5,2,0,3,2,,
+2000-01,MAJOR,10,Ed Nicklin,12,2,0,10,2,,
+2000-01,MAJOR,13,Phil Ormston,3,1,0,2,1,,
+2000-01,MAJOR,13,Kevin Winders,4,1,0,3,1,,
+2000-01,MAJOR,13,Philip Hearn,28,1,0,27,1,,
+1999-2000,CHAMPIONSHIP,1,Mark Hawkins,25,,,,18,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,2,Andy Legge,22,,,,17,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,3,Mike Coffey,22,,,,15.5,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,4,Andrew Farley,16,,,,11,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,5,Phil Brine,20,,,,10,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,6,Bob Corkhill,19,,,,9.5,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,7,Dave Farley,23,,,,8.5,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,7,Ken Jones,22,,,,8.5,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,9,Vivian Oldham,20,,,,8,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,9,Leon Wolszczak,23,,,,8,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,9,Craig McLoughlin,10,,,,8,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,12,Martin Hargreaves,28,0,13,15,6.5,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,12,Alan Jackson,23,,,,6.5,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,12,Geoff Myers,11,,,,6.5,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,15,John Rennie,10,,,,6,(taken from club newsletter),
+1999-2000,CHAMPIONSHIP,16,Chris Latham,5,,,,2.5,(taken from club newsletter),
+1999-2000,PREMIERSHIP,1,Gary Gray,32,,,,27.5,,
+1999-2000,PREMIERSHIP,2,Colin Dougherty,36,,,,25,,
+1999-2000,PREMIERSHIP,3,Duncan Rennie,30,,,,21,,
+1999-2000,PREMIERSHIP,4,Mike Wentworth,32,,,,20.5,,
+1999-2000,PREMIERSHIP,5,Andrew Platt,36,,,,20.5,,
+1999-2000,PREMIERSHIP,6,Mark Spriggs,29,,,,19,,
+1999-2000,PREMIERSHIP,,Wilf Hurst,34,,,,18.5,,
+1999-2000,PREMIERSHIP,,Graham Heath,,,,,,,
+1999-2000,PREMIERSHIP,,Ciaran Gallagher,40,,,,17.5,,
+1999-2000,PREMIERSHIP,,Stef McLoughlin,24,,,,16.5,,
+1999-2000,PREMIERSHIP,,Zbigniew Konieczny,35,,,,14,,
+1999-2000,PREMIERSHIP,,Roger Trapnell,38,,,,13.5,,
+1999-2000,PREMIERSHIP,,Dudley Cook,32,,,,12,,
+1999-2000,PREMIERSHIP,,Peter Buckley,15,,,,9.5,,
+1999-2000,PREMIERSHIP,,John Battersby,24,,,,11,,
+1999-2000,PREMIERSHIP,,James Battisti,15,,,,6.5,,
+1999-2000,PREMIERSHIP,,Sergio Ocio,14,,,,6.5,,
+1999-2000,PREMIERSHIP,,Dave Williams,,,,,,,
+1999-2000,PREMIERSHIP,,Mike Winders,28,,,,6.5,,
+1999-2000,PREMIERSHIP,,Gary Hall,12,,,,4.5,,
+1999-2000,PREMIERSHIP,,Gerry Williams,24,,,,3.5,,
+1999-2000,PREMIERSHIP,,Jack Davies,6,,,,3,,
+1999-2000,PREMIERSHIP,,Stuart Smiley,,,,,,,
+1999-2000,MAJOR,1,Graham Fattorini,32,,,,31,,
+1999-2000,MAJOR,2,Ron Platt,44,,,,21,,
+1999-2000,MAJOR,3,Michael Igoe,29,,,,19,,
+1999-2000,MAJOR,4,Dave Battersby,24,,,,15,,
+1999-2000,MAJOR,5,Gary Winders,22,,,,14.5,,
+1999-2000,MAJOR,6,John Morgan,11,,,,9.5,,
+1999-2000,MAJOR,,Matthew Battersby,11,,,,8.5,,
+1999-2000,MAJOR,,Luke Mair,14,,,,8,,
+1999-2000,MAJOR,,James Hargreaves,22,,,,8,,
+1999-2000,MAJOR,,Kieran Fattorini,32,,,,7.5,,
+1999-2000,MAJOR,,Derek Deakin,18,,,,7,,
+1999-2000,MAJOR,,Tom Clark,10,,,,6.5,,
+1999-2000,MAJOR,,Ed Dhenin,,,,,3,,
+1999-2000,MAJOR,,Kevin Winders,,,,,2,,
+1999-2000,MAJOR,,Tom Battersby,,,,,1.5,,
+1999-2000,MAJOR,,Vicky Rimmer,,,,,1.5,,
+1999-2000,MAJOR,,John Smith,2,,,,1,,
+1998-99,CHAMPIONSHIP,1,Mark Hawkins,22,,,,16,(taken from club newsletter),
+1998-99,CHAMPIONSHIP,2,Bob Corkhill,21,,,,13.5,(taken from club newsletter),
+1998-99,CHAMPIONSHIP,3,Dave Hulme,,,,,12,(taken from club newsletter),
+1998-99,CHAMPIONSHIP,3,Leon Wolszczak,,,,,12,(taken from club newsletter),
+1998-99,CHAMPIONSHIP,5,Mike Coffey,,,,,10,(taken from club newsletter),
+1998-99,CHAMPIONSHIP,6,Dave Farley,,,,,9.5,(taken from club newsletter),
+1998-99,CHAMPIONSHIP,,Alan Harwood,,,,,,(taken from club newsletter),
+1998-99,CHAMPIONSHIP,,Martin Hargreaves,,,,,,(taken from club newsletter),
+1998-99,PREMIERSHIP,1,Phil Brine,28,21,1,6,21.5,(taken from printed final table),
+1998-99,PREMIERSHIP,2,Andrew Farley,24,17,5,2,19.5,(taken from printed final table),
+1998-99,PREMIERSHIP,3,Alan Jackson,24,13,6,5,16,(taken from printed final table),
+1998-99,PREMIERSHIP,4,John Rennie,20,13,5,2,15.5,(taken from printed final table),
+1998-99,PREMIERSHIP,5,Colin Dougherty,30,8,13,9,14.5,(taken from printed final table),
+1998-99,PREMIERSHIP,6,Duncan Rennie,23,11,5,7,13.5,(taken from printed final table),
+1998-99,PREMIERSHIP,7,Stef McLoughlin,22,8,9,5,12.5,(taken from printed final table),
+1998-99,PREMIERSHIP,8,Mark Spriggs,23,8,9,6,12.5,(taken from printed final table),
+1998-99,PREMIERSHIP,9,Graham Heath,29,7,9,13,11.5,(taken from printed final table),
+1998-99,PREMIERSHIP,10,Sergio Ocio,16,10,2,4,11,(taken from printed final table),
+1998-99,PREMIERSHIP,11,Allan Clarke,19,6,4,9,8,(taken from printed final table),
+1998-99,PREMIERSHIP,12,Zbigniew Konieczny,27,4,6,17,7,(taken from printed final table),
+1998-99,PREMIERSHIP,13,Mike Wentworth,18,2,9,7,6.5,(taken from printed final table),
+1998-99,PREMIERSHIP,14,Gary Hall,17,4,3,10,5.5,(taken from printed final table),
+1998-99,PREMIERSHIP,15,Dudley Cook,28,2,6,20,5,(taken from printed final table),
+1998-99,PREMIERSHIP,16,Wilf Hurst,21,1,7,13,4.5,(taken from printed final table),
+1998-99,PREMIERSHIP,17,Peter Buckley,2,1,1,0,1.5,(taken from printed final table),
+1998-99,PREMIERSHIP,18,Dave Brewer,0,0,0,0,0,(taken from printed final table),
+1998-99,MAJOR,1,Simon Ostrin,27,,,,20.5,,
+1998-99,MAJOR,2,Andew Platt,23,,,,14.5,,
+1998-99,MAJOR,3,Roger Trapnell,20,,,,14,,
+1998-99,MAJOR,3,Ciaran Gallagher,,,,,14,,
+1998-99,MAJOR,5,Mike Winders,,,,,13.5,,
+1998-99,MAJOR,6,Gerry Williams,,,,,13,,
+1998-99,MAJOR,,John Battersby,,,,,12.5,,
+1998-99,MAJOR,,James Battisti,,,,,,,
+1998-99,MAJOR,,Dave Nicholas,,,,,,,
+1998-99,MAJOR,,Ron Platt,,,,,,,
+1998-99,MAJOR,,Harry Roberts,,,,,,,
+1998-99,FIRST CLASS,1,Vicky Rimmer,10,10,0,0,10,,
+1998-99,FIRST CLASS,2,K Jackson,,8,0,,8,,
+1998-99,FIRST CLASS,3,K Jones,,,,,6.5,,
+1998-99,FIRST CLASS,4,Gary Winders,,,,,6,,
+1998-99,FIRST CLASS,5,Kevin Winders,,,,,4,,
+1998-99,FIRST CLASS,6,D Downie,,,,,3.5,,
+1997-98,PREMIERSHIP,1,Alan Harwood,24,19,4,1,21,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,2,Dave Farley,29,11,14,4,18,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,3,Duncan Rennie,30,10,11,9,15.5,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,4,Viv Oldham,21,13,4,4,15,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,5,Andrew Farley,22,10,9,3,14.5,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,6,Alan Jackson,23,10,8,5,14,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,7,Stef McLoughlin,27,7,14,6,14,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,8,Mark Spriggs,26,11,3,12,12.5,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,9,Graham Heath,27,7,8,12,11,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,10,Mike Wentworth,22,6,9,7,10.5,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,11,L Webster,17,8,2,7,9,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,12,John Rennie,16,5,8,3,9,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,13,Wilf Hurst,27,2,9,16,6.5,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,14,Simon Ostrin,19,4,0,15,4,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,15,Dave Brewer,13,3,2,8,4,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,16,K Clooney,14,1,1,12,1.5,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,17,P Grace,4,0,2,2,1,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,PREMIERSHIP,18,Tony Abel,1,0,0,1,0,(taken from printed final table),(playoffs probably introduced in this season - per Dave Farley. Idea: Alan Harwood)
+1997-98,MAJOR,1,Phil Brine,42,37,4,1,39,(taken from printed final table),
+1997-98,MAJOR,2,Colin Dougherty,41,29,8,4,33,(taken from printed final table),
+1997-98,MAJOR,3,Roger Trapnell,20,13,3,4,14.5,(taken from printed final table),
+1997-98,MAJOR,4,Dudley Cook,19,12,2,5,13,(taken from printed final table),
+1997-98,MAJOR,5,Gary Hall,20,12,1,7,12.5,(taken from printed final table),
+1997-98,MAJOR,6,P Culkin,35,9,2,24,10,(taken from printed final table),
+1997-98,MAJOR,7,Tom Allport,19,7,6,6,10,(taken from printed final table),
+1997-98,MAJOR,8,Dave Nicholas,15,8,1,6,8.5,(taken from printed final table),
+1997-98,MAJOR,9,M Stubbs,12,6,4,2,8,(taken from printed final table),
+1997-98,MAJOR,10,B Nichol,13,7,1,5,7.5,(taken from printed final table),
+1997-98,MAJOR,11,P Whitehurst,15,7,1,7,7.5,(taken from printed final table),
+1997-98,MAJOR,12,D Howden,12,6,2,4,7,(taken from printed final table),
+1997-98,MAJOR,13,R Culkin,25,5,3,17,6.5,(taken from printed final table),
+1997-98,MAJOR,14,J Culkin,23,4,3,16,5.5,(taken from printed final table),
+1997-98,MAJOR,15,M Cogan,9,4,2,3,5,(taken from printed final table),
+1997-98,MAJOR,16,Nicola Rennie,6,3,3,0,4.5,(taken from printed final table),
+1997-98,MAJOR,17,R Kelly,10,3,2,5,4,(taken from printed final table),
+1997-98,MAJOR,18,P Bowen,8,2,4,2,4,(taken from printed final table),
+1997-98,MAJOR,19,M Lomas,11,2,3,6,3.5,(taken from printed final table),
+1997-98,MAJOR,20,D Downie,7,2,0,5,2,(taken from printed final table),
+1997-98,MAJOR,21,M Gregory,11,1,1,9,1.5,(taken from printed final table),
+1997-98,MAJOR,22,Vicky Rimmer,11,1,1,9,1.5,(taken from printed final table),
+1997-98,MAJOR,23,K Jackson,9,1,0,8,1,(taken from printed final table),
+1997-98,MAJOR,24,R Rennie,3,1,0,2,1,(taken from printed final table),
+1997-98,MAJOR,25,Mike Winders,4,0,1,3,0.5,(taken from printed final table),
+1997-98,MAJOR,26,Kevin Winders,4,0,0,4,0,(taken from printed final table),
+1997-98,FIRST CLASS,1,Vicky Rimmer,10,10,0,0,10,,These are clearly copies - which year is it?!
+1997-98,FIRST CLASS,2,K Jackson,,8,0,,8,,These are clearly copies - which year is it?!
+1997-98,FIRST CLASS,3,K Jones,,,,,6.5,,These are clearly copies - which year is it?!
+1997-98,FIRST CLASS,4,Gary Winders,,,,,6,,These are clearly copies - which year is it?!
+1997-98,FIRST CLASS,5,Kevin Winders,,,,,4,,These are clearly copies - which year is it?!
+1997-98,FIRST CLASS,6,D Downie,,,,,3.5,,These are clearly copies - which year is it?!
+1996/97,CHAMPIONSHIP,1,Mike Coffey,20,16,4,0,18,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,2,Andy Legge,23,13,6,4,16,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,3,Chris Latham,22,13,6,3,16,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,4,Ken Jones,23,8,9,6,12.5,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,5,Dave Hulme,20,8,8,4,12,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,6,Lenny Block,22,8,7,7,11.5,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,7,Leon Wolszczak,23,7,5,11,9.5,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,8,Martin Hargreaves,24,4,9,11,8.5,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,9,Sergio Ocio,20,5,6,9,8,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,10,Peter Buckley,13,3,8,2,7,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,11,Jack Davies,12,6,1,5,6.5,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,12,Zbigniew Konieczny,23,5,2,16,6,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,13,E Taylor,25,3,6,16,6,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,CHAMPIONSHIP,14,Tony Abel,10,1,4,5,3,(taken from printed final tables),"""plus 1 player defaulted"" | ""A Legge won a play off to determine 2nd place"""
+1996/97,PREMIERSHIP,1,Craig McLoughlin,21,19,2,0,20,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,2,Mark Hawkins,28,16,7,5,19.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,3,Alan Harwood,24,15,5,4,17.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,4,Dave Farley,24,9,11,4,14.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,5,John Rennie,19,12,3,4,13.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,6,Graham Heath,22,6,5,11,8.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,7,Wilf Hurst,21,5,7,9,8.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,8,Stef McLoughlin,20,4,9,7,8.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,9,Duncan Rennie,23,5,5,13,7.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,10,Ron Champion,20,2,9,9,6.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,11,Alan Jackson,10,5,3,2,6.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,12,Simon Ostrin,23,2,7,14,5.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,13,Dave Brewer,10,3,4,3,5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,14,Dudley Cook,14,3,4,7,5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,PREMIERSHIP,15,Roger Trapnell,18,0,5,13,2.5,,Dave Brewer & Dudley Cook to play off for relegation
+1996/97,FIRST CLASS,1,Vicky Rimmer,10,10,0,0,10,,
+1996/97,FIRST CLASS,2,K Jackson,,8,0,,8,,
+1996/97,FIRST CLASS,3,K Jones,,,,,6.5,,
+1996/97,FIRST CLASS,4,Gary Winders,,,,,6,,
+1996/97,FIRST CLASS,5,Kevin Winders,,,,,4,,
+1996/97,FIRST CLASS,6,D Downie,,,,,3.5,,
